@@ -6,6 +6,12 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C04: independent verifier (R03, R07; T05/T12/T13). Public key only
+  verification of manifest, record stream, checkpoints, receipts and
+  status statements; integrity and anchored modes; enum typed report
+  with verified range, first failure sequence, unwitnessed count and
+  machine diagnostic codes. No writer, storage or HTTP imports.
+  18 new tests (60 total, all green).
 - Frozen conformance vectors for the M1 gate: crypto_kat.json (test
   keys, schema valid bodies for all six protocol objects, digests,
   genesis hash, signatures, negative cases), jcs_reject.json (malformed
