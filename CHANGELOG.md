@@ -6,6 +6,17 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C06: evidence bundles, export and restore (R09; T15). Directory
+  export with the exact Section 20 file set, one canonical envelope
+  per JSONL line, snapshot read in a single transaction, write to a
+  sibling temporary directory then one rename, never overwrites.
+  Bundle import rejects symlinks, nonregular files, byte order marks,
+  blank lines and lines over 128 KiB, and cross checks the export
+  metadata against the actual record count. Restore builds a fresh
+  store after verifying every record hash, chain link and signature;
+  a restore behind an external anchor still stores the data but seals
+  the log and every later append reports RESTORE_BEHIND_WITNESS.
+  15 new tests (98 total, all green).
 - C05 hardening: append-only triggers on records and manifests,
   consistent backup through the SQLite backup API (never overwrites),
   startup head verification against the records table, the remaining

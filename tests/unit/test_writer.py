@@ -36,6 +36,7 @@ WIT_PUB = crypto.public_key_raw(WIT)
 
 LOG_ID = "123e4567-e89b-42d3-a456-426614174000"
 TS = "2026-10-11T00:00:00.000000Z"
+ZERO = "00" * 32  # null previous hash for the first checkpoint or receipt
 
 
 def _manifest_envelope():

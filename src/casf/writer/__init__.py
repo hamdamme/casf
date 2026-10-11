@@ -1,8 +1,9 @@
 """Sequencing and idempotent append (SPEC §11, §17).
 
 C05 scope: manifest storage with genesis, transactional record append,
-event ID idempotency, contention bounds. Checkpoint production and the
-witness outbox arrive with C07/C08.
+event ID idempotency, contention bounds. C06 adds bundle export and
+restore (SPEC §18, §20). Checkpoint production and the witness outbox
+arrive with C07/C08.
 
 Writers serialize through the database (BEGIN IMMEDIATE), never
 through a process mutex alone. Return success only after COMMIT; a
@@ -11,6 +12,7 @@ caller with an uncertain outcome retries with the same event ID.
 
 import os
 import random
+import shutil
 import sqlite3
 import time
 from collections.abc import Iterator
@@ -20,6 +22,7 @@ from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
+from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, SchemaError
@@ -27,7 +30,8 @@ from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.types import JsonObject
 
-__all__ = ["BusyError", "EventIdConflictError", "SealedError", "Writer"]
+__all__ = ["BusyError", "EventIdConflictError",
+           "RestoreBehindWitnessError", "SealedError", "Writer"]
 
 
 class BusyError(CasfError):
@@ -40,6 +44,14 @@ class EventIdConflictError(CasfError):
 
 class SealedError(CasfError):
     """No append follows sealing (SPEC §12, §16)."""
+
+
+class RestoreBehindWitnessError(SealedError):
+    """Restored history is behind an external witness anchor (T15).
+
+    The restore completes so the data stays readable, but the log is
+    sealed and every later append fails with RESTORE_BEHIND_WITNESS.
+    """
 
 
 class Writer:
@@ -213,7 +225,9 @@ class Writer:
                 raise CasfError("unknown log")
             count, head_hash, sealed = head
             if sealed:
-                raise SealedError("log is sealed; no append follows sealing")
+                raise RestoreBehindWitnessError(
+                    "RESTORE_BEHIND_WITNESS: this log was restored behind "
+                    "an external anchor; writes stop here")
             seq = count + 1
             if seq > SAFE_INT_MAX:
                 raise CasfError("sequence overflow; a new epoch is required")
@@ -261,3 +275,165 @@ class Writer:
         if not isinstance(value, str):
             raise CasfError("stored manifest is corrupt")
         return value
+
+    # ------------------------------------------------------------- bundle
+
+    def export_bundle(self, log_id: str, dest_dir: str | Path) -> Path:
+        """Export one log as a bundle directory (SPEC §20).
+
+        The read runs inside one snapshot transaction. Files are
+        written to a sibling temporary directory, flushed, then moved
+        into place with a single rename; an existing destination is
+        never overwritten.
+        """
+        dest = Path(dest_dir)
+        if dest.exists():
+            raise CasfError("export destination already exists")
+        if not dest.parent.is_dir():
+            raise CasfError("export destination parent does not exist")
+        tmp = dest.with_name(f"{dest.name}.tmp-{os.getpid()}")
+        if tmp.exists():
+            raise CasfError("stale export temporary directory in the way")
+
+        con = self._db.connection
+        con.execute("BEGIN")
+        try:
+            manifest = self.manifest_envelope(log_id)
+            records = list(self.records(log_id))
+        finally:
+            con.rollback()
+        manifest_hash = self._manifest_hash(log_id)
+
+        metadata: JsonObject = {
+            "version": 1, "type": "export", "log_id": log_id,
+            "manifest_hash": manifest_hash,
+            "through": len(records), "record_count": len(records),
+            "generated_at": datetime.now(UTC).strftime(
+                "%Y-%m-%dT%H:%M:%S.%fZ"),
+        }
+        try:
+            tmp.mkdir()
+            self._write_member(tmp / "manifest.json",
+                               canonicalize(manifest) + b"\n")
+            self._write_member(tmp / "records.jsonl", b"".join(
+                canonicalize(env) + b"\n" for env in records))
+            # checkpoints and receipts arrive with C08; the members
+            # exist so the file set is already the §20 shape
+            self._write_member(tmp / "checkpoints.jsonl", b"")
+            self._write_member(tmp / "receipts.jsonl", b"")
+            self._write_member(tmp / "export.json",
+                               canonicalize(metadata) + b"\n")
+            os.rename(tmp, dest)
+        except BaseException:
+            shutil.rmtree(tmp, ignore_errors=True)
+            raise
+        return dest
+
+    @staticmethod
+    def _write_member(path: Path, data: bytes) -> None:
+        with open(path, "wb") as f:
+            f.write(data)
+            f.flush()
+            os.fsync(f.fileno())
+
+    @classmethod
+    def restore_from_bundle(cls, db_path: str | Path,
+                            log_priv: Ed25519PrivateKey,
+                            bundle_dir: str | Path, *,
+                            anchor: JsonObject | None = None) -> "Writer":
+        """Build a fresh store from a bundle (SPEC §18, §20).
+
+        Every record hash and signature is verified against the
+        manifest key before anything is written. When an external
+        anchor reports a count beyond the restored history, the data
+        is still stored but the log is sealed and every later append
+        reports RESTORE_BEHIND_WITNESS (T15).
+        """
+        if os.path.exists(db_path):
+            raise CasfError("restore destination already exists")
+        bundle = read_bundle(bundle_dir)
+        sealed = 0
+        anchor_count = 0
+        writer = cls(db_path, log_priv)
+        try:
+            writer.create_log(bundle.manifest)
+            con = writer._db.connection
+            con.execute("BEGIN IMMEDIATE")
+            try:
+                manifest_body = bundle.manifest["body"]
+                if not isinstance(manifest_body, dict):
+                    raise CasfError("manifest envelope field types are wrong")
+                log_id_value = manifest_body["log_id"]
+                if not isinstance(log_id_value, str):
+                    raise CasfError("manifest envelope field types are wrong")
+                log_id = log_id_value
+                prev_hash = crypto.genesis_hash(bundle.manifest_hash)
+                for index, envelope in enumerate(bundle.records, start=1):
+                    prev_hash = writer._restore_record(
+                        con, log_id, index, envelope, prev_hash)
+                if anchor is not None:
+                    count_value = anchor.get("count")
+                    if isinstance(count_value, int):
+                        anchor_count = count_value
+                        restored = len(bundle.records)
+                        if anchor_count > restored:
+                            sealed = 1
+                        elif (anchor_count == restored
+                              and anchor.get("head_hash") is not None
+                              and anchor["head_hash"] != prev_hash):
+                            raise CasfError(
+                                "restored history disagrees with the anchor")
+                con.execute(
+                    "UPDATE heads SET count = ?, head_hash = ?, sealed = ? "
+                    "WHERE log_id = ?",
+                    (len(bundle.records), prev_hash, sealed, log_id))
+                con.commit()
+            except BaseException:
+                con.rollback()
+                raise
+        except BaseException:
+            writer.close()
+            raise
+        if sealed:
+            writer.close()
+            raise RestoreBehindWitnessError(
+                f"RESTORE_BEHIND_WITNESS: anchor count {anchor_count} "
+                f"exceeds the restored {len(bundle.records)} records; "
+                "the log is sealed")
+        return writer
+
+    def _restore_record(self, con: sqlite3.Connection, log_id: str,
+                        index: int, envelope: JsonObject,
+                        prev_hash: str) -> str:
+        """Verify one restored record and insert it; return its hash."""
+        if set(envelope) != {"body", "record_hash", "signature"}:
+            raise SchemaError("record envelope must be exactly "
+                              "body, record_hash, signature")
+        body = envelope["body"]
+        record_hash = envelope["record_hash"]
+        signature = envelope["signature"]
+        if (not isinstance(body, dict) or not isinstance(record_hash, str)
+                or not isinstance(signature, str)):
+            raise SchemaError("record envelope field types are wrong")
+        validate_protocol_body("record", body)
+        if body["log_id"] != log_id:
+            raise CasfError("record log_id disagrees with the bundle")
+        if body["manifest_hash"] != self._manifest_hash(log_id):
+            raise CasfError("record manifest_hash disagrees with the bundle")
+        if body["seq"] != index:
+            raise CasfError("records are not ordered by sequence")
+        if body["prev_hash"] != prev_hash:
+            raise CasfError("record chain is broken at the restore input")
+        if crypto.digest_record(body) != record_hash:
+            raise CasfError("record_hash does not match the body")
+        crypto.verify_record(self._log_pub, body, signature)
+        request: JsonObject = {
+            "event_id": body["event_id"], "actor": body["actor"],
+            "event_type": body["event_type"], "payload": body["payload"],
+            "attributes": body["attributes"],
+        }
+        con.execute(
+            "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
+            (log_id, index, body["event_id"], crypto.request_digest(request),
+             record_hash, canonicalize(envelope)))
+        return record_hash
