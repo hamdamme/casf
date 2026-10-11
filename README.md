@@ -33,6 +33,7 @@ verification is not proof that every real-world event was recorded.
 ## Repository layout
 | Path | Content |
 |---|---|
+| `ROADMAP.md` | Phase plan and session status (details in SPEC §24/§27) |
 | `docs/specification/` | CASF SPEC 001 (governing design document) + D01 source reconciliation |
 | `docs/adr/` | Architecture decision records |
 | `docs/01..05` | Historical design context (superseded by SPEC 001) |
