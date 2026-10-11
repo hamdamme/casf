@@ -6,6 +6,11 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C05 hardening: append-only triggers on records and manifests,
+  consistent backup through the SQLite backup API (never overwrites),
+  startup head verification against the records table, the remaining
+  T07 kill points (before insert, after commit before return), and a
+  transient contention retry test. 11 new tests (83 total, all green).
 - C05: writer and SQLite storage (R04; T06/T07). Transactional append
   with BEGIN IMMEDIATE, event ID idempotency via request digest,
   contiguous sequences under concurrent writers, WAL with

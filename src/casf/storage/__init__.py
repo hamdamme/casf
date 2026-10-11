@@ -36,6 +36,16 @@ CREATE TABLE IF NOT EXISTS heads(
     head_hash TEXT NOT NULL,
     sealed INTEGER NOT NULL DEFAULT 0
 );
+-- Append-only guards (SPEC §17). These deter accidental modification;
+-- they are not protection against a file administrator.
+CREATE TRIGGER IF NOT EXISTS records_no_update BEFORE UPDATE ON records
+BEGIN SELECT RAISE(ABORT, 'records are append only'); END;
+CREATE TRIGGER IF NOT EXISTS records_no_delete BEFORE DELETE ON records
+BEGIN SELECT RAISE(ABORT, 'records are append only'); END;
+CREATE TRIGGER IF NOT EXISTS manifests_no_update BEFORE UPDATE ON manifests
+BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS manifests_no_delete BEFORE DELETE ON manifests
+BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
 """
 
 

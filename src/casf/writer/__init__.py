@@ -9,6 +9,7 @@ through a process mutex alone. Return success only after COMMIT; a
 caller with an uncertain outcome retries with the same event ID.
 """
 
+import os
 import random
 import sqlite3
 import time
@@ -53,9 +54,54 @@ class Writer:
         self._log_key_id = crypto.key_id(self._log_pub)
         self._max_retries = max_retries
         self._retry_jitter = retry_jitter
+        self._check_heads()
 
     def close(self) -> None:
         self._db.close()
+
+    def backup(self, dest_path: str | Path) -> None:
+        """Consistent backup through the SQLite backup API (SPEC §18).
+
+        Copying only the live database file is not an approved
+        procedure; this includes the required WAL state. Never
+        overwrites an existing file.
+        """
+        dest = str(dest_path)
+        if os.path.exists(dest):
+            raise CasfError("backup destination already exists")
+        target = sqlite3.connect(dest)
+        try:
+            self._db.connection.backup(target)
+        finally:
+            target.close()
+
+    def _check_heads(self) -> None:
+        """Startup check: stored heads must match the records table
+        (SPEC §17). Full chain verification uses casf.verifier."""
+        con = self._db.connection
+        for log_id, count, head_hash in con.execute(
+                "SELECT log_id, count, head_hash FROM heads"):
+            actual = con.execute(
+                "SELECT COUNT(*), MAX(seq) FROM records WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if actual[0] != count:
+                raise CasfError(
+                    f"head count {count} disagrees with {actual[0]} "
+                    "stored records; restore or recovery required")
+            if count == 0:
+                expected = crypto.genesis_hash(self._manifest_hash(log_id))
+            else:
+                row = con.execute(
+                    "SELECT record_hash FROM records WHERE log_id = ? "
+                    "AND seq = ?", (log_id, count)).fetchone()
+                if row is None:
+                    raise CasfError(
+                        "head record missing; restore or recovery required")
+                expected = row[0]
+            if head_hash != expected:
+                raise CasfError(
+                    "head hash disagrees with stored records; "
+                    "restore or recovery required")
 
     def _debug_hook(self, stage: str) -> None:
         """Test hook; no-op in production."""
@@ -189,6 +235,7 @@ class Writer:
                 "body": body, "record_hash": record_hash,
                 "signature": crypto.sign_record(self._log_priv, body),
             }
+            self._debug_hook("before_insert")
             con.execute(
                 "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
                 (log_id, seq, request["event_id"], request_digest,
@@ -198,6 +245,7 @@ class Writer:
                 (seq, record_hash, log_id))
             self._debug_hook("after_insert")
             con.commit()
+            self._debug_hook("after_commit")
             return envelope
         except BaseException:
             con.rollback()
