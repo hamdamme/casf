@@ -280,7 +280,9 @@ def test_anchored_unwitnessed_suffix_rejected_by_default():
 
 def test_anchored_bad_receipt_signature_fails():
     env, records, cps, rcs = _anchored(3, 2)
-    bad_rc = dict(rcs[0], signature=rcs[0]["signature"][:-2] + "AA")
+    sig = rcs[0]["signature"]
+    mangled = ("B" if sig[0] == "A" else "A") + sig[1:]
+    bad_rc = dict(rcs[0], signature=mangled)
     report = verify(env, records, _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
                     checkpoint_envelopes=cps, receipt_envelopes=[bad_rc],
                     allow_unwitnessed=True)
