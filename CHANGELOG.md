@@ -6,6 +6,12 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C05: writer and SQLite storage (R04; T06/T07). Transactional append
+  with BEGIN IMMEDIATE, event ID idempotency via request digest,
+  contiguous sequences under concurrent writers, WAL with
+  synchronous=FULL and foreign keys verified at startup, bounded lock
+  retries with BusyError, crash recovery by same ID retry. Checkpoint
+  and outbox tables deferred to C07/C08. 12 new tests (72 total).
 - C04: independent verifier (R03, R07; T05/T12/T13). Public key only
   verification of manifest, record stream, checkpoints, receipts and
   status statements; integrity and anchored modes; enum typed report
