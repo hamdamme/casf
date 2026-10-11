@@ -8,7 +8,7 @@ One session means one focused working sitting.
 | Phase | Scope (SPEC ref) | Tasks | Sessions | Status |
 |---|---|---|---|---|
 | 0. Documentation baseline | M0 | C00: source reconciliation, blocking decisions D01 to D05 | 1 | Done |
-| 1. Protocol core review | M1 | Finish C02/C03: independent vector cross check, freeze casf-v1 vectors | 1 | In progress (code and tests exist, vectors need independent review) |
+| 1. Protocol core review | M1 | Finish C02/C03: independent vector cross check, freeze casf-v1 vectors | 1 | Done (vectors frozen and cross checked, conformance suite wired, schema fix landed) |
 | 2. Pure verifier | M2 | C04: offline and anchored verification, public key only | 1 to 2 | Not started |
 | 3. Writer and storage | M3 | C05: transactional SQLite append, idempotency, crash recovery | 2 | Not started |
 | 4. Export and recovery | M4 | C06: evidence bundles, backup, restore drill | 1 | Not started |

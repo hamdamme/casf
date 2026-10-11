@@ -1,0 +1,151 @@
+{
+ "description": "Frozen casf-v1 cryptographic known answer vectors (SPEC 21). Deterministic; test keys only.",
+ "test_keys": {
+  "authority": {
+   "seed_hex": "3f31a69b401bd47965f870ac48771a73e271a3b2ed99933a2bffe2681e87f8a1",
+   "public_b64": "zepf54-8Q7LQJ2ushueqnKlPW7N7PjYhDeYMVgopAfQ",
+   "key_id": "5d7762f4b4c494cb217ca861fdfcdd90d81af1690f6d1cd174c7e4474edc5c29"
+  },
+  "log": {
+   "seed_hex": "82255bad11fee04b3ee9d05318c7539b0d2bc7e745bd6d3159833e6e3c537a5f",
+   "public_b64": "EBh17k7H1P5wsJaq18SmJFwMpREoGN7DFyK3GZr3LXk",
+   "key_id": "a6b397d052ab8bb0bfea18a01c08ef2cdc5b205523d7a5ca71e6261214ef0808"
+  },
+  "witness": {
+   "seed_hex": "dd0a7bd75aedafdf3d581d4355afe7d4d3d6521874443c38d65b281b8ca84bd9",
+   "public_b64": "W7TE04y0FCdjb6pkZbnYyw7dGtEaOZ4xOJksjjExgG4",
+   "key_id": "52851d50bceb2115301fa0c45841461ab4a6c5b5eb365c196c0b1e013c84d696"
+  }
+ },
+ "bodies": {
+  "manifest": {
+   "version": 1,
+   "type": "manifest",
+   "log_id": "11111111-2222-4333-8444-555555555555",
+   "issuer_id": "5d7762f4b4c494cb217ca861fdfcdd90d81af1690f6d1cd174c7e4474edc5c29",
+   "log_key_id": "a6b397d052ab8bb0bfea18a01c08ef2cdc5b205523d7a5ca71e6261214ef0808",
+   "log_public_key": "EBh17k7H1P5wsJaq18SmJFwMpREoGN7DFyK3GZr3LXk",
+   "witness_id": "52851d50bceb2115301fa0c45841461ab4a6c5b5eb365c196c0b1e013c84d696",
+   "witness_public_key": "W7TE04y0FCdjb6pkZbnYyw7dGtEaOZ4xOJksjjExgG4",
+   "created_at": "2026-01-01T00:00:00.000000Z",
+   "predecessor": null
+  },
+  "record": {
+   "version": 1,
+   "type": "record",
+   "log_id": "11111111-2222-4333-8444-555555555555",
+   "manifest_hash": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+   "seq": 1,
+   "event_id": "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee",
+   "recorded_at": "2026-01-01T00:00:00.000000Z",
+   "actor": "alice",
+   "event_type": "login",
+   "payload": {
+    "ip": "203.0.113.10"
+   },
+   "attributes": {},
+   "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "key_id": "a6b397d052ab8bb0bfea18a01c08ef2cdc5b205523d7a5ca71e6261214ef0808"
+  },
+  "checkpoint": {
+   "version": 1,
+   "type": "checkpoint",
+   "log_id": "11111111-2222-4333-8444-555555555555",
+   "manifest_hash": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+   "index": 0,
+   "count": 1,
+   "head_hash": "f640fbfce431ee3f473e962302392987ac4ee525b95a1dcff347a65b2f0aa6e0",
+   "previous_checkpoint_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "key_id": "a6b397d052ab8bb0bfea18a01c08ef2cdc5b205523d7a5ca71e6261214ef0808",
+   "issued_at": "2026-01-01T00:00:00.000000Z",
+   "final": false
+  },
+  "receipt": {
+   "version": 1,
+   "type": "receipt",
+   "witness_id": "52851d50bceb2115301fa0c45841461ab4a6c5b5eb365c196c0b1e013c84d696",
+   "log_id": "11111111-2222-4333-8444-555555555555",
+   "manifest_hash": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+   "checkpoint_hash": "51c0512c6212df8a1b5d78645c4b2af5f02f3e67e8daa429c1d964a6aede54cc",
+   "checkpoint_index": 0,
+   "count": 1,
+   "head_hash": "f640fbfce431ee3f473e962302392987ac4ee525b95a1dcff347a65b2f0aa6e0",
+   "previous_receipt_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "accepted_at": "2026-01-01T00:00:00.000000Z"
+  },
+  "latest": {
+   "version": 1,
+   "type": "latest",
+   "nonce": "5ePNIgNUpyAlguH_WoIrJw",
+   "witness_id": "52851d50bceb2115301fa0c45841461ab4a6c5b5eb365c196c0b1e013c84d696",
+   "log_id": "11111111-2222-4333-8444-555555555555",
+   "manifest_hash": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+   "checkpoint_hash": "51c0512c6212df8a1b5d78645c4b2af5f02f3e67e8daa429c1d964a6aede54cc",
+   "receipt_hash": "458f3e09849eb7ec51c50c765323b9e9c32456082f7a0d3e2e1f7d677e6d35b9",
+   "checkpoint_index": 0,
+   "count": 1,
+   "head_hash": "f640fbfce431ee3f473e962302392987ac4ee525b95a1dcff347a65b2f0aa6e0",
+   "final": false,
+   "responded_at": "2026-01-01T00:00:00.000000Z"
+  },
+  "status": {
+   "version": 1,
+   "type": "status",
+   "issuer_id": "5d7762f4b4c494cb217ca861fdfcdd90d81af1690f6d1cd174c7e4474edc5c29",
+   "serial": 1,
+   "manifest_hash": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+   "status": "active",
+   "issued_at": "2026-01-01T00:00:00.000000Z",
+   "reason": ""
+  }
+ },
+ "digests": {
+  "manifest": "f61945722e56236e739384de280c5a15c0d5f2495fe2f5eef0ae18c06ec6ea85",
+  "record": "f640fbfce431ee3f473e962302392987ac4ee525b95a1dcff347a65b2f0aa6e0",
+  "checkpoint": "51c0512c6212df8a1b5d78645c4b2af5f02f3e67e8daa429c1d964a6aede54cc",
+  "receipt": "458f3e09849eb7ec51c50c765323b9e9c32456082f7a0d3e2e1f7d677e6d35b9",
+  "latest": "0d2862240b6a3acf1ff5572c9dfe4a374d9c36cdb7f27d10ac213ebfc0fe6bc1",
+  "status": "e183b9b75fb9c7f7fbeee9775d79584c3805714e5240cf115b0db317891618f5"
+ },
+ "genesis_hash": "a631b4f304c611c0c879af79acc377c2f318dcbb5ae4a390eb153dfe6bb979a0",
+ "signatures": {
+  "manifest": {
+   "signed_by": "authority",
+   "signature": "XjwTbr2v5f0XTfSaAKSUcyRGiYH9bm3LLCzzp5hAeMORDNlK-EPRx3qHzAX8OngqSFwPGBVx5Dm-KBchE785Aw"
+  },
+  "record": {
+   "signed_by": "log",
+   "signature": "CBmueK6xT0sX3vqQ0m-oExFCOUdgPDqnx61Cdxi8M3JcPoJS9Gv8hF3Dz8RKltaPbmsVLrRCWQSsnitbQJzGBA"
+  },
+  "checkpoint": {
+   "signed_by": "log",
+   "signature": "sNEbr9TJ4dFHyi5_eqG42QLRVSzTPUTBsvrTY1tN1E_VlrVCOsbyzA8GZXDpPmCu4iEqCwOMHRni7wVFZz5KBg"
+  },
+  "receipt": {
+   "signed_by": "witness",
+   "signature": "cN5X5Zq69vIt1wJ2LtFY5-9D4v2VeukiTaNAYWQ7SolUNWZff8ClJQ6u4o4JCxZVX_fH6S9zYuq80uWerVQAAg"
+  },
+  "latest": {
+   "signed_by": "witness",
+   "signature": "wmQktlor86HYkEMT_GMj9kINsNeY8Dl9ZOWb_mTjow-mMUjFMCxDSFJjt0pvz7CCuAdEH0-dV6te_F8aejcwDw"
+  },
+  "status": {
+   "signed_by": "authority",
+   "signature": "ElJCVTfRiVqON_GlB94A_RE_ostQspEbYB-kP91vbXSm6C3yeTmYk5cK26Jbnw_cYp1UvXsE_nbeaKdxpC0lDg"
+  }
+ },
+ "negative": [
+  {
+   "name": "record_signature_under_manifest_domain",
+   "verify_as": "manifest",
+   "body": "record",
+   "signature_of": "record",
+   "expect": "CasfError"
+  },
+  {
+   "name": "noncanonical_base64url_trailing_bits",
+   "input": "AR",
+   "expect": "SchemaError"
+  }
+ ]
+}

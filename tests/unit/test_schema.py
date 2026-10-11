@@ -59,3 +59,33 @@ def test_digest_format():
         schema.validate_protocol_body("record", _record(prev_hash="AB" * 32))  # uppercase
     with pytest.raises(SchemaError):
         schema.validate_protocol_body("record", _record(prev_hash="ab" * 31))   # short
+
+def _manifest(**over):
+    body = {
+        "version": 1, "type": "manifest",
+        "log_id": "123e4567-e89b-42d3-a456-426614174000",
+        "issuer_id": "ab" * 32,
+        "log_key_id": "cd" * 32,
+        "log_public_key": "BQ",
+        "witness_id": "ef" * 32,
+        "witness_public_key": "Bg",
+        "created_at": "2026-10-11T00:00:00.000000Z",
+        "predecessor": None,
+    }
+    body.update(over)
+    return body
+
+def test_genesis_manifest_null_predecessor_passes():
+    # SPEC 10: predecessor is null for an initial log
+    schema.validate_protocol_body("manifest", _manifest())
+
+def test_predecessor_object_shape():
+    pred = {
+        "log_id": "123e4567-e89b-42d3-a456-426614174009",
+        "manifest_hash": "ab" * 32,
+        "final_checkpoint_hash": "cd" * 32,
+        "final_receipt_hash": "ef" * 32,
+    }
+    schema.validate_protocol_body("manifest", _manifest(predecessor=pred))
+    with pytest.raises(SchemaError):
+        schema.validate_protocol_body("manifest", _manifest(predecessor={"log_id": 1}))

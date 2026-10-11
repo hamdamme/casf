@@ -69,7 +69,7 @@ def validate_body(body: JsonValue, fields: dict[str, Field], where: str) -> None
     for name, f in fields.items():
         value = body[name]
         if value is None:
-            if f.kind != "null":
+            if f.kind not in ("null", "predecessor"):
                 raise SchemaError(f"{where}.{name}: null not allowed")
             continue
         if f.kind == "int":
@@ -99,8 +99,7 @@ def validate_body(body: JsonValue, fields: dict[str, Field], where: str) -> None
             if not isinstance(value, dict):
                 raise SchemaError(f"{where}.{name}: expected object")
         elif f.kind == "predecessor":
-            if value is not None:
-                _validate_predecessor(value, f"{where}.{name}")
+            _validate_predecessor(value, f"{where}.{name}")
         else:
             raise SchemaError(f"{where}.{name}: unknown field kind {f.kind}")
 
