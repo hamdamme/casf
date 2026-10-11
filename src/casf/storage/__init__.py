@@ -52,7 +52,8 @@ BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
 class Database:
     """One SQLite connection with the SPEC §17 settings verified."""
 
-    def __init__(self, path: str | Path, busy_timeout_ms: int = 5000) -> None:
+    def __init__(self, path: str | Path, busy_timeout_ms: int = 5000,
+                 schema: str = SCHEMA) -> None:
         self.path = str(path)
         self.connection = sqlite3.connect(self.path, timeout=busy_timeout_ms / 1000)
         con = self.connection
@@ -67,7 +68,7 @@ class Database:
             raise CasfError("synchronous=FULL is required and was not applied")
         if con.execute("PRAGMA foreign_keys").fetchone()[0] != 1:
             raise CasfError("foreign_keys=ON is required and was not applied")
-        con.executescript(SCHEMA)
+        con.executescript(schema)
         con.commit()
 
     def close(self) -> None:

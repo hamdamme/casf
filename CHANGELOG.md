@@ -6,6 +6,19 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C07 session 1: witness acceptance state machine (R05; T08, T09,
+  T22). Durable per log state in its own SQLite store: retained count
+  and head, checkpoint index and digest, receipt chain tip, sealed
+  flag, every accepted checkpoint and receipt, and record digests by
+  sequence with bodies discarded. Acceptance runs in one serialized
+  transaction; an identical checkpoint replays the stored receipt,
+  bad extensions and count moves leave the high water state
+  untouched, reused indexes and wrong previous digests raise
+  ConflictError with safe evidence identifiers, and a crash after
+  commit replays the same receipt on retry. Concurrent fork test
+  shows at most one accepted extension. Manifest registration
+  verifies the authority signature and requires the manifest to name
+  this witness. 21 new tests (119 total, all green).
 - C06: evidence bundles, export and restore (R09; T15). Directory
   export with the exact Section 20 file set, one canonical envelope
   per JSONL line, snapshot read in a single transaction, write to a
