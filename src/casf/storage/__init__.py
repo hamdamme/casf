@@ -53,9 +53,11 @@ class Database:
     """One SQLite connection with the SPEC §17 settings verified."""
 
     def __init__(self, path: str | Path, busy_timeout_ms: int = 5000,
-                 schema: str = SCHEMA) -> None:
+                 schema: str = SCHEMA, check_same_thread: bool = True) -> None:
         self.path = str(path)
-        self.connection = sqlite3.connect(self.path, timeout=busy_timeout_ms / 1000)
+        self.connection = sqlite3.connect(
+            self.path, timeout=busy_timeout_ms / 1000,
+            check_same_thread=check_same_thread)
         con = self.connection
         con.execute(f"PRAGMA busy_timeout={int(busy_timeout_ms)}")
         con.execute("PRAGMA journal_mode=WAL")

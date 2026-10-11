@@ -6,6 +6,18 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C07 session 2: witness HTTP transport (SPEC §14). Authenticated
+  POST of exactly checkpoint plus records returns 201 on first
+  acceptance and 200 with the same stored receipt on an identical
+  retry; receipt lookup returns the stored checkpoint and receipt
+  with distinct 404 codes for a missing log and a missing receipt.
+  Errors carry exactly code, message and retryable with no stack
+  traces, payloads, keys or tokens; the bearer credential never
+  appears in a URL or log line, and request bodies are drained
+  before early error responses so connections stay clean. Request
+  size and concurrency are bounded (413 and 429). The witness
+  serializes handler threads through one lock, matching the single
+  serialized transaction rule. 15 new tests (135 total, all green).
 - C07 session 1: witness acceptance state machine (R05; T08, T09,
   T22). Durable per log state in its own SQLite store: retained count
   and head, checkpoint index and digest, receipt chain tip, sealed

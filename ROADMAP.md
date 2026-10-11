@@ -12,7 +12,7 @@ One session means one focused working sitting.
 | 2. Pure verifier | M2 | C04: offline and anchored verification, public key only | 1 to 2 | Done (integrity and anchored modes, enum report, 60 tests green) |
 | 3. Writer and storage | M3 | C05: transactional SQLite append, idempotency, crash recovery | 2 | Done (append, idempotency, T06 concurrency, all T07 kill points, triggers, backup, startup checks, 83 tests green) |
 | 4. Export and recovery | M4 | C06: evidence bundles, backup, restore drill | 1 | Done (directory bundles, verified restore, RESTORE_BEHIND_WITNESS stop, 98 tests green) |
-| 5. Witness service | M5 | C07: durable acceptance state machine, receipts, HTTP | 2 | In progress (state machine done: T08, T09, T22 pass; HTTP transport next) |
+| 5. Witness service | M5 | C07: durable acceptance state machine, receipts, HTTP | 2 | Done (state machine plus authenticated HTTP transport, T08, T09, T22 pass, 135 tests green) |
 | 6. Online verification | M5/M6 | C08: nonce freshness queries, checkpoint worker | 2 | Not started |
 | 7. Lifecycle and CLI | M6 | C09: sealing, epoch rotation, revocation; C10: CLI hardening and packaging | 2 | Not started |
 | 8. Research evaluation | M7 | C11: benchmarks, attack harnesses, RQ1 to RQ4 analysis | 2 | Not started |

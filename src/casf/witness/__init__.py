@@ -18,6 +18,7 @@ validation and commit. HTTP transport arrives with C07 session 2.
 """
 
 import sqlite3
+import threading
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -120,7 +121,12 @@ class Witness:
     def __init__(self, db_path: str | Path, witness_priv: Ed25519PrivateKey,
                  *, authority_keys: dict[str, bytes] | None = None,
                  busy_timeout_ms: int = 5000) -> None:
-        self._db = Database(db_path, busy_timeout_ms, schema=SCHEMA)
+        # One connection shared by HTTP handler threads; the lock
+        # serializes every call, which matches the one serialized
+        # transaction rule of Section 13.
+        self._lock = threading.RLock()
+        self._db = Database(db_path, busy_timeout_ms, schema=SCHEMA,
+                            check_same_thread=False)
         self._priv = witness_priv
         self._pub = crypto.public_key_raw(witness_priv)
         self._witness_id = crypto.key_id(self._pub)
@@ -142,6 +148,10 @@ class Witness:
         against the configured pins and the manifest must name this
         witness.
         """
+        with self._lock:
+            return self._register_log(manifest_envelope)
+
+    def _register_log(self, manifest_envelope: JsonObject) -> str:
         if set(manifest_envelope) != {"body", "manifest_hash", "signature"}:
             raise SchemaError("manifest envelope must be exactly "
                               "body, manifest_hash, signature")
@@ -220,6 +230,20 @@ class Witness:
         identical previously accepted checkpoint replays the stored
         receipt without a second state transition (SPEC §13, T22).
         """
+        receipt, _accepted = self._submit(log_id, checkpoint, records)
+        return receipt
+
+    def _submit(self, log_id: str, checkpoint: JsonObject,
+                records: list[JsonObject]) -> tuple[JsonObject, bool]:
+        """Submit and report whether a new acceptance happened.
+
+        The transport layer needs the flag for 201 versus 200.
+        """
+        with self._lock:
+            return self._submit_locked(log_id, checkpoint, records)
+
+    def _submit_locked(self, log_id: str, checkpoint: JsonObject,
+                       records: list[JsonObject]) -> tuple[JsonObject, bool]:
         if not isinstance(records, list):
             raise SchemaError("records must be a list of envelopes")
         _body, manifest_hash, log_pub = self._manifest(log_id)
@@ -243,7 +267,7 @@ class Witness:
                 receipt = parse(bytes(stored[0]))
                 if not isinstance(receipt, dict):
                     raise CasfError("stored receipt is corrupt")
-                return receipt
+                return receipt, False
             if sealed:
                 raise CasfError(
                     "log is sealed; only receipt retrieval is accepted")
@@ -294,7 +318,7 @@ class Witness:
                  1 if body["final"] else 0, log_id))
             con.commit()
             self._debug_hook("after_commit")
-            return receipt
+            return receipt, True
         except BaseException:
             con.rollback()
             raise
@@ -393,9 +417,22 @@ class Witness:
 
     # ---------------------------------------------------------- retrieval
 
+    def log_registered(self, log_id: str) -> bool:
+        """True when a manifest for this log is registered."""
+        with self._lock:
+            row = self._db.connection.execute(
+                "SELECT 1 FROM manifests WHERE log_id = ?",
+                (log_id,)).fetchone()
+            return row is not None
+
     def receipt(self, checkpoint_hash: str
                 ) -> tuple[JsonObject, JsonObject]:
         """Stored checkpoint and receipt for a digest (SPEC §14)."""
+        with self._lock:
+            return self._receipt_locked(checkpoint_hash)
+
+    def _receipt_locked(self, checkpoint_hash: str
+                        ) -> tuple[JsonObject, JsonObject]:
         con = self._db.connection
         row = con.execute(
             "SELECT envelope FROM w_checkpoints WHERE checkpoint_hash = ?",
