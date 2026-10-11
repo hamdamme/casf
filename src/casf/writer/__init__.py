@@ -89,31 +89,42 @@ class Writer:
 
     def _check_heads(self) -> None:
         """Startup check: stored heads must match the records table
-        (SPEC §17). Full chain verification uses casf.verifier."""
+        (SPEC §17). Full chain verification uses casf.verifier.
+
+        The reads run inside one snapshot transaction; otherwise a
+        concurrent commit between the heads read and the records read
+        reports a false mismatch (caught by CI under process load).
+        """
         con = self._db.connection
-        for log_id, count, head_hash in con.execute(
-                "SELECT log_id, count, head_hash FROM heads"):
-            actual = con.execute(
-                "SELECT COUNT(*), MAX(seq) FROM records WHERE log_id = ?",
-                (log_id,)).fetchone()
-            if actual[0] != count:
-                raise CasfError(
-                    f"head count {count} disagrees with {actual[0]} "
-                    "stored records; restore or recovery required")
-            if count == 0:
-                expected = crypto.genesis_hash(self._manifest_hash(log_id))
-            else:
-                row = con.execute(
-                    "SELECT record_hash FROM records WHERE log_id = ? "
-                    "AND seq = ?", (log_id, count)).fetchone()
-                if row is None:
+        con.execute("BEGIN")
+        try:
+            for log_id, count, head_hash in con.execute(
+                    "SELECT log_id, count, head_hash FROM heads"):
+                self._debug_hook("after_heads_read")
+                actual = con.execute(
+                    "SELECT COUNT(*), MAX(seq) FROM records WHERE log_id = ?",
+                    (log_id,)).fetchone()
+                if actual[0] != count:
                     raise CasfError(
-                        "head record missing; restore or recovery required")
-                expected = row[0]
-            if head_hash != expected:
-                raise CasfError(
-                    "head hash disagrees with stored records; "
-                    "restore or recovery required")
+                        f"head count {count} disagrees with {actual[0]} "
+                        "stored records; restore or recovery required")
+                if count == 0:
+                    expected = crypto.genesis_hash(self._manifest_hash(log_id))
+                else:
+                    row = con.execute(
+                        "SELECT record_hash FROM records WHERE log_id = ? "
+                        "AND seq = ?", (log_id, count)).fetchone()
+                    if row is None:
+                        raise CasfError(
+                            "head record missing; restore or recovery "
+                            "required")
+                    expected = row[0]
+                if head_hash != expected:
+                    raise CasfError(
+                        "head hash disagrees with stored records; "
+                        "restore or recovery required")
+        finally:
+            con.rollback()
 
     def _debug_hook(self, stage: str) -> None:
         """Test hook; no-op in production."""

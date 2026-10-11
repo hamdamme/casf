@@ -80,6 +80,27 @@ def _verify_db(w):
 
 # ---------------- basic append and idempotency ----------------
 
+class _ConcurrentCommitWriter(Writer):
+    """Commits a record from a second connection between the two
+    startup check reads, reproducing the CI race in _check_heads."""
+
+    def _debug_hook(self, stage):
+        if stage == "after_heads_read":
+            other = Writer(self._db.path, LOG)
+            _append(other, 2)
+            other.close()
+
+
+def test_startup_check_reads_one_snapshot(tmp_path):
+    db = tmp_path / "a.db"
+    w = _writer(db)
+    _append(w, 1)  # one committed record
+    w.close()
+    # a second connection commits record 2 between the two startup
+    # check reads; the snapshot must still show a consistent state
+    opened = _ConcurrentCommitWriter(db, LOG)
+    opened.close()
+
 def test_create_log_and_first_append(tmp_path):
     w = _writer(tmp_path / "a.db")
     env = _append(w)
