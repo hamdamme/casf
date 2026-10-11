@@ -16,6 +16,10 @@ from casf.errors import CasfError
 from casf.verifier import Mode, Result, TrustPins, verify
 from casf.writer import BusyError, EventIdConflictError, Writer
 
+# Spawn, never fork: forking a process with live SQLite connections is
+# unsafe and platform dependent; spawn behaves the same everywhere.
+MP = multiprocessing.get_context("spawn")
+
 
 def _seeded(role):
     # deterministic keys: multiprocessing children re-import this module
@@ -150,7 +154,7 @@ def test_concurrent_writers_contiguous_sequence(tmp_path):
     db = tmp_path / "mp.db"
     _writer(db)
     workers, per = 4, 5
-    procs = [multiprocessing.Process(target=_mp_worker, args=(db, w, per))
+    procs = [MP.Process(target=_mp_worker, args=(db, w, per))
              for w in range(workers)]
     for p in procs:
         p.start()
@@ -174,7 +178,7 @@ def _mp_same_event(db_path):
 def test_concurrent_same_event_id_one_record(tmp_path):
     db = tmp_path / "mp2.db"
     _writer(db)
-    procs = [multiprocessing.Process(target=_mp_same_event, args=(db,))
+    procs = [MP.Process(target=_mp_same_event, args=(db,))
              for _ in range(4)]
     for p in procs:
         p.start()
@@ -203,7 +207,7 @@ def test_crash_before_commit_is_all_or_none(tmp_path):
     db = tmp_path / "crash.db"
     w = _writer(db)
     _append(w)  # seq 1 committed
-    p = multiprocessing.Process(target=_mp_crash, args=(db,))
+    p = MP.Process(target=_mp_crash, args=(db,))
     p.start()
     p.join(60)
     assert p.exitcode == 1
