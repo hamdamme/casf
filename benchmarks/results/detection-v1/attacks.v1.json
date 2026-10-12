@@ -1,0 +1,194 @@
+{
+  "experiment": "detection matrix (SPEC Section 23)",
+  "history": {
+    "records": 38,
+    "checkpoint_batch": 8,
+    "target_bytes": 512,
+    "seed": 41,
+    "witnessed_through": 32
+  },
+  "environment": {
+    "os": "macOS-15.6.1-arm64-arm-64bit",
+    "python": "3.12.14",
+    "sqlite": "3.53.1",
+    "cryptography": "50.0.2",
+    "commit": "58553a8b6e5b45794c8acc61fa58870020799d69"
+  },
+  "rows": [
+    {
+      "name": "tamper-beginning",
+      "spec": "Section 23",
+      "mutation": "tamper",
+      "mode": "integrity",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "manifest pin",
+      "connectivity": "offline",
+      "expected": "FAIL",
+      "note": "content mutation at the beginning breaks the chain",
+      "observed": "FAIL",
+      "codes": [
+        "RECORD_HASH_MISMATCH"
+      ],
+      "match": true
+    },
+    {
+      "name": "tamper-middle",
+      "spec": "Section 23",
+      "mutation": "tamper",
+      "mode": "integrity",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "manifest pin",
+      "connectivity": "offline",
+      "expected": "FAIL",
+      "note": "content mutation in the middle breaks the chain",
+      "observed": "FAIL",
+      "codes": [
+        "RECORD_HASH_MISMATCH"
+      ],
+      "match": true
+    },
+    {
+      "name": "tamper-last-witnessed",
+      "spec": "Section 23",
+      "mutation": "tamper",
+      "mode": "integrity",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "manifest pin",
+      "connectivity": "offline",
+      "expected": "FAIL",
+      "note": "content mutation at the last witnessed record",
+      "observed": "FAIL",
+      "codes": [
+        "RECORD_HASH_MISMATCH"
+      ],
+      "match": true
+    },
+    {
+      "name": "tamper-tail",
+      "spec": "Section 23",
+      "mutation": "tamper",
+      "mode": "integrity",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "manifest pin",
+      "connectivity": "offline",
+      "expected": "FAIL",
+      "note": "content mutation in the unwitnessed tail breaks the chain",
+      "observed": "FAIL",
+      "codes": [
+        "RECORD_HASH_MISMATCH"
+      ],
+      "match": true
+    },
+    {
+      "name": "truncate-tail-integrity",
+      "spec": "T18",
+      "mutation": "truncate",
+      "mode": "integrity",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "manifest pin",
+      "connectivity": "offline",
+      "expected": "PASS",
+      "note": "T18: integrity may pass; no rollback protection is claimed",
+      "observed": "PASS",
+      "codes": [],
+      "match": true
+    },
+    {
+      "name": "truncate-tail-anchored",
+      "spec": "T18",
+      "mutation": "truncate",
+      "mode": "anchored",
+      "attacker": [
+        "writer store"
+      ],
+      "anchor": "witnessed checkpoint",
+      "connectivity": "offline",
+      "expected": "PASS",
+      "note": "T18: truncation back to the anchor stays consistent; no rollback protection is claimed",
+      "observed": "PASS",
+      "codes": [],
+      "match": true
+    },
+    {
+      "name": "stolen-key-prefix-anchored",
+      "spec": "T20",
+      "mutation": "rewrite",
+      "mode": "anchored",
+      "attacker": [
+        "writer store",
+        "log key"
+      ],
+      "anchor": "witnessed checkpoints and receipts",
+      "connectivity": "offline",
+      "expected": "FAIL",
+      "note": "T20: rewriting inside the witnessed prefix diverges from the retained anchor",
+      "observed": "FAIL",
+      "codes": [
+        "ANCHOR_DIVERGENT"
+      ],
+      "match": true
+    },
+    {
+      "name": "stolen-key-suffix",
+      "spec": "T20",
+      "mutation": "rewrite",
+      "mode": "anchored",
+      "attacker": [
+        "writer store",
+        "log key"
+      ],
+      "anchor": "witnessed checkpoints and receipts",
+      "connectivity": "offline",
+      "expected": "PASS",
+      "note": "T20: a false suffix after the last witnessed record remains possible offline",
+      "observed": "PASS",
+      "codes": [],
+      "match": true
+    },
+    {
+      "name": "witness-rollback-retained",
+      "spec": "T21",
+      "mutation": "rollback",
+      "mode": "online",
+      "attacker": [
+        "witness store"
+      ],
+      "anchor": "retained checkpoint pin",
+      "connectivity": "online",
+      "expected": "FAIL",
+      "note": "T21: a client holding the earlier pin sees the conflict",
+      "observed": "FAIL",
+      "codes": [
+        "WITNESS_STATE_CONFLICT"
+      ],
+      "match": true
+    },
+    {
+      "name": "witness-rollback-isolated",
+      "spec": "T21",
+      "mutation": "rollback",
+      "mode": "online",
+      "attacker": [
+        "witness store",
+        "writer store"
+      ],
+      "anchor": "none beyond the served evidence",
+      "connectivity": "online",
+      "expected": "PASS",
+      "note": "T21: conditional failure only; no unconditional detection is claimed for an isolated client",
+      "observed": "PASS",
+      "codes": [],
+      "match": true
+    }
+  ]
+}

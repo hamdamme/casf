@@ -16,6 +16,10 @@ Layout:
   record level pooling is never used.
 - `run_manifest.py` — runs a manifest file and writes raw rows plus
   a markdown report under `results/`.
+- `attacks.py` — detection experiment (SPEC §23): predeclared cases,
+  one mutation per controlled copy, positions across the chain, T18
+  boundaries, T20 stolen writer key, T21 witness rollback. Results
+  in `results/detection-v1/`.
 - `manifest.v1.json` — the pinned local subset (1 KiB records,
   1000 records per run, 10 runs per configuration).
 - `results/` — raw run output and reports.

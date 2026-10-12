@@ -6,6 +6,21 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C11 session 2: attack harness and detection matrix (R12; T18,
+  T20, T21). Ten predeclared cases (SPEC §23): one mutation per
+  controlled copy of a seeded witnessed history, at the beginning,
+  the middle, the last witnessed record, and the unwitnessed tail,
+  with attacker controls, verifier anchor, connectivity, and
+  expected result declared before each run. Confirmed detections:
+  content tamper fails at every position; a stolen writer key
+  rewriting the witnessed prefix diverges from the anchor. Confirmed
+  boundaries, reported as passing rather than hidden: silent tail
+  loss (T18), a false suffix under a stolen key (T20), and witness
+  rollback against an isolated client with no retained pin (T21,
+  conditional failure only). Raw matrix and report committed under
+  benchmarks/results/detection-v1/. research/protocol.md and
+  research/limitations.md now carry the real design and the honest
+  boundaries. 6 new tests (204 total, all green).
 - C11 session 1: benchmark harness (R12; T19). Deterministic seeded
   workload generator that reports the honest minimum stored record
   size measured through the real writer path instead of pretending
