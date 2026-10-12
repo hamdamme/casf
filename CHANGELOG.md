@@ -6,6 +6,15 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C08 session 1: online freshness (SPEC §14; T11). The witness signs
+  its committed view over a caller nonce with the matching checkpoint
+  and receipt attached, and reports NO_CHECKPOINT before any
+  acceptance. The client generates a fresh random 32 byte nonce per
+  query and never reuses one, checks the nonce echo before any other
+  validation so replay never passes freshness, validates the witness
+  signature plus the checkpoint and receipt bindings, and maps a
+  timeout or partition to inconclusive rather than evidence of
+  rollback. 12 new tests (147 total, all green).
 - C07 session 2: witness HTTP transport (SPEC §14). Authenticated
   POST of exactly checkpoint plus records returns 201 on first
   acceptance and 200 with the same stored receipt on an identical

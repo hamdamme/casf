@@ -24,14 +24,21 @@ from typing import Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
+from casf import crypto
 from casf.canonical.limits import MAX_WITNESS_REQUEST_BYTES
 from casf.errors import CasfError, SchemaError
-from casf.witness import ConflictError, UnknownLogError, Witness
+from casf.witness import (
+    ConflictError,
+    NoCheckpointError,
+    UnknownLogError,
+    Witness,
+)
 
 __all__ = ["WitnessService", "make_server"]
 
 _SUBMIT_RE = re.compile(r"^/v1/logs/([^/]+)/checkpoints$")
 _RECEIPT_RE = re.compile(r"^/v1/logs/([^/]+)/receipts/([0-9a-f]{64})$")
+_LATEST_RE = re.compile(r"^/v1/logs/([^/]+)/latest$")
 
 
 class WitnessService:
@@ -124,6 +131,52 @@ def _submit(service: WitnessService, handler: BaseHTTPRequestHandler,
         _send(handler, 201 if accepted else 200, {"receipt": receipt})
 
 
+def _read_json(service: WitnessService,
+               handler: BaseHTTPRequestHandler) -> Any | None:
+    """Read a bounded JSON request body; None means an error was sent."""
+    length = handler.headers.get("Content-Length")
+    if length is None or not length.isdigit():
+        _error(handler, 400, "BAD_REQUEST", "content length is required")
+        return None
+    if int(length) > service.max_request_bytes:
+        handler.close_connection = True  # the unread body is discarded
+        _error(handler, 413, "TOO_LARGE",
+               "request over the configured byte limit")
+        return None
+    raw = handler.rfile.read(int(length))
+    try:
+        return json.loads(raw)
+    except (ValueError, UnicodeDecodeError):
+        _error(handler, 400, "BAD_REQUEST", "request body is not valid JSON")
+        return None
+
+
+def _latest(service: WitnessService, handler: BaseHTTPRequestHandler,
+            log_id: str) -> None:
+    payload = _read_json(service, handler)
+    if payload is None:
+        return
+    if not isinstance(payload, dict) or set(payload) != {"nonce"} \
+            or not isinstance(payload["nonce"], str):
+        _error(handler, 400, "BAD_REQUEST",
+               "latest query must be exactly nonce")
+        return
+    try:
+        nonce = crypto.b64url_decode(payload["nonce"])
+        response = service.witness.latest(log_id, nonce)
+    except UnknownLogError:
+        _error(handler, 404, "LOG_NOT_FOUND", "log is not registered")
+    except NoCheckpointError as e:
+        _error(handler, 404, "NO_CHECKPOINT", str(e), retryable=True)
+    except (SchemaError, CasfError) as e:
+        _error(handler, 400, "BAD_REQUEST", str(e))
+    except Exception:  # noqa: BLE001 — nothing internal may leak (§14)
+        _error(handler, 503, "UNAVAILABLE", "transient service failure",
+               retryable=True)
+    else:
+        _send(handler, 200, response)
+
+
 def _receipt(service: WitnessService, handler: BaseHTTPRequestHandler,
              log_id: str, checkpoint_hash: str) -> None:
     try:
@@ -171,8 +224,11 @@ def _dispatch(service: WitnessService, handler: BaseHTTPRequestHandler,
     try:
         submit = _SUBMIT_RE.match(handler.path)
         receipt = _RECEIPT_RE.match(handler.path)
+        latest = _LATEST_RE.match(handler.path)
         if method == "POST" and submit:
             _submit(service, handler, submit.group(1))
+        elif method == "POST" and latest:
+            _latest(service, handler, latest.group(1))
         elif method == "GET" and receipt:
             _receipt(service, handler, receipt.group(1), receipt.group(2))
         else:

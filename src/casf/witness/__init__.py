@@ -32,7 +32,7 @@ from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.types import JsonObject
 
-__all__ = ["ConflictError", "UnknownLogError", "Witness"]
+__all__ = ["ConflictError", "NoCheckpointError", "UnknownLogError", "Witness"]
 
 ZERO_HASH = "00" * 32  # hex(Z), the null previous digest (SPEC §13)
 
@@ -113,6 +113,10 @@ class ConflictError(CasfError):
 
 class UnknownLogError(CasfError):
     """Submission names a log the witness has not registered."""
+
+
+class NoCheckpointError(CasfError):
+    """No accepted checkpoint yet (SPEC §14 NO_CHECKPOINT)."""
 
 
 class Witness:
@@ -416,6 +420,56 @@ class Witness:
         return receipt
 
     # ---------------------------------------------------------- retrieval
+
+    def latest(self, log_id: str, nonce: bytes) -> JsonObject:
+        """Sign the committed view over a fresh nonce (SPEC §14).
+
+        The response carries the matching checkpoint and receipt.
+        Before any accepted checkpoint there is no success assertion
+        and NO_CHECKPOINT is reported instead.
+        """
+        if len(nonce) != 32:
+            raise SchemaError("nonce must be exactly 32 bytes")
+        with self._lock:
+            con = self._db.connection
+            row = con.execute(
+                "SELECT manifest_hash FROM manifests WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if row is None:
+                raise UnknownLogError("unknown log")
+            manifest_hash = row[0]
+            state = con.execute(
+                "SELECT count, head_hash, checkpoint_index, "
+                "checkpoint_hash, sealed FROM w_state WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if state is None:
+                raise UnknownLogError("unknown log")
+            count, head_hash, cp_index, cp_hash, sealed = state
+            if cp_index < 0:
+                raise NoCheckpointError(
+                    "NO_CHECKPOINT: no accepted checkpoint yet")
+            checkpoint, receipt = self._receipt_locked(cp_hash)
+            receipt_hash = receipt["receipt_hash"]
+            if not isinstance(receipt_hash, str):
+                raise CasfError("stored receipt is corrupt")
+            body: JsonObject = {
+                "version": 1, "type": "latest",
+                "nonce": crypto.b64url_encode(nonce),
+                "witness_id": self._witness_id, "log_id": log_id,
+                "manifest_hash": manifest_hash,
+                "checkpoint_hash": cp_hash,
+                "receipt_hash": receipt_hash,
+                "checkpoint_index": cp_index,
+                "count": count, "head_hash": head_hash,
+                "final": bool(sealed),
+                "responded_at": datetime.now(UTC).strftime(
+                    "%Y-%m-%dT%H:%M:%S.%fZ"),
+            }
+            return {
+                "body": body,
+                "signature": crypto.sign_latest(self._priv, body),
+                "checkpoint": checkpoint, "receipt": receipt,
+            }
 
     def log_registered(self, log_id: str) -> bool:
         """True when a manifest for this log is registered."""
