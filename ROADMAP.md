@@ -15,7 +15,7 @@ One session means one focused working sitting.
 | 5. Witness service | M5 | C07: durable acceptance state machine, receipts, HTTP | 2 | Done (state machine plus authenticated HTTP transport, T08, T09, T22 pass, 135 tests green) |
 | 6. Online verification | M5/M6 | C08: nonce freshness queries, checkpoint worker | 2 | Done (freshness plus durable outbox and online mode, T11 and T18 pass, 167 tests green) |
 | 7. Lifecycle and CLI | M6 | C09: sealing, epoch rotation, revocation; C10: CLI hardening and packaging | 2 | Done (lifecycle plus full CLI with stable exit codes, T13, T14, T16, T17 pass, 191 tests green) |
-| 8. Research evaluation | M7 | C11: benchmarks, attack harnesses, RQ1 to RQ4 analysis | 2 | Not started |
+| 8. Research evaluation | M7 | C11: benchmarks, attack harnesses, RQ1 to RQ4 analysis | 2 | In progress (session 1: benchmark harness plus pinned local runs, 198 tests green) |
 | 9. Release candidate | M8 | C12: traceability audit, clean install, release checklist | 1 | Not started |
 
 Total: 10 phases, about 15 to 17 sessions, matching the 12 to 21 week

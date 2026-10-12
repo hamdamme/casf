@@ -6,6 +6,20 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C11 session 1: benchmark harness (R12; T19). Deterministic seeded
+  workload generator that reports the honest minimum stored record
+  size measured through the real writer path instead of pretending
+  an impossible target was met (SPEC §22). The runner starts each
+  run from a fresh writer and local witness, discards a warmup,
+  measures append latency per record, witness round trips per
+  checkpoint, and one final full verification, and writes raw
+  measurements per run with the operating system, Python, SQLite,
+  cryptography, and commit pinned. Analysis summarizes at run level
+  with bootstrap intervals, never record level pooling. The pinned
+  local subset (1 KiB records, 1000 records per run, 10 runs for
+  two checkpoint batch sizes) is committed with its raw output and
+  report; rerunning the manifest reproduces sizes and counts (T19).
+  7 new tests (198 total, all green).
 - C10 session 2: the casf CLI (R10; T16, T17). All Section 19
   commands: key generate, init, append, checkpoint, witness submit,
   export, verify, seal and status, each with --json for stable
