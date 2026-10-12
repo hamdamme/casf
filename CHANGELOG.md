@@ -6,6 +6,19 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C10 session 2: the casf CLI (R10; T16, T17). All Section 19
+  commands: key generate, init, append, checkpoint, witness submit,
+  export, verify, seal and status, each with --json for stable
+  structured output and human output that names the mode that ran.
+  Stable exit codes: 0 pass, 1 invalid evidence or divergence,
+  2 usage or schema error, 3 unknown, revoked or unsupported trust,
+  4 inconclusive, pending or unavailable, 5 local I/O or internal
+  error. Secrets come only from named environment variables and no
+  error output prints a passphrase or token (T17). A hostile bundle
+  is rejected inside the byte limits with a bounded error (T16).
+  Bundle export now includes accepted checkpoints with their
+  receipts; a pending checkpoint is never exported as if witnessed.
+  11 new tests (191 total, all green).
 - C09 session 1: lifecycle operations (R08; T13, T14). Encrypted
   key provider: Ed25519 keys stored as encrypted PKCS8 PEM, atomic
   creation that never overwrites, owner only permissions, stable

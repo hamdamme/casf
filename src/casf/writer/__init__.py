@@ -318,6 +318,24 @@ class Writer:
         try:
             manifest = self.manifest_envelope(log_id)
             records = list(self.records(log_id))
+            checkpoints: list[JsonObject] = []
+            for (blob,) in con.execute(
+                    "SELECT envelope FROM checkpoints WHERE log_id = ? "
+                    "AND state = 'accepted' ORDER BY idx", (log_id,)):
+                env = parse(bytes(blob))
+                if not isinstance(env, dict):
+                    raise CasfError("stored checkpoint is corrupt")
+                checkpoints.append(env)
+            receipts: list[JsonObject] = []
+            for cp in checkpoints:
+                row = con.execute(
+                    "SELECT envelope FROM receipts WHERE checkpoint_hash = ?",
+                    (cp["checkpoint_hash"],)).fetchone()
+                if row is not None:
+                    env = parse(bytes(row[0]))
+                    if not isinstance(env, dict):
+                        raise CasfError("stored receipt is corrupt")
+                    receipts.append(env)
         finally:
             con.rollback()
         manifest_hash = self._manifest_hash(log_id)
@@ -335,10 +353,12 @@ class Writer:
                                canonicalize(manifest) + b"\n")
             self._write_member(tmp / "records.jsonl", b"".join(
                 canonicalize(env) + b"\n" for env in records))
-            # checkpoints and receipts arrive with C08; the members
-            # exist so the file set is already the §20 shape
-            self._write_member(tmp / "checkpoints.jsonl", b"")
-            self._write_member(tmp / "receipts.jsonl", b"")
+            # accepted checkpoints with their receipts; a pending
+            # checkpoint is never exported as if witnessed (SPEC §20)
+            self._write_member(tmp / "checkpoints.jsonl", b"".join(
+                canonicalize(env) + b"\n" for env in checkpoints))
+            self._write_member(tmp / "receipts.jsonl", b"".join(
+                canonicalize(env) + b"\n" for env in receipts))
             self._write_member(tmp / "export.json",
                                canonicalize(metadata) + b"\n")
             os.rename(tmp, dest)
