@@ -689,3 +689,13 @@ class Writer:
             raise CasfError("witness answer carried no receipt object")
         self.record_receipt(log_id, receipt)
         return receipt
+
+    def seal_log(self, log_id: str) -> JsonObject:
+        """Seal the log with a final checkpoint (SPEC §12).
+
+        Requires no pending checkpoint and at most 128 unwitnessed
+        records, otherwise PENDING_DRAIN. No append follows sealing,
+        even if the witness is offline; receipt acquisition for the
+        final checkpoint may still be retried afterwards.
+        """
+        return self.create_checkpoint(log_id, final=True)

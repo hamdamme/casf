@@ -6,6 +6,20 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C09 session 1: lifecycle operations (R08; T13, T14). Encrypted
+  key provider: Ed25519 keys stored as encrypted PKCS8 PEM, atomic
+  creation that never overwrites, owner only permissions, stable
+  errors for wrong passphrases. seal_log issues the final checkpoint
+  and no append follows sealing, while old public evidence stays
+  inspectable. Linked epoch rotation builds the successor manifest
+  with the old final checkpoint and receipt digests in its
+  predecessor object, rejects a nonfinal checkpoint, and verifies
+  the link against trusted old keys; an emergency restart keeps
+  predecessor null so the discontinuity stays visible. Status
+  statements sign and verify, revocation is terminal, and the
+  StatusBook retains the largest observed serial per manifest
+  outside the log store so a serial rollback never moves the high
+  water mark. 13 new tests (180 total, all green).
 - C08 session 2: checkpoint production and online mode (R06, R11;
   T18). The writer keeps at most one pending checkpoint per log,
   stores the signed checkpoint with its exact extension range in a

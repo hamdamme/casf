@@ -14,7 +14,7 @@ One session means one focused working sitting.
 | 4. Export and recovery | M4 | C06: evidence bundles, backup, restore drill | 1 | Done (directory bundles, verified restore, RESTORE_BEHIND_WITNESS stop, 98 tests green) |
 | 5. Witness service | M5 | C07: durable acceptance state machine, receipts, HTTP | 2 | Done (state machine plus authenticated HTTP transport, T08, T09, T22 pass, 135 tests green) |
 | 6. Online verification | M5/M6 | C08: nonce freshness queries, checkpoint worker | 2 | Done (freshness plus durable outbox and online mode, T11 and T18 pass, 167 tests green) |
-| 7. Lifecycle and CLI | M6 | C09: sealing, epoch rotation, revocation; C10: CLI hardening and packaging | 2 | Not started |
+| 7. Lifecycle and CLI | M6 | C09: sealing, epoch rotation, revocation; C10: CLI hardening and packaging | 2 | In progress (lifecycle done: T13 and T14 pass; CLI next) |
 | 8. Research evaluation | M7 | C11: benchmarks, attack harnesses, RQ1 to RQ4 analysis | 2 | Not started |
 | 9. Release candidate | M8 | C12: traceability audit, clean install, release checklist | 1 | Not started |
 
