@@ -1,4 +1,4 @@
-"""T05/T12/T13 (SPEC §21): independent verifier, public trust only."""
+"""R03 / R07 / T05/T12/T13 (SPEC §21): independent verifier, public trust only."""
 
 from casf import crypto
 from casf.verifier import (

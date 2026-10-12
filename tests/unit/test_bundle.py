@@ -1,4 +1,4 @@
-"""R09 / T15 (SPEC §20, §21): evidence bundles, export and restore."""
+"""R06 / R09 / T10 / T15 (SPEC §20, §21): bundles, export, restore."""
 
 import json
 import os
@@ -183,3 +183,57 @@ def test_restore_behind_anchor_refuses_append(tmp_path):
     w = Writer(tmp_path / "r.db", LOG)
     with pytest.raises(RestoreBehindWitnessError):
         _append(w, 9)
+
+
+def test_t10_restored_old_db_reports_incomplete_against_newer_anchor(
+        tmp_path):
+    """R06 / T10 (SPEC §21): restore an old writer database and
+    compare it with a newer external anchor; the verifier must report
+    the evidence as incomplete instead of passing silently."""
+    from casf.witness import Witness
+    from tests.unit.test_writer import _manifest_envelope
+
+    witness = Witness(tmp_path / "wit.db", WIT,
+                      authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
+    witness.register_log(_manifest_envelope())
+    w = _writer(tmp_path / "w.db")
+    for n in range(1, 5):
+        _append(w, n)
+    cp1 = w.create_checkpoint(LOG_ID)
+    _env, from_seq, to_seq = w.pending_checkpoint(LOG_ID)
+    r1 = witness.submit(LOG_ID, cp1,
+                        list(w.records(LOG_ID))[from_seq - 1:to_seq])
+    w.record_receipt(LOG_ID, r1)
+    backup = tmp_path / "backup.db"
+    w.backup(backup)
+
+    # time passes: the live log advances to 8 under a second anchor
+    for n in range(5, 9):
+        _append(w, n)
+    cp2 = w.create_checkpoint(LOG_ID)
+    _env, from_seq, to_seq = w.pending_checkpoint(LOG_ID)
+    r2 = witness.submit(LOG_ID, cp2,
+                        list(w.records(LOG_ID))[from_seq - 1:to_seq])
+    w.record_receipt(LOG_ID, r2)
+    mh = w.manifest_envelope(LOG_ID)["manifest_hash"]
+    w.close()
+    witness.close()
+
+    # restore the old copy; compare against the newer external anchor
+    old = Writer(backup, LOG)
+    old_records = list(old.records(LOG_ID))
+    manifest = old.manifest_envelope(LOG_ID)
+    old.close()
+    assert len(old_records) == 4
+
+    stale = verify(manifest, old_records, _pins(mh), mode=Mode.ANCHORED,
+                   checkpoint_envelopes=[cp1, cp2],
+                   receipt_envelopes=[r1, r2], allow_unwitnessed=True)
+    assert stale.result == Result.FAIL
+    assert stale.anchor_status == AnchorStatus.INCOMPLETE
+    assert "ANCHOR_INCOMPLETE" in stale.diagnostic_codes
+
+    # the same old evidence against its own anchor still verifies
+    current = verify(manifest, old_records, _pins(mh), mode=Mode.ANCHORED,
+                     checkpoint_envelopes=[cp1], receipt_envelopes=[r1])
+    assert current.result == Result.PASS

@@ -6,6 +6,22 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C12: release candidate preparation. Requirement to test
+  traceability is now enforced in CI by an audit test covering R01
+  to R12 and T01 to T22; the audit found and closed a real gap (T10:
+  restored old writer database compared with a newer anchor reports
+  ANCHOR_INCOMPLETE instead of passing). Clean install rehearsal:
+  wheel and sdist built from the commit install into a fresh
+  environment and the full CLI roundtrip ends in verify PASS.
+  Package contents inspected: package, license, and metadata only,
+  no keys or local data. Dependency advisory review: the single
+  runtime dependency cryptography is clean. GitHub private
+  vulnerability reporting is enabled and SECURITY.md updated.
+  Release notes and the Section 26 checklist with evidence links
+  live in docs/release/, with four items explicitly marked blocked
+  as maintainer actions (Linux benchmark matrix, disclosure channel
+  test submission, external review, final hash approval). Nothing is
+  published. 3 new tests (207 total, all green).
 - C11 session 2: attack harness and detection matrix (R12; T18,
   T20, T21). Ten predeclared cases (SPEC §23): one mutation per
   controlled copy of a seeded witnessed history, at the beginning,

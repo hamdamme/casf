@@ -1,4 +1,4 @@
-"""T03/T04 (SPEC §21): domains, envelopes, and negative vectors."""
+"""R02 / T03/T04 (SPEC §21): domains, envelopes, negative vectors."""
 
 import pytest
 

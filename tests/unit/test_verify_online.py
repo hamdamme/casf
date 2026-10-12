@@ -1,4 +1,4 @@
-"""SPEC §15 online mode and T18: freshness in the verdict.
+"""R11 / SPEC §15 online mode and T18: freshness in the verdict.
 
 Online mode fetches a fresh witness view and compares it to both the
 supplied evidence and any locally retained high water state. A

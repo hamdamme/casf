@@ -1,4 +1,4 @@
-"""SPEC §14 online freshness: nonce queries and T11.
+"""R06 / SPEC §14 online freshness: nonce queries and T11.
 
 A fresh response proves the witness signed this view during the
 query. Replay never passes freshness, a timeout or partition is

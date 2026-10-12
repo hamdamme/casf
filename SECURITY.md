@@ -8,9 +8,9 @@
 
 ## Reporting a vulnerability
 **Private channel (preferred):** GitHub private vulnerability reporting
-on this repository, or email the maintainer address listed in the
-repository profile. (Channel finalized and tested before public
-release — decision D07.)
+on this repository (enabled), or email the maintainer address listed
+in the repository profile. A test report submission by the maintainer
+is pending before any published release (decision D07).
 
 Please include: affected version/commit, configuration, minimal
 **synthetic** reproduction evidence, and impact assessment. Do **not**
