@@ -1,10 +1,12 @@
 """Run a benchmark manifest and write raw rows plus a summary.
 
-Usage: python -m benchmarks.run_manifest benchmarks/manifest.v1.json
+Usage: python -m benchmarks.run_manifest MANIFEST [OUT_DIR]
 
 The manifest lists configurations; each runs its seeds and writes one
-raw JSON file per run under benchmarks/results/<name>/, then an
-analysis report with run level bootstrap intervals (SPEC §22).
+raw JSON file per run under OUT_DIR (default benchmarks/results/
+<name>/), then an analysis report with run level bootstrap intervals
+(SPEC §22). A rerun on a second machine (T19) should use its own
+OUT_DIR so committed results are never overwritten.
 """
 
 import json
@@ -18,12 +20,13 @@ RESULTS = Path(__file__).parent / "results"
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 1:
-        print("usage: python -m benchmarks.run_manifest MANIFEST")
+    if len(argv) not in (1, 2):
+        print("usage: python -m benchmarks.run_manifest MANIFEST [OUT_DIR]")
         return 2
     manifest_path = Path(argv[0])
     manifest = json.loads(manifest_path.read_text())
-    out_root = RESULTS / manifest["name"]
+    out_root = (Path(argv[1]) if len(argv) == 2
+                else RESULTS / manifest["name"])
     out_root.mkdir(parents=True, exist_ok=True)
     sections = []
     for cfg in manifest["configs"]:

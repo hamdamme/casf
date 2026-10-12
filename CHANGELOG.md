@@ -6,6 +6,13 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- Benchmark run sheet for the Ubuntu machine
+  (benchmarks/linux-matrix.md) with the pinned extended matrix
+  (benchmarks/manifest.v2.json): 10000 records at 1 KiB and 4 KiB,
+  1000 records at 16 KiB, ten runs each. The manifest runner now
+  takes an optional output directory so a second machine replication
+  (T19) never overwrites committed results. 1 new test (208 total,
+  all green).
 - C12: release candidate preparation. Requirement to test
   traceability is now enforced in CI by an audit test covering R01
   to R12 and T01 to T22; the audit found and closed a real gap (T10:

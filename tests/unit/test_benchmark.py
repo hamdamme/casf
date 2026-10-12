@@ -103,3 +103,21 @@ def test_analysis_markdown_has_no_placeholders(tmp_path):
     text = analyze.render_markdown(report)
     assert "append_p50_ms" in text
     assert "TODO" not in text and "placeholder" not in text.lower()
+
+
+def test_manifest_cli_honors_output_dir(tmp_path):
+    """T19 reruns on a second machine must not overwrite the
+    committed results of the first machine."""
+    from benchmarks import run_manifest
+
+    manifest = tmp_path / "m.json"
+    manifest.write_text(json.dumps({
+        "name": "cli", "analysis_seed": 1,
+        "configs": [{"name": "cli-smoke", "seeds": [7], "runs": 1,
+                     "warmup": 0, "records": 10, "target_bytes": 512,
+                     "checkpoint_batch": 4, "witness": "local"}]}))
+    out = tmp_path / "second-machine"
+    assert run_manifest.main([str(manifest), str(out)]) == 0
+    assert (out / "cli-smoke-run-0.json").exists()
+    assert (out / "report.md").exists()
+    assert run_manifest.main([]) == 2  # usage error

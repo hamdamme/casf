@@ -30,5 +30,10 @@ Run the local subset:
 python -m benchmarks.run_manifest benchmarks/manifest.v1.json
 ```
 
-The full matrix with network delay injection runs on the Linux
-machine; this subset is the smoke level reference for it.
+An optional second argument sets the output directory, used when a
+second machine replicates the procedure without overwriting
+committed results (T19).
+
+The Ubuntu run sheet is linux-matrix.md; the full matrix with
+network delay injection still needs an HTTP witness mode in the
+runner and stays listed as an open limitation until then.

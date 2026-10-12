@@ -1,0 +1,36 @@
+{
+  "name": "linux-matrix-v2",
+  "analysis_seed": 1,
+  "configs": [
+    {
+      "name": "linux-1kib-10k",
+      "seeds": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "runs": 10,
+      "warmup": 100,
+      "records": 10000,
+      "target_bytes": 1024,
+      "checkpoint_batch": 128,
+      "witness": "local"
+    },
+    {
+      "name": "linux-4kib-10k",
+      "seeds": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "runs": 10,
+      "warmup": 100,
+      "records": 10000,
+      "target_bytes": 4096,
+      "checkpoint_batch": 128,
+      "witness": "local"
+    },
+    {
+      "name": "linux-16kib-1k",
+      "seeds": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "runs": 10,
+      "warmup": 100,
+      "records": 1000,
+      "target_bytes": 16384,
+      "checkpoint_batch": 16,
+      "witness": "local"
+    }
+  ]
+}
