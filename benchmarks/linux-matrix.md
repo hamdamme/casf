@@ -42,9 +42,10 @@ is expected and reported, not hidden.
 .venv/bin/python -m benchmarks.run_manifest benchmarks/manifest.v2.json
 ```
 
-Three pinned configurations, ten runs each: 10000 records at 1 KiB,
-10000 at 4 KiB, 1000 at 16 KiB. Expect roughly 10 to 15 minutes
-total. Raw rows and the report land in
+Four pinned configurations, ten runs each: 10000 records at 1 KiB
+and 4 KiB, 1000 at 16 KiB, and 10000 at 1 KiB with the witness over
+loopback HTTP behind a 25 ms injected round trip delay. Expect
+roughly 15 to 20 minutes total. Raw rows and the report land in
 `benchmarks/results/linux-matrix-v2/`.
 
 ## 5. Keep the evidence
@@ -59,8 +60,7 @@ interrupted ones; note interruptions in research/limitations.md.
 
 ## Not covered yet
 
-Network delay injection needs the benchmark runner to drive the
-witness over HTTP with a controlled delay; the harness currently runs
-the witness in process. Until that mode exists, wide area witness
-cost remains an open item in research/limitations.md, and no wide
-area number may be quoted.
+The 25 ms configuration models one network class on loopback; a real
+wide area deployment with separate machines and an uncontrolled
+network is still open, so wide area numbers beyond the injected
+delay model may not be quoted.

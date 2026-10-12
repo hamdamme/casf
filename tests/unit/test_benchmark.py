@@ -121,3 +121,32 @@ def test_manifest_cli_honors_output_dir(tmp_path):
     assert (out / "cli-smoke-run-0.json").exists()
     assert (out / "report.md").exists()
     assert run_manifest.main([]) == 2  # usage error
+
+
+def test_runner_http_witness_with_injected_delay(tmp_path):
+    """RQ2 (SPEC §22): the witness may run over loopback HTTP with a
+    controlled delay, so wide area cost is measured, not assumed."""
+    cfg = {
+        "name": "http", "seeds": [7], "runs": 1, "warmup": 0,
+        "records": 10, "target_bytes": 512, "checkpoint_batch": 5,
+        "witness": "http", "witness_delay_ms": 20,
+    }
+    summary = runner.run_config(cfg, tmp_path / "out")
+    row = json.loads((tmp_path / "out" / "http-run-0.json").read_text())
+    assert row["config"]["witness"] == "http"
+    assert row["config"]["witness_delay_ms"] == 20
+    assert summary["witnessed_through"] == 10
+    assert summary["checkpoints_accepted"] == 2
+    # each round trip paid at least the injected delay
+    assert row["witness_latency_ns"]
+    assert min(row["witness_latency_ns"]) >= 20 * 1e6
+
+
+def test_runner_http_witness_rejects_bad_delay(tmp_path):
+    cfg = {
+        "name": "http-bad", "seeds": [7], "runs": 1, "warmup": 0,
+        "records": 5, "target_bytes": 512, "checkpoint_batch": 5,
+        "witness": "http", "witness_delay_ms": -1,
+    }
+    with pytest.raises(ValueError, match="witness_delay_ms"):
+        runner.run_config(cfg, tmp_path / "out")

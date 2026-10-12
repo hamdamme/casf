@@ -9,9 +9,11 @@ Layout:
   request to a target size and reports the honest minimum stored
   record size measured through the real writer path.
 - `runner.py` — runs one configuration against a fresh writer and
-  local witness, measures append latency per record, witness
-  round trips per checkpoint, and one final full verification, then
-  writes raw measurements per run with the environment pinned.
+  witness, measures append latency per record, witness round trips
+  per checkpoint, and one final full verification, then writes raw
+  measurements per run with the environment pinned. The witness runs
+  in process ("local") or over loopback HTTP with an optional
+  injected round trip delay ("http" plus witness_delay_ms).
 - `analyze.py` — run level summaries with bootstrap intervals;
   record level pooling is never used.
 - `run_manifest.py` — runs a manifest file and writes raw rows plus
@@ -34,6 +36,7 @@ An optional second argument sets the output directory, used when a
 second machine replicates the procedure without overwriting
 committed results (T19).
 
-The Ubuntu run sheet is linux-matrix.md; the full matrix with
-network delay injection still needs an HTTP witness mode in the
-runner and stays listed as an open limitation until then.
+The Ubuntu run sheet is linux-matrix.md; its manifest includes one
+configuration with the witness over loopback HTTP behind a 25 ms
+injected round trip delay. A real multi machine wide area deployment
+stays listed as an open limitation.

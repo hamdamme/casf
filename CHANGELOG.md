@@ -6,6 +6,15 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- HTTP witness mode for the benchmark runner (RQ2): the witness may
+  run over loopback HTTP behind a proxy that injects a controlled
+  round trip delay, so network cost is measured through the real
+  wire path rather than assumed. The Linux manifest gains a pinned
+  10000 record configuration at 25 ms injected delay; local smoke
+  shows witness round trips at about 85 ms against about 50 ms in
+  process. research/limitations.md narrows the wide area item to
+  uncontrolled multi machine deployments. 2 new tests (210 total,
+  all green).
 - Benchmark run sheet for the Ubuntu machine
   (benchmarks/linux-matrix.md) with the pinned extended matrix
   (benchmarks/manifest.v2.json): 10000 records at 1 KiB and 4 KiB,

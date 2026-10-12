@@ -41,7 +41,10 @@ correctly remain undetectable offline:
 
 - Record sizes below 1 KiB and above 1 KiB: deferred to the Linux
   matrix to keep the local subset a smoke level reference.
-- Remote witness over real networks: deferred; the in process and
-  loopback transports cannot represent wide area delay honestly.
+- Remote witness over real wide area networks: the runner drives the
+  witness over loopback HTTP with an injected round trip delay, which
+  covers one controlled network class; an uncontrolled multi machine
+  deployment remains unmeasured and no wide area claim is made beyond
+  the injected model.
 - Multiple concurrent writers in benchmarks: correctness covered by
   T06; throughput under contention not measured yet.
