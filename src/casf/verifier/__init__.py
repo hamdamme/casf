@@ -9,17 +9,24 @@ Evidence problems produce a FAIL report with diagnostic codes; they do
 not raise. Programmer errors (wrong Python types) still raise.
 """
 
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any
 
 from casf import crypto
-from casf.errors import CasfError, SchemaError
+from casf.errors import (
+    CasfError,
+    InconclusiveError,
+    NoCheckpointError,
+    SchemaError,
+)
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject
 
 __all__ = [
     "AnchorStatus",
+    "FreshnessStatus",
     "Mode",
     "Report",
     "Result",
@@ -35,11 +42,20 @@ MAX_CHECKPOINT_EXTENSION = 128  # SPEC §12
 class Mode(str, Enum):
     INTEGRITY = "integrity"
     ANCHORED = "anchored"
+    ONLINE = "online"
 
 
 class Result(str, Enum):
     PASS = "PASS"
     FAIL = "FAIL"
+    INCONCLUSIVE = "INCONCLUSIVE"
+
+
+class FreshnessStatus(str, Enum):
+    NOT_REQUESTED = "NOT_REQUESTED"
+    FRESH_WITNESS_VIEW = "FRESH_WITNESS_VIEW"
+    INCONCLUSIVE = "INCONCLUSIVE"
+    CONFLICT = "CONFLICT"
 
 
 class TrustStatus(str, Enum):
@@ -88,6 +104,7 @@ class Report:
     witnessed_through: int | None
     first_failure_seq: int | None
     diagnostic_codes: list[str] = field(default_factory=list)
+    freshness_status: FreshnessStatus = FreshnessStatus.NOT_REQUESTED
 
 
 def _expect_envelope(env: JsonObject, hash_field: str) -> tuple[JsonObject, str, str]:
@@ -122,8 +139,14 @@ def verify(manifest_envelope: JsonObject,
            checkpoint_envelopes: Iterable[JsonObject] = (),
            receipt_envelopes: Iterable[JsonObject] = (),
            status_envelopes: Iterable[JsonObject] = (),
-           allow_unwitnessed: bool = False) -> Report:
-    """Verify evidence using only pinned public trust (SPEC §15)."""
+           allow_unwitnessed: bool = False,
+           online_query: Callable[[], Any] | None = None,
+           retained_checkpoint: tuple[int, str] | None = None) -> Report:
+    """Verify evidence using only pinned public trust (SPEC §15).
+
+    Online mode additionally calls online_query, a callable returning
+    a fresh witness view (see casf.online.query_latest), and compares
+    it to the evidence and the retained high water checkpoint."""
     codes: list[str] = []
     report = Report(
         mode=mode, result=Result.PASS,
@@ -409,6 +432,54 @@ def verify(manifest_envelope: JsonObject,
             return report
     else:
         report.anchor_status = AnchorStatus.OK
+
+    if mode is not Mode.ONLINE:
+        return report
+
+    # ------------------------------------------------ freshness (online)
+    if online_query is None:
+        raise CasfError("online mode requires an online_query callable")
+    anchor_index = _field_int(anchor_body, "index")
+    try:
+        view = online_query()
+    except InconclusiveError:
+        report.freshness_status = FreshnessStatus.INCONCLUSIVE
+        report.result = Result.INCONCLUSIVE
+        codes.append("FRESHNESS_INCONCLUSIVE")
+        return report
+    except NoCheckpointError:
+        # the witness lost every accepted checkpoint behind our anchor
+        report.freshness_status = FreshnessStatus.CONFLICT
+        fail("WITNESS_STATE_CONFLICT")
+        return report
+    except CasfError:
+        report.freshness_status = FreshnessStatus.INCONCLUSIVE
+        report.result = Result.INCONCLUSIVE
+        codes.append("FRESHNESS_INCONCLUSIVE")
+        return report
+    view_body = view.body
+    view_index = _field_int(view_body, "checkpoint_index")
+    view_hash = _field_str(view_body, "checkpoint_hash")
+    if retained_checkpoint is not None:
+        kept_index, kept_hash = retained_checkpoint
+        if view_index < kept_index \
+                or (view_index == kept_index and view_hash != kept_hash):
+            report.freshness_status = FreshnessStatus.CONFLICT
+            fail("WITNESS_STATE_CONFLICT")
+            return report
+    if view_index < anchor_index \
+            or (view_index == anchor_index and view_hash != anchor_hash):
+        report.freshness_status = FreshnessStatus.CONFLICT
+        fail("WITNESS_STATE_CONFLICT")
+        return report
+    if view_index > anchor_index:
+        # the witness advanced; the intervening chain must be supplied
+        # before the local pin may move (SPEC §15)
+        report.freshness_status = FreshnessStatus.INCONCLUSIVE
+        report.result = Result.INCONCLUSIVE
+        codes.append("WITNESS_AHEAD")
+        return report
+    report.freshness_status = FreshnessStatus.FRESH_WITNESS_VIEW
     return report
 
 

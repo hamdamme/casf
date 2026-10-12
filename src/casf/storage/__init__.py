@@ -36,6 +36,28 @@ CREATE TABLE IF NOT EXISTS heads(
     head_hash TEXT NOT NULL,
     sealed INTEGER NOT NULL DEFAULT 0
 );
+CREATE TABLE IF NOT EXISTS checkpoints(
+    log_id TEXT NOT NULL,
+    idx INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    checkpoint_hash TEXT NOT NULL,
+    envelope BLOB NOT NULL,
+    state TEXT NOT NULL,
+    UNIQUE(log_id, idx),
+    UNIQUE(log_id, checkpoint_hash)
+);
+CREATE TABLE IF NOT EXISTS receipts(
+    checkpoint_hash TEXT PRIMARY KEY,
+    envelope BLOB NOT NULL
+);
+CREATE TABLE IF NOT EXISTS outbox(
+    log_id TEXT PRIMARY KEY,
+    checkpoint_hash TEXT NOT NULL,
+    from_seq INTEGER NOT NULL,
+    to_seq INTEGER NOT NULL,
+    attempts INTEGER NOT NULL DEFAULT 0,
+    next_attempt_at REAL NOT NULL DEFAULT 0
+);
 -- Append-only guards (SPEC §17). These deter accidental modification;
 -- they are not protection against a file administrator.
 CREATE TRIGGER IF NOT EXISTS records_no_update BEFORE UPDATE ON records

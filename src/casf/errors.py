@@ -21,3 +21,9 @@ class UnicodeError_(SchemaError):
 
 class LimitError(CasfError):
     """A size, depth, or count bound was exceeded."""
+
+class InconclusiveError(CasfError):
+    """Timeout or partition; inconclusive, not rollback evidence."""
+
+class NoCheckpointError(CasfError):
+    """No accepted checkpoint yet (SPEC §14 NO_CHECKPOINT)."""

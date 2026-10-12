@@ -27,7 +27,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from casf import crypto
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import SAFE_INT_MAX, WITNESS_MAX_RECORDS
-from casf.errors import CasfError, SchemaError
+from casf.errors import CasfError, NoCheckpointError, SchemaError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.types import JsonObject
@@ -113,10 +113,6 @@ class ConflictError(CasfError):
 
 class UnknownLogError(CasfError):
     """Submission names a log the witness has not registered."""
-
-
-class NoCheckpointError(CasfError):
-    """No accepted checkpoint yet (SPEC §14 NO_CHECKPOINT)."""
 
 
 class Witness:

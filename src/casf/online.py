@@ -18,9 +18,8 @@ from dataclasses import dataclass
 from urllib.parse import urlsplit
 
 from casf import crypto
-from casf.errors import CasfError, SchemaError
+from casf.errors import CasfError, InconclusiveError, NoCheckpointError, SchemaError
 from casf.types import JsonObject
-from casf.witness import NoCheckpointError
 
 __all__ = [
     "InconclusiveError",
@@ -34,10 +33,6 @@ _LATEST_FIELDS = {"version", "type", "nonce", "witness_id", "log_id",
                   "manifest_hash", "checkpoint_hash", "receipt_hash",
                   "checkpoint_index", "count", "head_hash", "final",
                   "responded_at"}
-
-
-class InconclusiveError(CasfError):
-    """Timeout or partition; inconclusive, not rollback evidence."""
 
 
 @dataclass

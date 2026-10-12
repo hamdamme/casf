@@ -6,6 +6,20 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- C08 session 2: checkpoint production and online mode (R06, R11;
+  T18). The writer keeps at most one pending checkpoint per log,
+  stores the signed checkpoint with its exact extension range in a
+  durable outbox before any submission, retries identical bytes
+  across restarts, caps extensions at 128 records, and seals appends
+  in the same transaction that creates a final checkpoint (with
+  PENDING_DRAIN when more than 128 records are unwitnessed). Receipt
+  acquisition validates the witness signature and clears the outbox.
+  The verifier gains online mode: a fresh witness view is compared
+  to the evidence and a retained high water pin, a behind or
+  divergent view is WITNESS_STATE_CONFLICT, a newer view needs more
+  evidence (WITNESS_AHEAD, inconclusive), a partition is
+  inconclusive, and an unwitnessed suffix is never described as
+  witnessed. 20 new tests (167 total, all green).
 - C08 session 1: online freshness (SPEC §14; T11). The witness signs
   its committed view over a caller nonce with the matching checkpoint
   and receipt attached, and reports NO_CHECKPOINT before any

@@ -2,14 +2,16 @@
 
 C05 scope: manifest storage with genesis, transactional record append,
 event ID idempotency, contention bounds. C06 adds bundle export and
-restore (SPEC §18, §20). Checkpoint production and the witness outbox
-arrive with C07/C08.
+restore (SPEC §18, §20). C08 adds checkpoint production with a durable
+outbox and receipt acquisition (SPEC §12).
 
 Writers serialize through the database (BEGIN IMMEDIATE), never
 through a process mutex alone. Return success only after COMMIT; a
 caller with an uncertain outcome retries with the same event ID.
 """
 
+import http.client
+import json
 import os
 import random
 import shutil
@@ -18,13 +20,14 @@ import time
 from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
-from casf.canonical.limits import SAFE_INT_MAX
+from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
 from casf.errors import CasfError, SchemaError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
@@ -32,6 +35,8 @@ from casf.types import JsonObject
 
 __all__ = ["BusyError", "EventIdConflictError",
            "RestoreBehindWitnessError", "SealedError", "Writer"]
+
+ZERO_HASH = "00" * 32  # hex(Z), the null previous checkpoint digest
 
 
 class BusyError(CasfError):
@@ -235,10 +240,12 @@ class Writer:
             if head is None:
                 raise CasfError("unknown log")
             count, head_hash, sealed = head
-            if sealed:
+            if sealed == 1:
                 raise RestoreBehindWitnessError(
                     "RESTORE_BEHIND_WITNESS: this log was restored behind "
                     "an external anchor; writes stop here")
+            if sealed:
+                raise SealedError("log is sealed; no append follows sealing")
             seq = count + 1
             if seq > SAFE_INT_MAX:
                 raise CasfError("sequence overflow; a new epoch is required")
@@ -448,3 +455,237 @@ class Writer:
             (log_id, index, body["event_id"], crypto.request_digest(request),
              record_hash, canonicalize(envelope)))
         return record_hash
+
+    # -------------------------------------------------------- checkpoints
+
+    def create_checkpoint(self, log_id: str, *,
+                          final: bool = False) -> JsonObject:
+        """Create a pending checkpoint with its extension range in the
+        durable outbox before any submission (SPEC §12).
+
+        At most one checkpoint is pending per log; the next one may
+        only be created after the current receipt is validated and
+        stored. A final checkpoint covers the whole committed head
+        and seals appends in the same transaction.
+        """
+        con = self._db.connection
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            pending = con.execute(
+                "SELECT checkpoint_hash FROM outbox WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if pending is not None:
+                raise CasfError(
+                    "a checkpoint is pending; retry the identical bytes "
+                    "or store its receipt first")
+            head = con.execute(
+                "SELECT count, head_hash, sealed FROM heads WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if head is None:
+                raise CasfError("unknown log")
+            count, head_hash, sealed = head
+            if sealed:
+                raise SealedError("log is sealed; no further checkpoint")
+            last = con.execute(
+                "SELECT idx, count, checkpoint_hash FROM checkpoints "
+                "WHERE log_id = ? AND state = 'accepted' "
+                "ORDER BY idx DESC LIMIT 1", (log_id,)).fetchone()
+            index = last[0] + 1 if last else 0
+            base_count = last[1] if last else 0
+            prev_cp = last[2] if last else ZERO_HASH
+            backlog = count - base_count
+            if final and backlog > MAX_CHECKPOINT_BATCH:
+                raise CasfError(
+                    "PENDING_DRAIN: drain normal checkpoints before "
+                    "the final seal")
+            to_seq = base_count + min(backlog, MAX_CHECKPOINT_BATCH)
+            if to_seq == count:
+                tip = head_hash
+            elif to_seq == 0:
+                tip = crypto.genesis_hash(self._manifest_hash(log_id))
+            else:
+                row = con.execute(
+                    "SELECT record_hash FROM records WHERE log_id = ? "
+                    "AND seq = ?", (log_id, to_seq)).fetchone()
+                if row is None:
+                    raise CasfError("extension record missing")
+                tip = row[0]
+            body: JsonObject = {
+                "version": 1, "type": "checkpoint", "log_id": log_id,
+                "manifest_hash": self._manifest_hash(log_id),
+                "index": index, "count": to_seq, "head_hash": tip,
+                "previous_checkpoint_hash": prev_cp,
+                "key_id": self._log_key_id,
+                "issued_at": datetime.now(UTC).strftime(
+                    "%Y-%m-%dT%H:%M:%S.%fZ"),
+                "final": bool(final),
+            }
+            validate_protocol_body("checkpoint", body)
+            envelope: JsonObject = {
+                "body": body,
+                "checkpoint_hash": crypto.digest_checkpoint(body),
+                "signature": crypto.sign_checkpoint(self._log_priv, body),
+            }
+            con.execute(
+                "INSERT INTO checkpoints VALUES (?, ?, ?, ?, ?, 'pending')",
+                (log_id, index, to_seq, envelope["checkpoint_hash"],
+                 canonicalize(envelope)))
+            con.execute(
+                "INSERT INTO outbox VALUES (?, ?, ?, ?, 0, 0)",
+                (log_id, envelope["checkpoint_hash"], base_count + 1,
+                 to_seq))
+            if final:
+                con.execute(
+                    "UPDATE heads SET sealed = 2 WHERE log_id = ?",
+                    (log_id,))
+            con.commit()
+            return envelope
+        except BaseException:
+            con.rollback()
+            raise
+
+    def pending_checkpoint(self, log_id: str
+                           ) -> tuple[JsonObject, int, int] | None:
+        """The pending checkpoint and its range, or None.
+
+        Recovery after a crash returns the identical signed bytes;
+        inventing a different checkpoint for the same index is
+        forbidden (SPEC §12).
+        """
+        row = self._db.connection.execute(
+            "SELECT o.from_seq, o.to_seq, c.envelope FROM outbox o "
+            "JOIN checkpoints c ON c.checkpoint_hash = o.checkpoint_hash "
+            "WHERE o.log_id = ?", (log_id,)).fetchone()
+        if row is None:
+            return None
+        env = parse(bytes(row[2]))
+        if not isinstance(env, dict):
+            raise CasfError("stored checkpoint is corrupt")
+        return env, row[0], row[1]
+
+    def record_receipt(self, log_id: str, receipt: JsonObject) -> None:
+        """Validate and store the receipt for the pending checkpoint.
+
+        The outbox entry clears and the checkpoint becomes accepted in
+        the same transaction (SPEC §12).
+        """
+        if set(receipt) != {"body", "receipt_hash", "signature"}:
+            raise SchemaError("receipt envelope must be exactly "
+                              "body, receipt_hash, signature")
+        body = receipt["body"]
+        receipt_hash = receipt["receipt_hash"]
+        signature = receipt["signature"]
+        if (not isinstance(body, dict) or not isinstance(receipt_hash, str)
+                or not isinstance(signature, str)):
+            raise SchemaError("receipt envelope field types are wrong")
+        validate_protocol_body("receipt", body)
+        if crypto.digest_receipt(body) != receipt_hash:
+            raise SchemaError("receipt_hash does not match the body")
+        manifest = self.manifest_envelope(log_id)["body"]
+        if not isinstance(manifest, dict):
+            raise CasfError("stored manifest is corrupt")
+        if body["log_id"] != log_id \
+                or body["witness_id"] != manifest["witness_id"]:
+            raise CasfError("receipt does not belong to this log")
+        witness_key = manifest["witness_public_key"]
+        if not isinstance(witness_key, str):
+            raise CasfError("stored manifest is corrupt")
+        crypto.verify_receipt(crypto.b64url_decode(witness_key), body,
+                              signature)
+        con = self._db.connection
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            pending = con.execute(
+                "SELECT checkpoint_hash FROM outbox WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if pending is None:
+                raise CasfError("no pending checkpoint for this receipt")
+            if body["checkpoint_hash"] != pending[0]:
+                raise CasfError("receipt names a different checkpoint")
+            stored = con.execute(
+                "SELECT envelope FROM checkpoints "
+                "WHERE checkpoint_hash = ?", (pending[0],)).fetchone()
+            if stored is None:
+                raise CasfError("pending checkpoint is missing")
+            cp_env = parse(bytes(stored[0]))
+            if not isinstance(cp_env, dict):
+                raise CasfError("stored checkpoint is corrupt")
+            cp_body = cp_env["body"]
+            if not isinstance(cp_body, dict):
+                raise CasfError("stored checkpoint is corrupt")
+            if body["count"] != cp_body["count"] \
+                    or body["head_hash"] != cp_body["head_hash"] \
+                    or body["checkpoint_index"] != cp_body["index"]:
+                raise CasfError("receipt view disagrees with the pending "
+                                "checkpoint")
+            con.execute("INSERT INTO receipts VALUES (?, ?)",
+                        (pending[0], canonicalize(receipt)))
+            con.execute(
+                "UPDATE checkpoints SET state = 'accepted' "
+                "WHERE checkpoint_hash = ?", (pending[0],))
+            con.execute("DELETE FROM outbox WHERE log_id = ?", (log_id,))
+            con.commit()
+        except BaseException:
+            con.rollback()
+            raise
+
+    def submit_pending(self, log_id: str, base_url: str, token: str, *,
+                       timeout: float = 10.0) -> JsonObject:
+        """Submit the pending checkpoint to the witness and store the
+        returned receipt. Failure keeps the identical bytes for retry.
+        """
+        pending = self.pending_checkpoint(log_id)
+        if pending is None:
+            raise CasfError("no pending checkpoint for this log")
+        envelope, from_seq, to_seq = pending
+        cursor = self._db.connection.execute(
+            "SELECT envelope FROM records WHERE log_id = ? "
+            "AND seq BETWEEN ? AND ? ORDER BY seq",
+            (log_id, from_seq, to_seq))
+        records: list[JsonObject] = []
+        for (blob,) in cursor:
+            env = parse(bytes(blob))
+            if not isinstance(env, dict):
+                raise CasfError("stored record is corrupt")
+            records.append(env)
+        parts = urlsplit(base_url)
+        if not parts.hostname:
+            raise CasfError("witness URL has no host")
+        request = json.dumps(
+            {"checkpoint": envelope, "records": records}).encode()
+        try:
+            conn = http.client.HTTPConnection(parts.hostname,
+                                              parts.port or 80,
+                                              timeout=timeout)
+            try:
+                conn.request(
+                    "POST", f"/v1/logs/{log_id}/checkpoints", body=request,
+                    headers={"Content-Type": "application/json",
+                             "Authorization": f"Bearer {token}"})
+                resp = conn.getresponse()
+                payload = resp.read()
+                status = resp.status
+            finally:
+                conn.close()
+        except (OSError, http.client.HTTPException) as e:
+            self._db.connection.execute(
+                "UPDATE outbox SET attempts = attempts + 1 "
+                "WHERE log_id = ?", (log_id,))
+            self._db.connection.commit()
+            raise CasfError(
+                "witness unreachable; the pending checkpoint keeps its "
+                "bytes for retry") from e
+        try:
+            data = json.loads(payload)
+        except ValueError as e:
+            raise CasfError("witness answer was not valid JSON") from e
+        if status not in (200, 201) or not isinstance(data, dict) \
+                or not isinstance(data.get("receipt"), dict):
+            code = data.get("code") if isinstance(data, dict) else None
+            raise CasfError(f"witness rejected the submission: "
+                            f"{code or status}")
+        receipt = data["receipt"]
+        if not isinstance(receipt, dict):
+            raise CasfError("witness answer carried no receipt object")
+        self.record_receipt(log_id, receipt)
+        return receipt
