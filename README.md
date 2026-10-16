@@ -5,7 +5,7 @@ audit histories, with conditional rollback detection using independently
 retained witness state.
 
 **Status:** design review draft (CASF SPEC 001 rev 0.9). An exploratory
-prototype exists under the `exploratory-prototype` tag; the casf-v1
+prototype exists under the `exploratory prototype` tag; the casf-v1
 wire profile is proposed and not yet frozen.
 
 ## The problem
@@ -13,14 +13,14 @@ Ordinary stored logs can be edited, reordered, or restored to an older
 valid snapshot without reliable evidence in the restored copy itself.
 CASF addresses integrity evidence and conditional detection of missing
 history. It does not make storage physically immutable, and successful
-verification is not proof that every real-world event was recorded.
+verification is not proof that every real world event was recorded.
 
 ## What CASF provides
-- Per-record Ed25519 signatures and SHA-256 hash chaining (domain-separated, RFC 8785 JCS encoding)
+- Per-record Ed25519 signatures and SHA-256 hash chaining (domain separated, RFC 8785 JCS encoding)
 - A stateful, independently operated witness that accepts only valid chain extensions and issues chained receipts
 - Independent verification from an exported evidence bundle using only public trust material
-- Verification modes — integrity, anchored, online — with separate, enum-typed results (PASS / FAIL / INCONCLUSIVE)
-- Epoch-based key rotation and terminal revocation
+- Verification modes — integrity, anchored, online — with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
+- Epoch based key rotation and terminal revocation
 - An applied research evaluation (RQ1–RQ4, H1–H3) of local vs. independently witnessed checkpoints
 
 ## Explicit limits (read before using)
@@ -48,7 +48,7 @@ Public descriptions of this project must follow SPEC §29: say
 "cryptographically verifiable audit records with conditional rollback
 detection using independently retained witness state." Do not say
 "tamper-proof", "guaranteed complete", "forward secure", "globally
-fork-free", "compliant", "audited", or "novel cryptography" without
+fork free", "compliant", "audited", or "novel cryptography" without
 separate, specific evidence.
 
 ## License

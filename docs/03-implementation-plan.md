@@ -3,7 +3,7 @@
 ## Phase 0 — Design (done)
 - [x] Threat model and crypto selection (`01-technical-description.md`)
 - [x] Entry format and `sealed_body` definition fixed on paper first
-- [x] Canonical encoding decision (sorted-key compact JSON)
+- [x] Canonical encoding decision (sorted key compact JSON)
 
 ## Phase 1 — Core chain
 1. `chain.py`: `canonical()`, `entry_digest()`, `HashChain.append`.
@@ -16,7 +16,7 @@
 6. Wire signing into `append` over `sealed_body`, passing
    `version=key_version`.
 7. `seal.py`: HMAC trail seal/verify.
-8. `atrest.py`: AES-GCM with random 12-byte nonces; round-trip test.
+8. `atrest.py`: AES-GCM with random 12-byte nonces; round trip test.
 
 ## Phase 3 — Tamper evidence
 9. `verify.py`: `Verifier` with layered checks (link -> hash -> HMAC ->
@@ -32,14 +32,14 @@
 
 ## Phase 5 — Hardening (backlog)
 - [ ] PostgreSQL `LogStorage` backend
-- [ ] External anchoring of checkpoints (transparency log / object-lock
-      storage) so checkpoint-authority compromise is detectable
+- [ ] External anchoring of checkpoints (transparency log / object lock
+      storage) so checkpoint authority compromise is detectable
 - [ ] Encrypted private keys in registry (password / KMS envelope)
 - [ ] REST verification API (FastAPI) wrapping `Verifier`
-- [ ] Hypothesis property-based tests for the verifier
+- [ ] Hypothesis property based tests for the verifier
 
 ## Decisions log
 - Signing passes `version=key_version` into `Signer.sign`; old code
   signed with the active key while labeling the entry otherwise — fixed.
-- Timestamps are writer-local; verifiers needing backdating resistance
-  should cross-check against an external receipting service.
+- Timestamps are writer local; verifiers needing backdating resistance
+  should cross check against an external receipting service.

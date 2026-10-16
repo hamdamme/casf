@@ -15,7 +15,7 @@ domain (D06) before any deployment claim.
 pure Ed25519 (not Ed25519ph) with explicit domain separation.
 **Rationale:** JCS gives an interoperable, citable serialization rule;
 banning floats removes a whole class of canonicalization ambiguity.
-**Consequence:** M1 must cross-check canonicalization against an
+**Consequence:** M1 must cross check canonicalization against an
 independent JCS implementation before vectors freeze.
 
 ## ADR-003 (closes D04): Epoch-based rotation, terminal revocation
@@ -23,15 +23,15 @@ independent JCS implementation before vectors freeze.
 in-log key replacement prohibited; revocation is terminal per manifest.
 **Rationale:** Prevents silent trust substitution; keeps verification
 semantics simple and reviewable by one maintainer.
-**Consequence:** Long-lived high-volume logs need epoch planning;
+**Consequence:** Long-lived high volume logs need epoch planning;
 documented in §16.
 
 ## ADR-004 (closes D05): Dependency and runtime selection
 **Decision:** Approve, with exact pins recorded at M0 CI setup.
 - Runtime matrix: Python 3.12, 3.13, 3.14 (to be exercised in CI before advertising)
 - crypto: `cryptography` (pinned, reviewed version)
-- JCS: a maintained RFC 8785 implementation, or a conformance-tested in-module implementation if no suitable library exists
-- HTTP (witness extra only): standard-library `http.server` is NOT acceptable for the reference service; select a maintained minimal ASGI/WSGI stack at M0
+- JCS: a maintained RFC 8785 implementation, or a conformance tested in-module implementation if no suitable library exists
+- HTTP (witness extra only): standard library `http.server` is NOT acceptable for the reference service; select a maintained minimal ASGI/WSGI stack at M0
 - SQLite via stdlib `sqlite3`; WAL + synchronous=FULL
 **Consequence:** pyproject lockfile becomes part of reproducibility evidence (R12).
 

@@ -48,7 +48,7 @@ assert verify_trail(entries, shared_hmac_key, mac)
 from auditfw import CheckpointService
 cps = CheckpointService(signer)
 cp = cps.create(storage)   # sign the current head
-# publish cp OUT-OF-BAND (object-lock storage, transparency log, etc.)
+# publish cp OUT-OF-BAND (object lock storage, transparency log, etc.)
 ```
 Run on a schedule (e.g., every 10k entries or hourly).
 

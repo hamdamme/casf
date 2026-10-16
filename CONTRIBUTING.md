@@ -1,6 +1,6 @@
 # Contributing
 
-CASF is currently a solo-maintained research project. Contributions are
+CASF is currently a solo maintained research project. Contributions are
 welcome but please open an issue before large changes.
 
 ## Ground rules

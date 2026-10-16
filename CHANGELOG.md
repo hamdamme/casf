@@ -153,7 +153,7 @@ stabilization (SPEC §26).
   a restore behind an external anchor still stores the data but seals
   the log and every later append reports RESTORE_BEHIND_WITNESS.
   15 new tests (98 total, all green).
-- C05 hardening: append-only triggers on records and manifests,
+- C05 hardening: append only triggers on records and manifests,
   consistent backup through the SQLite backup API (never overwrites),
   startup head verification against the records table, the remaining
   T07 kill points (before insert, after commit before return), and a
@@ -196,20 +196,20 @@ stabilization (SPEC §26).
 - Repository hygiene: .gitignore added; __pycache__, *.pyc, egg-info
   and build/ artifacts removed from tracking (C03.1).
 ### Added (milestones C01-C03)
-    - C03: domain-separated crypto (R02, T03/T04): key-id/manifest/
+    - C03: domain separated crypto (R02, T03/T04): key-id/manifest/
       genesis/record/request/checkpoint/receipt/latest/status domains;
       pure Ed25519 sign/verify via cryptography; base64url canonical
       re-encode checks; 12 new unit tests (32 total, all green).
     - C02: RFC 8785 JCS canonicalizer with restricted data profile;
       strict schema validation for all six protocol bodies; SPEC §9
       limits; 20 unit tests green (T01/T02); vectors/v1/jcs_kat.json
-      (implementation-derived; independent cross-check pending M1).
+      (implementation derived; independent cross check pending M1).
 - Repository scaffold (C01): src layout, pyproject, CI skeleton,
   LICENSE (Apache-2.0), SECURITY.md, CONTRIBUTING.md, DEVELOPMENT.md.
 - Documentation baseline: D01 source reconciliation, ADR-001..004
   (approved 2026-10-11), historical docs 01-05, exploratory prototype
-  (tag `exploratory-prototype`).
+  (tag `exploratory prototype`).
 
-## [exploratory-prototype] - 2026-10-10
+## [exploratory prototype] - 2026-10-10
 - Pre-spec prototype (`auditfw/` package) and design docs 01-05.
   Superseded by CASF SPEC 001; retained as historical evidence only.

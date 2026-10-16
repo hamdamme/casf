@@ -15,8 +15,8 @@ verifier: auditfw-verify CLI --> Verifier(public_bundle, hmac_key, checkpoint)
 ```
 
 ## Write path
-1. `LogStorage.next_seq_and_prev()` — single-writer lock + SQLite
-   transaction yields gap-free `seq` and the previous head hash. This
+1. `LogStorage.next_seq_and_prev()` — single writer lock + SQLite
+   transaction yields gap free `seq` and the previous head hash. This
    is the concurrency control point.
 2. `HashChain.append` builds the entry, computes `entry_hash`
    (SHA-256 over the core fields), then seals: HMAC first, then the
@@ -44,6 +44,6 @@ The first failing check raises `TamperedError(seq, reason)`.
   back it with an HSM/KMS — the `Signer` interface is the seam for that.
 
 ## Storage
-SQLite for the writer (transactions + single-writer locking). For
-PostgreSQL: replace `LogStorage` with a sequence/advisory-lock backed
+SQLite for the writer (transactions + single writer locking). For
+PostgreSQL: replace `LogStorage` with a sequence/advisory lock backed
 table; the rest of the framework is unchanged.

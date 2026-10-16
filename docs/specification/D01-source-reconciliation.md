@@ -24,13 +24,13 @@ disposition per SPEC §3: every original requirement is classified
 |---|---|---|---|
 | SHA-256 hash chaining, `prev_hash` linkage (docs 01/02) | Clarified | §11 record schema; `prev_hash` bound to record digest domain | Domain-separated encoding fixed; original chain logic sound |
 | Ed25519 signatures over canonical body (docs 01/02) | Clarified | §9/§11 pure Ed25519, digest-then-sign with domain | Original mixed "sign over body" rule made precise |
-| Sorted-key JSON canonicalization (doc 01) | Replaced | §9 RFC 8785 JCS + restricted data profile (no floats) | Sorted-key JSON is not an interoperable standard |
-| HMAC-SHA-256 layer for trusted components (docs 01/02/04) | Removed | §2: excluded from public verification protocol | HMAC holder can forge; breaks the public-verification boundary |
+| Sorted key JSON canonicalization (doc 01) | Replaced | §9 RFC 8785 JCS + restricted data profile (no floats) | Sorted key JSON is not an interoperable standard |
+| HMAC-SHA-256 layer for trusted components (docs 01/02/04) | Removed | §2: excluded from public verification protocol | HMAC holder can forge; breaks the public verification boundary |
 | AES-256-GCM encryption at rest (docs 01/04) | Deferred | Out of v1 scope (§2); confidentiality not a CASF guarantee | Storage encryption is an operator concern, not protocol |
 | Signed checkpoints of chain head (docs 01/02) | Replaced | §12 checkpoint objects; §13 stateful external witness + receipts | Local checkpoints alone give no rollback protection (SPEC §7) |
-| SQLite storage, serialized sequencing (docs 02/04) | Retained + expanded | §17 transactional schema, idempotency, crash rules, WAL/FULL | Original single-lock design insufficient for durability claims |
-| Key registry + rotation keeping old keys (docs 01/02) | Replaced | §10 manifest bootstrap; §16 epoch-based rotation | Per-entry `key_version` lookup replaced by manifest-pinned keys |
-| Independent verifier + CLI (docs 02/05) | Retained + expanded | §15 verification algorithm; §19 CLI with 5 exit categories | Original OK/FAIL insufficient; enum-based report required |
+| SQLite storage, serialized sequencing (docs 02/04) | Retained + expanded | §17 transactional schema, idempotency, crash rules, WAL/FULL | Original single lock design insufficient for durability claims |
+| Key registry + rotation keeping old keys (docs 01/02) | Replaced | §10 manifest bootstrap; §16 epoch based rotation | Per-entry `key_version` lookup replaced by manifest pinned keys |
+| Independent verifier + CLI (docs 02/05) | Retained + expanded | §15 verification algorithm; §19 CLI with 5 exit categories | Original OK/FAIL insufficient; enum based report required |
 | Truncation detection via checkpoint (docs 02/05) | Replaced | §13 witness receipts; §15 anchored/online modes | Detection now requires external trusted reference |
 | Tamper test matrix (doc 05, 8 steps) | Replaced | §21 adversarial matrix T01–T22 | Original matrix lacked fork, crash, replay, equivocation cases |
 | Exploratory prototype `auditfw/` package | Superseded | — | Byte formats differ fundamentally; archived as prototype (see below) |

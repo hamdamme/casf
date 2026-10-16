@@ -14,7 +14,7 @@ without detection.
 2. **Attributability** — every entry is digitally signed; a valid
    signature proves which key version produced it.
 3. **Independent verification** — any third party verifies a log using
-   only an out-of-band public-key bundle; the logging system itself is
+   only an out-of-band public key bundle; the logging system itself is
    not trusted.
 4. **Survivable key rotation** — rotating signing keys never invalidates
    historical records.
@@ -23,7 +23,7 @@ without detection.
 
 ## Non-goals
 - Confidentiality of log *content* is provided at rest (AES-GCM) but the
-  framework is not an access-control system.
+  framework is not an access control system.
 - Availability: a compromised writer can always stop logging. The
   framework guarantees evidence of *what was logged*, not that logging
   continued.
@@ -42,8 +42,8 @@ Trusted components: the writer process (holds signing key and HMAC key)
 and the checkpoint authority (receives signed checkpoints out-of-band).
 
 ## Cryptographic choices
-- **SHA-256** for chain hashing; **SHA-256 HMAC** for shared-key sealing.
-- **Ed25519** signatures: deterministic, misuse-resistant, 64-byte
+- **SHA-256** for chain hashing; **SHA-256 HMAC** for shared key sealing.
+- **Ed25519** signatures: deterministic, misuse resistant, 64-byte
   signatures. (ECDSA/RSA can be substituted behind the same `Signer`
   interface; SHA-3 digests are available via `hashlib.sha3_256` where
   compliance requires them.)

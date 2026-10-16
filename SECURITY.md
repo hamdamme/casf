@@ -3,7 +3,7 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.x (pre-1.0) | Best-effort, single maintainer |
+| 0.x (pre-1.0) | Best effort, single maintainer |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 
 ## Reporting a vulnerability
