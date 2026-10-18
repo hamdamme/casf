@@ -29,6 +29,39 @@ def seeded_key(role: str) -> Ed25519PrivateKey:
         sha256(f"casf-bench-{role}".encode()).digest())
 
 
+def run_log_id(seed: int, run_index: int) -> str:
+    """Deterministic log id for one run of a remote witness matrix.
+
+    A remote witness keeps its state between runs, so each run needs
+    its own log; the standalone witness server pre registers exactly
+    these ids."""
+    hexs = sha256(f"casf-bench-run-{seed}-{run_index}".encode()).hexdigest()
+    return (f"{hexs[:8]}-{hexs[8:12]}-4{hexs[13:16]}-"
+            f"{hexs[16:20]}-{hexs[20:32]}")
+
+
+def manifest(log_id: str) -> dict:
+    """Signed manifest envelope for one benchmark log id."""
+    auth = seeded_key("authority")
+    auth_pub = crypto.public_key_raw(auth)
+    log_pub = crypto.public_key_raw(seeded_key("log"))
+    wit_pub = crypto.public_key_raw(seeded_key("witness"))
+    body = {
+        "version": 1, "type": "manifest", "log_id": log_id,
+        "issuer_id": crypto.key_id(auth_pub),
+        "log_key_id": crypto.key_id(log_pub),
+        "log_public_key": crypto.b64url_encode(log_pub),
+        "witness_id": crypto.key_id(wit_pub),
+        "witness_public_key": crypto.b64url_encode(wit_pub),
+        "created_at": TS, "predecessor": None,
+    }
+    return {
+        "body": body,
+        "manifest_hash": crypto.digest_manifest(body),
+        "signature": crypto.sign_manifest(auth, body),
+    }
+
+
 def _event_id(rng: random.Random) -> str:
     hexs = f"{rng.getrandbits(128):032x}"
     return (f"{hexs[:8]}-{hexs[8:12]}-4{hexs[13:16]}-"
@@ -55,28 +88,11 @@ def measure_minimum() -> int:
     """Stored size of one minimal record, measured through the writer."""
     from casf.writer import Writer  # local import: writer pulls in storage
 
-    auth, log, wit = (seeded_key(r) for r in ("authority", "log", "witness"))
-    auth_pub = crypto.public_key_raw(auth)
-    log_pub = crypto.public_key_raw(log)
-    wit_pub = crypto.public_key_raw(wit)
-    body = {
-        "version": 1, "type": "manifest", "log_id": LOG_ID,
-        "issuer_id": crypto.key_id(auth_pub),
-        "log_key_id": crypto.key_id(log_pub),
-        "log_public_key": crypto.b64url_encode(log_pub),
-        "witness_id": crypto.key_id(wit_pub),
-        "witness_public_key": crypto.b64url_encode(wit_pub),
-        "created_at": TS, "predecessor": None,
-    }
-    manifest = {
-        "body": body,
-        "manifest_hash": crypto.digest_manifest(body),
-        "signature": crypto.sign_manifest(auth, body),
-    }
+    log = seeded_key("log")
     with tempfile.TemporaryDirectory() as d:
         writer = Writer(Path(d) / "minimum.db", log)
         try:
-            writer.create_log(manifest)
+            writer.create_log(manifest(LOG_ID))
             writer.append(LOG_ID, **generate(seed=0, count=1,
                                              target_bytes=0)[0])
             record = next(writer.records(LOG_ID))

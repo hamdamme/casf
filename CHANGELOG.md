@@ -6,6 +6,16 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- Remote witness mode for the benchmark runner (RQ2, RQ3): the
+  witness may live behind a real network URL, served by the new
+  standalone benchmarks.witness_server, which pre registers one
+  deterministic log id per run so each run starts fresh on a witness
+  that keeps its state. The bearer token comes from an environment
+  variable only. benchmarks/manifest.v3.json pins two wide area
+  configurations (batch 128 and 16 over 10000 records) and
+  benchmarks/wide-area.md is the run sheet for a writer on one
+  machine and a witness on a cloud instance in another region.
+  2 new tests (212 total, all green).
 - Second machine benchmark execution (T19, RQ2, RQ3, RQ4): the
   pinned local subset and the extended matrix ran on an Ubuntu
   laptop, and record counts, witnessed counts, and database sizes

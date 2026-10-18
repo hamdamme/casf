@@ -9,6 +9,7 @@ summaries with bootstrap intervals, never record level pooling.
 """
 
 import json
+import threading
 
 import pytest
 
@@ -150,3 +151,52 @@ def test_runner_http_witness_rejects_bad_delay(tmp_path):
     }
     with pytest.raises(ValueError, match="witness_delay_ms"):
         runner.run_config(cfg, tmp_path / "out")
+
+
+def test_runner_remote_witness_two_runs(tmp_path, monkeypatch):
+    """RQ2/RQ3: the witness may live behind a real network URL.
+
+    Each run uses its own log id, because the remote witness keeps
+    its state between runs and would otherwise see a fork."""
+    from benchmarks import witness_server
+
+    monkeypatch.setenv("CASF_BENCH_TOKEN", "remote-bench-token")
+    service, server = witness_server.build_server(
+        "127.0.0.1", 0, token="remote-bench-token",
+        seeds=[7, 8], runs=2, db_path=tmp_path / "wit.db")
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        url = f"http://127.0.0.1:{server.server_address[1]}"
+        cfg = {
+            "name": "remote", "seeds": [7, 8], "runs": 2, "warmup": 0,
+            "records": 10, "target_bytes": 512, "checkpoint_batch": 5,
+            "witness": "remote", "witness_url": url,
+            "witness_token_env": "CASF_BENCH_TOKEN",
+        }
+        summary = runner.run_config(cfg, tmp_path / "out")
+        assert summary["witnessed_through"] == 10
+        assert summary["checkpoints_accepted"] == 2
+        row0 = json.loads(
+            (tmp_path / "out" / "remote-run-0.json").read_text())
+        row1 = json.loads(
+            (tmp_path / "out" / "remote-run-1.json").read_text())
+        assert row0["config"]["witness"] == "remote"
+        assert row0["config"]["witness_url"] == url
+        assert row0["config"]["log_id"] != row1["config"]["log_id"]
+        assert row0["witness_latency_ns"]  # real round trips measured
+        assert row0["witness_bytes"] == 0  # remote store not measurable
+    finally:
+        server.shutdown()
+        server.server_close()
+        service.close()
+
+
+def test_witness_server_requires_token_env(tmp_path, monkeypatch):
+    from benchmarks import witness_server
+
+    monkeypatch.delenv("CASF_BENCH_TOKEN", raising=False)
+    with pytest.raises(SystemExit):
+        witness_server.main(["--port", "0", "--token-env",
+                             "CASF_BENCH_TOKEN", "--seeds", "7",
+                             "--runs", "1"])

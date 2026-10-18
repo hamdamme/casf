@@ -38,5 +38,7 @@ committed results (T19).
 
 The Ubuntu run sheet is linux-matrix.md; its manifest includes one
 configuration with the witness over loopback HTTP behind a 25 ms
-injected round trip delay. A real multi machine wide area deployment
-stays listed as an open limitation.
+injected round trip delay. The wide area run sheet is wide-area.md:
+the writer runs on one machine and the witness on a cloud instance
+in another region (mode "remote"), producing the real network
+numbers for RQ2 and RQ3.
