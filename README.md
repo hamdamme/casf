@@ -19,7 +19,7 @@ verification is not proof that every real world event was recorded.
 - Per-record Ed25519 signatures and SHA-256 hash chaining (domain separated, RFC 8785 JCS encoding)
 - A stateful, independently operated witness that accepts only valid chain extensions and issues chained receipts
 - Independent verification from an exported evidence bundle using only public trust material
-- Verification modes integrity, anchored, online — with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
+- Verification modes integrity, anchored, online with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
 - Epoch based key rotation and terminal revocation
 - An applied research evaluation (RQ1–RQ4, H1–H3) of local vs. independently witnessed checkpoints
 
