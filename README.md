@@ -1,4 +1,4 @@
-# CASF — Cryptographic Audit & Signing Framework
+# CASF Cryptographic Audit & Signing Framework
 
 An embeddable Python mechanism for producing and independently checking
 audit histories, with conditional rollback detection using independently
@@ -19,7 +19,7 @@ verification is not proof that every real world event was recorded.
 - Per-record Ed25519 signatures and SHA-256 hash chaining (domain separated, RFC 8785 JCS encoding)
 - A stateful, independently operated witness that accepts only valid chain extensions and issues chained receipts
 - Independent verification from an exported evidence bundle using only public trust material
-- Verification modes — integrity, anchored, online — with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
+- Verification modes integrity, anchored, online — with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
 - Epoch based key rotation and terminal revocation
 - An applied research evaluation (RQ1–RQ4, H1–H3) of local vs. independently witnessed checkpoints
 
@@ -27,7 +27,7 @@ verification is not proof that every real world event was recorded.
 - Detection claims are conditional on assumptions A1–A6 in the specification (SPEC §6)
 - A compromised writer can sign false new events; the witnessed prefix constrains what can match retained history
 - The unwitnessed suffix after the last accepted checkpoint carries exposure (SPEC §7)
-- The witness sees full record payloads in v1 — minimize sensitive fields
+- The witness sees full record payloads in v1 minimize sensitive fields
 - CASF provides no legal nonrepudiation, no completeness guarantee for events never submitted, and no confidentiality guarantee
 
 ## Repository layout
