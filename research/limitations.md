@@ -1,8 +1,8 @@
 # Limitations
 
 Declared limitations and negative findings. Never overwrite with
-stronger claims than the experiments support (SPEC §23). Updated at
-the end of Phase 8.
+stronger claims than the experiments support (SPEC §23). Updated
+with the second machine matrix results.
 
 ## Boundaries confirmed by the detection matrix
 
@@ -22,14 +22,17 @@ correctly remain undetectable offline:
 
 ## Method limitations
 
-- All measurements are local: one machine, local witness, no network
-  delay injection yet. Local witness runs underestimate independent
-  deployment cost. The delayed network matrix is planned for the
-  Linux machine before M8.
+- The extended matrix ran on one old laptop; its absolute numbers
+  reflect that hardware and are reported alongside the macOS subset
+  rather than generalized. On that hardware the witness processing
+  cost dominates the injected 25 ms network delay, so the delay
+  model says little about fast server pairs; a two machine wide area
+  run remains the open item.
 - Workloads are synthetic fixed size events; production audit
   patterns may differ.
-- Ten runs per configuration is the SPEC minimum; wider replication
-  is planned on the Linux machine.
+- Ten runs per configuration is the SPEC minimum; the extended
+  matrix met it on a second machine, wider hardware diversity is
+  still open.
 - Self authored code and self reviewed tests create assessment bias;
   external review has not happened and is not claimed.
 - SQLite append only triggers guard honest writers; an attacker
@@ -39,8 +42,6 @@ correctly remain undetectable offline:
 
 ## Omitted configurations and reasons
 
-- Record sizes below 1 KiB and above 1 KiB: deferred to the Linux
-  matrix to keep the local subset a smoke level reference.
 - Remote witness over real wide area networks: the runner drives the
   witness over loopback HTTP with an injected round trip delay, which
   covers one controlled network class; an uncontrolled multi machine

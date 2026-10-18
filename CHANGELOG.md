@@ -6,6 +6,16 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- Second machine benchmark execution (T19, RQ2, RQ3, RQ4): the
+  pinned local subset and the extended matrix ran on an Ubuntu
+  laptop, and record counts, witnessed counts, and database sizes
+  reproduce the committed macOS rows byte for byte. Findings in
+  research/protocol.md: throughput scales down with record size,
+  verification grows linearly at about 1 ms per 1 KiB record, and on
+  slow hardware witness processing dominates the injected network
+  delay, an honest limit on the delay model. Raw rows and reports
+  live in benchmarks/results/local-subset-v1-linux/ and
+  benchmarks/results/linux-matrix-v2/.
 - HTTP witness mode for the benchmark runner (RQ2): the witness may
   run over loopback HTTP behind a proxy that injects a controlled
   round trip delay, so network cost is measured through the real
