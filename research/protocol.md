@@ -60,8 +60,8 @@ machine (RQ4 evidence).
 
 Wide area matrix (benchmarks/manifest.v3.json,
 benchmarks/results/wide-area-v3/): writer on a Dell Linux machine,
-witness on an AWS Lightsail instance in the eu-central-1 address
-range, 20 runs, zero failures. RQ2: a witnessed checkpoint round
+witness on an AWS Lightsail instance in Frankfurt
+(eu-central-1), 20 runs, zero failures. RQ2: a witnessed checkpoint round
 trip cost about 1.18 s at batch 128 and 0.67 s at batch 16 on this
 path, while append throughput stayed at 1273 to 1462 records per
 second because checkpoint submission is asynchronous. RQ3 and H2:

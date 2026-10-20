@@ -28,7 +28,7 @@ correctly remain undetectable offline:
   cost dominates the injected 25 ms network delay, so the delay
   model says little about fast server pairs.
 - The wide area matrix measured exactly one network path (one
-  writer, one Lightsail witness in the eu-central-1 address range,
+  writer, one Lightsail witness in Frankfurt (eu-central-1),
   writer geography not recorded in the artifacts); its round trip
   numbers describe that path and are not a general wide area claim.
 - Workloads are synthetic fixed size events; production audit

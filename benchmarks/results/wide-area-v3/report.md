@@ -38,8 +38,8 @@ executed at commit 84c5444, before the runner gained timeout retry
 logic; no stall occurred during these runs, and any future stall is
 retried with identical bytes (counted as witness_retries).
 records_per_second measures append operation time, not end to end
-throughput. The witness instance address belongs to the AWS
-eu-central-1 range; the writer location was not recorded in the
-artifacts, so round trip times describe this one network path only
-and no general wide area claim is made. witness_bytes is 0 by
+throughput. The witness ran in AWS eu-central-1 (Frankfurt,
+Germany); the writer location was not recorded in the artifacts,
+so round trip times describe this one network path only and no
+general wide area claim is made. witness_bytes is 0 by
 design: the remote store is not measurable from the writer side.
