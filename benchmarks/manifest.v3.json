@@ -11,7 +11,7 @@
       "target_bytes": 1024,
       "checkpoint_batch": 128,
       "witness": "remote",
-      "witness_url": "http://LIGHTSAIL_IP:8080",
+      "witness_url": "http://3.72.62.208:8080",
       "witness_token_env": "CASF_BENCH_TOKEN"
     },
     {
@@ -23,7 +23,7 @@
       "target_bytes": 1024,
       "checkpoint_batch": 16,
       "witness": "remote",
-      "witness_url": "http://LIGHTSAIL_IP:8080",
+      "witness_url": "http://3.72.62.208:8080",
       "witness_token_env": "CASF_BENCH_TOKEN"
     }
   ]

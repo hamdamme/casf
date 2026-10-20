@@ -95,10 +95,10 @@ def _checkpoint_cycle(writer, submit, log_id, witness_lat,
 
 def _http_submit(host: str, port: int, token: str, log_id: str):
     """Checkpoint submission over HTTP (SPEC §13 wire path)."""
-    def submit(envelope: dict, records: list) -> dict:
+    def submit_once(envelope: dict, records: list) -> dict:
         request = json.dumps(
             {"checkpoint": envelope, "records": records}).encode()
-        conn = http.client.HTTPConnection(host, port, timeout=60)
+        conn = http.client.HTTPConnection(host, port, timeout=120)
         try:
             conn.request(
                 "POST", f"/v1/logs/{log_id}/checkpoints",
@@ -115,6 +115,20 @@ def _http_submit(host: str, port: int, token: str, log_id: str):
                 or not isinstance(data.get("receipt"), dict):
             raise RuntimeError(f"witness rejected the submission: {status}")
         return data["receipt"]
+    def submit(envelope: dict, records: list) -> dict:
+        for attempt in range(3):
+            try:
+                return submit_once(envelope, records)
+            except (OSError, http.client.HTTPException) as exc:
+                if attempt == 2:
+                    raise
+                print(
+                    f"Witness network error ({type(exc).__name__}); "
+                    f"retrying {attempt + 1}/2",
+                    flush=True
+                )
+                time.sleep(2 ** attempt)
+
     return submit
 
 
