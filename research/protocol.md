@@ -58,6 +58,19 @@ observation that limits how strongly the delay model generalizes.
 Total wall clock for the full matrix was about 2.2 hours on that
 machine (RQ4 evidence).
 
+Wide area matrix (benchmarks/manifest.v3.json,
+benchmarks/results/wide-area-v3/): writer on a Dell Linux machine,
+witness on an AWS Lightsail instance in the eu-central-1 address
+range, 20 runs, zero failures. RQ2: a witnessed checkpoint round
+trip cost about 1.18 s at batch 128 and 0.67 s at batch 16 on this
+path, while append throughput stayed at 1273 to 1462 records per
+second because checkpoint submission is asynchronous. RQ3 and H2:
+batching cuts total witness time per 10000 records from about 420 s
+(626 submissions) to about 95 s (80 submissions), roughly 9.5 ms
+against 42 ms per record, in exchange for a longer pending
+unwitnessed suffix (128 against 16 records). One path only; no
+general wide area claim is made.
+
 ## Validity controls
 
 Warmup runs are discarded. Local witness runs underestimate

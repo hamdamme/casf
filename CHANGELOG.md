@@ -6,6 +6,15 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- Wide area benchmark execution (RQ2, RQ3, H2): 20 runs with the
+  writer on a Dell Linux machine and the witness on an AWS Lightsail
+  instance, zero failures, raw rows and a verified report in
+  benchmarks/results/wide-area-v3/. A witnessed round trip cost
+  about 1.18 s at batch 128 and 0.67 s at batch 16 on this path;
+  batching cut total witness time per 10000 records from about
+  420 s to about 95 s. The report was regenerated from the raw rows
+  (means verified to match), with an honest note that the runs
+  predate the retry logic and describe one network path only.
 - Benchmark runner resilience: a transient witness stall is retried
   with the identical pending checkpoint bytes, which the witness
   deduplicates (SPEC §12, T22), instead of killing a long matrix

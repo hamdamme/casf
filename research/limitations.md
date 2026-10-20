@@ -26,8 +26,11 @@ correctly remain undetectable offline:
   reflect that hardware and are reported alongside the macOS subset
   rather than generalized. On that hardware the witness processing
   cost dominates the injected 25 ms network delay, so the delay
-  model says little about fast server pairs; a two machine wide area
-  run remains the open item.
+  model says little about fast server pairs.
+- The wide area matrix measured exactly one network path (one
+  writer, one Lightsail witness in the eu-central-1 address range,
+  writer geography not recorded in the artifacts); its round trip
+  numbers describe that path and are not a general wide area claim.
 - Workloads are synthetic fixed size events; production audit
   patterns may differ.
 - Ten runs per configuration is the SPEC minimum; the extended
