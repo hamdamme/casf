@@ -14,6 +14,7 @@ import threading
 import pytest
 
 from benchmarks import analyze, runner, workload
+from casf import crypto
 
 
 def test_generator_deterministic_per_seed():
@@ -200,3 +201,36 @@ def test_witness_server_requires_token_env(tmp_path, monkeypatch):
         witness_server.main(["--port", "0", "--token-env",
                              "CASF_BENCH_TOKEN", "--seeds", "7",
                              "--runs", "1"])
+
+
+def test_checkpoint_cycle_retries_transient_timeout(tmp_path):
+    """A stalled network must not kill a long matrix run: the same
+    pending bytes are retried, and the witness deduplicates them
+    (SPEC §12, T22). Only the successful attempt is measured."""
+    from casf.witness import Witness
+    from casf.writer import Writer
+
+    writer = Writer(tmp_path / "w.db", workload.seeded_key("log"))
+    auth_pub = crypto.public_key_raw(workload.seeded_key("authority"))
+    witness = Witness(tmp_path / "wit.db", workload.seeded_key("witness"),
+                      authority_keys={crypto.key_id(auth_pub): auth_pub})
+    writer.create_log(workload.manifest(workload.LOG_ID))
+    witness.register_log(workload.manifest(workload.LOG_ID))
+    for event in workload.generate(7, 5, 512):
+        writer.append(workload.LOG_ID, **event)
+
+    calls = {"n": 0}
+
+    def flaky(envelope, records):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise TimeoutError("timed out")
+        return witness.submit(workload.LOG_ID, envelope, records)
+
+    lat: list[int] = []
+    count = runner._checkpoint_cycle(writer, flaky, workload.LOG_ID, lat)
+    assert count == 5
+    assert calls["n"] == 2   # one stall, one success
+    assert len(lat) == 1     # only the successful attempt is measured
+    writer.close()
+    witness.close()

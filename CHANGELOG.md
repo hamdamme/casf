@@ -6,6 +6,12 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Added
+- Benchmark runner resilience: a transient witness stall is retried
+  with the identical pending checkpoint bytes, which the witness
+  deduplicates (SPEC §12, T22), instead of killing a long matrix
+  run; retries are counted per run as witness_retries in the raw
+  rows and only the successful attempt is measured. 1 new test
+  (213 total, all green).
 - Remote witness mode for the benchmark runner (RQ2, RQ3): the
   witness may live behind a real network URL, served by the new
   standalone benchmarks.witness_server, which pre registers one

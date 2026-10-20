@@ -59,8 +59,14 @@ def _manifest(log_id: str | None = None) -> dict:
     return workload.manifest(log_id or workload.LOG_ID)
 
 
-def _checkpoint_cycle(writer, submit, log_id, witness_lat):
-    """Create, submit, and store one checkpoint; returns its count."""
+def _checkpoint_cycle(writer, submit, log_id, witness_lat,
+                      retries: list[int] | None = None):
+    """Create, submit, and store one checkpoint; returns its count.
+
+    Transport stalls are retried with the identical pending bytes,
+    which the witness deduplicates (SPEC §12, T22); only the
+    successful attempt is measured.
+    """
     writer.create_checkpoint(log_id)
     pending = writer.pending_checkpoint(log_id)
     if pending is None:  # pragma: no cover - create made it pending
@@ -69,9 +75,19 @@ def _checkpoint_cycle(writer, submit, log_id, witness_lat):
     records = [env for seq, env in enumerate(
                    writer.records(log_id), start=1)
                if from_seq <= seq <= to_seq]
-    start = time.perf_counter_ns()
-    receipt = submit(envelope, records)
-    witness_lat.append(time.perf_counter_ns() - start)
+    for attempt in range(3):
+        start = time.perf_counter_ns()
+        try:
+            receipt = submit(envelope, records)
+        except (TimeoutError, OSError, http.client.HTTPException):
+            if attempt == 2:
+                raise
+            if retries is not None:
+                retries.append(1)
+            time.sleep(2 * (attempt + 1))
+            continue
+        witness_lat.append(time.perf_counter_ns() - start)
+        break
     writer.record_receipt(log_id, receipt)
     body = envelope["body"]
     return int(body["count"])
@@ -232,6 +248,7 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                 writer.create_log(manifest)
                 register(manifest)
                 witness_lat: list[int] = []
+                witness_retries: list[int] = []
                 witnessed_through = 0
                 checkpoints = 0
 
@@ -242,9 +259,11 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                         writer.append(log_id, **event)
                     # Drain the warmup so measured checkpoints start clean.
                     witnessed_through = _checkpoint_cycle(
-                        writer, submit, log_id, witness_lat)
+                        writer, submit, log_id, witness_lat,
+                        witness_retries)
                     checkpoints += 1
                     witness_lat.clear()  # warmup round trip is unmeasured
+                    witness_retries.clear()
 
                 appended: list[dict] = []
                 latency: list[int] = []
@@ -255,11 +274,13 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                     latency.append(time.perf_counter_ns() - start)
                     if i % batch == 0:
                         witnessed_through = _checkpoint_cycle(
-                            writer, submit, log_id, witness_lat)
+                            writer, submit, log_id, witness_lat,
+                            witness_retries)
                         checkpoints += 1
                 if records % batch:
                     witnessed_through = _checkpoint_cycle(
-                        writer, submit, log_id, witness_lat)
+                        writer, submit, log_id, witness_lat,
+                        witness_retries)
                     checkpoints += 1
 
                 start = time.perf_counter()
@@ -298,6 +319,7 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                         len(canonicalize(env)) for env in appended),
                     "witnessed_through": witnessed_through,
                     "checkpoints_accepted": checkpoints,
+                    "witness_retries": sum(witness_retries),
                     "environment": _environment(),
                 }
         finally:

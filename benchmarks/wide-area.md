@@ -64,3 +64,9 @@ Then delete the Lightsail instance so it stops billing.
   witness_bytes is 0 in these raw rows by design.
 - One instance pair is one network path; say "this path", not "the
   internet".
+- A transient network stall is retried with the identical pending
+  checkpoint bytes, which the witness deduplicates; retries are
+  counted per run as witness_retries in the raw rows. If a run dies
+  anyway, confirm the witness window is still alive and rerun the
+  same manifest; already accepted checkpoints replay their stored
+  receipts, so the rerun continues cleanly.
