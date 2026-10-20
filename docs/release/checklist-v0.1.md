@@ -6,7 +6,7 @@ a separate deliberate maintainer action (SPEC §25).
 
 | Gate (SPEC §26) | Status | Evidence |
 | --- | --- | --- |
-| Original source disposition complete | pass | ROADMAP.md phase 0; docs/adr/ |
+| Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
 | All requirements linked to evidence | pass | tests/unit/test_traceability.py enforces R01 to R12 and T01 to T22 in CI |
 | No unresolved blocking security findings | pass | detection matrix benchmarks/results/detection-v1/; advisory review row below |
 | Reproducible install | pass | wheel and sdist built from commit; fresh venv install; CLI roundtrip ends in verify PASS (rehearsal log in this file) |
