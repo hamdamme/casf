@@ -1,12 +1,36 @@
-# CASF Cryptographic Audit & Signing Framework
+# CASF — Cryptographic Audit & Signing Framework
 
 An embeddable Python mechanism for producing and independently checking
 audit histories, with conditional rollback detection using independently
 retained witness state.
 
-**Status:** design review draft (CASF SPEC 001 rev 0.9). An exploratory
-prototype exists under the `exploratory prototype` tag; the casf-v1
-wire profile is proposed and not yet frozen.
+![License](https://img.shields.io/badge/license-Apache--2.0-blue)
+
+**Status:** casf-v1 implementation and research evaluation are complete
+(212 tests passing; adversarial detection matrix, second-machine Linux
+matrix, and a 20-run wide-area benchmark all recorded). The governing
+design document is CASF SPEC 001; the claim discipline in SPEC §29
+applies to all public descriptions of this project.
+
+## How it works
+
+```mermaid
+flowchart LR
+    W[Writer] -->|"signed records, SHA-256 hash chain"| WS[Witness]
+    WS -->|"chained receipts"| W
+    W -->|"exported evidence bundle"| V[Independent Verifier]
+    T[Public trust material] --> V
+    V --> R["PASS / FAIL / INCONCLUSIVE"]
+```
+
+A writer appends Ed25519-signed records linked by a domain-separated
+SHA-256 hash chain (RFC 8785 JCS canonical encoding). A stateful,
+independently operated witness accepts only valid chain extensions and
+issues chained receipts. Anyone holding an exported evidence bundle and
+the public trust material can verify the history offline in one of three
+modes — integrity, anchored, or online — with separate, enum-typed
+results (PASS / FAIL / INCONCLUSIVE). Epoch-based key rotation and
+terminal revocation are supported.
 
 ## The problem
 Ordinary stored logs can be edited, reordered, or restored to an older
@@ -15,19 +39,38 @@ CASF addresses integrity evidence and conditional detection of missing
 history. It does not make storage physically immutable, and successful
 verification is not proof that every real world event was recorded.
 
-## What CASF provides
-- Per-record Ed25519 signatures and SHA-256 hash chaining (domain separated, RFC 8785 JCS encoding)
-- A stateful, independently operated witness that accepts only valid chain extensions and issues chained receipts
-- Independent verification from an exported evidence bundle using only public trust material
-- Verification modes integrity, anchored, online with separate, enum typed results (PASS / FAIL / INCONCLUSIVE)
-- Epoch based key rotation and terminal revocation
-- An applied research evaluation (RQ1–RQ4, H1–H3) of local vs. independently witnessed checkpoints
+## Evaluation results
+
+All benchmark artifacts and reports are in `benchmarks/results/`:
+
+- **Adversarial detection matrix** (`detection-v1/`): rollback, fork,
+  truncation, and key-theft scenarios against the verifier, confirming
+  both what is detected and the declared detection boundaries (T18, T20,
+  T21 in `research/limitations.md`).
+- **Second-machine Linux matrix** (`linux-matrix-v2/`): replication of
+  the benchmark matrix on independent hardware.
+- **Wide-area benchmark** (`wide-area-v3/`, 20 completed runs, 10 per
+  configuration): writer on a local Linux host, witness on an AWS
+  Lightsail instance in Frankfurt (eu-central-1), 10,000 records per
+  run. Headline numbers (run-level bootstrap, 95% intervals):
+
+  | Configuration | append p50 | records/s | witness p50 | verify (10k records) |
+  |---|---:|---:|---:|---:|
+  | batch 128 | 0.80 ms | ~1273 | ~1185 ms | ~5.6 s |
+  | batch 16 | 0.46 ms | ~1462 | ~671 ms | ~3.1 s |
+
+  These describe one network path only (one writer, one witness region);
+  no general wide-area claim is made. Full method notes and raw rows are
+  in [the wide-area report](benchmarks/results/wide-area-v3/report.md).
+- **Research findings** (RQ1–RQ4, H1–H3): local vs. independently
+  witnessed checkpoints, with declared limitations in
+  [`research/limitations.md`](research/limitations.md).
 
 ## Explicit limits (read before using)
 - Detection claims are conditional on assumptions A1–A6 in the specification (SPEC §6)
 - A compromised writer can sign false new events; the witnessed prefix constrains what can match retained history
 - The unwitnessed suffix after the last accepted checkpoint carries exposure (SPEC §7)
-- The witness sees full record payloads in v1 minimize sensitive fields
+- The witness sees full record payloads in v1; minimize sensitive fields
 - CASF provides no legal nonrepudiation, no completeness guarantee for events never submitted, and no confidentiality guarantee
 
 ## Repository layout
@@ -36,10 +79,10 @@ verification is not proof that every real world event was recorded.
 | `docs/specification/` | CASF SPEC 001 (governing design document) + D01 source reconciliation |
 | `docs/adr/` | Architecture decision records |
 | `docs/01..05` | Historical design context (superseded by SPEC 001) |
-| `src/casf/` | casf-v1 implementation (per milestone plan) |
-| `vectors/v1/` | Frozen conformance vectors (M1 gate) |
+| `src/casf/` | casf-v1 implementation (writer, witness, verifier, crypto, storage, CLI) |
+| `vectors/v1/` | Frozen conformance vectors |
 | `tests/` | Unit / property / conformance / integration / adversarial suites |
-| `benchmarks/` | Workloads, attack harnesses, configs, raw results (M7) |
+| `benchmarks/` | Workloads, attack harnesses, run manifests, and raw results |
 | `research/` | Research protocol, results, limitations |
 
 ## Claim discipline
