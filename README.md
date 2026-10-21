@@ -1,6 +1,6 @@
 # CASF — Cryptographic Audit & Signing Framework
 
-An embeddable Python mechanism for producing and independently checking
+A Python framework for producing and independently checking
 audit histories, with conditional rollback detection using independently
 retained witness state.
 
@@ -92,9 +92,9 @@ All benchmark artifacts and reports are in `benchmarks/results/`:
 Public descriptions of this project must follow SPEC §29: say
 "cryptographically verifiable audit records with conditional rollback
 detection using independently retained witness state." Do not say
-"tamper-proof", "guaranteed complete", "forward secure", "globally
-fork free", "compliant", "audited", or "novel cryptography" without
-separate, specific evidence.
+that records cannot be tampered with, that histories are guaranteed complete,
+or that the framework is forward secure, globally fork free, compliant,
+audited, or novel cryptography without separate, specific evidence.
 
 ## License
 Apache License 2.0. See [LICENSE](LICENSE).
