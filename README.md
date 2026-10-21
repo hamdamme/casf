@@ -1,14 +1,16 @@
 # CASF — Cryptographic Audit & Signing Framework
 
-An embeddable Python mechanism for producing and independently checking
+A Python framework for producing and independently checking
 audit histories, with conditional rollback detection using independently
 retained witness state.
 
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 
-**Status:** casf-v1 implementation and research evaluation are complete
-(212 tests passing; adversarial detection matrix, second-machine Linux
-matrix, and a 20-run wide-area benchmark all recorded). The governing
+**Status:** development release candidate, version `0.1.0.dev0`.
+Implementation and evaluation artifacts are recorded, including the adversarial
+detection matrix, Linux replication, and twenty remote witness benchmark runs.
+Release approval remains separate from implementation progress; see the
+[release checklist](docs/release/checklist-v0.1.md) for open requirements. The governing
 design document is CASF SPEC 001; the claim discipline in SPEC §29
 applies to all public descriptions of this project.
 
@@ -23,13 +25,13 @@ flowchart LR
     V --> R["PASS / FAIL / INCONCLUSIVE"]
 ```
 
-A writer appends Ed25519-signed records linked by a domain-separated
+A writer appends records signed with Ed25519 and linked by a domain separated
 SHA-256 hash chain (RFC 8785 JCS canonical encoding). A stateful,
 independently operated witness accepts only valid chain extensions and
 issues chained receipts. Anyone holding an exported evidence bundle and
-the public trust material can verify the history offline in one of three
-modes — integrity, anchored, or online — with separate, enum-typed
-results (PASS / FAIL / INCONCLUSIVE). Epoch-based key rotation and
+the public trust material can check integrity and anchored evidence offline. Online verification also
+consults the witness. The modes return separate typed
+results (PASS / FAIL / INCONCLUSIVE). Epoch based key rotation and
 terminal revocation are supported.
 
 ## The problem
@@ -44,24 +46,25 @@ verification is not proof that every real world event was recorded.
 All benchmark artifacts and reports are in `benchmarks/results/`:
 
 - **Adversarial detection matrix** (`detection-v1/`): rollback, fork,
-  truncation, and key-theft scenarios against the verifier, confirming
+  truncation, and key theft scenarios against the verifier, confirming
   both what is detected and the declared detection boundaries (T18, T20,
   T21 in `research/limitations.md`).
-- **Second-machine Linux matrix** (`linux-matrix-v2/`): replication of
+- **Second machine Linux matrix** (`linux-matrix-v2/`): replication of
   the benchmark matrix on independent hardware.
-- **Wide-area benchmark** (`wide-area-v3/`, 20 completed runs, 10 per
+- **Remote witness benchmark** (`wide-area-v3/`, 20 completed runs, 10 per
   configuration): writer on a local Linux host, witness on an AWS
   Lightsail instance in Frankfurt (eu-central-1), 10,000 records per
-  run. Headline numbers (run-level bootstrap, 95% intervals):
+  run. Headline numbers (bootstrap over runs, 95% intervals):
 
   | Configuration | append p50 | records/s | witness p50 | verify (10k records) |
   |---|---:|---:|---:|---:|
   | batch 128 | 0.80 ms | ~1273 | ~1185 ms | ~5.6 s |
   | batch 16 | 0.46 ms | ~1462 | ~671 ms | ~3.1 s |
 
-  These describe one network path only (one writer, one witness region);
-  no general wide-area claim is made. Full method notes and raw rows are
-  in [the wide-area report](benchmarks/results/wide-area-v3/report.md).
+  The records/s column measures append operation time, not total elapsed
+  throughput including witness calls. These describe one network path only (one writer, one witness region);
+  no general claim about other network paths is made. Full method notes and raw rows are
+  in [the remote witness report](benchmarks/results/wide-area-v3/report.md).
 - **Research findings** (RQ1–RQ4, H1–H3): local vs. independently
   witnessed checkpoints, with declared limitations in
   [`research/limitations.md`](research/limitations.md).
@@ -89,9 +92,9 @@ All benchmark artifacts and reports are in `benchmarks/results/`:
 Public descriptions of this project must follow SPEC §29: say
 "cryptographically verifiable audit records with conditional rollback
 detection using independently retained witness state." Do not say
-"tamper-proof", "guaranteed complete", "forward secure", "globally
-fork free", "compliant", "audited", or "novel cryptography" without
-separate, specific evidence.
+that records cannot be tampered with, that histories are guaranteed complete,
+or that the framework is forward secure, globally fork free, compliant,
+audited, or novel cryptography without separate, specific evidence.
 
 ## License
-Apache-2.0 (proposed, pending D07 confirmation).
+Apache License 2.0. See [LICENSE](LICENSE).

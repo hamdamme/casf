@@ -1,6 +1,8 @@
 # Release checklist, 0.1.0.dev0 candidate
 
-Section 26 gates with evidence. Each row is pass or explicitly
+Section 26 gates with evidence. Implementation milestones and release
+approval are separate. The completed experiments below do not close the
+remaining review and approval gates. Each row is pass or explicitly
 marked blocked; blocked rows name the owner action. Publication is
 a separate deliberate maintainer action (SPEC §25).
 
@@ -18,7 +20,7 @@ a separate deliberate maintainer action (SPEC §25).
 | License and contact checks | pass | LICENSE Apache 2.0; SECURITY.md; GitHub private vulnerability reporting enabled on the repository |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
 | Package contents free of keys and data | pass | wheel and sdist inspected: casf package, license, and metadata only |
-| Full benchmark matrix with network delay injection | blocked | planned on the Linux runner before M8 closes; local subset is the smoke reference |
+| Linux benchmark matrix with network delay scenario | evidence recorded | [Linux matrix](../../benchmarks/results/linux-matrix-v2/report.md) includes four workloads with ten runs each; [remote witness report](../../benchmarks/results/wide-area-v3/report.md) records twenty further runs. Scope and timing limitations remain part of the evidence. |
 | Disclosure channel test submission | blocked | channel enabled; the test report itself is a maintainer action to avoid fabricated evidence |
 | External review of protocol and design | blocked | sought, not yet received; not claimed anywhere |
 | Maintainer approval of artifact hashes and notes | blocked | final maintainer action at actual release time |
