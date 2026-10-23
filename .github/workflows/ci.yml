@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Lint (ruff)
+        run: ruff check src tests
+      - name: Type check (mypy strict)
+        run: mypy src
+      - name: Test suite
+        # Only tests/unit is populated so far (C03); property/conformance/
+        # integration/adversarial suites land with milestones M1-M6 and
+        # pytest exits 5 on an empty directory, so run the whole tree.
+        run: pytest tests/ -v
+      - name: Build package
+        run: |
+          pip install build
+          python -m build
+      - name: Wheel smoke test
+        run: |
+          pip install dist/*.whl --force-reinstall
+          python -c "import casf; print(casf.__version__)"
+# NOTE: full adversarial/crash matrix runs before release and
+# periodically on protected infra (SPEC §25). Actions pinned by commit ID.

@@ -1,0 +1,48 @@
+[
+ {
+  "name": "byte_order_mark",
+  "wire_hex": "efbbbf7b7d",
+  "expect": "SchemaError"
+ },
+ {
+  "name": "invalid_utf8",
+  "wire_hex": "7b2261223ac3287d",
+  "expect": "SchemaError"
+ },
+ {
+  "name": "duplicate_key",
+  "wire": "{\"a\":1,\"a\":2}",
+  "expect": "DuplicateKeyError"
+ },
+ {
+  "name": "float",
+  "wire": "{\"x\":1.5}",
+  "expect": "NumericError"
+ },
+ {
+  "name": "exponent",
+  "wire": "{\"x\":1e3}",
+  "expect": "NumericError"
+ },
+ {
+  "name": "negative_zero",
+  "wire": "{\"x\":-0}",
+  "expect": "NumericError"
+ },
+ {
+  "name": "nan",
+  "wire": "NaN",
+  "expect": "NumericError"
+ },
+ {
+  "name": "lone_surrogate",
+  "wire": "\"\\ud800\"",
+  "expect": "UnicodeError_"
+ },
+ {
+  "name": "depth_overflow",
+  "wire": "[[[[[[[[[[[[[[[[[1]]]]]]]]]]]]]]]]]",
+  "stage": "canonicalize",
+  "expect": "LimitError"
+ }
+]
