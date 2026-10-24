@@ -1,7 +1,8 @@
 # Release notes, 0.1.0.dev0 release candidate
 
 Prepared under C12 (SPEC §27). These notes are drafted for review;
-nothing is published by this file.
+nothing is published by this file. Status reviewed on 2026-10-24;
+experiment results retain their original recorded environments.
 
 ## What this is
 
@@ -17,20 +18,29 @@ the benchmark and attack harnesses used for the research evaluation.
 
 ## Verified state at this candidate
 
-- 207 tests green: unit, property, conformance vectors, writer crash
-  points, witness state transitions, online freshness, lifecycle,
-  CLI, benchmark harness, attack harness, and the requirement
-  traceability audit.
-- Clean install rehearsal passed: wheel built from this commit
-  installs into a fresh environment and runs key generation, log
-  initialization, append, export, and verification (integrity mode,
-  result PASS, exit code 0).
+- The dependency update in commit `b96fa4a` passed 213 tests on each
+  of Python 3.12, 3.13, and 3.14 on macOS. [PR 4 CI](https://github.com/hamdamme/casf/actions/runs/40066783179)
+  passed all three versions on Linux, including lint, typing, tests,
+  builds, and installation of the wheel in a fresh environment.
+- The current wheel checks cover import and CLI startup. The
+  [historical rehearsal](checklist-v0.1.md#clean-install-rehearsal-log)
+  records key generation, initialization, append, export, and
+  integrity verification with result PASS on 2026-10-12.
 - Detection matrix (benchmarks/results/detection-v1/): all ten
   predeclared cases match expectations, including the documented
   boundaries T18, T20, and T21.
 - Benchmark subset (benchmarks/results/local-subset-v1/): pinned
   manifest, ten runs per configuration, run level bootstrap
-  intervals.
+  intervals. [Linux replication](../../benchmarks/results/local-subset-v1-linux/report.md)
+  contains 20 recorded runs across the two configurations.
+- The [Linux matrix](../../benchmarks/results/linux-matrix-v2/report.md)
+  contains 40 recorded runs across four configurations, including
+  the 25 ms injected delay case.
+- The [wide area matrix](../../benchmarks/results/wide-area-v3/report.md)
+  contains 20 recorded runs across two batch sizes. The raw files
+  record 12 runs at `84c5444` and eight at `52688fd`. The latter
+  commit only added preliminary result files; experiment code and
+  configuration were unchanged between those commits.
 
 ## Explicitly not claimed
 
@@ -39,13 +49,17 @@ the benchmark and attack harnesses used for the research evaluation.
   false suffix written with a stolen writer key (T20), and detection
   of witness rollback by an isolated client with no retained pin
   (T21) are documented boundaries, not features.
-- Benchmark numbers are local smoke level references, not deployment
-  throughput claims; the full matrix with network delay injection is
-  pending on the Linux runner.
+- Benchmark observations cover the recorded machines, workloads,
+  and one wide area network path. They do not establish general
+  deployment throughput. Writer geography was not recorded for the
+  wide area runs; their append rate excludes witness completion time.
 
 ## Known open items before any 1.0 discussion
 
-- Full benchmark matrix with network emulation on the Linux machine.
+- Resolve the HTTP server conflict under D05.
+- Review the locked dependencies and their licenses, and address the
+  build warning about license metadata.
+- Obtain final maintainer approval of release artifact hashes and notes.
 - Maintainer test submission to the private vulnerability reporting
   channel.
 - External review of the protocol and experimental design, sought

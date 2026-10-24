@@ -45,10 +45,11 @@ correctly remain undetectable offline:
 
 ## Omitted configurations and reasons
 
-- Remote witness over real wide area networks: the runner drives the
-  witness over loopback HTTP with an injected round trip delay, which
-  covers one controlled network class; an uncontrolled multi machine
-  deployment remains unmeasured and no wide area claim is made beyond
-  the injected model.
+- Broader wide area coverage remains unmeasured. The
+  [recorded wide area matrix](../benchmarks/results/wide-area-v3/report.md)
+  contains 20 runs on one path to a witness in Frankfurt. Writer
+  geography is missing, so these results cannot establish behavior
+  across locations or network conditions. The injected delay matrix
+  remains a separate controlled experiment.
 - Multiple concurrent writers in benchmarks: correctness covered by
   T06; throughput under contention not measured yet.
