@@ -35,6 +35,32 @@ documented in §16.
 - SQLite via stdlib `sqlite3`; WAL + synchronous=FULL
 **Consequence:** pyproject lockfile becomes part of reproducibility evidence (R12).
 
+
+### HTTP error boundary amendment
+
+**Date:** 2026-10-24. **Status:** Approved by the maintainer.
+
+**Decision:** CASF application errors remain JSON objects containing exactly
+{code, message, retryable}. Existing CASF status codes remain unchanged,
+including 429 when witness processing capacity is exhausted. The HTTP server
+may return minimal plain text errors for requests rejected before reaching
+CASF, including 400 for malformed HTTP and 503 when its connection limit is
+reached. Neither response may expose credentials, record payloads, private
+keys, stack traces, or internal implementation details. Server resource
+limits remain required.
+
+**Rationale:** The HTTP server can reject a request before application code
+runs. This amendment explicitly distinguishes those responses from CASF
+application errors and creates a limited exception to the broad JSON error
+requirement in [SPEC section 14](../specification/CASF_SPEC_001.md#14-witness-transport-and-online-freshness).
+
+**Consequence:** Cryptographic rules, signatures, stored evidence, and CASF
+application status codes are unchanged. This decision does not select or
+approve a specific server implementation. D05 remains open until the required
+implementation, dependency review, and validation are complete. Validation
+must cover CASF JSON errors and server rejection responses, including
+resource limits and the absence of sensitive information.
+
 ## Decision status
 
 The approvals recorded on 2026-10-11 establish the design decisions below.
