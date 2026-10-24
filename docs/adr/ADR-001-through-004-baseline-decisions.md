@@ -26,7 +26,7 @@ semantics simple and reviewable by one maintainer.
 **Consequence:** Long-lived high volume logs need epoch planning;
 documented in §16.
 
-## ADR-004 (closes D05): Dependency and runtime selection
+## ADR-004 (D05 conditions outstanding): Dependency and runtime selection
 **Decision:** Approve, with exact pins recorded at M0 CI setup.
 - Runtime matrix: Python 3.12, 3.13, 3.14 (to be exercised in CI before advertising)
 - crypto: `cryptography` (pinned, reviewed version)
@@ -35,10 +35,31 @@ documented in §16.
 - SQLite via stdlib `sqlite3`; WAL + synchronous=FULL
 **Consequence:** pyproject lockfile becomes part of reproducibility evidence (R12).
 
-## Blocking status
+## Decision status
+
+The approvals recorded on 2026-10-11 establish the design decisions below.
+Approval does not establish that every implementation or deployment condition
+has been satisfied. The following status review was recorded on 2026-10-24.
+
 | Decision | Gate | Status |
 |---|---|---|
-| ADR-001/D02 | M0 | Proposed — approve to unblock C02+ |
-| ADR-002/D03 | M1 | Proposed — approve to unblock vector freeze |
-| ADR-003/D04 | M0 | Proposed — approve to unblock C09 |
-| ADR-004/D05 | M0 | Proposed — approve to unblock C01 |
+| ADR-001/D02 | M0 | Approved. Separate witness administration under D06 remains required before deployment claims. |
+| ADR-002/D03 | M1 | Approved. The [vector record](../../vectors/v1/README.md) and [changelog](../../CHANGELOG.md) record the independent canonicalization comparison and frozen vectors. |
+| ADR-003/D04 | M0 | Approved. Epoch planning remains an operational consequence. |
+| ADR-004/D05 | M0 | Approved with conditions. Dependency pins and HTTP stack requirements remain outstanding; D05 completion is not established. |
+
+## Outstanding D05 conditions
+
+The current [witness transport](../../src/casf/witness/http.py) uses
+`http.server`, which conflicts with the HTTP stack requirement in ADR-004.
+Resolving this conflict requires an implementation change or a separately
+approved decision amendment.
+
+The [package configuration](../../pyproject.toml) and
+[requirements file](../../requirements.txt) specify minimum dependency
+versions. No dependency lockfile is tracked. Exact dependency pins and the
+required lockfile remain outstanding reproducibility evidence for R12.
+
+The [CI configuration](../../.github/workflows/ci.yml) includes Python 3.12,
+3.13, and 3.14. Configuration alone does not establish successful runs for
+that matrix; this documentation review did not verify CI execution results.
