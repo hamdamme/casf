@@ -6,7 +6,7 @@ or 200 on an identical retry; GET /v1/logs/{log_id}/receipts/
 {checkpoint_hash} returns the stored checkpoint and receipt with
 distinct 404 codes for a missing log and a missing receipt.
 
-Errors are JSON objects of exactly {code, message, retryable}; no
+CASF errors are JSON objects of exactly {code, message, retryable}; no
 stack traces, payloads, keys or tokens leave the service. Requests
 are bounded by size and concurrency. Authentication is a configured
 bearer credential, acceptable for this reference service over
@@ -14,13 +14,17 @@ loopback in tests and only over HTTPS in any wider deployment
 (SPEC §14); the credential never appears in a URL or log line.
 """
 
+from __future__ import annotations
+
 import hmac
 import json
+import math
 import re
 import threading
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from dataclasses import dataclass, field
+from io import BytesIO
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -33,6 +37,10 @@ from casf.witness import (
     UnknownLogError,
     Witness,
 )
+
+if TYPE_CHECKING:
+    from casf.witness.server import WitnessServer
+
 
 __all__ = ["WitnessService", "make_server"]
 
@@ -49,9 +57,25 @@ class WitnessService:
                  authority_keys: dict[str, bytes] | None = None,
                  max_request_bytes: int = MAX_WITNESS_REQUEST_BYTES,
                  max_inflight: int = 64,
-                 busy_timeout_ms: int = 5000) -> None:
+                 busy_timeout_ms: int = 5000,
+                 request_timeout: float = 10.0,
+                 max_connections: int = 128,
+                 header_timeout: float = 10.0) -> None:
         if not token:
             raise CasfError("a bearer credential is required")
+        for value in (max_request_bytes, max_inflight):
+            if type(value) is not int or value < 1:
+                raise ValueError("request and concurrency limits must be positive integers")
+        if type(max_connections) is not int or max_connections < 2:
+            raise ValueError("connection limit must be at least two")
+        if not math.isfinite(request_timeout) or request_timeout <= 0:
+            raise ValueError("request timeout must be positive and finite")
+        if not math.isfinite(header_timeout) or header_timeout <= 0:
+            raise ValueError("header timeout must be positive and finite")
+        self.header_timeout = header_timeout
+        self.max_inflight = max_inflight
+        self.max_connections = max_connections
+        self.request_timeout = request_timeout
         self.witness = Witness(db_path, witness_priv,
                                authority_keys=authority_keys,
                                busy_timeout_ms=busy_timeout_ms)
@@ -69,27 +93,35 @@ class WitnessService:
         parts = header.split(None, 1)
         if len(parts) != 2 or parts[0] != "Bearer":
             return 401
-        if not hmac.compare_digest(parts[1], self._token):
+        if not hmac.compare_digest(parts[1].encode(), self._token.encode()):
             return 403
         return 0
 
 
-def _send(handler: BaseHTTPRequestHandler, status: int, obj: Any) -> None:
-    data = json.dumps(obj).encode()
-    handler.send_response(status)
-    handler.send_header("Content-Type", "application/json")
-    handler.send_header("Content-Length", str(len(data)))
-    handler.end_headers()
-    handler.wfile.write(data)
+@dataclass
+class _Request:
+    """Bounded request data and the response produced by CASF."""
+
+    path: str
+    headers: dict[str, str]
+    rfile: BytesIO = field(default_factory=BytesIO)
+    status: int = 503
+    data: bytes = b""
+    close_connection: bool = False
 
 
-def _error(handler: BaseHTTPRequestHandler, status: int, code: str,
+def _send(handler: _Request, status: int, obj: Any) -> None:
+    handler.status = status
+    handler.data = json.dumps(obj).encode()
+
+
+def _error(handler: _Request, status: int, code: str,
            message: str, *, retryable: bool = False) -> None:
     _send(handler, status,
           {"code": code, "message": message, "retryable": retryable})
 
 
-def _submit(service: WitnessService, handler: BaseHTTPRequestHandler,
+def _submit(service: WitnessService, handler: _Request,
             log_id: str) -> None:
     length = handler.headers.get("Content-Length")
     if length is None or not length.isdigit():
@@ -103,7 +135,7 @@ def _submit(service: WitnessService, handler: BaseHTTPRequestHandler,
     raw = handler.rfile.read(int(length))
     try:
         payload = json.loads(raw)
-    except (ValueError, UnicodeDecodeError):
+    except (ValueError, UnicodeDecodeError, RecursionError):
         _error(handler, 400, "BAD_REQUEST", "request body is not valid JSON")
         return
     if not isinstance(payload, dict) \
@@ -122,8 +154,8 @@ def _submit(service: WitnessService, handler: BaseHTTPRequestHandler,
         detail = f" (stored {e.existing}, proposed {e.proposed})" \
             if e.existing else ""
         _error(handler, 409, "CONFLICT", f"{e}{detail}")
-    except (SchemaError, CasfError) as e:
-        _error(handler, 400, "BAD_REQUEST", str(e))
+    except (SchemaError, CasfError):
+        _error(handler, 400, "BAD_REQUEST", "request failed witness validation")
     except Exception:  # noqa: BLE001 — nothing internal may leak (§14)
         _error(handler, 503, "UNAVAILABLE", "transient service failure",
                retryable=True)
@@ -132,7 +164,7 @@ def _submit(service: WitnessService, handler: BaseHTTPRequestHandler,
 
 
 def _read_json(service: WitnessService,
-               handler: BaseHTTPRequestHandler) -> Any | None:
+               handler: _Request) -> Any | None:
     """Read a bounded JSON request body; None means an error was sent."""
     length = handler.headers.get("Content-Length")
     if length is None or not length.isdigit():
@@ -146,12 +178,12 @@ def _read_json(service: WitnessService,
     raw = handler.rfile.read(int(length))
     try:
         return json.loads(raw)
-    except (ValueError, UnicodeDecodeError):
+    except (ValueError, UnicodeDecodeError, RecursionError):
         _error(handler, 400, "BAD_REQUEST", "request body is not valid JSON")
         return None
 
 
-def _latest(service: WitnessService, handler: BaseHTTPRequestHandler,
+def _latest(service: WitnessService, handler: _Request,
             log_id: str) -> None:
     payload = _read_json(service, handler)
     if payload is None:
@@ -168,8 +200,8 @@ def _latest(service: WitnessService, handler: BaseHTTPRequestHandler,
         _error(handler, 404, "LOG_NOT_FOUND", "log is not registered")
     except NoCheckpointError as e:
         _error(handler, 404, "NO_CHECKPOINT", str(e), retryable=True)
-    except (SchemaError, CasfError) as e:
-        _error(handler, 400, "BAD_REQUEST", str(e))
+    except (SchemaError, CasfError):
+        _error(handler, 400, "BAD_REQUEST", "request failed witness validation")
     except Exception:  # noqa: BLE001 — nothing internal may leak (§14)
         _error(handler, 503, "UNAVAILABLE", "transient service failure",
                retryable=True)
@@ -177,7 +209,7 @@ def _latest(service: WitnessService, handler: BaseHTTPRequestHandler,
         _send(handler, 200, response)
 
 
-def _receipt(service: WitnessService, handler: BaseHTTPRequestHandler,
+def _receipt(service: WitnessService, handler: _Request,
              log_id: str, checkpoint_hash: str) -> None:
     try:
         if not service.witness.log_registered(log_id):
@@ -194,37 +226,12 @@ def _receipt(service: WitnessService, handler: BaseHTTPRequestHandler,
         _send(handler, 200, {"checkpoint": checkpoint, "receipt": receipt})
 
 
-def _drain(service: WitnessService, handler: BaseHTTPRequestHandler) -> None:
-    """Discard an unread request body so keep-alive stays clean."""
-    length = handler.headers.get("Content-Length")
-    if length is None or not length.isdigit():
-        return
-    if int(length) > service.max_request_bytes:
-        handler.close_connection = True
-        return
-    handler.rfile.read(int(length))
-
-
-def _dispatch(service: WitnessService, handler: BaseHTTPRequestHandler,
-              method: str) -> None:
-    auth = service.check_auth(handler.headers.get("Authorization"))
-    if auth != 0:
-        _drain(service, handler)
-    if auth == 401:
-        _error(handler, 401, "UNAUTHENTICATED",
-               "bearer credential required")
-        return
-    if auth != 0:
-        _error(handler, 403, "FORBIDDEN", "credential rejected")
-        return
-    if not service._inflight.acquire(blocking=False):
-        _error(handler, 429, "THROTTLED", "service at capacity; retry later",
-               retryable=True)
-        return
+def _dispatch(service: WitnessService, handler: _Request, method: str) -> None:
+    """Process an authenticated request after admission and body collection."""
+    submit = _SUBMIT_RE.fullmatch(handler.path)
+    receipt = _RECEIPT_RE.fullmatch(handler.path)
+    latest = _LATEST_RE.fullmatch(handler.path)
     try:
-        submit = _SUBMIT_RE.match(handler.path)
-        receipt = _RECEIPT_RE.match(handler.path)
-        latest = _LATEST_RE.match(handler.path)
         if method == "POST" and submit:
             _submit(service, handler, submit.group(1))
         elif method == "POST" and latest:
@@ -233,26 +240,12 @@ def _dispatch(service: WitnessService, handler: BaseHTTPRequestHandler,
             _receipt(service, handler, receipt.group(1), receipt.group(2))
         else:
             _error(handler, 404, "NOT_FOUND", "unknown endpoint")
-    finally:
-        service._inflight.release()
+    except Exception:  # noqa: BLE001 — sanitize errors at the transport boundary
+        _error(handler, 503, "UNAVAILABLE", "transient service failure", retryable=True)
 
 
-def make_server(service: WitnessService, host: str,
-                port: int) -> ThreadingHTTPServer:
-    """Build the threaded HTTP server for one witness service."""
+def make_server(service: WitnessService, host: str, port: int) -> WitnessServer:
+    """Build the optional Uvicorn server for one witness service."""
+    from casf.witness.server import WitnessServer
 
-    class Handler(BaseHTTPRequestHandler):
-        protocol_version = "HTTP/1.1"
-
-        def log_message(self, format: str, *args: Any) -> None:
-            """Never log request lines or bodies by default (SPEC §13)."""
-
-        def do_POST(self) -> None:
-            _dispatch(service, self, "POST")
-
-        def do_GET(self) -> None:
-            _dispatch(service, self, "GET")
-
-    server = ThreadingHTTPServer((host, port), Handler)
-    server.daemon_threads = True
-    return server
+    return WitnessServer(service, host, port)

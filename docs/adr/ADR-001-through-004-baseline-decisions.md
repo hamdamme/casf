@@ -76,10 +76,14 @@ has been satisfied. The following status review was recorded on 2026-10-24.
 
 ## Outstanding D05 conditions
 
-The current [witness transport](../../src/casf/witness/http.py) uses
-`http.server`, which conflicts with the HTTP stack requirement in ADR-004.
-Resolving this conflict requires an implementation change or a separately
-approved decision amendment.
+The [witness transport](../../src/casf/witness/http.py) now delegates HTTP
+serving to an optional Uvicorn adapter using h11 and asyncio. The implementation
+is a candidate for maintainer review under D05. Its installation and resource
+limits are described in the [server guide](../witness-server.md), and the
+added dependencies have a [review record](../release/http-dependency-review.md).
+The approved HTTP error boundary above applies. D05 remains open pending
+acceptance of the implementation and validation evidence, together with the
+remaining dependency and release reviews.
 
 The [dependency lockfile](../../uv.lock) records exact runtime, development,
 and build group versions. The [package configuration](../../pyproject.toml)

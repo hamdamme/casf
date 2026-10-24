@@ -12,7 +12,7 @@ that every proposed experiment or release requirement is complete.
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
 | All requirements linked to evidence | pass | tests/unit/test_traceability.py enforces R01 to R12 and T01 to T22 in CI |
-| No unresolved blocking security findings | blocked | Resolve the HTTP server conflict recorded under [D05](../adr/ADR-001-through-004-baseline-decisions.md) and complete the current dependency review before release approval. |
+| No unresolved blocking security findings | blocked | Review and accept the Uvicorn replacement recorded under [D05](../adr/ADR-001-through-004-baseline-decisions.md) and complete the current dependency review before release approval. |
 | Reproducible install | pass | wheel and sdist built from commit; fresh venv install; CLI roundtrip ends in verify PASS (rehearsal log in this file) |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
 | Witness recovery and fork tests | pass | tests/unit/test_witness.py and test_witness_http.py (T08, T09, T22) |

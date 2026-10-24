@@ -56,7 +56,7 @@ the benchmark and attack harnesses used for the research evaluation.
 
 ## Known open items before any 1.0 discussion
 
-- Resolve the HTTP server conflict under D05.
+- Review and accept the Uvicorn witness implementation and validation under D05.
 - Review the locked dependencies and their licenses, and address the
   build warning about license metadata.
 - Obtain final maintainer approval of release artifact hashes and notes.
