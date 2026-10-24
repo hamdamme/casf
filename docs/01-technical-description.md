@@ -1,5 +1,7 @@
 # Technical Description
 
+> **Historical document.** This document describes the earlier prototype and is retained as development evidence. Its examples and instructions do not describe the current CASF implementation. See the [current specification](specification/CASF_SPEC_001.md) for protocol rules and the [source reconciliation record](specification/D01-source-reconciliation.md) for how the original design was carried forward.
+
 ## Problem
 Backend systems handling sensitive operations need audit logs that remain
 trustworthy even if the log store, a database admin, or an attacker with

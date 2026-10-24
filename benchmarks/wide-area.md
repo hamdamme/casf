@@ -15,7 +15,9 @@ you. In its networking tab, open TCP port 8080. Then:
 ```
 sudo apt update && sudo apt install -y python3 python3-venv git
 git clone https://github.com/hamdamme/casf.git && cd casf
-python3 -m venv .venv && .venv/bin/pip install -q .
+python3 -m venv .venv-tools
+.venv-tools/bin/python -m pip install "uv==0.13.5"
+.venv-tools/bin/uv sync --locked --python python3
 export CASF_BENCH_TOKEN='pick-a-long-random-string'
 .venv/bin/python -m benchmarks.witness_server \
     --host 0.0.0.0 --port 8080 --token-env CASF_BENCH_TOKEN \
@@ -30,7 +32,9 @@ witness does.
 
 ```
 git clone https://github.com/hamdamme/casf.git && cd casf
-python3 -m venv .venv && .venv/bin/pip install -q ".[dev]"
+python3 -m venv .venv-tools
+.venv-tools/bin/python -m pip install "uv==0.13.5"
+.venv-tools/bin/uv sync --locked --extra dev --python python3
 .venv/bin/python -m pytest -q    # must say 212 passed
 export CASF_BENCH_TOKEN='the-same-random-string'
 ```

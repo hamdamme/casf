@@ -12,8 +12,9 @@ directly comparable with the committed local subset.
 sudo apt update && sudo apt install -y python3.12 python3.12-venv git
 git clone https://github.com/hamdamme/casf.git
 cd casf
-python3.12 -m venv .venv
-.venv/bin/pip install -q ".[dev]"
+python3.12 -m venv .venv-tools
+.venv-tools/bin/python -m pip install "uv==0.13.5"
+.venv-tools/bin/uv sync --locked --extra dev --python python3.12
 ```
 
 ## 2. Sanity: the suite must be green first
