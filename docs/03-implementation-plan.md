@@ -1,5 +1,7 @@
 # Implementation Plan
 
+> **Historical document.** This document describes the earlier prototype and is retained as development evidence. Its examples and instructions do not describe the current CASF implementation. See the [current specification](specification/CASF_SPEC_001.md) for protocol rules and the [source reconciliation record](specification/D01-source-reconciliation.md) for how the original design was carried forward.
+
 ## Phase 0 — Design (done)
 - [x] Threat model and crypto selection (`01-technical-description.md`)
 - [x] Entry format and `sealed_body` definition fixed on paper first

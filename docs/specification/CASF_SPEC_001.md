@@ -4,8 +4,8 @@ Implementation baseline for a solo developed open source Python applied research
 Version 0.9 • 10 October 2026 • Status: design review draft
 This specification defines what to build, the bytes to authenticate, the assumptions required for each security claim, and the evidence required before a release. It is intended for the project owner and any contributor working one bounded task at a time. Documentation precedes implementation. No CASF application code has been implemented as part of this document.
 Executive overview. Build a small Python library, a command line verifier, a SQLite store, and a separate reference witness service. Sign every record with Ed25519, link records using SHA 256, and submit sequential checkpoints to one independently operated, stateful witness. Verification must report record validity, external anchoring, freshness, and trust separately. A successful verification is not proof that every real world event was recorded.
-Delivery boundary. The requested source file, Cryptographic_Audit_Framework_Technical_Documentation.docx, was not accessible when this draft was prepared. This draft uses early design notes as secondary context. It is a complete proposed design, but it is not a verified revision of that file. Section 3 identifies inferred changes; source reconciliation remains a documentation gate before implementation.
-Recommended first action. Reconcile the original file, approve the protocol profile and trust model, and freeze version 1 fixtures. Then implement milestones M1 through M8 in order. Treat the witness as a separate administrative trust domain, even when the research demonstration runs on one computer.
+Delivery boundary. The requested source file, Cryptographic_Audit_Framework_Technical_Documentation.docx, was not accessible when this draft was prepared. Early design notes supplied secondary context for the initial design. The original document was later located and reconciled in the [source reconciliation record](D01-source-reconciliation.md), which records D01 as closed. Section 3 retains the initial comparison context; this specification is not a tracked changes revision of the original file.
+Source reconciliation status. The [source reconciliation record](D01-source-reconciliation.md) closes D01 and adopts CASF SPEC 001 revision 0.9 as the governing baseline. Protocol approval, fixture review, and milestone completion require their own evidence. Treat the witness as a separate administrative trust domain, even when the research demonstration runs on one computer.
 The intended contribution is a reproducible evaluation of a constrained audit design. Hash chains, signatures, transparency logs, and external witnesses are established ideas. CASF does not presently establish a new cryptographic construction, a literature gap, or superiority over existing systems.
 
 ## Reading and document control
@@ -17,7 +17,7 @@ Baseline status. The design choices below are proposed defaults, deliberately co
 | Item | Baseline |
 |---|---|
 | Document identifier | CASF SPEC 001 |
-| Document revision | 0.9, source reconciliation pending |
+| Document revision | 0.9; D01 closed in the [source reconciliation record](D01-source-reconciliation.md) |
 | Wire profile | casf-v1, proposed and not yet frozen |
 | Initial implementation | Python library, CLI, SQLite, reference witness |
 | Primary deployment | One local writer host and one separate witness host |
@@ -40,7 +40,7 @@ Integration contract. An application decides which events to emit and authentica
 Atomicity boundary. A business database update and a CASF append are not one atomic transaction. Applications requiring reliable delivery SHOULD write an outbox entry in the same transaction as the business change, then relay it with a stable event ID. A relay crash can cause a retry; it must not duplicate the logical event. A missing or malicious outbox producer remains outside CASF’s completeness guarantee.
 Retention is full history in version 1. There is no redaction or pruning protocol. Sensitive data should be excluded or replaced with application managed opaque references before append. A digest of a predictable secret is not anonymization.
 ## 3 Relationship to the original material
-Early design notes describe the original design as using SHA 256 hash chaining, Ed25519 signatures, HMAC, signed checkpoints, SQLite, and sorted key JSON. They also propose independent witnessing and RFC 8785. These notes are secondary evidence, not an extraction of the original DOCX. No page numbers, quotations, or exact source amendments can be verified at this stage.
+Early design notes describe the original design as using SHA 256 hash chaining, Ed25519 signatures, HMAC, signed checkpoints, SQLite, and sorted key JSON. They also propose independent witnessing and RFC 8785. These notes were secondary evidence used before the original DOCX became available. The table below preserves that initial comparison; the later [source reconciliation record](D01-source-reconciliation.md) records the disposition of the original requirements.
 | Topic from early notes | Proposed treatment in this specification | Comparison status |
 |---|---|---|
 | SHA 256 and Ed25519 | Retained with exact domains and signed bytes | Secondary context only |
@@ -53,8 +53,8 @@ Early design notes describe the original design as using SHA 256 hash chaining, 
 | Key management | Offline authority and linked log epochs | New proposed default |
 | Implementation planning | Requirement IDs, test matrix and bounded tasks | New proposed detail |
 
-Required source reconciliation. On receipt of the original, extract all paragraphs and tables, retain a read only copy and file digest, and create a section by section disposition: retained, clarified, replaced, deferred, or removed. Attach the original section reference and reason to each change. Identify any requirement present only in the original. Do not treat silence in the early design notes as evidence that the source omitted a feature.
-This draft must not be described as a tracked changes revision or a faithful source merge. Its design can be reviewed now. Gate M0 remains open until the source comparison is complete or the owner explicitly chooses this document as an independent replacement baseline.
+Original reconciliation requirements. The draft required extraction of all paragraphs and tables, retention of a read only copy and file digest, and a section by section disposition: retained, clarified, replaced, deferred, or removed. Each change was to identify the original section and reason, including any requirement present only in the original. Silence in the early design notes was not evidence that the source omitted a feature.
+This draft must not be described as a tracked changes revision or a faithful source merge. The [source reconciliation record](D01-source-reconciliation.md) records D01 as closed and adopts this specification as the governing baseline. Closure of D01 alone does not establish completion of the other M0 requirements.
 ## 4 Literature and competitor context
 The review below is focused context, not a systematic literature review. Source links were checked on 10 October 2026. Product documentation can change; benchmark reports must pin the release or commit actually tested.
 | Reference | Relevant established capability | Consequence for CASF |
@@ -386,7 +386,7 @@ For each task, request one reviewable change rather than the entire framework at
 ## 28 Decision register and remaining risks
 | ID | Decision and proposed default | Closure point |
 |---|---|---|
-| D01 | Obtain original file and reconcile; otherwise explicitly authorize independent replacement | Blocking M0 |
+| D01 | Original source located and reconciled; see the [source reconciliation record](D01-source-reconciliation.md) | Closed |
 | D02 | Approve one fixed witness and full record disclosure to it | Blocking M0 |
 | D03 | Approve restricted JCS and pure Ed25519 domains; freeze vectors after review | Blocking M1 |
 | D04 | Approve epoch based rotation and terminal log revocation | Blocking M0 |
@@ -397,7 +397,7 @@ For each task, request one reviewable change rather than the entire framework at
 | D09 | Select benchmark hardware and feasible large workload subset before runs | Before M7 |
 | D10 | Decide supported release lifetime and capacity for external review | Before 1.0 |
 
-D01 cannot be closed from the available source material. The other defaults make this draft internally implementable, but they must be accepted or amended before the relevant gate. A task may prepare schemas or review material, but coding begins only after the documentation baseline is approved.
+D01 is closed according to the [source reconciliation record](D01-source-reconciliation.md). Other decisions and milestone conditions require their own approval and completion evidence; D01 closure does not establish those outcomes.
 Residual risks include a compromised online writer, witness state rollback, loss of independently retained trust, incomplete source event capture, payload exposure at the witness, and the absence of an external security assessment. The proposed full record witness has linear bandwidth and verification work and is intentionally not a scale optimized transparency design. Long outage backlogs and full startup verification may be operationally costly; measure them before widening scope.
 Future candidates include Merkle proofs, threshold witness policies, interoperable transparency formats, remote signing providers, privacy preserving commitments and forward secure signatures. Each changes the threat model or complexity and requires a separate proposal. None is implicitly included in version 1 or necessary to call the initial applied research complete.
 ## 29 Sources and reference notes
@@ -412,5 +412,5 @@ References support background and primitive behavior. CASF object formats, domai
 [8] SQLite. Isolation in SQLite. Transaction and single writer behavior reference. https://www.sqlite.org/isolation.html
 [9] SQLite. Write Ahead Logging. Durability settings, snapshots and deployment restrictions reference. https://www.sqlite.org/wal.html
 [10] Python Cryptographic Authority. Ed25519 signing documentation. Library API reference; select a reviewed stable dependency at M0 rather than the moving latest page. https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ed25519/
-Project context source. Early design notes under the working title Cryptographic Audit Framework supplied the project direction and a secondary description of the original file. They were not used as authority for security claims. The actual Cryptographic_Audit_Framework_Technical_Documentation.docx remains uninspected and is not listed as a verified primary source.
+Project context source. Early design notes under the working title Cryptographic Audit Framework supplied the project direction and a secondary description of the original file. They were not used as authority for security claims. The [source reconciliation record](D01-source-reconciliation.md) documents the later comparison with Cryptographic_Audit_Framework_Technical_Documentation.docx and the disposition of its original requirements.
 Claim discipline. Public descriptions may say “cryptographically verifiable audit records with conditional rollback detection using independently retained witness state.” They must not say “tamper proof,” “guaranteed complete,” “forward secure,” “globally fork free,” “compliant,” “audited,” or “novel cryptography” without separate, specific evidence supporting that claim.
