@@ -77,10 +77,9 @@ These are different assurances. A valid local signature chain alone cannot prove
 | `research/` | Research protocol and documented limitations |
 | `docs/specification/` | Governing specification draft |
 | `docs/adr/` | Recorded architectural decisions |
-| `auditfw/` and `demo.py` | Earlier prototype, retained for historical context |
 | `docs/01-*.md` through `docs/05-*.md` | Earlier design documents, not the governing protocol |
 
-The current Python package is under `src/casf/`. The `auditfw/` directory contains predecessor code and should not be confused with the active implementation.
+The active implementation is under `src/casf/`. The earlier prototype remains accessible in the repository's Git history.
 
 ## Evaluation evidence
 
