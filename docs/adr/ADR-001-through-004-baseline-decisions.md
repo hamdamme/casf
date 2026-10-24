@@ -46,7 +46,7 @@ has been satisfied. The following status review was recorded on 2026-10-24.
 | ADR-001/D02 | M0 | Approved. Separate witness administration under D06 remains required before deployment claims. |
 | ADR-002/D03 | M1 | Approved. The [vector record](../../vectors/v1/README.md) and [changelog](../../CHANGELOG.md) record the independent canonicalization comparison and frozen vectors. |
 | ADR-003/D04 | M0 | Approved. Epoch planning remains an operational consequence. |
-| ADR-004/D05 | M0 | Approved with conditions. Dependency pins and HTTP stack requirements remain outstanding; D05 completion is not established. |
+| ADR-004/D05 | M0 | Approved with conditions. Dependency versions are recorded in uv.lock. The HTTP stack requirement and remaining review evidence keep D05 open. |
 
 ## Outstanding D05 conditions
 
@@ -55,11 +55,13 @@ The current [witness transport](../../src/casf/witness/http.py) uses
 Resolving this conflict requires an implementation change or a separately
 approved decision amendment.
 
-The [package configuration](../../pyproject.toml) and
-[requirements file](../../requirements.txt) specify minimum dependency
-versions. No dependency lockfile is tracked. Exact dependency pins and the
-required lockfile remain outstanding reproducibility evidence for R12.
+The [dependency lockfile](../../uv.lock) records exact runtime, development,
+and build group versions. The [package configuration](../../pyproject.toml)
+constrains the build backend, and the [dependency guide](../dependencies.md)
+describes installation and validation for R12. Dependency advisory and license
+review remain release checks. Historical research environments retain their
+original recorded versions.
 
 The [CI configuration](../../.github/workflows/ci.yml) includes Python 3.12,
 3.13, and 3.14. Configuration alone does not establish successful runs for
-that matrix; this documentation review did not verify CI execution results.
+that matrix; validation results must identify the platform actually tested.

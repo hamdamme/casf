@@ -1,1 +1,2 @@
+# Minimum runtime requirement. Use uv.lock for repeatable development installs.
 cryptography>=41.0

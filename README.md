@@ -34,14 +34,19 @@ Requires Python 3.12 or newer and Git.
 ```bash
 git clone https://github.com/hamdamme/casf.git
 cd casf
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e ".[dev]"
-casf --help
-python -m pytest tests/
+python3 -m venv .venv-tools
+.venv-tools/bin/python -m pip install "uv==0.13.5"
+.venv-tools/bin/uv sync --locked --extra dev --group build --python python3
+.venv/bin/casf --help
+.venv/bin/python -m pytest tests/
 ```
 
 This checks out the development source and runs its tests. It is **not** a production deployment guide. For current protocol and verification rules, see the [project specification](docs/specification/CASF_SPEC_001.md). The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
+
+The committed `uv.lock` records exact dependency versions for development and
+new experiments. See the [dependency guide](docs/dependencies.md) for checks,
+package builds, and deliberate dependency updates. Existing research results
+retain the environments recorded when they were produced.
 
 ## How verification works
 
