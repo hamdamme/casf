@@ -14,3 +14,5 @@ dist/
 # OS
 .DS_Store
 
+# Local archives retained by the developer, not committed
+local_backup/
