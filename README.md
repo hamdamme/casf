@@ -41,7 +41,7 @@ casf --help
 python -m pytest tests/
 ```
 
-This checks out the development source and runs its tests. It is **not** a production deployment guide. For the operator and verification details, see the documentation below.
+This checks out the development source and runs its tests. It is **not** a production deployment guide. For current protocol and verification rules, see the [project specification](docs/specification/CASF_SPEC_001.md). The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
 
 ## How verification works
 
