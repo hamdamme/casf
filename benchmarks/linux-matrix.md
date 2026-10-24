@@ -14,7 +14,7 @@ git clone https://github.com/hamdamme/casf.git
 cd casf
 python3.12 -m venv .venv-tools
 .venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra dev --python python3.12
+.venv-tools/bin/uv sync --locked --extra witness --extra dev --python python3.12
 ```
 
 ## 2. Sanity: the suite must be green first

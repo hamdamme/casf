@@ -36,7 +36,7 @@ git clone https://github.com/hamdamme/casf.git
 cd casf
 python3 -m venv .venv-tools
 .venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra dev --group build --python python3
+.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
 .venv/bin/casf --help
 .venv/bin/python -m pytest tests/
 ```
@@ -46,7 +46,9 @@ This checks out the development source and runs its tests. It is **not** a produ
 The committed `uv.lock` records exact dependency versions for development and
 new experiments. See the [dependency guide](docs/dependencies.md) for checks,
 package builds, and deliberate dependency updates. Existing research results
-retain the environments recorded when they were produced.
+retain the environments recorded when they were produced. The optional
+witness server uses Uvicorn; see the [server guide](docs/witness-server.md)
+for installation, resource limits, and deployment requirements.
 
 ## How verification works
 
