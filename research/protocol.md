@@ -1,9 +1,10 @@
 # Research protocol
 
 Experimental design for RQ1 to RQ4 and H1 to H3 (SPEC §22-§23).
-Status after Phase 8: harnesses implemented and pinned local runs
-executed; the full matrix with network delay injection runs on the
-dedicated Linux machine before M8.
+Status reviewed on 2026-10-24: recorded local experiments, Linux
+replication, the Linux matrix with injected delay, and the wide area
+matrix are present. Their raw files retain the original environments
+and commit identifiers. Release approval remains separate.
 
 ## Questions and hypotheses
 
@@ -70,6 +71,19 @@ batching cuts total witness time per 10000 records from about 420 s
 against 42 ms per record, in exchange for a longer pending
 unwitnessed suffix (128 against 16 records). One path only; no
 general wide area claim is made.
+
+## Recorded experiment commits
+
+The [Linux replication](../benchmarks/results/local-subset-v1-linux/report.md)
+contains 20 raw run files and the [Linux matrix](../benchmarks/results/linux-matrix-v2/report.md)
+contains 40; all record commit `e8fba21`.
+
+The [wide area matrix](../benchmarks/results/wide-area-v3/report.md)
+contains 12 runs recording `84c5444` and eight recording `52688fd`.
+The latter commit only added preliminary result files. Package code,
+benchmark code, and configuration were unchanged between the two commits.
+Both precede the runner retry change in `f91d40a`. The different commit
+identifiers are retained as part of the experiment provenance.
 
 ## Validity controls
 
