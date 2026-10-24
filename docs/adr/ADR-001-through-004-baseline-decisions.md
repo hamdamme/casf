@@ -72,18 +72,20 @@ has been satisfied. The following status review was recorded on 2026-10-24.
 | ADR-001/D02 | M0 | Approved. Separate witness administration under D06 remains required before deployment claims. |
 | ADR-002/D03 | M1 | Approved. The [vector record](../../vectors/v1/README.md) and [changelog](../../CHANGELOG.md) record the independent canonicalization comparison and frozen vectors. |
 | ADR-003/D04 | M0 | Approved. Epoch planning remains an operational consequence. |
-| ADR-004/D05 | M0 | Approved with conditions. Dependency versions are recorded in uv.lock. The HTTP stack requirement and remaining review evidence keep D05 open. |
+| ADR-004/D05 | M0 | Approved with conditions. Dependency versions are recorded in uv.lock. The HTTP implementation is merged; remaining platform component, redistribution, and release reviews keep D05 open. |
 
 ## Outstanding D05 conditions
 
 The [witness transport](../../src/casf/witness/http.py) now delegates HTTP
 serving to an optional Uvicorn adapter using h11 and asyncio. The implementation
-is a candidate for maintainer review under D05. Its installation and resource
+was merged by the maintainer in [PR 7](https://github.com/hamdamme/casf/pull/7).
+[CI run 40123118085](https://github.com/hamdamme/casf/actions/runs/40123118085)
+passed all three Python jobs. Its installation and resource
 limits are described in the [server guide](../witness-server.md), and the
 added dependencies have a [review record](../release/http-dependency-review.md).
 The approved HTTP error boundary above applies. D05 remains open pending
-acceptance of the implementation and validation evidence, together with the
-remaining dependency and release reviews.
+the remaining platform component, redistribution, and release reviews. The [full Python dependency inventory](../release/dependency-review.md)
+records the completed exact version advisory queries and license metadata.
 
 The [dependency lockfile](../../uv.lock) records exact runtime, development,
 and build group versions. The [package configuration](../../pyproject.toml)

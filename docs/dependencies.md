@@ -68,5 +68,14 @@ unchanged.
 The witness implementation uses Uvicorn with h11 and the standard asyncio
 loop. See the [server guide](witness-server.md) for resource limits and
 [dependency review](release/http-dependency-review.md) for the exact added
-packages. D05 remains open until implementation review and validation are
-accepted. Dependency locking alone does not close the decision.
+packages. The implementation was merged in PR 7. D05 remains open for the
+remaining platform component, redistribution, and release reviews.
+Dependency locking alone does not close the decision.
+
+## Current review record
+
+The [locked dependency review](release/dependency-review.md) records the full
+Python package inventory, dated advisory queries, license declarations, and
+remaining platform checks. The package license uses the SPDX expression
+`Apache-2.0` and explicitly includes LICENSE. Builds require Setuptools
+77.0.3 or newer; the reproducible build environment remains pinned to 84.2.1.

@@ -87,3 +87,13 @@ Original research results and local backups were preserved. All 119 protected
 files matched their saved checksums or the documentation corrections already
 committed with maintainer approval. No signed bytes, cryptographic primitives,
 or witness state transition implementation changed.
+
+## Subsequent status
+
+The maintainer merged the implementation in PR 7 as `0f48046`.
+[GitHub CI run 40123118085](https://github.com/hamdamme/casf/actions/runs/40123118085)
+was subsequently verified as successful for Python 3.12, 3.13, and 3.14,
+including builds and wheel checks. The earlier limitations above describe
+the original local validation stage. The license warning was later corrected
+and checked as recorded in the [dependency review](dependency-review.md).
+Original validation results and file hashes above remain preserved.
