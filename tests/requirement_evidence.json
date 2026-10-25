@@ -79,9 +79,10 @@
       "nodeids": [
         "tests/unit/test_verifier.py::test_seq_gap_fails",
         "tests/unit/test_verifier.py::test_chain_break_fails",
-        "tests/unit/test_verifier.py::test_log_id_mismatch_fails"
+        "tests/unit/test_verifier.py::test_log_id_mismatch_fails",
+        "tests/unit/test_release_gaps.py::test_record_mutations"
       ],
-      "remaining_review": "Dedicated duplicate sequence, reorder, wrong genesis, and cross log splice cases still need an assertion review."
+      "remaining_review": ""
     },
     "T05": {
       "assertion_scope": "Verify an export and report the verified range.",
@@ -89,7 +90,7 @@
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
         "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range"
       ],
-      "remaining_review": "These tests run in the development process. A current clean environment public key only verification rehearsal remains required."
+      "remaining_review": "The isolated public verification rehearsal runs separately through tests/public_fixture.py and tests/public_verify.py in package CI. Local results are recorded in session3-validation.md; GitHub results remain pending."
     },
     "T06": {
       "assertion_scope": "Concurrent appends preserve sequence and event id uniqueness.",
@@ -154,9 +155,15 @@
         "tests/unit/test_verifier.py::test_revoked_status_fails_trust",
         "tests/unit/test_verifier.py::test_status_serial_below_minimum_fails",
         "tests/unit/test_lifecycle.py::test_status_book_retains_largest_serial",
-        "tests/unit/test_lifecycle.py::test_revocation_is_terminal"
+        "tests/unit/test_lifecycle.py::test_revocation_is_terminal",
+        "tests/unit/test_release_gaps.py::test_missing_status_is_unknown",
+        "tests/unit/test_release_gaps.py::test_unrelated_status_cannot_supply_trust",
+        "tests/unit/test_release_gaps.py::test_status_rejection_cases",
+        "tests/unit/test_release_gaps.py::test_old_signed_active_status_does_not_claim_current_revocation_knowledge",
+        "tests/unit/test_release_gaps.py::test_revocation_cannot_be_overridden_by_active_or_invalid_status",
+        "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown"
       ],
-      "remaining_review": "The stale offline policy case needs a dedicated assertion review; signature validity does not establish current revocation knowledge."
+      "remaining_review": ""
     },
     "T14": {
       "assertion_scope": "Verify rotation links, reject sealed appends, and expose emergency discontinuity.",
@@ -174,19 +181,33 @@
         "tests/unit/test_bundle.py::test_restore_continues_chain",
         "tests/unit/test_bundle.py::test_tampered_export_metadata_rejected",
         "tests/unit/test_bundle.py::test_missing_required_file_rejected",
-        "tests/unit/test_writer_hardening.py::test_backup_produces_verifiable_copy"
+        "tests/unit/test_writer_hardening.py::test_backup_produces_verifiable_copy",
+        "tests/unit/test_release_gaps.py::test_export_snapshot_during_concurrent_append",
+        "tests/unit/test_release_gaps.py::test_missing_wal_copy_is_incomplete_against_external_anchor"
       ],
-      "remaining_review": "Concurrent export and missing WAL recovery need dedicated evidence review."
+      "remaining_review": ""
     },
     "T16": {
-      "assertion_scope": "Bound input size, nesting, and concurrent HTTP work.",
+      "assertion_scope": "Bound input reads, object counts, record verification, checkpoint and receipt work, nesting, and concurrent HTTP work. Imported decoded records are retained within configured budgets; memory is not constant in record count.",
       "nodeids": [
         "tests/unit/test_canonical.py::test_depth_and_string_limits",
         "tests/unit/test_witness_server.py::test_large_body_rejected_before_upload",
         "tests/unit/test_witness_server.py::test_real_overload_is_json_429",
-        "tests/unit/test_witness_server.py::test_silent_connections_are_bounded"
+        "tests/unit/test_witness_server.py::test_silent_connections_are_bounded",
+        "tests/unit/test_release_gaps.py::test_checkpoint_budget_boundary",
+        "tests/unit/test_release_gaps.py::test_checkpoint_budget_stops_before_extra_crypto",
+        "tests/unit/test_release_gaps.py::test_receipt_budget_stops_before_extra_validation",
+        "tests/unit/test_release_gaps.py::test_bundle_count_and_byte_budgets",
+        "tests/unit/test_release_gaps.py::test_bundle_never_uses_unbounded_read_bytes",
+        "tests/unit/test_release_gaps.py::test_oversized_protocol_input_rejected",
+        "tests/unit/test_release_gaps.py::test_status_symlink_rejected",
+        "tests/unit/test_release_gaps.py::test_nonregular_bundle_member_does_not_block",
+        "tests/unit/test_release_gaps.py::test_cli_honors_chain_budget",
+        "tests/unit/test_release_gaps.py::test_cli_rejects_invalid_chain_budget",
+        "tests/unit/test_release_gaps.py::test_cli_honors_bundle_count_limit",
+        "tests/unit/test_release_gaps.py::test_verifier_record_budget"
       ],
-      "remaining_review": "Excessive checkpoint chain traversal needs a dedicated assertion review."
+      "remaining_review": ""
     },
     "T17": {
       "assertion_scope": "Secret markers are absent from CLI and server diagnostics.",
@@ -212,7 +233,7 @@
         "tests/unit/test_benchmark.py::test_runner_smoke_produces_raw_rows",
         "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir"
       ],
-      "remaining_review": "Small automated runs do not establish a fresh environment rerun of every published benchmark manifest."
+      "remaining_review": "The complete local manifest.v1.json rehearsal is recorded separately. Historical Linux and wide area matrices were not rerun; accepting that release scope remains a maintainer decision."
     },
     "T20": {
       "assertion_scope": "A stolen key cannot hide a prefix rewrite from an anchor but can sign a false suffix.",
@@ -224,9 +245,10 @@
     "T21": {
       "assertion_scope": "Retained state detects witness rollback; an isolated client can miss it.",
       "nodeids": [
-        "tests/unit/test_attack.py::test_t21_witness_rollback_conditional"
+        "tests/unit/test_attack.py::test_t21_witness_rollback_conditional",
+        "tests/unit/test_release_gaps.py::test_signed_witness_equivocation_retained_and_isolated_clients"
       ],
-      "remaining_review": "A dedicated witness equivocation scenario still needs review."
+      "remaining_review": ""
     },
     "T22": {
       "assertion_scope": "Retry after witness commit and process exit returns the same receipt.",

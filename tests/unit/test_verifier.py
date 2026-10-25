@@ -9,6 +9,7 @@ from casf.verifier import (
     TrustStatus,
     verify,
 )
+from tests.status import active_status
 
 AUTH = crypto.generate_key()
 LOG = crypto.generate_key()
@@ -129,7 +130,8 @@ def _anchored(n=3, anchor_count=2):
 
 def test_integrity_pass_reports_verified_range():
     env = _manifest_env()
-    report = verify(env, _chain(3), _pins(env["manifest_hash"]))
+    report = verify(env, _chain(3), _pins(env["manifest_hash"]),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.PASS
     assert report.verified_from == 1
     assert report.verified_through == 3
@@ -137,7 +139,8 @@ def test_integrity_pass_reports_verified_range():
 
 def test_empty_history_passes_at_genesis():
     env = _manifest_env()
-    report = verify(env, [], _pins(env["manifest_hash"]))
+    report = verify(env, [], _pins(env["manifest_hash"]),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.PASS
     assert report.verified_through == 0
 
@@ -145,7 +148,8 @@ def test_first_failure_seq_and_verified_range():
     env = _manifest_env()
     records = _chain(3)
     records[1]["body"] = dict(records[1]["body"], actor="mallory")  # breaks digest+sig
-    report = verify(env, records, _pins(env["manifest_hash"]))
+    report = verify(env, records, _pins(env["manifest_hash"]),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert report.first_failure_seq == 2
     assert report.verified_through == 1
@@ -157,7 +161,8 @@ def test_seq_gap_fails():
     records = _chain(1)
     records.append(_record_env(_record_body(3, records[0]["record_hash"], mh,
                                             event_id="123e4567-e89b-42d3-a456-426600000003")))
-    report = verify(env, records, _pins(mh))
+    report = verify(env, records, _pins(mh),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "SEQ_GAP" in report.diagnostic_codes
 
@@ -167,7 +172,8 @@ def test_chain_break_fails():
     records = _chain(1)
     bad = _record_body(2, "ab" * 32, mh, event_id="123e4567-e89b-42d3-a456-426600000002")
     records.append(_record_env(bad))
-    report = verify(env, records, _pins(mh))
+    report = verify(env, records, _pins(mh),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "CHAIN_BREAK" in report.diagnostic_codes
 
@@ -175,7 +181,8 @@ def test_record_signature_wrong_key_fails():
     env = _manifest_env()
     records = _chain(2)
     records[1] = _record_env(records[1]["body"], signer=WIT)
-    report = verify(env, records, _pins(env["manifest_hash"]))
+    report = verify(env, records, _pins(env["manifest_hash"]),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "RECORD_SIGNATURE" in report.diagnostic_codes
 
@@ -186,7 +193,8 @@ def test_unknown_version_never_falls_back():
     mh = env["manifest_hash"]
     body = _record_body(1, crypto.genesis_hash(mh), mh)
     body["version"] = 2
-    report = verify(env, [_record_env(body)], _pins(mh))
+    report = verify(env, [_record_env(body)], _pins(mh),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "VERSION_UNSUPPORTED" in report.diagnostic_codes
 
@@ -194,14 +202,16 @@ def test_untrusted_issuer_fails():
     env = _manifest_env()
     pins = TrustPins(authority_keys={}, witness_keys={crypto.key_id(WIT_PUB): WIT_PUB},
                      log_id=LOG_ID)
-    report = verify(env, _chain(1), pins)
+    report = verify(env, _chain(1), pins,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert report.trust_status == TrustStatus.UNTRUSTED
     assert "ISSUER_UNTRUSTED" in report.diagnostic_codes
 
 def test_manifest_replacement_fails():
     env = _manifest_env()
-    report = verify(env, _chain(1), _pins("ff" * 32))
+    report = verify(env, _chain(1), _pins("ff" * 32),
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "MANIFEST_REPLACED" in report.diagnostic_codes
 
@@ -211,7 +221,8 @@ def test_log_id_mismatch_fails():
     pins = TrustPins(authority_keys=pins.authority_keys, witness_keys=pins.witness_keys,
                      log_id="123e4567-e89b-42d3-a456-426614179999",
                      manifest_hash=env["manifest_hash"])
-    report = verify(env, _chain(1), pins)
+    report = verify(env, _chain(1), pins,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "LOG_ID_MISMATCH" in report.diagnostic_codes
 
@@ -248,7 +259,8 @@ def test_anchored_pass():
     env, records, cps, rcs = _anchored(3, 2)
     report = verify(env, records, _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
                     checkpoint_envelopes=cps, receipt_envelopes=rcs,
-                    allow_unwitnessed=True)
+                    allow_unwitnessed=True,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.PASS
     assert report.anchor_status == AnchorStatus.PARTIAL_ANCHOR
     assert report.unwitnessed_count == 1
@@ -256,7 +268,8 @@ def test_anchored_pass():
 def test_anchored_incomplete_history_fails():
     env, records, cps, rcs = _anchored(3, 2)
     report = verify(env, records[:1], _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
-                    checkpoint_envelopes=cps, receipt_envelopes=rcs)
+                    checkpoint_envelopes=cps, receipt_envelopes=rcs,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert report.anchor_status == AnchorStatus.INCOMPLETE
 
@@ -267,14 +280,16 @@ def test_anchored_divergent_head_fails():
     records[1]["signature"] = crypto.sign_record(LOG, records[1]["body"])
     # chain now breaks at 3; keep only records 1-2 so anchor compares a changed head
     report = verify(env, records[:2], _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
-                    checkpoint_envelopes=cps, receipt_envelopes=rcs)
+                    checkpoint_envelopes=cps, receipt_envelopes=rcs,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert report.anchor_status == AnchorStatus.DIVERGENT
 
 def test_anchored_unwitnessed_suffix_rejected_by_default():
     env, records, cps, rcs = _anchored(3, 2)
     report = verify(env, records, _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
-                    checkpoint_envelopes=cps, receipt_envelopes=rcs)
+                    checkpoint_envelopes=cps, receipt_envelopes=rcs,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "UNWITNESSED_SUFFIX" in report.diagnostic_codes
 
@@ -285,6 +300,7 @@ def test_anchored_bad_receipt_signature_fails():
     bad_rc = dict(rcs[0], signature=mangled)
     report = verify(env, records, _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
                     checkpoint_envelopes=cps, receipt_envelopes=[bad_rc],
-                    allow_unwitnessed=True)
+                    allow_unwitnessed=True,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "RECEIPT_SIGNATURE" in report.diagnostic_codes

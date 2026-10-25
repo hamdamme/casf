@@ -75,3 +75,23 @@ assertion failed. The original frozen canonicalization vectors are unchanged.
 The requirement evidence gate remains open until the listed review items are
 resolved or their limitations are explicitly accepted under the release
 criteria. Updating the mapping does not approve a release.
+
+
+## Session 3 follow up
+
+The [Session 3 record](session3-validation.md) describes runtime fixes,
+new scenario tests, and isolated package rehearsals. The JSON evidence map
+now includes the new tests. The table above preserves the initial review;
+its remaining review column is not the current task list.
+
+The duplicate, reordered, genesis, log splice, concurrent export, missing WAL,
+and signed witness equivocation scenarios now have explicit assertions.
+Missing authority status yields UNKNOWN trust and an overall failure.
+Signed active status records a currentness limitation; no wall clock expiry
+rule or globally current revocation knowledge is invented.
+
+The chain, receipt, and status budgets are enforced, and bundle parsing uses
+bounded reads before parsing with total byte and count budgets. The reader
+still retains decoded record objects, so it is bounded rather than constant
+memory in record count. The public package rehearsal and historical benchmark
+scope still require final release acceptance; see the current JSON map.

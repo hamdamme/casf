@@ -45,6 +45,8 @@ jobs:
           "$RUNNER_TEMP/casf-wheel/bin/python" -I -c "import casf; print(casf.__version__)"
           "$RUNNER_TEMP/casf-wheel/bin/casf" --help
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py
+          "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
+          "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
           uv export --locked --extra witness --no-default-groups --no-emit-project --output-file "$RUNNER_TEMP/casf-witness.txt" > /dev/null
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --require-hashes -r "$RUNNER_TEMP/casf-witness.txt"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py --witness
@@ -93,6 +95,8 @@ jobs:
           uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --no-deps "$RUNNER_TEMP"/casf-minimum-dist/*.whl
           "$RUNNER_TEMP/casf-minimum/bin/python" -m pytest tests/ -v
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/wheel_smoke.py --witness
+          "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
+          "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
 
 # NOTE: full adversarial/crash matrix runs before release and
 # periodically on protected infra (SPEC §25). Actions pinned by commit ID.

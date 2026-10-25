@@ -15,9 +15,11 @@ import threading
 import pytest
 
 from casf import crypto
+from casf.canonical.jcs import canonicalize
 from casf.cli import main
 from casf.keys import load_key
 from casf.witness.http import WitnessService, make_server
+from tests.status import active_status
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -121,6 +123,8 @@ def test_full_command_flow(tmp_path, capsys):
     bundle = tmp_path / "bundle"
     assert main(["export", "--db", str(db), "--key", str(key),
                  "--out", str(bundle)]) == 0
+    (bundle / "status.jsonl").write_bytes(
+        canonicalize(active_status(AUTH, env["manifest_hash"])) + b"\n")
     trust = _trust(tmp_path, env)
     assert main(["verify", str(bundle), "--trust", str(trust),
                  "--mode", "integrity"]) == 0
@@ -177,6 +181,8 @@ def _exported(tmp_path, capsys, records=2):
     w.record_receipt(LOG_ID, receipt)
     dest = tmp_path / "bundle"
     w.export_bundle(LOG_ID, dest)
+    (dest / "status.jsonl").write_bytes(
+        canonicalize(active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"])) + b"\n")
     return w, dest
 
 

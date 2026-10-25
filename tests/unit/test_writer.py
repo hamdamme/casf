@@ -15,6 +15,7 @@ from casf import crypto
 from casf.errors import CasfError
 from casf.verifier import Mode, Result, TrustPins, verify
 from casf.writer import BusyError, EventIdConflictError, Writer
+from tests.status import active_status
 
 # Spawn, never fork: forking a process with live SQLite connections is
 # unsafe and platform dependent; spawn behaves the same everywhere.
@@ -75,7 +76,8 @@ def _verify_db(w):
         authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB},
         witness_keys={crypto.key_id(WIT_PUB): WIT_PUB},
         log_id=LOG_ID, manifest_hash=env["manifest_hash"])
-    return verify(env, records, pins, mode=Mode.INTEGRITY)
+    return verify(env, records, pins, mode=Mode.INTEGRITY,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
 
 
 # ---------------- basic append and idempotency ----------------
