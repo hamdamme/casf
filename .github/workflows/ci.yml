@@ -48,5 +48,51 @@ jobs:
           uv export --locked --extra witness --no-default-groups --no-emit-project --output-file "$RUNNER_TEMP/casf-witness.txt" > /dev/null
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --require-hashes -r "$RUNNER_TEMP/casf-witness.txt"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py --witness
+
+  minimum:
+    name: minimum (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install fixed tooling
+        run: |
+          python -m venv "$RUNNER_TEMP/casf-tools"
+          "$RUNNER_TEMP/casf-tools/bin/python" -m pip install "uv==0.13.5"
+          echo "$RUNNER_TEMP/casf-tools/bin" >> "$GITHUB_PATH"
+      - name: Read declared dependency bounds
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+          from pathlib import Path
+          metadata = tomllib.loads(Path("pyproject.toml").read_text())
+          output = Path(os.environ["RUNNER_TEMP"])
+          runtime = metadata["project"]["dependencies"]
+          runtime += metadata["project"]["optional-dependencies"]["witness"]
+          (output / "casf-minimum.in").write_text("\n".join(runtime) + "\n")
+          backend = metadata["build-system"]["requires"]
+          (output / "casf-backend.in").write_text("\n".join(backend) + "\n")
+          PY
+      - name: Install minimum direct dependencies
+        run: |
+          uv venv --python "$(command -v python)" "$RUNNER_TEMP/casf-minimum"
+          uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --resolution lowest-direct -r "$RUNNER_TEMP/casf-minimum.in" -r "$RUNNER_TEMP/casf-backend.in"
+          uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" "pytest==9.1.1" "build==1.6.1" "wheel==0.45.1"
+          uv pip check --python "$RUNNER_TEMP/casf-minimum/bin/python"
+          uv pip freeze --python "$RUNNER_TEMP/casf-minimum/bin/python"
+      - name: Build with minimum backend
+        run: '"$RUNNER_TEMP/casf-minimum/bin/python" -m build --no-isolation --outdir "$RUNNER_TEMP/casf-minimum-dist"'
+      - name: Install wheel and run suite
+        run: |
+          uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --no-deps "$RUNNER_TEMP"/casf-minimum-dist/*.whl
+          "$RUNNER_TEMP/casf-minimum/bin/python" -m pytest tests/ -v
+          "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/wheel_smoke.py --witness
+
 # NOTE: full adversarial/crash matrix runs before release and
 # periodically on protected infra (SPEC §25). Actions pinned by commit ID.

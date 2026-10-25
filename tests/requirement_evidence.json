@@ -1,0 +1,240 @@
+{
+  "requirements": {
+    "R01": [
+      "T01",
+      "T02"
+    ],
+    "R02": [
+      "T03",
+      "T04"
+    ],
+    "R03": [
+      "T05"
+    ],
+    "R04": [
+      "T06",
+      "T07"
+    ],
+    "R05": [
+      "T08",
+      "T09"
+    ],
+    "R06": [
+      "T10",
+      "T11"
+    ],
+    "R07": [
+      "T12",
+      "T13"
+    ],
+    "R08": [
+      "T14"
+    ],
+    "R09": [
+      "T15"
+    ],
+    "R10": [
+      "T16",
+      "T17"
+    ],
+    "R11": [
+      "T18"
+    ],
+    "R12": [
+      "T19"
+    ]
+  },
+  "spec_tests": {
+    "T01": {
+      "assertion_scope": "Reject ambiguous JSON and invalid Unicode.",
+      "nodeids": [
+        "tests/unit/test_canonical.py::test_reject_duplicate_keys",
+        "tests/unit/test_canonical.py::test_reject_float",
+        "tests/unit/test_canonical.py::test_reject_invalid_unicode"
+      ],
+      "remaining_review": ""
+    },
+    "T02": {
+      "assertion_scope": "Compare exact canonical bytes and reject values outside the profile.",
+      "nodeids": [
+        "tests/unit/test_canonical.py::test_key_ordering_utf16_not_codepoint",
+        "tests/unit/test_canonical.py::test_string_escaping_controls",
+        "tests/unit/test_canonical.py::test_nested_arrays_and_safe_edges",
+        "tests/unit/test_canonical.py::test_reject_unsafe_integer"
+      ],
+      "remaining_review": ""
+    },
+    "T03": {
+      "assertion_scope": "Reject altered bodies, wrong keys, and wrong domains.",
+      "nodeids": [
+        "tests/unit/test_crypto.py::test_tampered_body_fails",
+        "tests/unit/test_crypto.py::test_wrong_key_fails",
+        "tests/unit/test_crypto.py::test_wrong_domain_fails",
+        "tests/unit/test_verifier.py::test_first_failure_seq_and_verified_range"
+      ],
+      "remaining_review": ""
+    },
+    "T04": {
+      "assertion_scope": "Reject sequence gaps, broken predecessors, and wrong log binding.",
+      "nodeids": [
+        "tests/unit/test_verifier.py::test_seq_gap_fails",
+        "tests/unit/test_verifier.py::test_chain_break_fails",
+        "tests/unit/test_verifier.py::test_log_id_mismatch_fails"
+      ],
+      "remaining_review": "Dedicated duplicate sequence, reorder, wrong genesis, and cross log splice cases still need an assertion review."
+    },
+    "T05": {
+      "assertion_scope": "Verify an export and report the verified range.",
+      "nodeids": [
+        "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
+        "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range"
+      ],
+      "remaining_review": "These tests run in the development process. A current clean environment public key only verification rehearsal remains required."
+    },
+    "T06": {
+      "assertion_scope": "Concurrent appends preserve sequence and event id uniqueness.",
+      "nodeids": [
+        "tests/unit/test_writer.py::test_concurrent_writers_contiguous_sequence",
+        "tests/unit/test_writer.py::test_concurrent_same_event_id_one_record"
+      ],
+      "remaining_review": ""
+    },
+    "T07": {
+      "assertion_scope": "Process exits before insert, before commit, and after commit preserve retry semantics.",
+      "nodeids": [
+        "tests/unit/test_writer.py::test_crash_before_commit_is_all_or_none",
+        "tests/unit/test_writer_hardening.py::test_crash_before_insert_leaves_nothing",
+        "tests/unit/test_writer_hardening.py::test_crash_after_commit_retry_returns_committed_record"
+      ],
+      "remaining_review": ""
+    },
+    "T08": {
+      "assertion_scope": "Reject invalid extensions and conflicting checkpoint reuse without advancing state.",
+      "nodeids": [
+        "tests/unit/test_witness.py::test_bad_extension_rejected_state_unchanged",
+        "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict"
+      ],
+      "remaining_review": ""
+    },
+    "T09": {
+      "assertion_scope": "Accept at most one of two concurrent signed forks.",
+      "nodeids": [
+        "tests/unit/test_witness.py::test_concurrent_forks_single_winner"
+      ],
+      "remaining_review": ""
+    },
+    "T10": {
+      "assertion_scope": "An old restored database is incomplete against a newer anchor.",
+      "nodeids": [
+        "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor"
+      ],
+      "remaining_review": ""
+    },
+    "T11": {
+      "assertion_scope": "Replay and wrong nonce fail; timeout is inconclusive.",
+      "nodeids": [
+        "tests/unit/test_online.py::test_replay_never_passes_freshness",
+        "tests/unit/test_online.py::test_wrong_nonce_rejected",
+        "tests/unit/test_online.py::test_timeout_is_inconclusive"
+      ],
+      "remaining_review": ""
+    },
+    "T12": {
+      "assertion_scope": "Reject unknown versions, wrong keys, and replaced manifests.",
+      "nodeids": [
+        "tests/unit/test_verifier.py::test_unknown_version_never_falls_back",
+        "tests/unit/test_verifier.py::test_record_signature_wrong_key_fails",
+        "tests/unit/test_verifier.py::test_manifest_replacement_fails"
+      ],
+      "remaining_review": ""
+    },
+    "T13": {
+      "assertion_scope": "Reject revocation and status serial rollback.",
+      "nodeids": [
+        "tests/unit/test_verifier.py::test_revoked_status_fails_trust",
+        "tests/unit/test_verifier.py::test_status_serial_below_minimum_fails",
+        "tests/unit/test_lifecycle.py::test_status_book_retains_largest_serial",
+        "tests/unit/test_lifecycle.py::test_revocation_is_terminal"
+      ],
+      "remaining_review": "The stale offline policy case needs a dedicated assertion review; signature validity does not establish current revocation knowledge."
+    },
+    "T14": {
+      "assertion_scope": "Verify rotation links, reject sealed appends, and expose emergency discontinuity.",
+      "nodeids": [
+        "tests/unit/test_lifecycle.py::test_rotation_links_new_epoch",
+        "tests/unit/test_lifecycle.py::test_seal_log_final_checkpoint",
+        "tests/unit/test_lifecycle.py::test_emergency_epoch_marks_discontinuity"
+      ],
+      "remaining_review": ""
+    },
+    "T15": {
+      "assertion_scope": "Export and restore verify; malformed bundles fail.",
+      "nodeids": [
+        "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
+        "tests/unit/test_bundle.py::test_restore_continues_chain",
+        "tests/unit/test_bundle.py::test_tampered_export_metadata_rejected",
+        "tests/unit/test_bundle.py::test_missing_required_file_rejected",
+        "tests/unit/test_writer_hardening.py::test_backup_produces_verifiable_copy"
+      ],
+      "remaining_review": "Concurrent export and missing WAL recovery need dedicated evidence review."
+    },
+    "T16": {
+      "assertion_scope": "Bound input size, nesting, and concurrent HTTP work.",
+      "nodeids": [
+        "tests/unit/test_canonical.py::test_depth_and_string_limits",
+        "tests/unit/test_witness_server.py::test_large_body_rejected_before_upload",
+        "tests/unit/test_witness_server.py::test_real_overload_is_json_429",
+        "tests/unit/test_witness_server.py::test_silent_connections_are_bounded"
+      ],
+      "remaining_review": "Excessive checkpoint chain traversal needs a dedicated assertion review."
+    },
+    "T17": {
+      "assertion_scope": "Secret markers are absent from CLI and server diagnostics.",
+      "nodeids": [
+        "tests/unit/test_cli.py::test_wrong_passphrase_never_printed",
+        "tests/unit/test_cli.py::test_token_never_printed",
+        "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized"
+      ],
+      "remaining_review": ""
+    },
+    "T18": {
+      "assertion_scope": "Integrity may pass after unwitnessed tail loss; report unwitnessed suffixes.",
+      "nodeids": [
+        "tests/unit/test_attack.py::test_tail_loss_integrity_passes_and_is_documented",
+        "tests/unit/test_verify_online.py::test_unwitnessed_suffix_visible_when_allowed"
+      ],
+      "remaining_review": ""
+    },
+    "T19": {
+      "assertion_scope": "A repeated small manifest preserves procedure and records environment metadata.",
+      "nodeids": [
+        "tests/unit/test_benchmark.py::test_manifest_rerun_reproduces_procedure",
+        "tests/unit/test_benchmark.py::test_runner_smoke_produces_raw_rows",
+        "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir"
+      ],
+      "remaining_review": "Small automated runs do not establish a fresh environment rerun of every published benchmark manifest."
+    },
+    "T20": {
+      "assertion_scope": "A stolen key cannot hide a prefix rewrite from an anchor but can sign a false suffix.",
+      "nodeids": [
+        "tests/unit/test_attack.py::test_t20_stolen_writer_key"
+      ],
+      "remaining_review": ""
+    },
+    "T21": {
+      "assertion_scope": "Retained state detects witness rollback; an isolated client can miss it.",
+      "nodeids": [
+        "tests/unit/test_attack.py::test_t21_witness_rollback_conditional"
+      ],
+      "remaining_review": "A dedicated witness equivocation scenario still needs review."
+    },
+    "T22": {
+      "assertion_scope": "Retry after witness commit and process exit returns the same receipt.",
+      "nodeids": [
+        "tests/unit/test_witness.py::test_identical_retry_replays_same_receipt",
+        "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt"
+      ],
+      "remaining_review": ""
+    }
+  }
+}

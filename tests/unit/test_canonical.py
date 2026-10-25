@@ -63,10 +63,8 @@ def test_key_ordering_basic():
 
 def test_string_escaping_controls():
     obj = {"s": "\u0000\u001f\u007f\t\n\r\b\f"}
-    assert canonicalize(obj) == (
-        '{"s":"\\u0000\\u001f\u007f\\t\\n\\r\\b\\f"}'
-    ).encode().decode("unicode_escape").encode("latin-1") or True  # see vectors
-    # deterministic exact form, asserted via vectors file in conformance suite
+    assert canonicalize(obj) == b'{"s":"\\u0000\\u001f\x7f\\t\\n\\r\\b\\f"}'
+
 
 def test_non_ascii_passthrough():
     s = "héllo € 中文 \U0001F600"

@@ -79,3 +79,25 @@ Python package inventory, dated advisory queries, license declarations, and
 remaining platform checks. The package license uses the SPDX expression
 `Apache-2.0` and explicitly includes LICENSE. Builds require Setuptools
 77.0.3 or newer; the reproducible build environment remains pinned to 84.2.1.
+
+
+## Minimum dependency compatibility
+
+The separate `minimum` CI job uses Python 3.12, 3.13, and 3.14. It reads the
+base and witness requirements from pyproject.toml and uses uv's
+`lowest-direct` resolution in a fresh environment. The build backend minimum
+is also read from the declared build requirements. Transitive dependencies
+use compatible available versions; this is not a minimum transitive package
+matrix. The selected versions are printed in each job log.
+
+The test runner and build frontend stay fixed at pytest 9.1.1 and build
+1.6.1, with wheel 0.45.1 for the minimum backend. The development extra's
+minimum lint and test tool versions are outside this compatibility check.
+The locked jobs continue to validate the normal development environment.
+
+The job builds a wheel and source archive with the minimum backend, installs
+the wheel without replacing its dependencies, runs the full suite, and checks
+a witness request and shutdown. It does not change uv.lock. Minimum version
+testing establishes compatibility only; it is not a security recommendation
+for those older packages. Use the reviewed locked environment for development
+and experiments.
