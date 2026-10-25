@@ -4,7 +4,7 @@ Section 26 gates with evidence. Each row is pass or explicitly
 marked blocked; blocked rows name the remaining action. Publication is
 a separate deliberate maintainer action (SPEC §25).
 
-Status reviewed on 2026-10-24. Benchmark completion below refers to the
+Status reviewed on 2026-10-25. Benchmark completion below refers to the
 recorded configurations and original experiment commits. It does not imply
 that every proposed experiment or release requirement is complete.
 
@@ -19,9 +19,9 @@ that every proposed experiment or release requirement is complete.
 | Key rotation drill | pass | tests/unit/test_lifecycle.py (T14) |
 | Undetectable cases documented | pass | research/limitations.md; benchmarks/results/detection-v1/report.md |
 | Locked Python package advisory review | pass | [Review](dependency-review.md) covers all 24 external locked packages and uv 0.13.5. OSV and PyPI returned no listed advisories for these exact versions on 2026-10-24; repeat before publication. |
-| Platform and bundled component review | blocked | Review the release platform Python, SQLite, TLS, and bundled native components; Python package queries do not cover the complete deployment. |
-| Minimum dependency compatibility | blocked | A separate minimum dependency matrix is implemented for Python 3.12, 3.13, and 3.14. PR 9 GitHub CI passed the new matrix. Session 3 runtime changes still require their own GitHub validation; see [Session 3](session3-validation.md). |
-| License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. Final redistribution notice review and a real private reporting channel test remain. |
+| Platform and bundled component review | blocked | Review the release platform Python, SQLite, TLS, and bundled native components; Python package queries do not cover the complete deployment. The separate Python 3.12 refresh is pending as recorded below. |
+| Minimum dependency compatibility | pass | PR 10 was merged. All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40230741913) passed across Python 3.12, 3.13, and 3.14, covering locked and minimum direct dependencies. This completes the pending Session 3 compatibility checks; see [Session 3](session3-validation.md). |
+| License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. License files were inspected for the six installed runtime packages. Final redistribution review remains open. The private reporting exercise has not been completed. |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
 | Package contents free of keys and data | pass | Fresh wheel and source archive inspected after the metadata correction; no backups, research results, databases, private key files, or PEM private key blocks found. See the [review](dependency-review.md). |
 | Recorded Linux benchmark matrix with network delay injection | pass | [Report](../../benchmarks/results/linux-matrix-v2/report.md) and 40 raw run files cover the four configurations in [manifest.v2.json](../../benchmarks/manifest.v2.json), including the 25 ms delay case. |
@@ -29,6 +29,18 @@ that every proposed experiment or release requirement is complete.
 | Disclosure channel test submission | blocked | channel enabled; the test report itself is a maintainer action to avoid fabricated evidence |
 | External review of protocol and design | blocked | sought, not yet received; not claimed anywhere |
 | Maintainer approval of artifact hashes and notes | blocked | final maintainer action at actual release time |
+
+## Session 4 review status
+
+Platform review remains open. The previous local Python 3.12 environment uses
+Python 3.12.11 and OpenSSL 3.6.0. A separate validation run with Python 3.12.16
+is pending availability of a packaged Mac ARM build through the selected
+installer. This availability check was made on 2026-10-25. Previous
+environments and results are preserved.
+
+License files were inspected for cryptography, CFFI, pycparser, Uvicorn,
+Click, and h11. Final redistribution review remains open. The private
+reporting exercise has not been completed.
 
 ## Current validation evidence
 
