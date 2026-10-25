@@ -15,6 +15,7 @@ from enum import Enum
 from typing import Any
 
 from casf import crypto
+from casf.canonical.limits import MAX_CHECKPOINT_CHAIN_STEPS
 from casf.errors import (
     CasfError,
     InconclusiveError,
@@ -141,12 +142,20 @@ def verify(manifest_envelope: JsonObject,
            status_envelopes: Iterable[JsonObject] = (),
            allow_unwitnessed: bool = False,
            online_query: Callable[[], Any] | None = None,
-           retained_checkpoint: tuple[int, str] | None = None) -> Report:
+           retained_checkpoint: tuple[int, str] | None = None,
+           max_chain_steps: int = MAX_CHECKPOINT_CHAIN_STEPS,
+           max_records: int = 1_000_000) -> Report:
     """Verify evidence using only pinned public trust (SPEC §15).
 
     Online mode additionally calls online_query, a callable returning
     a fresh witness view (see casf.online.query_latest), and compares
     it to the evidence and the retained high water checkpoint."""
+    if type(max_chain_steps) is not int or max_chain_steps < 1:
+        raise ValueError("max_chain_steps must be a positive integer")
+    if type(pins.minimum_status_serial) is not int or pins.minimum_status_serial < 1:
+        raise ValueError("minimum_status_serial must be a positive integer")
+    if type(max_records) is not int or max_records < 1:
+        raise ValueError("max_records must be a positive integer")
     codes: list[str] = []
     report = Report(
         mode=mode, result=Result.PASS,
@@ -228,7 +237,14 @@ def verify(manifest_envelope: JsonObject,
     pinned_witness = pins.witness_keys.get(witness_id)
 
     # ---------------------------------------------------- status statements
-    for env in status_envelopes:
+    accepted_status = False
+    revoked = False
+    for status_index, env in enumerate(status_envelopes):
+        if status_index >= max_chain_steps:
+            report.result = Result.FAIL if report.result is Result.FAIL else Result.INCONCLUSIVE
+            report.trust_status = TrustStatus.REVOKED if revoked else TrustStatus.UNKNOWN
+            codes.append("STATUS_BUDGET_EXCEEDED")
+            return report
         try:
             sbody, ssig = _expect_status_envelope(env)
             validate_protocol_body("status", sbody)
@@ -237,26 +253,45 @@ def verify(manifest_envelope: JsonObject,
             report.trust_status = TrustStatus.UNKNOWN
             continue
         if _field_str(sbody, "manifest_hash") != manifest_hash:
-            continue  # statement for a different log, not evidence here
+            continue
+        if _field_str(sbody, "issuer_id") != issuer_id:
+            fail("STATUS_ISSUER")
+            report.trust_status = TrustStatus.UNKNOWN
+            continue
         try:
             crypto.verify_status(authority_key, sbody, ssig)
         except CasfError:
             fail("STATUS_SIGNATURE")
             report.trust_status = TrustStatus.UNKNOWN
             continue
+        # Revocation is terminal even if a newer active statement is supplied.
+        if _field_str(sbody, "status") == "revoked":
+            revoked = True
+            fail("STATUS_REVOKED")
         if _field_int(sbody, "serial") < pins.minimum_status_serial:
             fail("STATUS_SERIAL_LOW")
             report.trust_status = TrustStatus.UNKNOWN
             continue
-        if _field_str(sbody, "status") == "revoked":
-            fail("STATUS_REVOKED")
-            report.trust_status = TrustStatus.REVOKED
+        accepted_status = True
+    if not accepted_status:
+        fail("STATUS_MISSING")
+        report.trust_status = TrustStatus.UNKNOWN
+    if accepted_status and not revoked:
+        codes.append("STATUS_CURRENTNESS_UNCONFIRMED")
+    if revoked:
+        report.trust_status = TrustStatus.REVOKED
 
     # --------------------------------------------------------- record stream
     genesis = crypto.genesis_hash(manifest_hash)
     expected_prev = genesis
     verified_digests: list[str] = []
     for seq, env in enumerate(records, start=1):
+        if seq > max_records:
+            report.verified_through = len(verified_digests)
+            if report.result is not Result.FAIL:
+                report.result = Result.INCONCLUSIVE
+            codes.append("RECORD_BUDGET_EXCEEDED")
+            return report
         try:
             rbody, record_hash, rsig = _expect_envelope(env, "record_hash")
             if rbody.get("version") != 1:
@@ -306,6 +341,11 @@ def verify(manifest_envelope: JsonObject,
     prev_count = 0
     prev_head = genesis
     for index, env in enumerate(checkpoint_envelopes):
+        if index >= max_chain_steps:
+            report.result = Result.INCONCLUSIVE
+            report.anchor_status = AnchorStatus.INCOMPLETE
+            codes.append("CHAIN_BUDGET_EXCEEDED")
+            return report
         try:
             cbody, checkpoint_hash, csig = _expect_envelope(env, "checkpoint_hash")
             validate_protocol_body("checkpoint", cbody)
@@ -359,7 +399,12 @@ def verify(manifest_envelope: JsonObject,
     # ------------------------------------------------------ receipts
     receipts: list[JsonObject] = []
     prev_rc = ZERO
-    for env in receipt_envelopes:
+    for receipt_index, env in enumerate(receipt_envelopes):
+        if receipt_index >= max_chain_steps:
+            report.result = Result.INCONCLUSIVE
+            report.anchor_status = AnchorStatus.INCOMPLETE
+            codes.append("CHAIN_BUDGET_EXCEEDED")
+            return report
         try:
             rbody2, receipt_hash, rsig2 = _expect_envelope(env, "receipt_hash")
             validate_protocol_body("receipt", rbody2)

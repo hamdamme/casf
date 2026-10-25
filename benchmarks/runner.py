@@ -297,7 +297,6 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                         witness_retries)
                     checkpoints += 1
 
-                start = time.perf_counter()
                 envelope = writer.manifest_envelope(log_id)
                 auth_pub = crypto.public_key_raw(
                     workload.seeded_key("authority"))
@@ -308,9 +307,14 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                     witness_keys={crypto.key_id(wit_pub): wit_pub},
                     log_id=log_id,
                     manifest_hash=envelope["manifest_hash"])
+                status = workload.active_status(envelope["manifest_hash"])
+                start = time.perf_counter()
                 report = verify(envelope, writer.records(log_id),
-                                pins, mode=Mode.INTEGRITY)
+                                pins, mode=Mode.INTEGRITY,
+                                status_envelopes=[status])
                 verify_seconds = time.perf_counter() - start
+                if report.result.value != "PASS":
+                    raise RuntimeError("benchmark evidence verification failed")
 
                 return {
                     "config": {

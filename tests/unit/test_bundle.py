@@ -10,7 +10,9 @@ from casf.bundle import read_bundle
 from casf.errors import CasfError
 from casf.verifier import AnchorStatus, Mode, Result, TrustPins, verify
 from casf.writer import RestoreBehindWitnessError, Writer
+from tests.status import active_status
 from tests.unit.test_writer import (
+    AUTH,
     AUTH_PUB,
     LOG,
     LOG_ID,
@@ -82,7 +84,8 @@ def test_export_verifies_under_verifier(tmp_path):
     _, dest = _exported(tmp_path, 4)
     bundle = read_bundle(dest)
     report = verify(bundle.manifest, bundle.records, _pins(bundle.manifest_hash),
-                    mode=Mode.INTEGRITY)
+                    mode=Mode.INTEGRITY,
+                    status_envelopes=[active_status(AUTH, bundle.manifest["manifest_hash"]) ])
     assert report.result == Result.PASS
     assert report.verified_through == 4
 
@@ -146,7 +149,8 @@ def test_anchored_bundle_verifies(tmp_path):
     report = verify(bundle.manifest, bundle.records, _pins(mh),
                     mode=Mode.ANCHORED,
                     checkpoint_envelopes=bundle.checkpoints,
-                    receipt_envelopes=bundle.receipts)
+                    receipt_envelopes=bundle.receipts,
+                    status_envelopes=[active_status(AUTH, bundle.manifest["manifest_hash"]) ])
     assert report.result == Result.PASS
     assert report.anchor_status == AnchorStatus.OK
 
@@ -228,12 +232,14 @@ def test_t10_restored_old_db_reports_incomplete_against_newer_anchor(
 
     stale = verify(manifest, old_records, _pins(mh), mode=Mode.ANCHORED,
                    checkpoint_envelopes=[cp1, cp2],
-                   receipt_envelopes=[r1, r2], allow_unwitnessed=True)
+                   receipt_envelopes=[r1, r2], allow_unwitnessed=True,
+                    status_envelopes=[active_status(AUTH, manifest["manifest_hash"]) ])
     assert stale.result == Result.FAIL
     assert stale.anchor_status == AnchorStatus.INCOMPLETE
     assert "ANCHOR_INCOMPLETE" in stale.diagnostic_codes
 
     # the same old evidence against its own anchor still verifies
     current = verify(manifest, old_records, _pins(mh), mode=Mode.ANCHORED,
-                     checkpoint_envelopes=[cp1], receipt_envelopes=[r1])
+                     checkpoint_envelopes=[cp1], receipt_envelopes=[r1],
+                    status_envelopes=[active_status(AUTH, manifest["manifest_hash"]) ])
     assert current.result == Result.PASS

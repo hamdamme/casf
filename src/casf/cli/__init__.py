@@ -18,7 +18,6 @@ from typing import cast
 
 from casf import crypto
 from casf.bundle import read_bundle
-from casf.canonical.jcs import parse as jcs_parse
 from casf.errors import CasfError, InconclusiveError, SchemaError
 from casf.keys import generate_key, load_key
 from casf.online import query_latest
@@ -265,7 +264,9 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
 
 def _cmd_verify(args: argparse.Namespace) -> int:
     try:
-        bundle = read_bundle(args.path)
+        bundle = read_bundle(args.path, max_records=args.max_records,
+                             max_evidence_objects=args.max_evidence_objects,
+                             max_total_bytes=args.max_bundle_bytes)
     except CasfError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2  # hostile or malformed bundle, bounded rejection (T16)
@@ -294,18 +295,12 @@ def _cmd_verify(args: argparse.Namespace) -> int:
         authority_keys=authorities,
         witness_keys={witness_id: witness_pub},
         log_id=log_id, manifest_hash=str(entry["manifest_hash"]),
-        minimum_status_serial=minimum if isinstance(minimum, int) else 1)
-    statuses: list[JsonObject] = []
-    status_file = Path(args.path) / "status.jsonl"
-    if status_file.exists():
-        for line in status_file.read_bytes().split(b"\n"):
-            if line:
-                value = jcs_parse(line)
-                if not isinstance(value, dict):
-                    print("error: status.jsonl line is not an object",
-                          file=sys.stderr)
-                    return 2
-                statuses.append(value)
+        minimum_status_serial=minimum if type(minimum) is int else 1)
+    chain_budget = policy["max_chain_steps"]
+    if type(chain_budget) is not int or chain_budget < 1:
+        raise SchemaError("max_chain_steps must be a positive integer")
+    if type(minimum) is not int or minimum < 1:
+        raise SchemaError("minimum_status_serial must be a positive integer")
     mode_name = args.mode or str(policy["mode"])
     try:
         mode = Mode(mode_name)
@@ -327,7 +322,9 @@ def _cmd_verify(args: argparse.Namespace) -> int:
         bundle.manifest, bundle.records, pins, mode=mode,
         checkpoint_envelopes=bundle.checkpoints,
         receipt_envelopes=bundle.receipts,
-        status_envelopes=statuses,
+        status_envelopes=bundle.statuses,
+        max_chain_steps=chain_budget,
+        max_records=args.max_records,
         allow_unwitnessed=bool(policy["allow_unwitnessed"]),
         online_query=online_query)
     summary: JsonObject = {
@@ -361,6 +358,13 @@ def _cmd_verify(args: argparse.Namespace) -> int:
 
 
 # -------------------------------------------------------------- parser
+
+def _positive_int(value: str) -> int:
+    number = int(value)
+    if number < 1:
+        raise argparse.ArgumentTypeError("limit must be a positive integer")
+    return number
+
 
 def _parser() -> argparse.ArgumentParser:
     common = argparse.ArgumentParser(add_help=False)
@@ -423,6 +427,9 @@ def _parser() -> argparse.ArgumentParser:
     ver.add_argument("--trust", required=True)
     ver.add_argument("--mode", choices=["integrity", "anchored", "online"])
     ver.add_argument("--token-env", default=TOKEN_ENV)
+    ver.add_argument("--max-records", type=_positive_int, default=1_000_000)
+    ver.add_argument("--max-evidence-objects", type=_positive_int, default=100_000)
+    ver.add_argument("--max-bundle-bytes", type=_positive_int, default=256 * 1024 * 1024)
     ver.set_defaults(func=_cmd_verify)
 
     seal = sub.add_parser("seal", parents=[common])

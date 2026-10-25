@@ -13,13 +13,14 @@ padded records file is caught before verification even starts.
 
 import os
 import stat
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import BinaryIO
 
 from casf import crypto
 from casf.canonical.jcs import parse
 from casf.canonical.limits import MAX_JSONL_LINE_BYTES
-from casf.errors import CasfError
+from casf.errors import CasfError, LimitError
 from casf.types import JsonObject
 
 __all__ = ["Bundle", "read_bundle"]
@@ -42,22 +43,43 @@ class Bundle:
     checkpoints: list[JsonObject]
     receipts: list[JsonObject]
     metadata: JsonObject
+    statuses: list[JsonObject] = field(default_factory=list)
 
 
-def _read_regular(path: Path) -> bytes:
-    if os.path.islink(path):
-        raise CasfError(f"bundle member is a symlink: {path.name}")
+def _open_regular(path: Path) -> BinaryIO:
+    # O_NONBLOCK avoids hanging on a FIFO; fstat checks the opened object.
     try:
-        st = path.stat()
-    except FileNotFoundError as e:
-        raise CasfError(f"bundle member missing: {path.name}") from e
-    if not stat.S_ISREG(st.st_mode):
-        raise CasfError(f"bundle member is not a regular file: {path.name}")
-    return path.read_bytes()
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    except FileNotFoundError as exc:
+        raise CasfError(f"bundle member missing: {path.name}") from exc
+    except OSError as exc:
+        raise CasfError(f"bundle member inaccessible or symlink: {path.name}") from exc
+    try:
+        if not stat.S_ISREG(os.fstat(fd).st_mode):
+            raise CasfError(f"bundle member is not a regular file: {path.name}")
+        return os.fdopen(fd, "rb")
+    except BaseException:
+        os.close(fd)
+        raise
 
 
-def _read_object(path: Path) -> JsonObject:
-    raw = _read_regular(path)
+@dataclass
+class _Budget:
+    remaining: int
+
+    def consume(self, size: int) -> None:
+        self.remaining -= size
+        if self.remaining < 0:
+            raise LimitError("bundle byte limit exceeded")
+
+
+def _read_object(path: Path, budget: _Budget) -> JsonObject:
+    # Protocol envelope includes a body, digest, and signature.
+    with _open_regular(path) as source:
+        raw = source.read(min(32768, budget.remaining) + 1)
+    budget.consume(len(raw))
+    if len(raw) > 32768:
+        raise LimitError(f"object byte limit exceeded: {path.name}")
     if raw.startswith(_BOM):
         raise CasfError(f"byte order mark is not allowed: {path.name}")
     value = parse(raw)
@@ -66,40 +88,54 @@ def _read_object(path: Path) -> JsonObject:
     return value
 
 
-def _read_jsonl(path: Path, max_line_bytes: int) -> list[JsonObject]:
-    raw = _read_regular(path)
-    if raw.startswith(_BOM):
-        raise CasfError(f"byte order mark is not allowed: {path.name}")
-    if raw == b"":
-        return []
-    lines = raw.split(b"\n")
-    if lines[-1] != b"":
-        raise CasfError(f"last line must end with LF: {path.name}")
+def _read_jsonl(path: Path, max_line_bytes: int, max_objects: int,
+                budget: _Budget) -> list[JsonObject]:
     envelopes: list[JsonObject] = []
-    for line in lines[:-1]:
-        if len(line) > max_line_bytes:
-            raise CasfError(
-                f"line over the {max_line_bytes} byte limit: {path.name}")
-        if line == b"":
-            raise CasfError(f"blank line is not allowed: {path.name}")
-        value = parse(line)
-        if not isinstance(value, dict):
-            raise CasfError(f"expected a JSON object line: {path.name}")
-        envelopes.append(value)
+    with _open_regular(path) as source:
+        while True:
+            line = source.readline(min(max_line_bytes + 1, budget.remaining) + 1)
+            if not line:
+                break
+            budget.consume(len(line))
+            if len(envelopes) >= max_objects:
+                raise LimitError(f"object count limit exceeded: {path.name}")
+            if len(line.rstrip(b"\n")) > max_line_bytes:
+                raise LimitError(f"line over the {max_line_bytes} byte limit: {path.name}")
+            if not line.endswith(b"\n"):
+                raise CasfError(f"last line must end with LF: {path.name}")
+            if line.startswith(_BOM):
+                raise CasfError(f"byte order mark is not allowed: {path.name}")
+            if line == b"\n":
+                raise CasfError(f"blank line is not allowed: {path.name}")
+            value = parse(line[:-1])
+            if not isinstance(value, dict):
+                raise CasfError(f"expected a JSON object line: {path.name}")
+            envelopes.append(value)
     return envelopes
 
 
 def read_bundle(bundle_dir: str | Path, *,
-                max_line_bytes: int = MAX_JSONL_LINE_BYTES) -> Bundle:
+                max_line_bytes: int = MAX_JSONL_LINE_BYTES,
+                max_records: int = 1_000_000,
+                max_evidence_objects: int = 100_000,
+                max_total_bytes: int = 256 * 1024 * 1024) -> Bundle:
     """Read and validate a bundle directory (SPEC §20)."""
+    for limit in (max_line_bytes, max_records, max_evidence_objects, max_total_bytes):
+        if type(limit) is not int or limit < 1:
+            raise ValueError("bundle limits must be positive integers")
+    budget = _Budget(max_total_bytes)
     directory = Path(bundle_dir)
     if not directory.is_dir() or os.path.islink(directory):
         raise CasfError("bundle path is not a directory")
-    manifest = _read_object(directory / "manifest.json")
-    metadata = _read_object(directory / "export.json")
-    records = _read_jsonl(directory / "records.jsonl", max_line_bytes)
-    checkpoints = _read_jsonl(directory / "checkpoints.jsonl", max_line_bytes)
-    receipts = _read_jsonl(directory / "receipts.jsonl", max_line_bytes)
+    manifest = _read_object(directory / "manifest.json", budget)
+    metadata = _read_object(directory / "export.json", budget)
+    records = _read_jsonl(directory / "records.jsonl", max_line_bytes, max_records, budget)
+    checkpoints = _read_jsonl(directory / "checkpoints.jsonl", 32768, max_evidence_objects, budget)
+    receipts = _read_jsonl(directory / "receipts.jsonl", 32768, max_evidence_objects, budget)
+
+    status_path = directory / "status.jsonl"
+    statuses = (_read_jsonl(status_path, 32768, max_evidence_objects, budget)
+                if os.path.lexists(status_path) else [])
 
     if set(metadata) != _METADATA_FIELDS:
         raise CasfError("export.json fields must be exactly version, type, "
@@ -131,4 +167,4 @@ def read_bundle(bundle_dir: str | Path, *,
 
     return Bundle(manifest=manifest, manifest_hash=manifest_hash,
                   records=records, checkpoints=checkpoints,
-                  receipts=receipts, metadata=metadata)
+                  receipts=receipts, metadata=metadata, statuses=statuses)

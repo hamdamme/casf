@@ -22,6 +22,7 @@ from casf.lifecycle import (
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
 from casf.writer import SealedError
+from tests.status import active_status
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -93,7 +94,8 @@ def test_sealed_evidence_stays_inspectable(tmp_path):
         witness_keys={crypto.key_id(WIT_PUB): WIT_PUB},
         log_id=LOG_ID, manifest_hash=None)
     report = verify(w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)),
-                    pins, mode=Mode.INTEGRITY)
+                    pins, mode=Mode.INTEGRITY,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
     assert report.result == Result.PASS  # old public evidence inspectable
 
 # ---------------- epoch rotation (SPEC §16, T14) ----------------
@@ -180,7 +182,8 @@ def test_emergency_epoch_marks_discontinuity(tmp_path):
         authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB},
         witness_keys={crypto.key_id(WIT_PUB): WIT_PUB},
         log_id=body["log_id"], manifest_hash=None)
-    report = verify(env, [], pins, mode=Mode.INTEGRITY)
+    report = verify(env, [], pins, mode=Mode.INTEGRITY,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.PASS  # inspectable, continuity lost
     assert body["predecessor"] is None  # gap is visible, never hidden
 

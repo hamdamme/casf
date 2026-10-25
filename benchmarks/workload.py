@@ -16,6 +16,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
 from casf.canonical.jcs import canonicalize
+from casf.lifecycle import sign_status
 
 ACTOR = "bench-actor"
 EVENT_TYPE = "bench"
@@ -110,3 +111,9 @@ def generate_with_minimum(seed: int, count: int,
     report the measured minimum rather than the target (SPEC §22).
     """
     return generate(seed, count, target_bytes), measure_minimum()
+
+
+def active_status(manifest_hash: str) -> dict:
+    """Synthetic authority status for current benchmark verification."""
+    return sign_status(seeded_key("authority"), serial=1, manifest_hash=manifest_hash,
+                       status="active", issued_at=TS, reason="")

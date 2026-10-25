@@ -24,7 +24,9 @@ from casf.verifier import (
     verify,
 )
 from casf.witness.http import WitnessService, make_server
+from tests.status import active_status
 from tests.unit.test_writer import (
+    AUTH,
     AUTH_PUB,
     LOG_ID,
     WIT,
@@ -78,7 +80,8 @@ def test_online_pass_with_fresh_view(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: query_latest(url, LOG_ID, TOKEN, WIT_PUB))
+            online_query=lambda: query_latest(url, LOG_ID, TOKEN, WIT_PUB),
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.PASS
         assert report.freshness_status == FreshnessStatus.FRESH_WITNESS_VIEW
         assert report.witnessed_through == 2
@@ -106,7 +109,8 @@ def test_online_timeout_is_inconclusive(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=offline)
+            online_query=offline,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.INCONCLUSIVE
         assert report.freshness_status == FreshnessStatus.INCONCLUSIVE
         assert "FRESHNESS_INCONCLUSIVE" in report.diagnostic_codes
@@ -125,7 +129,8 @@ def test_witness_behind_evidence_is_conflict(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: behind)
+            online_query=lambda: behind,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.FAIL
         assert report.freshness_status == FreshnessStatus.CONFLICT
         assert "WITNESS_STATE_CONFLICT" in report.diagnostic_codes
@@ -143,7 +148,8 @@ def test_different_digest_at_same_index_is_conflict(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: forged)
+            online_query=lambda: forged,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.freshness_status == FreshnessStatus.CONFLICT
         assert "WITNESS_STATE_CONFLICT" in report.diagnostic_codes
     finally:
@@ -160,7 +166,8 @@ def test_witness_ahead_needs_more_evidence(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: ahead)
+            online_query=lambda: ahead,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.INCONCLUSIVE
         assert "WITNESS_AHEAD" in report.diagnostic_codes
     finally:
@@ -179,7 +186,8 @@ def test_retained_high_water_conflict(tmp_path):
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
             online_query=lambda: view,
-            retained_checkpoint=(3, "ab" * 32))  # pin ahead of the answer
+            retained_checkpoint=(3, "ab" * 32),
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])  # pin ahead of the answer
         assert report.freshness_status == FreshnessStatus.CONFLICT
         assert "WITNESS_STATE_CONFLICT" in report.diagnostic_codes
     finally:
@@ -199,7 +207,8 @@ def test_unwitnessed_suffix_rejected_online(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: view)
+            online_query=lambda: view,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.FAIL
         assert "UNWITNESSED_SUFFIX" in report.diagnostic_codes
         assert report.witnessed_through == 2
@@ -219,7 +228,8 @@ def test_unwitnessed_suffix_visible_when_allowed(tmp_path):
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
             mode=Mode.ONLINE, checkpoint_envelopes=cps, receipt_envelopes=rcs,
-            online_query=lambda: view, allow_unwitnessed=True)
+            online_query=lambda: view, allow_unwitnessed=True,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
         assert report.result == Result.PASS
         assert report.anchor_status == AnchorStatus.PARTIAL_ANCHOR
         assert report.freshness_status == FreshnessStatus.FRESH_WITNESS_VIEW
@@ -237,7 +247,8 @@ def test_online_requires_query(tmp_path):
         with pytest.raises(CasfError):
             verify(w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)),
                    _pins(mh), mode=Mode.ONLINE, checkpoint_envelopes=cps,
-                   receipt_envelopes=rcs)
+                   receipt_envelopes=rcs,
+                    status_envelopes=[active_status(AUTH, w.manifest_envelope(LOG_ID)["manifest_hash"]) ])
     finally:
         server.shutdown()
         server.server_close()

@@ -238,6 +238,7 @@ def _verify_bundle(bundle_dir: Path, manifest_hash: str, case: dict,
     return verify(
         bundle.manifest, bundle.records, _pins(manifest_hash),
         mode=Mode(case["mode"]),
+        status_envelopes=[workload.active_status(manifest_hash)],
         checkpoint_envelopes=bundle.checkpoints,
         receipt_envelopes=bundle.receipts,
         allow_unwitnessed=bool(case["allow_unwitnessed"]),
