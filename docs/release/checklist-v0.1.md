@@ -11,7 +11,7 @@ that every proposed experiment or release requirement is complete.
 | Gate (SPEC §26) | Status | Evidence |
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
-| All requirements linked to evidence | blocked | The traceability test checks that R01 to R12 and T01 to T22 identifiers occur in test sources. Review the mapping to actual assertions before claiming complete requirement evidence. |
+| All requirements linked to evidence | blocked | The [explicit evidence review](requirement-evidence.md) links actual test functions and records remaining scenario reviews. Structural mapping checks do not establish complete coverage. |
 | No unresolved blocking security findings | blocked | The Uvicorn replacement was merged in PR 7. Complete the remaining platform, dependency, and release reviews recorded under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
 | Reproducible install | pass | wheel and sdist built from commit; fresh venv install; CLI roundtrip ends in verify PASS (rehearsal log in this file) |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
@@ -20,7 +20,7 @@ that every proposed experiment or release requirement is complete.
 | Undetectable cases documented | pass | research/limitations.md; benchmarks/results/detection-v1/report.md |
 | Locked Python package advisory review | pass | [Review](dependency-review.md) covers all 24 external locked packages and uv 0.13.5. OSV and PyPI returned no listed advisories for these exact versions on 2026-10-24; repeat before publication. |
 | Platform and bundled component review | blocked | Review the release platform Python, SQLite, TLS, and bundled native components; Python package queries do not cover the complete deployment. |
-| Minimum dependency compatibility | blocked | The specification requires a separate minimum dependency job. Current CI exercises locked versions only. |
+| Minimum dependency compatibility | blocked | A separate minimum dependency matrix is implemented for Python 3.12, 3.13, and 3.14. Local checks are recorded in [verification review](verification-review.md); GitHub execution and acceptance remain pending. |
 | License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. Final redistribution notice review and a real private reporting channel test remain. |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
 | Package contents free of keys and data | pass | Fresh wheel and source archive inspected after the metadata correction; no backups, research results, databases, private key files, or PEM private key blocks found. See the [review](dependency-review.md). |
