@@ -19,7 +19,6 @@ from casf.canonical.limits import MAX_CHECKPOINT_CHAIN_STEPS
 from casf.errors import (
     CasfError,
     InconclusiveError,
-    NoCheckpointError,
     SchemaError,
 )
 from casf.model.schema import validate_protocol_body
@@ -492,12 +491,8 @@ def verify(manifest_envelope: JsonObject,
         report.result = Result.INCONCLUSIVE
         codes.append("FRESHNESS_INCONCLUSIVE")
         return report
-    except NoCheckpointError:
-        # the witness lost every accepted checkpoint behind our anchor
-        report.freshness_status = FreshnessStatus.CONFLICT
-        fail("WITNESS_STATE_CONFLICT")
-        return report
     except CasfError:
+        # An unsigned error, including NO_CHECKPOINT, cannot prove rollback.
         report.freshness_status = FreshnessStatus.INCONCLUSIVE
         report.result = Result.INCONCLUSIVE
         codes.append("FRESHNESS_INCONCLUSIVE")

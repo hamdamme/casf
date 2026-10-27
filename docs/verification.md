@@ -18,6 +18,19 @@ An online witness response does not establish current authority status.
 Previously accepted bundles without status evidence must obtain an authentic
 statement; do not disable trust checks to recover an overall PASS.
 
+## Unsigned online errors
+
+An unsigned `NO_CHECKPOINT` response cannot prove that the witness lost
+previously accepted history. Online verification therefore reports
+`INCONCLUSIVE` with `FRESHNESS_INCONCLUSIVE`; the CLI returns exit code 4.
+This applies even when valid checkpoint and receipt evidence is supplied.
+It does not turn the error into a PASS or invalidate the supplied evidence.
+
+A validated signed witness view that conflicts with the supplied anchor or
+retained checkpoint still reports `FAIL` with `WITNESS_STATE_CONFLICT`.
+The online client continues to raise `NoCheckpointError` for the unsigned
+response; the verifier treats that exception as unavailable freshness evidence.
+
 ## Work and input limits
 
 The Python verifier accepts positive integer `max_chain_steps` and
