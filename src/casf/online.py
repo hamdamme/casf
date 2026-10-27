@@ -11,8 +11,10 @@ record.
 """
 
 import http.client
+import ipaddress
 import json
 import os
+import ssl
 import time
 from dataclasses import dataclass
 from urllib.parse import urlsplit
@@ -48,14 +50,32 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
     """Query the witness; return the raw response and the nonce sent."""
     nonce = os.urandom(32)  # a fresh nonce per query, never reused
     request = json.dumps({"nonce": crypto.b64url_encode(nonce)}).encode()
-    parts = urlsplit(base_url)
-    if not parts.hostname:
-        raise CasfError("witness URL has no host")
+    try:
+        parts = urlsplit(base_url)
+        host, port = parts.hostname, parts.port
+    except ValueError as e:
+        raise CasfError("invalid witness URL") from e
+    if not host or parts.scheme not in {"http", "https"}:
+        raise CasfError("witness URL requires an HTTP or HTTPS host")
+    if parts.username is not None or parts.password is not None or port == 0:
+        raise CasfError("witness URL must not contain credentials or port zero")
+    if parts.scheme == "http":
+        try:
+            loopback = ipaddress.ip_address(host).is_loopback
+        except ValueError:
+            loopback = False
+        if not loopback:
+            raise CasfError("HTTP requires a literal loopback address; use HTTPS")
     start = time.monotonic()
     try:
-        conn = http.client.HTTPConnection(parts.hostname,
-                                          parts.port or 80,
-                                          timeout=timeout)
+        conn: http.client.HTTPConnection
+        if parts.scheme == "https":
+            conn = http.client.HTTPSConnection(
+                host, port if port is not None else 443, timeout=timeout,
+                context=ssl.create_default_context())
+        else:
+            conn = http.client.HTTPConnection(
+                host, port if port is not None else 80, timeout=timeout)
         try:
             conn.request(
                 "POST", f"/v1/logs/{log_id}/latest", body=request,
