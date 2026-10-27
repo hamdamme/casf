@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 from casf import crypto
-from casf.bundle import read_bundle
+from casf.bundle import open_bundle
 from casf.verifier import Result, TrustPins, TrustStatus, verify
 
 
@@ -17,8 +17,8 @@ def main():
     pins = TrustPins(authority_keys={crypto.key_id(authority): authority},
                      witness_keys={crypto.key_id(witness): witness},
                      log_id=trust['log_id'], manifest_hash=trust['manifest_hash'])
-    bundle = read_bundle(directory)
-    report = verify(bundle.manifest, bundle.records, pins, status_envelopes=bundle.statuses)
+    with open_bundle(directory) as bundle:
+        report = verify(bundle.manifest, bundle.records, pins, status_envelopes=bundle.statuses)
     assert report.result is Result.PASS
     assert report.trust_status is TrustStatus.OK
     assert report.verified_through == 2

@@ -6,12 +6,15 @@ and optionally checkpoint, receipt, and status envelopes, and reports
 per dimension results with exact failure positions (R03, R07).
 
 Evidence problems produce a FAIL report with diagnostic codes; they do
-not raise. Programmer errors (wrong Python types) still raise.
+not raise. Exceptions from caller supplied iterators propagate; callers must
+handle reading failures before accepting a report. Programmer errors (wrong
+Python types) still raise.
 """
 
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import Enum
+from itertools import islice
 from typing import Any
 
 from casf import crypto
@@ -150,7 +153,13 @@ def verify(manifest_envelope: JsonObject,
 
     Online mode additionally calls online_query, a callable returning
     a fresh witness view (see casf.online.query_latest), and compares
-    it to the evidence and the retained high water checkpoint."""
+    it to the evidence and the retained high water checkpoint.
+
+    Records are consumed once. Anchored and online modes buffer at most
+    max_chain_steps + 1 checkpoint envelopes before reading records and keep
+    only the digests at their requested record counts. Iterator exceptions
+    propagate, and checkpoint iterators must be independent of record iteration.
+    """
     if type(max_chain_steps) is not int or max_chain_steps < 1:
         raise ValueError("max_chain_steps must be a positive integer")
     if type(pins.minimum_status_serial) is not int or pins.minimum_status_serial < 1:
@@ -287,10 +296,23 @@ def verify(manifest_envelope: JsonObject,
     # --------------------------------------------------------- record stream
     genesis = crypto.genesis_hash(manifest_hash)
     expected_prev = genesis
-    verified_digests: list[str] = []
+    # Only checkpoint boundaries need historical digests. Buffer at most the
+    # configured protocol budget plus a sentinel, never the record history.
+    # Validation stays below the record loop to preserve failure precedence.
+    checkpoint_input = (list(islice(checkpoint_envelopes, max_chain_steps + 1))
+                        if mode is not Mode.INTEGRITY else [])
+    head_targets: set[int] = set()
+    for candidate in checkpoint_input[:max_chain_steps]:
+        candidate_body = candidate.get("body")
+        if isinstance(candidate_body, dict):
+            candidate_count = candidate_body.get("count")
+            if type(candidate_count) is int and 0 < candidate_count <= max_records:
+                head_targets.add(candidate_count)
+    verified_heads: dict[int, str] = {}
+    verified_count = 0
     for seq, env in enumerate(records, start=1):
         if seq > max_records:
-            report.verified_through = len(verified_digests)
+            report.verified_through = verified_count
             if report.result is not Result.FAIL:
                 report.result = Result.INCONCLUSIVE
             codes.append("RECORD_BUDGET_EXCEEDED")
@@ -329,9 +351,11 @@ def verify(manifest_envelope: JsonObject,
             fail("RECORD_SIGNATURE", seq)
             report.signature_status = Dimension.FAIL
             break
-        verified_digests.append(record_hash)
+        verified_count = seq
+        if seq in head_targets:
+            verified_heads[seq] = record_hash
         expected_prev = record_hash
-    report.verified_through = len(verified_digests)
+    report.verified_through = verified_count
     if report.result is Result.FAIL:
         return report
 
@@ -343,7 +367,7 @@ def verify(manifest_envelope: JsonObject,
     prev_cp = ZERO
     prev_count = 0
     prev_head = genesis
-    for index, env in enumerate(checkpoint_envelopes):
+    for index, env in enumerate(checkpoint_input):
         if index >= max_chain_steps:
             report.result = Result.INCONCLUSIVE
             report.anchor_status = AnchorStatus.INCOMPLETE
@@ -381,7 +405,7 @@ def verify(manifest_envelope: JsonObject,
             report.chain_status = Dimension.FAIL
             return report
         expected_head = genesis if count == 0 else (
-            verified_digests[count - 1] if count <= len(verified_digests) else None)
+            verified_heads.get(count) if count <= verified_count else None)
         if crypto.digest_checkpoint(cbody) != checkpoint_hash:
             fail("CHECKPOINT_HASH_MISMATCH")
             report.protocol_status = Dimension.FAIL
@@ -460,18 +484,18 @@ def verify(manifest_envelope: JsonObject,
         report.anchor_status = AnchorStatus.INCOMPLETE
         return report
 
-    if len(verified_digests) < anchor_count:
+    if verified_count < anchor_count:
         report.anchor_status = AnchorStatus.INCOMPLETE
         fail("ANCHOR_INCOMPLETE")
         return report
     if _field_int(anchor_body, "count") > 0 and \
-            verified_digests[anchor_count - 1] != _field_str(anchor_body, "head_hash"):
+            verified_heads[anchor_count] != _field_str(anchor_body, "head_hash"):
         report.anchor_status = AnchorStatus.DIVERGENT
         fail("ANCHOR_DIVERGENT")
         return report
 
     report.witnessed_through = anchor_count
-    report.unwitnessed_count = len(verified_digests) - anchor_count
+    report.unwitnessed_count = verified_count - anchor_count
     if report.unwitnessed_count > 0:
         if allow_unwitnessed:
             report.anchor_status = AnchorStatus.PARTIAL_ANCHOR

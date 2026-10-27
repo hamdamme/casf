@@ -7,12 +7,15 @@ no blank lines, no byte order mark. Records are ordered by sequence.
 
 Import limits apply before parsing: symlinks and nonregular files are
 rejected, and every JSONL line is bounded (§9, §20). The export
-metadata must agree with the actual record count, so a truncated or
-padded records file is caught before verification even starts.
+metadata must agree with the actual record count. Streaming callers must
+consume records to EOF before accepting a result; open_bundle owns the file
+until its context exits. read_bundle retains its eager list API.
 """
 
 import os
 import stat
+from collections.abc import Generator, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import BinaryIO
@@ -23,7 +26,7 @@ from casf.canonical.limits import MAX_JSONL_LINE_BYTES
 from casf.errors import CasfError, LimitError
 from casf.types import JsonObject
 
-__all__ = ["Bundle", "read_bundle"]
+__all__ = ["Bundle", "BundleReadError", "StreamingBundle", "open_bundle", "read_bundle"]
 
 REQUIRED_FILES = ("manifest.json", "records.jsonl", "checkpoints.jsonl",
                   "receipts.jsonl", "export.json")
@@ -44,6 +47,26 @@ class Bundle:
     receipts: list[JsonObject]
     metadata: JsonObject
     statuses: list[JsonObject] = field(default_factory=list)
+
+
+class BundleReadError(CasfError):
+    """Malformed bundle input, including errors discovered during iteration."""
+
+
+@dataclass
+class StreamingBundle:
+    """Context owned record iterator and bounded protocol evidence.
+
+    records is consumed once. Exhaust it before accepting a verification
+    report, even if the verifier returns early. It cannot outlive the context.
+    """
+    manifest: JsonObject
+    manifest_hash: str
+    records: Generator[JsonObject, None, None]
+    checkpoints: list[JsonObject]
+    receipts: list[JsonObject]
+    metadata: JsonObject
+    statuses: list[JsonObject]
 
 
 def _open_regular(path: Path) -> BinaryIO:
@@ -88,37 +111,65 @@ def _read_object(path: Path, budget: _Budget) -> JsonObject:
     return value
 
 
+def _iter_jsonl(source: BinaryIO, path: Path, max_line_bytes: int,
+                max_objects: int, budget: _Budget) -> Iterator[JsonObject]:
+    count = 0
+    while True:
+        try:
+            line = source.readline(min(max_line_bytes + 1, budget.remaining) + 1)
+        except OSError as exc:
+            raise OSError("cannot read bundle member") from exc
+        if not line:
+            break
+        budget.consume(len(line))
+        if count >= max_objects:
+            raise LimitError(f"object count limit exceeded: {path.name}")
+        if len(line.rstrip(b"\n")) > max_line_bytes:
+            raise LimitError(f"line over the {max_line_bytes} byte limit: {path.name}")
+        if not line.endswith(b"\n"):
+            raise CasfError(f"last line must end with LF: {path.name}")
+        if line.startswith(_BOM):
+            raise CasfError(f"byte order mark is not allowed: {path.name}")
+        if line == b"\n":
+            raise CasfError(f"blank line is not allowed: {path.name}")
+        value = parse(line[:-1])
+        if not isinstance(value, dict):
+            raise CasfError(f"expected a JSON object line: {path.name}")
+        count += 1
+        yield value
+
+
 def _read_jsonl(path: Path, max_line_bytes: int, max_objects: int,
                 budget: _Budget) -> list[JsonObject]:
-    envelopes: list[JsonObject] = []
     with _open_regular(path) as source:
-        while True:
-            line = source.readline(min(max_line_bytes + 1, budget.remaining) + 1)
-            if not line:
-                break
-            budget.consume(len(line))
-            if len(envelopes) >= max_objects:
-                raise LimitError(f"object count limit exceeded: {path.name}")
-            if len(line.rstrip(b"\n")) > max_line_bytes:
-                raise LimitError(f"line over the {max_line_bytes} byte limit: {path.name}")
-            if not line.endswith(b"\n"):
-                raise CasfError(f"last line must end with LF: {path.name}")
-            if line.startswith(_BOM):
-                raise CasfError(f"byte order mark is not allowed: {path.name}")
-            if line == b"\n":
-                raise CasfError(f"blank line is not allowed: {path.name}")
-            value = parse(line[:-1])
-            if not isinstance(value, dict):
-                raise CasfError(f"expected a JSON object line: {path.name}")
-            envelopes.append(value)
-    return envelopes
+        return list(_iter_jsonl(source, path, max_line_bytes, max_objects, budget))
 
 
-def read_bundle(bundle_dir: str | Path, *,
+def _records(source: BinaryIO, path: Path, max_line_bytes: int,
+             max_records: int, budget: _Budget, metadata: JsonObject) -> Generator[JsonObject, None, None]:
+    count = 0
+    try:
+        for count, envelope in enumerate(
+                _iter_jsonl(source, path, max_line_bytes, max_records, budget), start=1):
+            record_body = envelope.get("body")
+            if not isinstance(record_body, dict):
+                raise CasfError("record envelope field types are wrong")
+            if record_body.get("seq") != count:
+                raise CasfError("records are not ordered by sequence")
+            yield envelope
+        if metadata["record_count"] != count or metadata["through"] != count:
+            raise CasfError("export metadata disagrees with the record count")
+    except LimitError:
+        raise
+    except CasfError as exc:
+        raise BundleReadError(str(exc)) from exc
+
+
+def _prepare_bundle(bundle_dir: str | Path, *,
                 max_line_bytes: int = MAX_JSONL_LINE_BYTES,
                 max_records: int = 1_000_000,
                 max_evidence_objects: int = 100_000,
-                max_total_bytes: int = 256 * 1024 * 1024) -> Bundle:
+                max_total_bytes: int = 256 * 1024 * 1024) -> tuple[StreamingBundle, BinaryIO]:
     """Read and validate a bundle directory (SPEC §20)."""
     for limit in (max_line_bytes, max_records, max_evidence_objects, max_total_bytes):
         if type(limit) is not int or limit < 1:
@@ -129,7 +180,6 @@ def read_bundle(bundle_dir: str | Path, *,
         raise CasfError("bundle path is not a directory")
     manifest = _read_object(directory / "manifest.json", budget)
     metadata = _read_object(directory / "export.json", budget)
-    records = _read_jsonl(directory / "records.jsonl", max_line_bytes, max_records, budget)
     checkpoints = _read_jsonl(directory / "checkpoints.jsonl", 32768, max_evidence_objects, budget)
     receipts = _read_jsonl(directory / "receipts.jsonl", 32768, max_evidence_objects, budget)
 
@@ -155,16 +205,54 @@ def read_bundle(bundle_dir: str | Path, *,
     if metadata["log_id"] != body.get("log_id"):
         raise CasfError("export metadata disagrees with the manifest log")
 
-    count = len(records)
-    if metadata["record_count"] != count or metadata["through"] != count:
-        raise CasfError("export metadata disagrees with the record count")
-    for index, envelope in enumerate(records, start=1):
-        record_body = envelope.get("body")
-        if not isinstance(record_body, dict):
-            raise CasfError("record envelope field types are wrong")
-        if record_body.get("seq") != index:
-            raise CasfError("records are not ordered by sequence")
+    source = _open_regular(directory / "records.jsonl")
+    records = _records(source, directory / "records.jsonl", max_line_bytes,
+                       max_records, budget, metadata)
+    return StreamingBundle(manifest=manifest, manifest_hash=manifest_hash,
+                           records=records, checkpoints=checkpoints,
+                           receipts=receipts, metadata=metadata, statuses=statuses), source
 
-    return Bundle(manifest=manifest, manifest_hash=manifest_hash,
-                  records=records, checkpoints=checkpoints,
-                  receipts=receipts, metadata=metadata, statuses=statuses)
+
+@contextmanager
+def open_bundle(bundle_dir: str | Path, *,
+                max_line_bytes: int = MAX_JSONL_LINE_BYTES,
+                max_records: int = 1_000_000,
+                max_evidence_objects: int = 100_000,
+                max_total_bytes: int = 256 * 1024 * 1024) -> Iterator[StreamingBundle]:
+    """Open bounded evidence and stream records from an owned file descriptor.
+
+    Schema and count errors in records can be raised during consumption.
+    LimitError remains distinct. All errors must be handled before accepting
+    a report. Context exit closes the iterator and descriptor, including on
+    early verification failure. Other evidence lists have explicit budgets.
+    """
+    try:
+        bundle, source = _prepare_bundle(
+            bundle_dir, max_line_bytes=max_line_bytes, max_records=max_records,
+            max_evidence_objects=max_evidence_objects, max_total_bytes=max_total_bytes)
+    except LimitError:
+        raise
+    except CasfError as exc:
+        raise BundleReadError(str(exc)) from exc
+    try:
+        yield bundle
+    finally:
+        bundle.records.close()
+        source.close()
+
+
+def read_bundle(bundle_dir: str | Path, *,
+                max_line_bytes: int = MAX_JSONL_LINE_BYTES,
+                max_records: int = 1_000_000,
+                max_evidence_objects: int = 100_000,
+                max_total_bytes: int = 256 * 1024 * 1024) -> Bundle:
+    """Compatibility API: eagerly validate and materialize all records.
+
+    Use open_bundle for verification with bounded record memory.
+    """
+    with open_bundle(bundle_dir, max_line_bytes=max_line_bytes, max_records=max_records,
+                     max_evidence_objects=max_evidence_objects,
+                     max_total_bytes=max_total_bytes) as bundle:
+        return Bundle(manifest=bundle.manifest, manifest_hash=bundle.manifest_hash,
+                      records=list(bundle.records), checkpoints=bundle.checkpoints,
+                      receipts=bundle.receipts, metadata=bundle.metadata, statuses=bundle.statuses)
