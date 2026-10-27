@@ -1,0 +1,10 @@
+{
+  "baseline_commit": "1c7b7ee280fdb86b7d1ba1c304acc1d69017f004",
+  "candidate_files": {
+    "src/casf/bundle.py": "e1f0d6e99691a3741bcb2546662e690f244ffe7f2bb005e317c7025153eb3075",
+    "src/casf/verifier/__init__.py": "a7ce531e1a8c2a9a6b509f939e8eddfe6cc45e629b0b2b8d75fb2585baab598d",
+    "src/casf/cli/__init__.py": "20f8974a268a3fe471db7f46b9f14220f3dffeb3e96fc3ea342ea08f7c86f71c",
+    "benchmarks/streaming.py": "7c17afee5078451dbd7ba53d75f975be10adf9584258bf1d46de65a3a18a72ea",
+    "tests/unit/test_verifier.py": "6c21235edd2806ef92b6a6d7d1129c31fb3b84e8cecbeba6ae063459c5801e0b"
+  }
+}

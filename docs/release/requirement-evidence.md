@@ -95,3 +95,20 @@ bounded reads before parsing with total byte and count budgets. The reader
 still retains decoded record objects, so it is bounded rather than constant
 memory in record count. The public package rehearsal and historical benchmark
 scope still require final release acceptance; see the current JSON map.
+
+
+## Streaming verification follow up
+
+The [streaming API decision](../adr/ADR-006-streaming-verification.md)
+preserves the eager reader for compatibility while the CLI uses an owned
+record stream. The verifier retains only digests requested by bounded
+checkpoint evidence. New assertions cover EOF metadata checks, late errors
+before state saving, record mutations, checkpoint boundary comparisons,
+file ownership, and memory scaling with a fixed protocol footprint.
+
+The initial and Session 3 reviews above remain historical records. Their
+record retention limitation is addressed for the streaming entry point;
+`read_bundle` and restore deliberately retain their eager API. See the
+[validation record](streaming-validation.md) for measured bounds, completed
+checks, and remaining limitations. External review and unrelated release
+acceptance are still separate requirements.
