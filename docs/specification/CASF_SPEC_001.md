@@ -258,7 +258,7 @@ AppendResult contains record, committed=true, and witness_state. No default API 
 | casf checkpoint --db PATH | Create or reuse the pending checkpoint |
 | casf witness submit --db PATH | Submit pending extension and persist receipt |
 | casf export --db PATH --out PATH | Export a consistent evidence bundle |
-| casf verify PATH --trust PATH --mode online | Verify with explicit trust and mode |
+| casf verify PATH --trust PATH --state STATE --mode online | Verify with explicit trust and mode |
 | casf seal --db PATH | Seal and create a final checkpoint |
 | casf status --db PATH | Show count, witness backlog and safe diagnostics |
 

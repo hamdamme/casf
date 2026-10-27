@@ -86,7 +86,8 @@ def test_unsigned_no_checkpoint_is_inconclusive_in_library_and_cli(
         (bundle / "status.jsonl").write_bytes(canonicalize(active_status(AUTH, mh)) + b"\n")
         trust = _trust(tmp_path, _manifest_envelope(), mode="online", witness_url=fake_url)
         monkeypatch.setenv("CASF_WITNESS_TOKEN", TOKEN)
-        code = main(["verify", str(bundle), "--trust", str(trust), "--json"])
+        code = main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust), "--json"])
         output = capsys.readouterr().out
         summary = json.loads(output)
         assert code == 4

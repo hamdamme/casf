@@ -105,6 +105,8 @@ class Report:
     first_failure_seq: int | None
     diagnostic_codes: list[str] = field(default_factory=list)
     freshness_status: FreshnessStatus = FreshnessStatus.NOT_REQUESTED
+    observed_status_serial: int = 0
+    checkpoint: tuple[int, str] | None = None
 
 
 def _expect_envelope(env: JsonObject, hash_field: str) -> tuple[JsonObject, str, str]:
@@ -272,6 +274,8 @@ def verify(manifest_envelope: JsonObject,
             report.trust_status = TrustStatus.UNKNOWN
             continue
         accepted_status = True
+        report.observed_status_serial = max(
+            report.observed_status_serial, _field_int(sbody, "serial"))
     if not accepted_status:
         fail("STATUS_MISSING")
         report.trust_status = TrustStatus.UNKNOWN
@@ -477,6 +481,18 @@ def verify(manifest_envelope: JsonObject,
     else:
         report.anchor_status = AnchorStatus.OK
 
+    # A newer index alone cannot prove continuity with retained history.
+    # The validated chain must include the previously accepted checkpoint.
+    if retained_checkpoint is not None:
+        kept_index, kept_hash = retained_checkpoint
+        if (kept_index < 0 or kept_index >= len(checkpoints)
+                or checkpoints[kept_index][1] != kept_hash):
+            report.anchor_status = AnchorStatus.DIVERGENT
+            if mode is Mode.ONLINE:
+                report.freshness_status = FreshnessStatus.CONFLICT
+            fail("WITNESS_STATE_CONFLICT")
+            return report
+    report.checkpoint = (_field_int(anchor_body, "index"), anchor_hash)
     if mode is not Mode.ONLINE:
         return report
 

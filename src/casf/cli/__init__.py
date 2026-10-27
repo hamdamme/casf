@@ -22,6 +22,7 @@ from casf.errors import CasfError, InconclusiveError, SchemaError
 from casf.keys import generate_key, load_key
 from casf.online import query_latest
 from casf.storage import Database
+from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.writer import Writer
@@ -318,15 +319,33 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             return query_latest(url, log_id, token, witness_pub,
                                 timeout=budget)
 
-    report = verify(
-        bundle.manifest, bundle.records, pins, mode=mode,
-        checkpoint_envelopes=bundle.checkpoints,
-        receipt_envelopes=bundle.receipts,
-        status_envelopes=bundle.statuses,
-        max_chain_steps=chain_budget,
-        max_records=args.max_records,
-        allow_unwitnessed=bool(policy["allow_unwitnessed"]),
-        online_query=online_query)
+    state_path = Path(args.state).absolute()
+    if state_path.resolve().is_relative_to(Path(args.path).resolve()):
+        raise SchemaError("verifier state must be outside the evidence bundle")
+    with locked_state(str(state_path), str(entry["manifest_hash"]),
+                      initialize=args.initialize_state) as state:
+        previous = state.previous
+        if previous is not None:
+            pins = TrustPins(
+                authority_keys=pins.authority_keys, witness_keys=pins.witness_keys,
+                log_id=pins.log_id, manifest_hash=pins.manifest_hash,
+                minimum_status_serial=max(minimum, previous.status_serial))
+        report = verify(
+            bundle.manifest, bundle.records, pins, mode=mode,
+            checkpoint_envelopes=bundle.checkpoints,
+            receipt_envelopes=bundle.receipts,
+            status_envelopes=bundle.statuses,
+            max_chain_steps=chain_budget,
+            max_records=args.max_records,
+            allow_unwitnessed=bool(policy["allow_unwitnessed"]),
+            online_query=online_query,
+            retained_checkpoint=previous.checkpoint if previous else None)
+        if report.result is Result.PASS:
+            state.save(report.observed_status_serial, report.checkpoint)
+            if previous is None:
+                report.diagnostic_codes.append("VERIFIER_STATE_INITIALIZED")
+            if report.checkpoint is not None and (previous is None or previous.checkpoint is None):
+                report.diagnostic_codes.append("CHECKPOINT_FIRST_OBSERVATION")
     summary: JsonObject = {
         "mode": report.mode.value, "result": report.result.value,
         "verified_through": report.verified_through,
@@ -425,6 +444,10 @@ def _parser() -> argparse.ArgumentParser:
     ver = sub.add_parser("verify", parents=[common])
     ver.add_argument("path")
     ver.add_argument("--trust", required=True)
+    ver.add_argument("--state", required=True,
+                     help="verifier state in a separate protected directory")
+    ver.add_argument("--initialize-state", action="store_true",
+                     help="explicitly initialize previously unobserved manifest state")
     ver.add_argument("--mode", choices=["integrity", "anchored", "online"])
     ver.add_argument("--token-env", default=TOKEN_ENV)
     ver.add_argument("--max-records", type=_positive_int, default=1_000_000)

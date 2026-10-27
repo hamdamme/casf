@@ -126,7 +126,8 @@ def test_full_command_flow(tmp_path, capsys):
     (bundle / "status.jsonl").write_bytes(
         canonicalize(active_status(AUTH, env["manifest_hash"])) + b"\n")
     trust = _trust(tmp_path, env)
-    assert main(["verify", str(bundle), "--trust", str(trust),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust),
                  "--mode", "integrity"]) == 0
     out = capsys.readouterr().out
     assert "integrity" in out  # human output names the mode
@@ -192,7 +193,8 @@ def test_verify_tampered_bundle_exit_1(tmp_path, capsys):
     lines[0] = lines[0].replace(b"alice", b"carol")
     (bundle / "records.jsonl").write_bytes(b"\n".join(lines))
     trust = _trust(tmp_path, _manifest_envelope())
-    assert main(["verify", str(bundle), "--trust", str(trust),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust),
                  "--mode", "integrity"]) == 1
 
 def test_verify_revoked_trust_exit_3(tmp_path, capsys):
@@ -205,14 +207,16 @@ def test_verify_revoked_trust_exit_3(tmp_path, capsys):
     from casf.canonical.jcs import canonicalize
     (bundle / "status.jsonl").write_bytes(canonicalize(revoked) + b"\n")
     trust = _trust(tmp_path, _manifest_envelope())
-    assert main(["verify", str(bundle), "--trust", str(trust),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust),
                  "--mode", "integrity"]) == 3
 
 def test_verify_online_unreachable_exit_4(tmp_path, capsys):
     _w, bundle = _exported(tmp_path, capsys)
     trust = _trust(tmp_path, _manifest_envelope(), mode="online",
                    witness_url="http://127.0.0.1:9")  # nothing listens
-    assert main(["verify", str(bundle), "--trust", str(trust),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust),
                  "--mode", "online"]) == 4
 
 def test_verify_unknown_log_trust_exit_3(tmp_path, capsys):
@@ -222,7 +226,8 @@ def test_verify_unknown_log_trust_exit_3(tmp_path, capsys):
     trust = json.loads(trust_path.read_text())
     trust["logs"] = {}  # log is not provisioned
     trust_path.write_text(json.dumps(trust))
-    assert main(["verify", str(bundle), "--trust", str(trust_path),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust_path),
                  "--mode", "integrity"]) == 3
 
 # ---------------- usage and schema errors ----------------
@@ -247,7 +252,8 @@ def test_oversized_bundle_line_bounded_exit_2(tmp_path, capsys):
     with open(bundle / "records.jsonl", "ab") as f:
         f.write(b'{"body":' + b" " * 1_000_000 + b"}\n")
     trust = _trust(tmp_path, _manifest_envelope())
-    assert main(["verify", str(bundle), "--trust", str(trust),
+    assert main(["verify", str(bundle), "--state", str(tmp_path / "state.json"),
+                 "--initialize-state", "--trust", str(trust),
                  "--mode", "integrity"]) == 2
     err = capsys.readouterr().err
     assert "limit" in err
