@@ -65,6 +65,16 @@ a worker in the middle of a SQLite transaction. A stalled filesystem can
 therefore delay shutdown. Process termination requires the existing recovery
 and retry procedures and must not be described as a successful shutdown.
 
+## Online client connections
+
+Online verification uses HTTPS with certificate and hostname verification.
+It uses the default Python trust store and never falls back to plain HTTP
+or follows redirects. A failed TLS connection makes freshness inconclusive.
+For local development, plain HTTP is accepted only with a literal loopback
+address such as `127.0.0.1` or `[::1]`. Hostnames, including `localhost`,
+require HTTPS. URLs must not contain credentials; supply the bearer token
+through the existing protected configuration mechanism.
+
 ## Error contract
 
 CASF application errors are JSON objects containing exactly `code`, `message`,

@@ -303,7 +303,8 @@ def test_cli_missing_status_reports_unknown(tmp_path, capsys):
     _, dest = exported(tmp_path, capsys)
     (dest / 'status.jsonl').unlink()
     trust = _trust(tmp_path, _manifest_envelope())
-    assert main(['verify', str(dest), '--trust', str(trust), '--json']) == 3
+    assert main(['verify', str(dest), '--state', str(tmp_path / 'state.json'),
+                 '--initialize-state', '--trust', str(trust), '--json']) == 3
     import json
     report = json.loads(capsys.readouterr().out)
     assert report['trust_status'] == 'UNKNOWN'
@@ -325,7 +326,8 @@ def test_cli_honors_chain_budget(tmp_path, capsys):
     trust.write_text(json.dumps(cfg))
     cp_file = dest / 'checkpoints.jsonl'
     cp_file.write_bytes(cp_file.read_bytes() + canonicalize({}) + b'\n')
-    assert main(['verify', str(dest), '--trust', str(trust), '--json']) == 4
+    assert main(['verify', str(dest), '--state', str(tmp_path / 'state.json'),
+                 '--initialize-state', '--trust', str(trust), '--json']) == 4
     report = json.loads(capsys.readouterr().out)
     assert report['result'] == 'INCONCLUSIVE'
     assert 'CHAIN_BUDGET_EXCEEDED' in report['diagnostic_codes']
@@ -343,7 +345,8 @@ def test_cli_rejects_invalid_chain_budget(tmp_path, capsys):
     cfg = json.loads(trust.read_text())
     cfg['policy']['max_chain_steps'] = True
     trust.write_text(json.dumps(cfg))
-    assert main(['verify', str(dest), '--trust', str(trust)]) == 2
+    assert main(['verify', str(dest), '--state', str(tmp_path / 'state.json'),
+                 '--initialize-state', '--trust', str(trust)]) == 2
 
 
 def test_cli_honors_bundle_count_limit(tmp_path, capsys):
@@ -353,7 +356,8 @@ def test_cli_honors_bundle_count_limit(tmp_path, capsys):
     from tests.unit.test_writer import _manifest_envelope
     _, dest = exported(tmp_path, capsys)
     trust = _trust(tmp_path, _manifest_envelope())
-    assert main(['verify', str(dest), '--trust', str(trust), '--max-records', '1']) == 2
+    assert main(['verify', str(dest), '--state', str(tmp_path / 'state.json'),
+                 '--initialize-state', '--trust', str(trust), '--max-records', '1']) == 2
     assert 'count limit' in capsys.readouterr().err
 
 
