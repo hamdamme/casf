@@ -80,7 +80,8 @@
         "tests/unit/test_verifier.py::test_seq_gap_fails",
         "tests/unit/test_verifier.py::test_chain_break_fails",
         "tests/unit/test_verifier.py::test_log_id_mismatch_fails",
-        "tests/unit/test_release_gaps.py::test_record_mutations"
+        "tests/unit/test_release_gaps.py::test_record_mutations",
+        "tests/unit/test_streaming.py::test_stream_rejects_record_changes"
       ],
       "remaining_review": ""
     },
@@ -88,7 +89,8 @@
       "assertion_scope": "Verify an export and report the verified range.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
-        "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range"
+        "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range",
+        "tests/unit/test_streaming.py::test_stream_matches_eager"
       ],
       "remaining_review": "The isolated public verification rehearsal runs separately through tests/public_fixture.py and tests/public_verify.py in package CI. Local results are recorded in session3-validation.md; GitHub results remain pending."
     },
@@ -127,7 +129,8 @@
     "T10": {
       "assertion_scope": "An old restored database is incomplete against a newer anchor.",
       "nodeids": [
-        "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor"
+        "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor",
+        "tests/unit/test_streaming.py::test_truncation_checked_at_eof"
       ],
       "remaining_review": ""
     },
@@ -136,7 +139,8 @@
       "nodeids": [
         "tests/unit/test_online.py::test_replay_never_passes_freshness",
         "tests/unit/test_online.py::test_wrong_nonce_rejected",
-        "tests/unit/test_online.py::test_timeout_is_inconclusive"
+        "tests/unit/test_online.py::test_timeout_is_inconclusive",
+        "tests/unit/test_streaming.py::test_online_stream_matches_eager_with_retained_checkpoint"
       ],
       "remaining_review": ""
     },
@@ -183,12 +187,14 @@
         "tests/unit/test_bundle.py::test_missing_required_file_rejected",
         "tests/unit/test_writer_hardening.py::test_backup_produces_verifiable_copy",
         "tests/unit/test_release_gaps.py::test_export_snapshot_during_concurrent_append",
-        "tests/unit/test_release_gaps.py::test_missing_wal_copy_is_incomplete_against_external_anchor"
+        "tests/unit/test_release_gaps.py::test_missing_wal_copy_is_incomplete_against_external_anchor",
+        "tests/unit/test_streaming.py::test_context_closes_after_early_exit",
+        "tests/unit/test_streaming.py::test_cli_late_error_never_saves_or_prints_pass"
       ],
       "remaining_review": ""
     },
     "T16": {
-      "assertion_scope": "Bound input reads, object counts, record verification, checkpoint and receipt work, nesting, and concurrent HTTP work. Imported decoded records are retained within configured budgets; memory is not constant in record count.",
+      "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",
       "nodeids": [
         "tests/unit/test_canonical.py::test_depth_and_string_limits",
         "tests/unit/test_witness_server.py::test_large_body_rejected_before_upload",
@@ -205,7 +211,11 @@
         "tests/unit/test_release_gaps.py::test_cli_honors_chain_budget",
         "tests/unit/test_release_gaps.py::test_cli_rejects_invalid_chain_budget",
         "tests/unit/test_release_gaps.py::test_cli_honors_bundle_count_limit",
-        "tests/unit/test_release_gaps.py::test_verifier_record_budget"
+        "tests/unit/test_release_gaps.py::test_verifier_record_budget",
+        "tests/unit/test_streaming.py::test_stream_limits",
+        "tests/unit/test_streaming.py::test_record_memory_does_not_scale_with_file",
+        "tests/unit/test_streaming.py::test_open_descriptor_does_not_follow_replaced_record_path",
+        "tests/unit/test_streaming.py::test_late_malformed_line"
       ],
       "remaining_review": ""
     },

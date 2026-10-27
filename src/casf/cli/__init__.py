@@ -17,8 +17,8 @@ from pathlib import Path
 from typing import cast
 
 from casf import crypto
-from casf.bundle import read_bundle
-from casf.errors import CasfError, InconclusiveError, SchemaError
+from casf.bundle import BundleReadError, StreamingBundle, open_bundle
+from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError
 from casf.keys import generate_key, load_key
 from casf.online import query_latest
 from casf.storage import Database
@@ -265,12 +265,16 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
 
 def _cmd_verify(args: argparse.Namespace) -> int:
     try:
-        bundle = read_bundle(args.path, max_records=args.max_records,
-                             max_evidence_objects=args.max_evidence_objects,
-                             max_total_bytes=args.max_bundle_bytes)
-    except CasfError as e:
-        print(f"error: {e}", file=sys.stderr)
-        return 2  # hostile or malformed bundle, bounded rejection (T16)
+        with open_bundle(args.path, max_records=args.max_records,
+                         max_evidence_objects=args.max_evidence_objects,
+                         max_total_bytes=args.max_bundle_bytes) as bundle:
+            return _verify_open_bundle(args, bundle)
+    except (BundleReadError, LimitError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
+def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> int:
     body = bundle.manifest["body"]
     if not isinstance(body, dict):
         print("error: manifest is corrupt", file=sys.stderr)
@@ -340,6 +344,10 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             allow_unwitnessed=bool(policy["allow_unwitnessed"]),
             online_query=online_query,
             retained_checkpoint=previous.checkpoint if previous else None)
+        # EOF validates export counts and any tail after an early verdict.
+        # Never save accepted state or print PASS before this completes.
+        for _ in bundle.records:
+            pass
         if report.result is Result.PASS:
             state.save(report.observed_status_serial, report.checkpoint)
             if previous is None:

@@ -64,7 +64,9 @@ def test_save_rejects_regression(tmp_path, serial, checkpoint):
 
 
 @pytest.mark.parametrize("raw", [b"", b"broken", b'{"version":1,"version":1,"manifests":{}}',
-                                 b'{"version":true,"manifests":{}}', b"x" * (MAX_STATE_BYTES + 1)])
+                                 b'{"version":true,"manifests":{}}', b"x" * (MAX_STATE_BYTES + 1)],
+                         ids=["empty", "invalid_json", "duplicate_version",
+                              "boolean_version", "oversized"])
 def test_bad_state_never_reinitialized(tmp_path, raw):
     path = tmp_path / "state.json"
     path.write_bytes(raw)

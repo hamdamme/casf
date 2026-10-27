@@ -11,7 +11,7 @@ that every proposed experiment or release requirement is complete.
 | Gate (SPEC §26) | Status | Evidence |
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
-| All requirements linked to evidence | blocked | The [Session 3 review](session3-validation.md) adds scenario tests and package rehearsals. Historical benchmark scope, memory scaling, external review, and final evidence acceptance remain open; structural mapping checks do not establish complete coverage. |
+| All requirements linked to evidence | blocked | The [Session 3 review](session3-validation.md) adds scenario tests and package rehearsals. Streaming memory evidence is recorded in the [validation record](streaming-validation.md). Historical benchmark scope, external review, and final evidence acceptance remain open; structural mapping checks do not establish complete coverage. |
 | No unresolved blocking security findings | blocked | Recent verification fixes are recorded below. Reviewer confirmation and assessment of remaining findings are pending. Complete the platform, dependency, and release reviews under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
 | Reproducible install | blocked | Earlier package rehearsals passed and current CI includes package installation checks. A fresh installation and full verification rehearsal of the final release candidate remains required, including the new state arguments. The historical log below is preserved. |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
@@ -60,10 +60,11 @@ An initial external technical review informed these fixes. Feedback from two
 reviewers is pending, including confirmation of the fixes and assessment of
 remaining findings. No formal security audit or proof is claimed.
 
-Resource limits are enforced, but records remain in memory. The stronger
-streaming target in the specification is not yet satisfied. An explicit
-implementation or release scope decision is required before closing the
-requirements gate; this update does not change that requirement.
+The earlier implementation retained records in memory. The streaming
+implementation now processes records sequentially with bounded protocol state;
+see the [validation record](streaming-validation.md) for measured memory use
+and compatibility limits. The eager reader remains available for restore
+and existing callers. Other requirements still need final acceptance.
 
 Historical research results remain tied to their original code versions and
 environments. They are not measurements of the final release candidate.
@@ -116,3 +117,14 @@ casf verify bundle --trust trust.json --mode integrity
 
 Result: `mode: integrity  result: PASS`, exit code 0. The manifest
 and trust files were built with the installed library API only.
+
+
+## Streaming verification evidence
+
+The [streaming validation record](streaming-validation.md) tracks the current
+implementation and measurements for the memory requirement in Sections 5,
+15, and 20. The CLI streams records, and the verifier retains only bounded
+checkpoint boundary digests. Protocol evidence remains subject to explicit
+budgets. The eager reader remains available for compatibility and restore.
+Streaming evidence does not close external review, platform, redistribution,
+or final release approval.

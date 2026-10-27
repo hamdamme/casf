@@ -111,16 +111,34 @@ and line reads, and share a total byte budget across all bundle members,
 including status.jsonl. Defaults are 128 KiB per record line, 32 KiB per
 protocol envelope, 1000000 records, 100000 objects per evidence file, and
 256 MiB total input. Limits are checked before parsing the excess input.
-Invalid input returns CLI code 2. Oversized inputs do not reach cryptographic
-verification.
+Invalid input returns CLI code 2. Each oversized item is rejected before
+its cryptographic verification; earlier valid records may already have been checked.
 
-Use `read_bundle` arguments `max_records`, `max_evidence_objects`, and
+Use `open_bundle` arguments `max_records`, `max_evidence_objects`, and
 `max_total_bytes` to select smaller or larger budgets. The CLI exposes
 `--max-records`, `--max-evidence-objects`, and `--max-bundle-bytes`.
-Choose limits for the expected archive and available memory. Decoded records
-are still retained in memory, and the verifier retains record digests. Peak
-memory is not equal to input byte size and is not constant in record count.
-A fully streaming bundle representation remains outside this bounded fix.
+The CLI streams records once and retains digests only at bounded checkpoint
+boundaries. Protocol evidence lists remain bounded by the configured limits;
+raising those limits raises the memory ceiling. Actual protocol memory can
+increase with checkpoint and receipt counts within those limits.
+
+```python
+from casf.bundle import open_bundle
+from casf.verifier import verify
+
+with open_bundle(path) as bundle:
+    report = verify(bundle.manifest, bundle.records, pins,
+                    status_envelopes=bundle.statuses)
+    for _ in bundle.records:
+        pass  # Validate any unread tail before accepting the report.
+```
+
+Catch `CasfError` and `OSError` around the entire context. A read failure is
+not a successful report. The CLI checks EOF before saving accepted state or
+printing PASS. Its malformed input exit code is 2 and local I/O exit code is 5.
+`read_bundle` retains the eager list API for compatibility and restore; callers
+choosing it still allocate memory proportional to records. See the
+[API decision](adr/ADR-006-streaming-verification.md) for iteration and memory bounds.
 
 These changes do not alter signed bytes, key algorithms, or existing evidence.
 The file reader targets macOS and Linux. Local macOS checks are recorded;

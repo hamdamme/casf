@@ -99,9 +99,9 @@ cannot establish history before the first observation. See the
 - Complete the remaining D05 platform component and release dependency reviews.
   Repeat the dated package advisory review before publication.
 - Complete final redistribution notice review for the release artifacts.
-- Resolve the specification's streaming target through an explicit implementation
-  or release scope decision. Records remain in memory within configured limits;
-  memory use is not constant in record count.
+- Review the [streaming validation evidence](streaming-validation.md) for final
+  release acceptance. The CLI streams records with bounded protocol state;
+  the eager reader remains available for compatibility and restore.
 - Finish acceptance of the requirement evidence and historical benchmark scope.
   Minimum dependency validation has passed; historical measurements are not
   results for the final release candidate.
