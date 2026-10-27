@@ -4,7 +4,7 @@ Section 26 gates with evidence. Each row is pass or explicitly
 marked blocked; blocked rows name the remaining action. Publication is
 a separate deliberate maintainer action (SPEC §25).
 
-Status reviewed on 2026-10-25. Benchmark completion below refers to the
+Status reviewed on 2026-10-27. Benchmark completion below refers to the
 recorded configurations and original experiment commits. It does not imply
 that every proposed experiment or release requirement is complete.
 
@@ -12,8 +12,8 @@ that every proposed experiment or release requirement is complete.
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
 | All requirements linked to evidence | blocked | The [Session 3 review](session3-validation.md) adds scenario tests and package rehearsals. Historical benchmark scope, memory scaling, external review, and final evidence acceptance remain open; structural mapping checks do not establish complete coverage. |
-| No unresolved blocking security findings | blocked | The Uvicorn replacement was merged in PR 7. Complete the remaining platform, dependency, and release reviews recorded under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
-| Reproducible install | pass | wheel and sdist built from commit; fresh venv install; CLI roundtrip ends in verify PASS (rehearsal log in this file) |
+| No unresolved blocking security findings | blocked | Recent verification fixes are recorded below. Reviewer confirmation and assessment of remaining findings are pending. Complete the platform, dependency, and release reviews under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
+| Reproducible install | blocked | Earlier package rehearsals passed and current CI includes package installation checks. A fresh installation and full verification rehearsal of the final release candidate remains required, including the new state arguments. The historical log below is preserved. |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
 | Witness recovery and fork tests | pass | tests/unit/test_witness.py and test_witness_http.py (T08, T09, T22) |
 | Key rotation drill | pass | tests/unit/test_lifecycle.py (T14) |
@@ -21,28 +21,54 @@ that every proposed experiment or release requirement is complete.
 | Locked Python package advisory review | pass | [Review](dependency-review.md) covers all 24 external locked packages and uv 0.13.5. OSV and PyPI returned no listed advisories for these exact versions on 2026-10-24; repeat before publication. |
 | Platform and bundled component review | blocked | Review the release platform Python, SQLite, TLS, and bundled native components; Python package queries do not cover the complete deployment. The separate Python 3.12 refresh is pending as recorded below. |
 | Minimum dependency compatibility | pass | PR 10 was merged. All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40230741913) passed across Python 3.12, 3.13, and 3.14, covering locked and minimum direct dependencies. This completes the pending Session 3 compatibility checks; see [Session 3](session3-validation.md). |
-| License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. License files were inspected for the six installed runtime packages. Final redistribution review remains open. The private reporting exercise has not been completed. |
+| License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. License files were inspected for the six installed runtime packages. Final redistribution review remains open. A real private report was received; this establishes reporting channel delivery, not resolution of its findings. |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
 | Package contents free of keys and data | pass | Fresh wheel and source archive inspected after the metadata correction; no backups, research results, databases, private key files, or PEM private key blocks found. See the [review](dependency-review.md). |
 | Recorded Linux benchmark matrix with network delay injection | pass | [Report](../../benchmarks/results/linux-matrix-v2/report.md) and 40 raw run files cover the four configurations in [manifest.v2.json](../../benchmarks/manifest.v2.json), including the 25 ms delay case. |
 | Recorded wide area benchmark matrix | pass | [Report](../../benchmarks/results/wide-area-v3/report.md) and 20 raw run files cover two batch sizes on one network path; writer geography is not recorded. |
-| Disclosure channel test submission | blocked | channel enabled; the test report itself is a maintainer action to avoid fabricated evidence |
-| External review of protocol and design | blocked | sought, not yet received; not claimed anywhere |
+| Disclosure channel delivery | pass | A real private report was received and inspected. Delivery is established by that report rather than a fabricated test submission; findings and reviewer confirmation remain separate open work. |
+| External review of protocol and design | blocked | An initial technical review was received and informed verification fixes. Feedback from two reviewers is pending. Assess their scope and findings, resolve blocking issues, and record areas not reviewed before closing this gate. |
 | Maintainer approval of artifact hashes and notes | blocked | final maintainer action at actual release time |
 
 ## Session 4 review status
 
 Platform review remains open. The previous local Python 3.12 environment uses
 Python 3.12.11 and OpenSSL 3.6.0. A separate validation run with Python 3.12.16
-is pending availability of a packaged Mac ARM build through the selected
-installer. This availability check was made on 2026-10-25. Previous
+was deferred by the maintainer. The earlier availability check is historical,
+not a current claim that this version is unavailable. Confirm the selected
+runtime and its bundled components during final platform review. Previous
 environments and results are preserved.
 
 License files were inspected for cryptography, CFFI, pycparser, Uvicorn,
 Click, and h11. Final redistribution review remains open. The private
-reporting exercise has not been completed.
+reporting channel received a real report. Delivery does not close the security review.
 
 ## Current validation evidence
+
+Verification changes at `85067de` passed 322 local tests on macOS with
+Python 3.13.17. All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40439587582)
+passed for that commit across Python 3.12, 3.13, and 3.14 with locked and
+minimum dependencies. [PR 12](https://github.com/hamdamme/casf/pull/12)
+merged these changes as `1c7b7ee`. This is validation evidence, not release approval.
+
+The changes verify HTTPS connections, report unsigned witness errors as
+inconclusive, and retain verified history between command line runs.
+Command line verification requires a state file and explicit initialization
+for the first observation. See [verification usage](../verification.md).
+
+An initial external technical review informed these fixes. Feedback from two
+reviewers is pending, including confirmation of the fixes and assessment of
+remaining findings. No formal security audit or proof is claimed.
+
+Resource limits are enforced, but records remain in memory. The stronger
+streaming target in the specification is not yet satisfied. An explicit
+implementation or release scope decision is required before closing the
+requirements gate; this update does not change that requirement.
+
+Historical research results remain tied to their original code versions and
+environments. They are not measurements of the final release candidate.
+
+## Earlier transport validation
 
 The Uvicorn implementation in commit `6d69563` passed 236 tests on each of
 Python 3.12, 3.13, and 3.14 on macOS and local Linux ARM containers, as

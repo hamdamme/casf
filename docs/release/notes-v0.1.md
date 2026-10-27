@@ -1,7 +1,7 @@
 # Release notes, 0.1.0.dev0 release candidate
 
 Prepared under C12 (SPEC §27). These notes are drafted for review;
-nothing is published by this file. Status reviewed on 2026-10-24;
+nothing is published by this file. Status reviewed on 2026-10-27;
 experiment results retain their original recorded environments.
 
 ## What this is
@@ -10,13 +10,37 @@ CASF is an experimental cryptographic audit and signing framework:
 an append oriented record chain with canonical JSON, Ed25519
 signatures, a witness service that accepts only valid extensions,
 and a verifier that runs offline from pinned public keys. This
-candidate covers the full local profile: writer with transactional
+candidate includes: writer with transactional
 SQLite storage, witness with durable receipts over HTTP, online
 freshness queries, export bundles and restore drills, sealing and
 epoch rotation, a command line interface with stable exit codes, and
 the benchmark and attack harnesses used for the research evaluation.
 
+## Recent verification changes
+
+HTTPS connections now verify certificates and hostnames. Unsigned witness
+errors are reported as inconclusive, and verified history is retained between
+command line runs.
+
+Command line verification requires a local state file through `--state`.
+Use `--initialize-state` only for the first observation of a manifest.
+Protection depends on independently preserving that state; initialization
+cannot establish history before the first observation. See the
+[verification guide](../verification.md) for usage and recovery limitations.
+
 ## Verified state at this candidate
+
+- Commit `85067de` passed 322 local tests on macOS with Python 3.13.17.
+  All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40439587582)
+  passed across Python 3.12, 3.13, and 3.14 with locked and minimum
+  dependencies. The fixes were merged as `1c7b7ee`.
+- An initial external technical review informed these fixes. Feedback from
+  two reviewers remains pending. Findings must be assessed and blocking
+  issues resolved before release approval.
+- CASF remains experimental. Passing tests and technical feedback do not
+  establish a formal security audit or proof.
+
+### Earlier implementation validation
 
 - Uvicorn implementation commit `6d69563` passed 236 tests on each of Python
   3.12, 3.13, and 3.14 on macOS and local Linux ARM containers.
@@ -70,13 +94,21 @@ the benchmark and attack harnesses used for the research evaluation.
 
 ## Known open release items
 
-- Complete the remaining D05 platform and release dependency reviews. The
-  Uvicorn implementation has been merged and its CI results are recorded above.
+- Assess feedback from both reviewers, confirm the recent fixes, and resolve
+  any blocking findings. Record the scope and areas not examined.
+- Complete the remaining D05 platform component and release dependency reviews.
+  Repeat the dated package advisory review before publication.
 - Complete final redistribution notice review for the release artifacts.
-- Add the required minimum dependency compatibility job and review the
-  mapping from requirements to actual test assertions.
-- Obtain final maintainer approval of release artifact hashes and notes.
-- Maintainer test submission to the private vulnerability reporting
-  channel.
-- External review of the protocol and experimental design, sought
-  and not yet received.
+- Resolve the specification's streaming target through an explicit implementation
+  or release scope decision. Records remain in memory within configured limits;
+  memory use is not constant in record count.
+- Finish acceptance of the requirement evidence and historical benchmark scope.
+  Minimum dependency validation has passed; historical measurements are not
+  results for the final release candidate.
+- Run a fresh installation and full verification rehearsal of the final
+  candidate, including the required verifier state arguments. Recheck package
+  contents and prepare the final artifact hashes.
+- Obtain maintainer approval of release artifacts and notes before publication.
+
+The private reporting channel received a real report. This establishes delivery;
+resolution of security findings remains part of the open review work above.
