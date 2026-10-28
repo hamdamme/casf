@@ -230,6 +230,25 @@ def test_verify_unknown_log_trust_exit_3(tmp_path, capsys):
                  "--initialize-state", "--trust", str(trust_path),
                  "--mode", "integrity"]) == 3
 
+def test_verify_mismatched_provisioned_witness_id_exit_3(tmp_path, capsys):
+    _w, bundle = _exported(tmp_path, capsys)
+    env = _manifest_envelope()
+    trust_path = _trust(tmp_path, env)
+    trust = json.loads(trust_path.read_text())
+    wrong_witness_id = crypto.key_id(AUTH_PUB)
+    assert wrong_witness_id != env["body"]["witness_id"]
+    trust["logs"][LOG_ID]["witness_id"] = wrong_witness_id
+    trust_path.write_text(json.dumps(trust))
+
+    state = tmp_path / "state.json"
+    result = main(["verify", str(bundle), "--state", str(state),
+                   "--initialize-state", "--trust", str(trust_path),
+                   "--mode", "integrity"])
+
+    assert result == 3
+    assert "WITNESS_ID_MISMATCH" in capsys.readouterr().err
+    assert not state.exists()
+
 # ---------------- usage and schema errors ----------------
 
 def test_append_bad_event_exit_2(tmp_path, capsys):
