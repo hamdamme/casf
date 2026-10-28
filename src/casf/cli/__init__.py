@@ -294,6 +294,10 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
     if not isinstance(witness_key, str) or not isinstance(witness_id, str):
         print("error: manifest is corrupt", file=sys.stderr)
         return 2
+    if entry["witness_id"] != witness_id:
+        print("error: WITNESS_ID_MISMATCH: bundle manifest does not match "
+              "the provisioned witness", file=sys.stderr)
+        return 3
     witness_pub = crypto.b64url_decode(witness_key)
     minimum = entry["minimum_status_serial"]
     pins = TrustPins(

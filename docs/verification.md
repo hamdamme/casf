@@ -10,7 +10,10 @@ an authority statement.
 A missing or unrelated statement reports `STATUS_MISSING`, UNKNOWN trust,
 and FAIL. The CLI returns exit code 3. Invalid signatures, issuer mismatches,
 stale serials, and revocation also fail. A verified revoked statement cannot
-be undone by an active statement later in the supplied list.
+be undone by an active statement later in the supplied list. Malformed status
+input fails verification even if another valid active statement is present;
+valid statements for a different manifest are ignored. This strict handling
+prevents malformed evidence from being silently accepted.
 
 A signed active statement proves its signed content, not that no later
 revocation exists. `STATUS_CURRENTNESS_UNCONFIRMED` records this limitation.
@@ -91,8 +94,18 @@ previously accepted history. Online verification therefore reports
 This applies even when valid checkpoint and receipt evidence is supplied.
 It does not turn the error into a PASS or invalidate the supplied evidence.
 
+In anchored mode, if checkpoints are supplied but none of the receipts
+identifies the newest checkpoint, verification fails with
+`RECEIPT_CHECKPOINT_MISMATCH`. If no receipts are supplied, the anchor is
+incomplete and verification reports `RECEIPT_MISSING`. This strict behavior
+can reject a bundle collected while receipt delivery is still pending; obtain
+the matching receipt and verify again.
+
 A validated signed witness view that conflicts with the supplied anchor or
 retained checkpoint still reports `FAIL` with `WITNESS_STATE_CONFLICT`.
+The witness rejects conflicting signed checkpoints but does not retain both
+statements as a separate proof record. Operators who need third party
+equivocation evidence must preserve the submitted checkpoint envelopes.
 The online client continues to raise `NoCheckpointError` for the unsigned
 response; the verifier treats that exception as unavailable freshness evidence.
 

@@ -124,9 +124,10 @@ def verify_latest_response(response: JsonObject, nonce: bytes,
 
     The nonce echo is checked first: a response signed over any other
     nonce is a replay for this query and never passes freshness.
-    Checkpoint signature validation against the log key belongs to
-    the verifier online mode; digest and identity bindings are
-    checked here.
+    This validates the checkpoint digest, witness receipt, and their
+    bindings to the signed latest view. It does not independently verify
+    the response checkpoint signature; the verifier checks supplied
+    checkpoint evidence against the log key.
     """
     if set(response) != {"body", "signature", "checkpoint", "receipt"}:
         raise SchemaError("response must be exactly body, signature, "
