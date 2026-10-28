@@ -92,9 +92,14 @@ def test_startup_detects_missing_record(tmp_path):
     w.close()
     con = sqlite3.connect(db)
     con.execute("PRAGMA foreign_keys=OFF")
-    # bypass the trigger at the SQLite level is not possible; instead
-    # corrupt the head hash so it disagrees with the records table
-    con.execute("UPDATE heads SET head_hash = 'ff' || substr(head_hash, 3)")
+    # Change the first character based on its current value so this
+    # corruption always differs from the valid hash.
+    (head_hash,) = con.execute(
+        "SELECT head_hash FROM heads").fetchone()
+    first = "0" if head_hash[0] != "0" else "1"
+    corrupted_hash = first + head_hash[1:]
+    assert corrupted_hash != head_hash
+    con.execute("UPDATE heads SET head_hash = ?", (corrupted_hash,))
     con.commit()
     con.close()
     with pytest.raises(CasfError, match="head"):
