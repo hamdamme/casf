@@ -48,17 +48,19 @@ evidence and make no performance claim about the release candidate.
 
 ## Candidate specific evidence
 
-Candidate version: `0.1.0rc1`, built from source commit
-`21619f0d115e29d758d458f5661598d9934c3f72`. Its metadata and installed
-`casf.__version__` match. The first build was discarded after it exposed a
-stale module version; the corrected build below was rebuilt from the commit
-and installed into a fresh environment.
+Candidate version: `0.1.0rc1`, rebuilt from source commit
+`9189cb2627aeb9f2436e751fe320b73a3ba91079` with Build 1.6.1 and Setuptools
+84.2.1. The application source and project version metadata are unchanged
+from candidate source `21619f0`; this final rebuild packages the corrected
+public README version. Its package metadata and installed `casf.__version__`
+match.
 
 | Check | Result and evidence |
 | --- | --- |
-| Build | Wheel and source archive built with locked Setuptools 84.2.1 on macOS 15.6.1 arm64, CPython 3.12.11, using uv 0.13.5. |
-| Clean install | The exact wheel was installed in a new CPython 3.12.11 environment with cryptography 50.0.2 and the witness dependencies. `uv pip check` reported all seven installed packages compatible. |
-| CLI rehearsal | The installed wheel generated temporary keys, initialized a log, appended a synthetic record, created a checkpoint, submitted it to a loopback witness, exported a bundle, and verified integrity, anchored, and online modes. Each mode passed twice: once with `--initialize-state` and once using the same `--state` file without initialization. Evidence is explicitly synthetic smoke evidence, not research data. |
+| Build | Wheel and source archive built from the committed source above on macOS 15.6.1 arm64, CPython 3.12.11, with Build 1.6.1 and Setuptools 84.2.1. |
+| Clean install | The exact wheel was installed in a new CPython 3.12.11 environment with the `witness` extra. `pip check` found no broken requirements; installed `casf.__version__` is `0.1.0rc1`. |
+| Exact artifact CLI smoke | The exact installed wheel's `casf --help` and `casf verify --help` passed; help shows mandatory `--state`, first use `--initialize-state`, and integrity, anchored, and online modes. The exact installed witness extra passed a loopback request and clean shutdown. A separate temporary synthetic public bundle passed installed package verification through record 2. This is software smoke evidence, not research data or the separate real file demonstration. |
+| Full CLI mode rehearsal | The complete synthetic integrity, anchored, and online command line rehearsal passed on the earlier `21619f0` candidate. Application source and `pyproject.toml` have not changed since that source revision. Each mode passed first with `--initialize-state` and again with the same `--state` file without initialization. The exact rebuilt artifact received the clean install and smoke checks above. |
 | Package and license inspection | Wheel has 29 files; source archive has 34. Both declare Apache-2.0 and include LICENSE bytes matching the repository. Neither contains backup, research, RQ2, database, or key paths, nor private key blocks. The wheel bundles no third party dependencies. Installed cryptography, cffi, pycparser, Uvicorn, Click, and h11 distributions each include license files; cryptography includes Apache and BSD license files. |
 | Dependency advisories | The exact version query for 24 locked packages plus uv 0.13.5 completed on 2026-10-28. OSV and PyPI returned no listed advisories. See [the saved query result](dependency-review-2026-10-28.json). Refresh immediately before publication. |
 | PR 20 validation | PR 20 merged as `26cbb0c`. Its [CI run](https://github.com/hamdamme/casf/actions/runs/40724739683) completed successfully: three locked dependency jobs and three minimum dependency jobs for Python 3.12, 3.13, and 3.14. |
@@ -67,8 +69,8 @@ Artifact SHA 256 values:
 
 | Artifact | SHA 256 |
 | --- | --- |
-| `casf-0.1.0rc1-py3-none-any.whl` | `3152c009433ebdc3b2ee5c4477bb5e586e8d9100bc63f48b3480d49e4f0de2e1` |
-| `casf-0.1.0rc1.tar.gz` | `b94211a6578b023054593a6714a11467247fd0b3ac442d2e9a7668387d8cd40e` |
+| `casf-0.1.0rc1-py3-none-any.whl` | `bf129d37ddaeec6ec8c5cd543566f60570b016a050663b90e3c26bd59e7e3132` |
+| `casf-0.1.0rc1.tar.gz` | `22bb94b2137c497565c30d5b992bc71e6dc2d089f3ef4eb91490bdfc44d83cc6` |
 
 ## Validated platform and component scope
 

@@ -8,9 +8,9 @@ the exact install command and artifact hashes.
 
 ## Install from a checked candidate wheel
 
-Use Python 3.12 or newer on macOS arm64 or Ubuntu 24.04 x86_64. Those are the
-platforms covered by the current release checks. Other systems have not been
-validated for this candidate.
+Use CPython 3.12, 3.13, or 3.14 on macOS arm64 or Ubuntu 24.04 x86_64. Those
+are the platforms and versions covered by the current release checks. Other
+systems and processor types have not been validated for this candidate.
 
 Download the wheel supplied with the approved release, then create a separate
 environment and install that file. Replace the example filename with the
@@ -23,7 +23,8 @@ python3 -m venv .venv
 ```
 
 The wheel includes the witness server code, but does not install its optional
-HTTP server dependencies unless the `witness` extra is selected. For
+HTTP server dependencies unless the `witness` extra is selected. After the
+package is published, install `casf[witness]` to add those dependencies. For
 development from a source checkout, the repository's locked setup installs
 the witness and development tools:
 
@@ -76,8 +77,8 @@ Do not initialize a new state file as an automatic recovery step. If state is
 lost or damaged, restore a trusted copy before relying on rollback checks.
 See the [verification guide](verification.md) for required status evidence,
 error results, input limits, and recovery behavior. The CLI help lists all
-commands; the [witness server guide](witness-server.md) covers local witness
-setup.
+commands; the [witness server guide](witness-server.md) describes the server
+API and operating limits.
 
 The release rehearsal uses temporary synthetic evidence to check the
 installed program. It is a software check, not a research result or the
