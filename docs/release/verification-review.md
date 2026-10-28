@@ -3,6 +3,8 @@
 Review date: 2026-10-25. Base commit: `2a9786e`.
 Scope: escaping assertion, explicit requirement evidence, and minimum direct
 dependency compatibility. No application implementation changes were needed.
+This is a historical review record. Later Linux checks and current gate status
+are in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
 
 ## Completed checks
 
@@ -23,8 +25,9 @@ possible dependency combination.
 The minimum checks used an installed wheel and ran the complete suite.
 Lint passed, typing passed for 22 source files, the lockfile check passed,
 and the workflow YAML parsed with the existing and new jobs present.
-Git whitespace checks passed. GitHub has not yet executed the new workflow;
-Linux validation of this new matrix remains pending the pull request.
+Git whitespace checks passed. At the time of this review, GitHub had not yet
+executed the new workflow and Linux validation was pending. The later results
+are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
 
 The escaping test rejected deliberately incorrect output. Four new audit
 regression cases reject self reference, comments posing as tests, renamed

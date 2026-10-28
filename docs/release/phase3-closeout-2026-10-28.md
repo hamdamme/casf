@@ -1,8 +1,9 @@
 # Phase 3 release gate evidence
 
 Review date: 2026-10-28. This record updates the release evidence after PR 20.
-It does not authorize publication. A proposed acceptance remains a maintainer
-decision wherever stated below.
+The maintainer accepts the historical benchmark scope and the limited
+external review for the first experimental release. This does not authorize
+publication.
 
 ## Reviewer findings and disposition
 
@@ -31,10 +32,9 @@ hardening, lifecycle and sealing, benchmark methods, or the technical Word
 document. No further review submission is expected. This is limited external
 feedback, not a full audit.
 
-Proposed maintainer decision: accept this limited review coverage for the first
-experimental release, while retaining the unreviewed areas and system limits
-above as explicit limitations. Gate status stays blocked until the maintainer
-accepts or rejects this proposal.
+Maintainer decision: accepted for the first experimental release. The areas
+not examined and system limits above remain explicit release limitations. No
+additional review is expected.
 
 ## Research evidence boundary
 
@@ -43,9 +43,8 @@ original code revisions, machines, workloads, and network path. They are
 historical research evidence only. They do not measure the final release
 candidate. No historical benchmark was rerun for this closeout.
 
-Proposed maintainer decision: keep those results as historical research
-evidence and make no performance claim about the release candidate. Gate
-status stays blocked until the maintainer accepts or rejects this proposal.
+Maintainer decision: accepted. Keep those results as historical research
+evidence and make no performance claim about the release candidate.
 
 ## Candidate specific evidence
 
@@ -84,7 +83,7 @@ native Rust extension; `otool` showed only macOS `libiconv` and `libSystem`
 dependencies for that extension. The cffi native extension uses system
 `libffi` and `libSystem`. Uvicorn, h11, and pycparser are Python code.
 
-The [PR 21 CI run](https://github.com/hamdamme/casf/actions/runs/40740332026)
+The [PR 21 CI run](https://github.com/hamdamme/casf/actions/runs/40740660886)
 passed all six locked and minimum dependency jobs. It ran on Ubuntu 24.04.5
 x86_64 and reported the same component
 versions on CPython 3.12.15, 3.13.17, and 3.14.9: SQLite 3.45.1, Python TLS
@@ -103,14 +102,13 @@ Linux images, Windows, or other processor types.
 
 | Gate | Status | Evidence and remaining maintainer decision |
 | --- | --- | --- |
-| Requirements evidence and historical scope | BLOCKED | T01 through T22 have mapped assertions; the focused traceability check passed, including PR 20 under T12. The historical Linux and wide area results are clearly labeled as historical and not candidate measurements. Maintainer approval is needed to accept that scope without rerunning the experiments. |
+| Requirements evidence and historical scope | PASS | T01 through T22 have mapped assertions; the focused traceability check passed, including PR 20 under T12. The maintainer accepts the historical Linux and wide area results as research evidence only, not candidate measurements. |
 | Security findings | PASS | All assessed findings have a code, test, or documented limit disposition above. No actionable security fix is currently identified. CASF does not claim a formal security audit. |
 | Platform and native component review | PASS | macOS candidate components and the Ubuntu runtime versions from PR 21 are recorded above. The locked tests and runtime inventory passed for CPython 3.12, 3.13, and 3.14. No component issue was identified within the stated validation scope. |
 | License and reporting channel | PASS | Candidate license metadata and bytes match Apache-2.0; external runtime package license files were present; no third party dependencies are bundled. A real private report established delivery. No specific unresolved license or contact issue was found. |
-| External protocol review | BLOCKED | The review scope and omitted areas are recorded above. Maintainer approval is needed to accept this limited review for the experimental release. No further external review is expected. |
+| External protocol review | PASS | The maintainer accepts the recorded limited review for the first experimental release. The areas not examined and system limits remain explicit above. No further external review is expected. |
 | Artifact and notes approval | BLOCKED | The version, notes, artifacts, and hashes are recorded above. Maintainer approval is needed for this exact candidate. Publishing requires a separate explicit approval and has not occurred. |
 
-Phase 3 is not ready to close until the maintainer decides whether to accept
-the historical benchmark scope and limited external review, and approves or
-rejects the exact candidate artifacts and notes. The release remains
-unpublished.
+Phase 3 remains open only for final candidate artifact and notes approval.
+The historical benchmark scope and limited external review are accepted as
+stated above. Publishing remains a separate action and has not occurred.

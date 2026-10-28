@@ -11,7 +11,7 @@ that every proposed experiment or release requirement is complete.
 | Gate (SPEC §26) | Status | Evidence |
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
-| All requirements linked to evidence | blocked | The [traceability check](requirement-evidence.md) passed after updating the T12 witness identity test. The proposed historical benchmark scope is recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md); maintainer acceptance is pending. |
+| All requirements linked to evidence | pass | The [traceability check](requirement-evidence.md) passed after updating the T12 witness identity test. The maintainer accepts historical benchmarks as research evidence only; they are not measurements of this candidate. See the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | No unresolved blocking security findings | pass | Disposition of all assessed reviewer findings is in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). No actionable security fix remains identified; system limits and limited review coverage remain explicit. |
 | Reproducible install | pass | Candidate `0.1.0rc1` built from the closeout source, installed in a clean Python 3.12.11 environment, passed dependency checks, and completed integrity, anchored, and online CLI verification with `--state` and first run initialization. Exact artifact hashes are in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
@@ -20,21 +20,24 @@ that every proposed experiment or release requirement is complete.
 | Undetectable cases documented | pass | research/limitations.md; benchmarks/results/detection-v1/report.md |
 | Locked Python package advisory review | pass | The [2026-10-28 refresh](dependency-review-2026-10-28.json) queried all 24 locked external packages and uv 0.13.5 at exact versions. OSV and PyPI reported no listed advisories. Refresh again before publication. |
 | Platform and bundled component review | pass | macOS candidate components and Ubuntu runtime values for CPython 3.12, 3.13, and 3.14 are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). The locked test jobs and runtime inventory passed within the stated scope. |
-| Minimum dependency compatibility | pass | All six [PR 21 GitHub jobs](https://github.com/hamdamme/casf/actions/runs/40740332026) passed across Python 3.12, 3.13, and 3.14, covering locked and minimum dependencies for the current candidate. Historical checks are recorded in [Session 3](session3-validation.md). |
+| Minimum dependency compatibility | pass | All six [PR 21 GitHub jobs](https://github.com/hamdamme/casf/actions/runs/40740660886) passed across Python 3.12, 3.13, and 3.14, covering locked and minimum dependencies for the current candidate. Historical checks are recorded in [Session 3](session3-validation.md). |
 | License and contact checks | pass | Both candidate artifacts declare Apache-2.0 and contain the exact repository LICENSE. The wheel contains no bundled third party dependencies; the [dependency review](dependency-review.md) records declared licenses and license files for runtime packages. A real private report established channel delivery. No specific unresolved license or contact issue was found. |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
 | Package contents free of keys and data | pass | Candidate wheel and source archive were inspected. Neither contains backup or research paths, RQ2 files, databases, key files, or private key blocks. Both contain the project license. See the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | Recorded Linux benchmark matrix with network delay injection | pass | [Report](../../benchmarks/results/linux-matrix-v2/report.md) and 40 raw run files cover the four configurations in [manifest.v2.json](../../benchmarks/manifest.v2.json), including the 25 ms delay case. |
 | Recorded wide area benchmark matrix | pass | [Report](../../benchmarks/results/wide-area-v3/report.md) and 20 raw run files cover two batch sizes on one network path; writer geography is not recorded. |
 | Disclosure channel delivery | pass | A real private report was received and inspected. Its findings and dispositions are listed in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
-| External review of protocol and design | blocked | Limited review coverage and areas not examined are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Proposed acceptance is awaiting maintainer decision. No more reviews are expected. |
-| Maintainer approval of artifact hashes and notes | blocked | The exact candidate version, artifact hashes, notes, and proposed scope decisions require maintainer approval. Approval to publish remains separate and has not been given. |
+| External review of protocol and design | pass | The maintainer accepts the limited review for the first experimental release. The [Phase 3 closeout record](phase3-closeout-2026-10-28.md) lists what was examined and what was not. No more reviews are expected. |
+| Maintainer approval of artifact hashes and notes | blocked | The exact candidate version, rebuilt artifact hashes, and final notes still require maintainer approval. Approval to publish remains separate and has not been given. |
 
 The detailed current status of the six Phase 3 gates is in the
 [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Historical entries
 below are retained as dated evidence; they do not override the current table.
 
 ## Session 4 review status
+
+This is a dated historical note. The current platform and redistribution
+review passed within the scope recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
 
 Platform review remains open. The previous local Python 3.12 environment uses
 Python 3.12.11 and OpenSSL 3.6.0. A separate validation run with Python 3.12.16
@@ -109,6 +112,11 @@ was subsequently addressed as recorded above. The historical CLI rehearsal
 below remains unchanged and is not a new rehearsal of the current candidate.
 
 ## Clean install rehearsal log
+
+The following command log is historical from 2026-10-12 and describes the
+earlier `0.1.0.dev0` build. Its verification example predates required CLI
+state retention. Use the current `--state` examples in the [installation and
+usage guide](../installation.md) and the [verification guide](../verification.md).
 
 Commands (run 2026-10-12, macOS, Python 3.12):
 

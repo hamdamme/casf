@@ -74,9 +74,10 @@ assertion failed. The original frozen canonicalization vectors are unchanged.
 
 The initial review table above is a dated record. Its open items were assessed
 in later work; it is not the current task list. The current dispositions and
-items awaiting maintainer acceptance are recorded in the
-[Phase 3 closeout record](phase3-closeout-2026-10-28.md). Updating the mapping
-does not approve a release.
+the maintainer's accepted historical benchmark scope and limited external
+review are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
+Exact artifact approval is still open; updating the mapping does not approve a
+release.
 
 
 ## Session 3 follow up

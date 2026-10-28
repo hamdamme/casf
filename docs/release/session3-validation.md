@@ -4,7 +4,8 @@ Date: 2026-10-25. Base commit: `0afd209`.
 This record describes the working changes for Phase 3 Session 3. The base
 commit alone does not identify the changed source. The local rehearsal source
 manifest and patch accompany the separate session outputs. GitHub validation
-of the new branch remains pending.
+of that historical branch was pending when this record was written. Current
+GitHub results are in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
 
 ## Corrections
 

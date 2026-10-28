@@ -154,6 +154,8 @@ choosing it still allocate memory proportional to records. See the
 [API decision](adr/ADR-006-streaming-verification.md) for iteration and memory bounds.
 
 These changes do not alter signed bytes, key algorithms, or existing evidence.
-The file reader targets macOS and Linux. Local macOS checks are recorded;
-GitHub Linux validation of this change is pending. Windows portability of
-its filesystem flags has not been established.
+The file reader was checked on macOS arm64 and Ubuntu 24.04 x86_64. The
+current release validation scope is Python 3.12 through 3.14 on those systems.
+Windows portability of its filesystem flags has not been established. See the
+[Phase 3 closeout record](release/phase3-closeout-2026-10-28.md) for the exact
+runtime inventory and evidence.
