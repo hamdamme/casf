@@ -25,6 +25,28 @@ the fresh environment could not be completed because package index name
 resolution failed. The client CLI and package under rehearsal were from the
 fresh wheel; the witness service itself was not launched from that wheel.
 
-This did not exercise the full key generation, init, append, and export CLI
-workflow, the complete locked dependency installation, or the final release
-artifact hashes. The reproducible install gate therefore remains blocked.
+## Full CLI workflow extension
+
+The installed wheel was then used for the complete writer command path. Its
+application source was built from `070ea05`; comparison with current main
+`315efdb` confirms no changes to `src/`, `pyproject.toml`, or `uv.lock`
+between those revisions.
+
+- Generated authority, log, and witness keys through `casf key generate`.
+- Initialized the log through `casf init` and appended two synthetic records
+  through `casf append`.
+- Created a checkpoint, submitted it to the loopback witness, and exported
+  the bundle through the CLI.
+- Verified the export through the installed CLI in integrity, anchored, and
+  online modes. All three returned PASS; anchored mode reported two witnessed
+  records and online mode reported `FRESH_WITNESS_VIEW`.
+
+The manifest and active status statement were created with helper scripts
+using the installed Python API because the CLI has no commands for those
+provisioning steps. The local witness service ran from the existing locked
+development environment. Keys, database, bundle, and state stayed in a
+temporary directory; the key files used only a synthetic passphrase.
+
+The optional witness extra was not installed into the fresh environment, and
+the complete locked dependency installation and final artifact hashes remain
+open. The reproducible install gate therefore remains blocked.
