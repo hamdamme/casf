@@ -12,7 +12,7 @@ that every proposed experiment or release requirement is complete.
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
 | All requirements linked to evidence | blocked | The [Session 3 review](session3-validation.md) adds scenario tests and package rehearsals. Streaming memory evidence is recorded in the [validation record](streaming-validation.md). Historical benchmark scope, external review, and final evidence acceptance remain open; structural mapping checks do not establish complete coverage. |
-| No unresolved blocking security findings | blocked | Recent verification fixes are recorded below. Reviewer confirmation and assessment of remaining findings are pending. Complete the platform, dependency, and release reviews under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
+| No unresolved blocking security findings | blocked | Recent verification fixes are recorded below. The reporting reviewer confirmed the three reported issues fixed at `fb9643c`. Assessment of other findings remains open. Complete the platform, dependency, and release reviews under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
 | Reproducible install | blocked | Earlier package rehearsals passed and current CI includes package installation checks. A fresh installation and full verification rehearsal of the final release candidate remains required, including the new state arguments. The historical log below is preserved. |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
 | Witness recovery and fork tests | pass | tests/unit/test_witness.py and test_witness_http.py (T08, T09, T22) |
@@ -26,8 +26,8 @@ that every proposed experiment or release requirement is complete.
 | Package contents free of keys and data | pass | Fresh wheel and source archive inspected after the metadata correction; no backups, research results, databases, private key files, or PEM private key blocks found. See the [review](dependency-review.md). |
 | Recorded Linux benchmark matrix with network delay injection | pass | [Report](../../benchmarks/results/linux-matrix-v2/report.md) and 40 raw run files cover the four configurations in [manifest.v2.json](../../benchmarks/manifest.v2.json), including the 25 ms delay case. |
 | Recorded wide area benchmark matrix | pass | [Report](../../benchmarks/results/wide-area-v3/report.md) and 20 raw run files cover two batch sizes on one network path; writer geography is not recorded. |
-| Disclosure channel delivery | pass | A real private report was received and inspected. Delivery is established by that report rather than a fabricated test submission; findings and reviewer confirmation remain separate open work. |
-| External review of protocol and design | blocked | An initial technical review was received and informed verification fixes. Feedback from two reviewers is pending. Assess their scope and findings, resolve blocking issues, and record areas not reviewed before closing this gate. |
+| Disclosure channel delivery | pass | A real private report was received and inspected. Delivery is established by that report rather than a fabricated test submission; the reporting reviewer confirmed the three reported issues fixed at `fb9643c`; other findings remain subject to assessment. |
+| External review of protocol and design | blocked | Review submissions are complete according to the maintainer; no further feedback is expected. The reporting reviewer confirmed all three reported issues fixed at `fb9643c` and reported 354 passing tests. Assess the remaining findings and review coverage, resolve blocking issues, and record areas not reviewed before closing this gate. |
 | Maintainer approval of artifact hashes and notes | blocked | final maintainer action at actual release time |
 
 ## Session 4 review status
@@ -56,9 +56,15 @@ inconclusive, and retain verified history between command line runs.
 Command line verification requires a state file and explicit initialization
 for the first observation. See [verification usage](../verification.md).
 
-An initial external technical review informed these fixes. Feedback from two
-reviewers is pending, including confirmation of the fixes and assessment of
-remaining findings. No formal security audit or proof is claimed.
+An initial external technical review informed these fixes. On 2026-10-27,
+the reporting reviewer confirmed all three reported issues fixed at `fb9643c`
+and reported 354 passing tests. This is reviewer supplied confirmation, not
+a new local test run. The maintainer confirmed that no further review
+submissions are expected. Assessment of other findings and review coverage
+remains open. No formal security audit or proof is claimed.
+
+The confirmation is retained privately in the reporting channel. Its receipt
+does not publish the advisory or approve a software release.
 
 The earlier implementation retained records in memory. The streaming
 implementation now processes records sequentially with bounded protocol state;
