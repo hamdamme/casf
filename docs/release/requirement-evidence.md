@@ -119,6 +119,6 @@ The local commit `67f358d` adds
 `test_verify_mismatched_provisioned_witness_id_exit_3`. It checks that the CLI
 rejects a trust entry whose witness identity differs from the signed
 manifest, reports `WITNESS_ID_MISMATCH`, and does not create verifier state.
-The focused test passed locally. This commit has not been pushed or merged,
-so this evidence is not yet part of the GitHub main branch. Broader review
-coverage and the release gates above remain open.
+The focused test passed locally. This evidence is on the feature branch but
+is not yet part of `main`. Broader review coverage and the release gates
+above remain open.
