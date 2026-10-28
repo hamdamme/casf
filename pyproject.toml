@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "casf"
-version = "0.1.0.dev0"
+version = "0.1.0rc1"
 description = "Cryptographic Audit & Signing Framework: verifiable audit records with conditional rollback detection using independently retained witness state"
 readme = "README.md"
 requires-python = ">=3.12"

@@ -1,0 +1,237 @@
+{
+  "lockfile_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe",
+  "osv_error": null,
+  "results": [
+    {
+      "name": "ast-serialize",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.13.1"
+    },
+    {
+      "name": "build",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "1.6.1"
+    },
+    {
+      "name": "cffi",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "2.1.1"
+    },
+    {
+      "name": "click",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "8.5.0"
+    },
+    {
+      "name": "colorama",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.4.6"
+    },
+    {
+      "name": "cryptography",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "50.0.2"
+    },
+    {
+      "name": "h11",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.16.0"
+    },
+    {
+      "name": "hypothesis",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "6.170.9"
+    },
+    {
+      "name": "iniconfig",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "2.3.1"
+    },
+    {
+      "name": "librt",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.16.0"
+    },
+    {
+      "name": "mypy",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "2.4.0"
+    },
+    {
+      "name": "mypy-extensions",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "1.1.0"
+    },
+    {
+      "name": "packaging",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "26.3"
+    },
+    {
+      "name": "pathspec",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "1.1.1"
+    },
+    {
+      "name": "pluggy",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "1.7.0"
+    },
+    {
+      "name": "pycparser",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "3.12"
+    },
+    {
+      "name": "pygments",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "2.21.0"
+    },
+    {
+      "name": "pyproject-hooks",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "1.3.3"
+    },
+    {
+      "name": "pytest",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "9.1.1"
+    },
+    {
+      "name": "ruff",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.17.2"
+    },
+    {
+      "name": "setuptools",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "84.2.1"
+    },
+    {
+      "name": "sortedcontainers",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "2.4.0"
+    },
+    {
+      "name": "typing-extensions",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "4.16.0"
+    },
+    {
+      "name": "uvicorn",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.54.0"
+    },
+    {
+      "name": "uv",
+      "osv_vulnerabilities": [],
+      "pypi": {
+        "status": "ok",
+        "vulnerabilities": []
+      },
+      "version": "0.13.5"
+    }
+  ],
+  "review_date": "2026-10-28",
+  "scope": "24 locked external Python packages plus uv 0.13.5 tooling",
+  "sources": [
+    "https://api.osv.dev/v1/querybatch",
+    "https://pypi.org/pypi/<name>/<version>/json"
+  ]
+}

@@ -1,8 +1,8 @@
-# Release notes, 0.1.0.dev0 release candidate
+# Release notes, 0.1.0rc1 experimental release candidate
 
-Prepared under C12 (SPEC §27). These notes are drafted for review;
-nothing is published by this file. Status reviewed on 2026-10-27;
-experiment results retain their original recorded environments.
+Prepared under C12 (SPEC §27). These notes describe the proposed first
+experimental release candidate. Nothing is published by this file. Status
+reviewed on 2026-10-28. Experiment results retain their original environments.
 
 ## What this is
 
@@ -22,13 +22,16 @@ HTTPS connections now verify certificates and hostnames. Unsigned witness
 errors are reported as inconclusive, and verified history is retained between
 command line runs.
 
+The proposed experimental candidate is version `0.1.0rc1`. The package
+metadata and imported `casf.__version__` report the same version.
+
 Command line verification requires a local state file through `--state`.
 Use `--initialize-state` only for the first observation of a manifest.
 Protection depends on independently preserving that state; initialization
 cannot establish history before the first observation. See the
 [verification guide](../verification.md) for usage and recovery limitations.
 
-## Verified state at this candidate
+## Earlier verified project state
 
 - Commit `85067de` passed 322 local tests on macOS with Python 3.13.17.
   All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40439587582)
@@ -38,8 +41,8 @@ cannot establish history before the first observation. See the
   the reporting reviewer confirmed all three reported issues fixed at
   `fb9643c` and reported 354 passing tests. This records reviewer supplied
   results, not a new local test run. The maintainer confirmed that no further
-  review submissions are expected. Other findings and review coverage still
-  require assessment before release approval.
+  review submissions are expected. The assessed findings and exact review
+  scope are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
 - CASF remains experimental. Passing tests and technical feedback do not
   establish a formal security audit or proof.
 
@@ -53,9 +56,10 @@ cannot establish history before the first observation. See the
 - The license metadata correction preserves Apache 2.0 and removes the prior
   build warning. Fresh base and witness wheel checks passed on all three
   macOS Python versions. This metadata change did not rerun the application suite.
-- The [dependency review](dependency-review.md) queried all 24 external locked
-  Python packages and uv 0.13.5, with no listed advisories returned on 2026-10-24.
-  Platform component and final redistribution reviews remain open.
+- The [dependency review](dependency-review.md) records an earlier query of
+  all 24 external locked Python packages and uv 0.13.5 on 2026-10-24. The
+  candidate specific advisory refresh is recorded in the [Phase 3 closeout
+  record](phase3-closeout-2026-10-28.md).
 
 ### Earlier validation and research evidence
 
@@ -95,26 +99,16 @@ cannot establish history before the first observation. See the
   deployment throughput. Writer geography was not recorded for the
   wide area runs; their append rate excludes witness completion time.
 
-## Known open release items
+## Release decisions
 
-- Finish assessing the received reviews and resolve any remaining blocking
-  findings. Confirmation of the three reported fixes is recorded above;
-  record review coverage and areas not examined.
-- Complete the remaining D05 platform component and release dependency reviews.
-  Repeat the dated package advisory review before publication.
-- Complete final redistribution notice review for the release artifacts.
-- Review the [streaming validation evidence](streaming-validation.md) for final
-  release acceptance. The CLI streams records with bounded protocol state;
-  the eager reader remains available for compatibility and restore.
-- Finish acceptance of the requirement evidence and historical benchmark scope.
-  Minimum dependency validation has passed; historical measurements are not
-  results for the final release candidate.
-- Run a fresh installation and full verification rehearsal of the final
-  candidate, including the required verifier state arguments. Recheck package
-  contents and prepare the final artifact hashes.
-- Obtain maintainer approval of release artifacts and notes before publication.
+The six release gates and their evidence are in the [Phase 3 closeout
+record](phase3-closeout-2026-10-28.md). The required `--state` option applies
+to every command line verification example; the recorded candidate rehearsal
+includes the initialization and later verification commands. Historical
+benchmark observations are not measurements of `0.1.0rc1`.
 
-The private reporting channel received a real report. This establishes delivery;
-the reporting reviewer confirmed the three reported issues fixed. The
-confirmation remains private, and neither advisory publication nor software
-release approval is implied. Other findings remain subject to assessment.
+The private reporting channel received a real report. This establishes
+delivery. Finding dispositions and review coverage are recorded in the
+[Phase 3 closeout record](phase3-closeout-2026-10-28.md). The confirmation
+remains private, and neither advisory publication nor software release
+approval is implied.

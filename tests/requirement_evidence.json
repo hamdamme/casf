@@ -92,7 +92,7 @@
         "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range",
         "tests/unit/test_streaming.py::test_stream_matches_eager"
       ],
-      "remaining_review": "The isolated public verification rehearsal runs separately through tests/public_fixture.py and tests/public_verify.py in package CI. Local results are recorded in session3-validation.md; GitHub results remain pending."
+      "remaining_review": ""
     },
     "T06": {
       "assertion_scope": "Concurrent appends preserve sequence and event id uniqueness.",
@@ -145,11 +145,12 @@
       "remaining_review": ""
     },
     "T12": {
-      "assertion_scope": "Reject unknown versions, wrong keys, and replaced manifests.",
+      "assertion_scope": "Reject unknown versions, wrong keys, replaced manifests, and a provisioned witness identity that differs from the signed manifest.",
       "nodeids": [
         "tests/unit/test_verifier.py::test_unknown_version_never_falls_back",
         "tests/unit/test_verifier.py::test_record_signature_wrong_key_fails",
-        "tests/unit/test_verifier.py::test_manifest_replacement_fails"
+        "tests/unit/test_verifier.py::test_manifest_replacement_fails",
+        "tests/unit/test_cli.py::test_verify_mismatched_provisioned_witness_id_exit_3"
       ],
       "remaining_review": ""
     },
@@ -243,7 +244,7 @@
         "tests/unit/test_benchmark.py::test_runner_smoke_produces_raw_rows",
         "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir"
       ],
-      "remaining_review": "The complete local manifest.v1.json rehearsal is recorded separately. Historical Linux and wide area matrices were not rerun; accepting that release scope remains a maintainer decision."
+      "remaining_review": "The recorded historical Linux and wide area matrices are tied to their original code and environments and are not final candidate measurements. Accepting those results as historical research scope remains a maintainer decision; no historical experiment is being rerun."
     },
     "T20": {
       "assertion_scope": "A stolen key cannot hide a prefix rewrite from an anchor but can sign a false suffix.",

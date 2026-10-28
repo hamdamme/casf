@@ -1,34 +1,38 @@
-# Release checklist, 0.1.0.dev0 candidate
+# Release checklist, 0.1.0rc1 experimental candidate
 
 Section 26 gates with evidence. Each row is pass or explicitly
 marked blocked; blocked rows name the remaining action. Publication is
 a separate deliberate maintainer action (SPEC §25).
 
-Status reviewed on 2026-10-27. Benchmark completion below refers to the
+Status reviewed on 2026-10-28. Benchmark completion below refers to the
 recorded configurations and original experiment commits. It does not imply
 that every proposed experiment or release requirement is complete.
 
 | Gate (SPEC §26) | Status | Evidence |
 | --- | --- | --- |
 | Original source disposition complete | pass | docs/adr/; CHANGELOG.md session history |
-| All requirements linked to evidence | blocked | The [Session 3 review](session3-validation.md) adds scenario tests and package rehearsals. Streaming memory evidence is recorded in the [validation record](streaming-validation.md). Historical benchmark scope, external review, and final evidence acceptance remain open; structural mapping checks do not establish complete coverage. |
-| No unresolved blocking security findings | blocked | Recent verification fixes are recorded below. The reporting reviewer confirmed the three reported issues fixed at `fb9643c`. Assessment of other findings remains open. Complete the platform, dependency, and release reviews under [D05](../adr/ADR-001-through-004-baseline-decisions.md); passing tests alone do not close this gate. |
-| Reproducible install | pass | Earlier package rehearsals passed and current CI includes package installation checks. The [fresh wheel rehearsal](install-rehearsal-2026-10-27.md) records successful integrity, anchored, and online CLI verification on Python 3.13.17, including key generation, log initialization, append, checkpoint, witness submission, and export. The later [locked install check](install-rehearsal-2026-10-27.md#full-locked-install-and-artifact-hashes) installed all locked extras and groups, built the wheel and source archive, installed the exact wheel, and passed dependency checks on Python 3.13.17 macOS arm64. Hashes are recorded in the rehearsal. This does not approve publication; final release artifacts and maintainer approval remain open. The historical log below is preserved. |
+| All requirements linked to evidence | blocked | The [traceability check](requirement-evidence.md) passed after updating the T12 witness identity test. The proposed historical benchmark scope is recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md); maintainer acceptance is pending. |
+| No unresolved blocking security findings | pass | Disposition of all assessed reviewer findings is in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). No actionable security fix remains identified; system limits and limited review coverage remain explicit. |
+| Reproducible install | pass | Candidate `0.1.0rc1` built from the closeout source, installed in a clean Python 3.12.11 environment, passed dependency checks, and completed integrity, anchored, and online CLI verification with `--state` and first run initialization. Exact artifact hashes are in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | Offline verification without secrets | pass | rehearsal verify ran integrity mode with public keys only; tests/unit/test_verifier.py (R03) |
 | Witness recovery and fork tests | pass | tests/unit/test_witness.py and test_witness_http.py (T08, T09, T22) |
 | Key rotation drill | pass | tests/unit/test_lifecycle.py (T14) |
 | Undetectable cases documented | pass | research/limitations.md; benchmarks/results/detection-v1/report.md |
-| Locked Python package advisory review | pass | [Review](dependency-review.md) covers all 24 external locked packages and uv 0.13.5. OSV and PyPI returned no listed advisories for these exact versions on 2026-10-24; repeat before publication. |
-| Platform and bundled component review | blocked | Review the release platform Python, SQLite, TLS, and bundled native components; Python package queries do not cover the complete deployment. The separate Python 3.12 refresh is pending as recorded below. |
+| Locked Python package advisory review | pass | The [2026-10-28 refresh](dependency-review-2026-10-28.json) queried all 24 locked external packages and uv 0.13.5 at exact versions. OSV and PyPI reported no listed advisories. Refresh again before publication. |
+| Platform and bundled component review | blocked | macOS candidate components are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). The current pull request adds Ubuntu runtime reporting; inspect its Python, SQLite, TLS, cryptography, and cffi values after CI passes. |
 | Minimum dependency compatibility | pass | PR 10 was merged. All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40230741913) passed across Python 3.12, 3.13, and 3.14, covering locked and minimum direct dependencies. This completes the pending Session 3 compatibility checks; see [Session 3](session3-validation.md). |
-| License and contact checks | blocked | Apache 2.0 metadata is corrected and the [license inventory](dependency-review.md) is recorded. License files were inspected for the six installed runtime packages. Final redistribution review remains open. A real private report was received; this establishes reporting channel delivery, not resolution of its findings. |
+| License and contact checks | pass | Both candidate artifacts declare Apache-2.0 and contain the exact repository LICENSE. The wheel contains no bundled third party dependencies; the [dependency review](dependency-review.md) records declared licenses and license files for runtime packages. A real private report established channel delivery. No specific unresolved license or contact issue was found. |
 | Research results separated from guarantees | pass | research/protocol.md and research/limitations.md; notes-v0.1.md "not claimed" section |
-| Package contents free of keys and data | pass | Fresh wheel and source archive inspected after the metadata correction; no backups, research results, databases, private key files, or PEM private key blocks found. See the [review](dependency-review.md). |
+| Package contents free of keys and data | pass | Candidate wheel and source archive were inspected. Neither contains backup or research paths, RQ2 files, databases, key files, or private key blocks. Both contain the project license. See the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | Recorded Linux benchmark matrix with network delay injection | pass | [Report](../../benchmarks/results/linux-matrix-v2/report.md) and 40 raw run files cover the four configurations in [manifest.v2.json](../../benchmarks/manifest.v2.json), including the 25 ms delay case. |
 | Recorded wide area benchmark matrix | pass | [Report](../../benchmarks/results/wide-area-v3/report.md) and 20 raw run files cover two batch sizes on one network path; writer geography is not recorded. |
-| Disclosure channel delivery | pass | A real private report was received and inspected. Delivery is established by that report rather than a fabricated test submission; the reporting reviewer confirmed the three reported issues fixed at `fb9643c`; other findings remain subject to assessment. |
-| External review of protocol and design | blocked | Review submissions are complete according to the maintainer; no further feedback is expected. The reporting reviewer confirmed all three reported issues fixed at `fb9643c` and reported 354 passing tests. Assess the remaining findings and review coverage, resolve blocking issues, and record areas not reviewed before closing this gate. |
-| Maintainer approval of artifact hashes and notes | blocked | final maintainer action at actual release time |
+| Disclosure channel delivery | pass | A real private report was received and inspected. Its findings and dispositions are listed in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
+| External review of protocol and design | blocked | Limited review coverage and areas not examined are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Proposed acceptance is awaiting maintainer decision. No more reviews are expected. |
+| Maintainer approval of artifact hashes and notes | blocked | The exact candidate version, artifact hashes, notes, and proposed scope decisions require maintainer approval. Approval to publish remains separate and has not been given. |
+
+The detailed current status of the six Phase 3 gates is in the
+[Phase 3 closeout record](phase3-closeout-2026-10-28.md). Historical entries
+below are retained as dated evidence; they do not override the current table.
 
 ## Session 4 review status
 
