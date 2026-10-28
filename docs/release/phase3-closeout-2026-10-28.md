@@ -84,20 +84,20 @@ native Rust extension; `otool` showed only macOS `libiconv` and `libSystem`
 dependencies for that extension. The cffi native extension uses system
 `libffi` and `libSystem`. Uvicorn, h11, and pycparser are Python code.
 
-PR 20's successful CI ran on Ubuntu 24.04.5 x86_64 with CPython 3.12.15,
-3.13.17, and 3.14.9. The pinned runner image inventory lists OpenSSL
-3.0.13-0ubuntu3.16 and SQLite 3.45.1 ([runner inventory](https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md)). CI built and installed the package and
-ran the suite for each Python version, with locked and minimum dependency
-jobs. The package wheel is pure Python. Cryptography and cffi are external
-locked packages, not files bundled in the CASF wheel. This scopes the release
-claim to environments with supported wheels and operating system libraries;
-it does not certify other Linux images or architectures.
+The [PR 21 CI run](https://github.com/hamdamme/casf/actions/runs/40740332026)
+passed all six locked and minimum dependency jobs. It ran on Ubuntu 24.04.5
+x86_64 and reported the same component
+versions on CPython 3.12.15, 3.13.17, and 3.14.9: SQLite 3.45.1, Python TLS
+OpenSSL 3.0.13, cryptography 50.0.2 with bundled OpenSSL 4.0.3, and cffi
+2.1.1. The runner image inventory also reports OpenSSL
+3.0.13-0ubuntu3.16 ([runner inventory](https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md)).
+The runtime inventory passed on all three versions. The package wheel is pure
+Python; cryptography and cffi supply the native components externally and are
+not bundled in the CASF wheel.
 
-The original PR 20 logs did not print Python's loaded SQLite and TLS versions.
-The current pull request adds a small CI inventory line for platform, Python,
-SQLite, Python TLS, cryptography OpenSSL, and cffi versions. Until that line
-has passed on Ubuntu and its output is reviewed, the platform gate remains
-blocked. The macOS component review above is complete.
+The platform assessment covers the stated macOS arm64 and Ubuntu 24.04 x86_64
+validation scope with CPython 3.12 through 3.14. It does not certify other
+Linux images, Windows, or other processor types.
 
 ## Current decisions for the six remaining gates
 
@@ -105,12 +105,12 @@ blocked. The macOS component review above is complete.
 | --- | --- | --- |
 | Requirements evidence and historical scope | BLOCKED | T01 through T22 have mapped assertions; the focused traceability check passed, including PR 20 under T12. The historical Linux and wide area results are clearly labeled as historical and not candidate measurements. Maintainer approval is needed to accept that scope without rerunning the experiments. |
 | Security findings | PASS | All assessed findings have a code, test, or documented limit disposition above. No actionable security fix is currently identified. CASF does not claim a formal security audit. |
-| Platform and native component review | BLOCKED | macOS candidate components are recorded above. The current pull request must pass and report the Ubuntu runtime component inventory, then the values must be checked. No runtime component issue is currently identified. |
+| Platform and native component review | PASS | macOS candidate components and the Ubuntu runtime versions from PR 21 are recorded above. The locked tests and runtime inventory passed for CPython 3.12, 3.13, and 3.14. No component issue was identified within the stated validation scope. |
 | License and reporting channel | PASS | Candidate license metadata and bytes match Apache-2.0; external runtime package license files were present; no third party dependencies are bundled. A real private report established delivery. No specific unresolved license or contact issue was found. |
 | External protocol review | BLOCKED | The review scope and omitted areas are recorded above. Maintainer approval is needed to accept this limited review for the experimental release. No further external review is expected. |
 | Artifact and notes approval | BLOCKED | The version, notes, artifacts, and hashes are recorded above. Maintainer approval is needed for this exact candidate. Publishing requires a separate explicit approval and has not occurred. |
 
-Phase 3 is not ready to close until the Ubuntu runtime inventory is checked,
-the maintainer decides whether to accept the historical benchmark scope and
-limited external review, and approves or rejects the exact candidate artifacts
-and notes. The release remains unpublished.
+Phase 3 is not ready to close until the maintainer decides whether to accept
+the historical benchmark scope and limited external review, and approves or
+rejects the exact candidate artifacts and notes. The release remains
+unpublished.

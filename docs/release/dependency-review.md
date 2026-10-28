@@ -93,9 +93,9 @@ status is in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md):
 the actual candidate artifacts were inspected; the minimum dependency jobs
 passed on PR 20; requirement traceability was checked; and the received
 reporter's findings and review scope were assessed. macOS native components
-were reviewed; the Linux runtime inventory is added to the current CI run and
-must be inspected before that gate passes. The dated review above is preserved
-as a historical record and is not the current release checklist.
+were reviewed; the Linux runtime inventory ran on PR 21 and is recorded in
+the closeout record. The dated review above is preserved as a historical
+record and is not the current release checklist.
 
 Legal interpretation is not provided by this package inventory. No specific
 missing notice or license conflict was identified in the candidate package or
