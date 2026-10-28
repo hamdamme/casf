@@ -34,9 +34,12 @@ cannot establish history before the first observation. See the
   All six [GitHub validation jobs](https://github.com/hamdamme/casf/actions/runs/40439587582)
   passed across Python 3.12, 3.13, and 3.14 with locked and minimum
   dependencies. The fixes were merged as `1c7b7ee`.
-- An initial external technical review informed these fixes. Feedback from
-  two reviewers remains pending. Findings must be assessed and blocking
-  issues resolved before release approval.
+- An initial external technical review informed these fixes. On 2026-10-27,
+  the reporting reviewer confirmed all three reported issues fixed at
+  `fb9643c` and reported 354 passing tests. This records reviewer supplied
+  results, not a new local test run. The maintainer confirmed that no further
+  review submissions are expected. Other findings and review coverage still
+  require assessment before release approval.
 - CASF remains experimental. Passing tests and technical feedback do not
   establish a formal security audit or proof.
 
@@ -94,8 +97,9 @@ cannot establish history before the first observation. See the
 
 ## Known open release items
 
-- Assess feedback from both reviewers, confirm the recent fixes, and resolve
-  any blocking findings. Record the scope and areas not examined.
+- Finish assessing the received reviews and resolve any remaining blocking
+  findings. Confirmation of the three reported fixes is recorded above;
+  record review coverage and areas not examined.
 - Complete the remaining D05 platform component and release dependency reviews.
   Repeat the dated package advisory review before publication.
 - Complete final redistribution notice review for the release artifacts.
@@ -111,4 +115,6 @@ cannot establish history before the first observation. See the
 - Obtain maintainer approval of release artifacts and notes before publication.
 
 The private reporting channel received a real report. This establishes delivery;
-resolution of security findings remains part of the open review work above.
+the reporting reviewer confirmed the three reported issues fixed. The
+confirmation remains private, and neither advisory publication nor software
+release approval is implied. Other findings remain subject to assessment.
