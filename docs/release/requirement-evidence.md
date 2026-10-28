@@ -45,7 +45,7 @@ was recorded in this initial mapping review; it is not a completeness proof.
 | T02 | Compare exact canonical bytes and reject values outside the profile. | None recorded in this initial review. |
 | T03 | Reject altered bodies, wrong keys, and wrong domains. | None recorded in this initial review. |
 | T04 | Reject sequence gaps, broken predecessors, and wrong log binding. | Dedicated duplicate sequence, reorder, wrong genesis, and cross log splice cases still need an assertion review. |
-| T05 | Verify an export and report the verified range. | These tests run in the development process. A current clean environment public key only verification rehearsal remains required. |
+| T05 | Verify an export and report the verified range. | The installed wheel passed integrity, anchored, and online CLI verification on synthetic public evidence; see the [fresh wheel rehearsal](install-rehearsal-2026-10-27.md). This does not replace the remaining full release install and artifact rehearsal. |
 | T06 | Concurrent appends preserve sequence and event id uniqueness. | None recorded in this initial review. |
 | T07 | Process exits before insert, before commit, and after commit preserve retry semantics. | None recorded in this initial review. |
 | T08 | Reject invalid extensions and conflicting checkpoint reuse without advancing state. | None recorded in this initial review. |
