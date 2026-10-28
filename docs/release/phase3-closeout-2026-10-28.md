@@ -49,9 +49,11 @@ status stays blocked until the maintainer accepts or rejects this proposal.
 
 ## Candidate specific evidence
 
-Candidate version: `0.1.0rc1`. Its metadata and installed `casf.__version__`
-match. The first build was discarded after it exposed a stale module version;
-the corrected build below was rebuilt and reinstalled.
+Candidate version: `0.1.0rc1`, built from source commit
+`21619f0d115e29d758d458f5661598d9934c3f72`. Its metadata and installed
+`casf.__version__` match. The first build was discarded after it exposed a
+stale module version; the corrected build below was rebuilt from the commit
+and installed into a fresh environment.
 
 | Check | Result and evidence |
 | --- | --- |
@@ -66,8 +68,8 @@ Artifact SHA 256 values:
 
 | Artifact | SHA 256 |
 | --- | --- |
-| `casf-0.1.0rc1-py3-none-any.whl` | `9293869a100d77a01672764a31022199b24f8226aac59cd25fe9c7b0e49dd6d7` |
-| `casf-0.1.0rc1.tar.gz` | `f77977470fe61dece8741a77be17d534f41a3d2bed82a0096cf3a894d0578a19` |
+| `casf-0.1.0rc1-py3-none-any.whl` | `3152c009433ebdc3b2ee5c4477bb5e586e8d9100bc63f48b3480d49e4f0de2e1` |
+| `casf-0.1.0rc1.tar.gz` | `b94211a6578b023054593a6714a11467247fd0b3ac442d2e9a7668387d8cd40e` |
 
 ## Validated platform and component scope
 
