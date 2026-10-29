@@ -86,21 +86,36 @@ shutdown. Runtime dependencies were installed from exports with hashes.
 These are package checks; the complete application suite was not rerun for
 this metadata and documentation change.
 
-## Remaining acceptance
+## Scope of the 2026-10-24 review
 
-- Review the target platform Python, SQLite, TLS, and bundled native components
-  before release. These are not fully represented by Python package metadata.
-- Complete final redistribution notice and license review for the actual release
-  artifacts. This inventory does not certify legal compliance.
-- Add and run the minimum dependency compatibility job required by the spec.
-  The new minimum build backend version was not separately exercised; builds
-  here used the locked backend.
-- Review requirement to assertion mappings. The current traceability test
-  checks identifier presence, not adequacy of each requirement's tests.
-- Test the private reporting channel, obtain the external review required by
-  the checklist, and approve final artifacts and release notes.
+The items below were open on the date of the original review. Their current
+status is in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md):
+the actual candidate artifacts were inspected; the minimum dependency jobs
+passed on PR 20; requirement traceability was checked; and the received
+reporter's findings and review scope were assessed. macOS native components
+were reviewed; the Linux runtime inventory ran on PR 21 and is recorded in
+the closeout record. The dated review above is preserved as a historical
+record and is not the current release checklist.
 
-No security report was sent, no reviewer was contacted, and no release was
-published as part of these checks. Original evidence and local backups remain
-unchanged. D05 remains open pending completion and acceptance of its remaining
-review conditions.
+Legal interpretation is not provided by this package inventory. No specific
+missing notice or license conflict was identified in the candidate package or
+the runtime distributions checked. The candidate remains unpublished pending
+maintainer decisions and approval.
+
+## Candidate refresh, 2026-10-28
+
+The current `0.1.0rc1` candidate was queried at exact locked versions on
+2026-10-28. The [saved query result](dependency-review-2026-10-28.json)
+contains all 24 external Python packages in `uv.lock` and `uv` 0.13.5.
+OSV and PyPI returned no listed advisories for the queried versions; all
+queries completed. This is a time bounded result, not proof that a package is
+free of vulnerabilities. Repeat it immediately before publication.
+
+The candidate wheel contains CASF files and its Apache-2.0 license only; it
+does not bundle its Python dependencies. The source archive carries the same
+license bytes. In the clean installed environment, the six runtime packages
+that supply native code or witness support each included their declared
+license file: cryptography, cffi, pycparser, Uvicorn, Click, and h11.
+Cryptography includes Apache and BSD license files. The candidate artifact
+inventory and exact redistribution limits are recorded in the
+[Phase 3 closeout record](phase3-closeout-2026-10-28.md).

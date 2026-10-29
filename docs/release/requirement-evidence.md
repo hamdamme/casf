@@ -45,14 +45,14 @@ was recorded in this initial mapping review; it is not a completeness proof.
 | T02 | Compare exact canonical bytes and reject values outside the profile. | None recorded in this initial review. |
 | T03 | Reject altered bodies, wrong keys, and wrong domains. | None recorded in this initial review. |
 | T04 | Reject sequence gaps, broken predecessors, and wrong log binding. | Dedicated duplicate sequence, reorder, wrong genesis, and cross log splice cases still need an assertion review. |
-| T05 | Verify an export and report the verified range. | The installed wheel passed integrity, anchored, and online CLI verification on synthetic public evidence; see the [fresh wheel rehearsal](install-rehearsal-2026-10-27.md). This does not replace the remaining full release install and artifact rehearsal. |
+| T05 | Verify an export and report the verified range. | The public fixture and isolated verifier run in package CI. The historical wheel rehearsal is recorded in [install rehearsal](install-rehearsal-2026-10-27.md); the `0.1.0rc1` candidate rehearsal is recorded in the [Phase 3 closeout](phase3-closeout-2026-10-28.md). |
 | T06 | Concurrent appends preserve sequence and event id uniqueness. | None recorded in this initial review. |
 | T07 | Process exits before insert, before commit, and after commit preserve retry semantics. | None recorded in this initial review. |
 | T08 | Reject invalid extensions and conflicting checkpoint reuse without advancing state. | None recorded in this initial review. |
 | T09 | Accept at most one of two concurrent signed forks. | None recorded in this initial review. |
 | T10 | An old restored database is incomplete against a newer anchor. | None recorded in this initial review. |
 | T11 | Replay and wrong nonce fail; timeout is inconclusive. | None recorded in this initial review. |
-| T12 | Reject unknown versions, wrong keys, and replaced manifests. | None recorded in this initial review. |
+| T12 | Reject unknown versions, wrong keys, replaced manifests, and a provisioned witness identity that differs from the signed manifest. | The witness identity regression is `tests/unit/test_cli.py::test_verify_mismatched_provisioned_witness_id_exit_3`, merged in PR 20. |
 | T13 | Reject revocation and status serial rollback. | The stale offline policy case needs a dedicated assertion review; signature validity does not establish current revocation knowledge. |
 | T14 | Verify rotation links, reject sealed appends, and expose emergency discontinuity. | None recorded in this initial review. |
 | T15 | Export and restore verify; malformed bundles fail. | Concurrent export and missing WAL recovery need dedicated evidence review. |
@@ -72,9 +72,12 @@ literal expected bytes, including the unescaped DEL character. A local
 mutation check substituted an incorrect byte result and confirmed that the
 assertion failed. The original frozen canonicalization vectors are unchanged.
 
-The requirement evidence gate remains open until the listed review items are
-resolved or their limitations are explicitly accepted under the release
-criteria. Updating the mapping does not approve a release.
+The initial review table above is a dated record. Its open items were assessed
+in later work; it is not the current task list. The current dispositions and
+the maintainer's accepted historical benchmark scope and limited external
+review are recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
+Exact artifact approval is still open; updating the mapping does not approve a
+release.
 
 
 ## Session 3 follow up
@@ -115,10 +118,10 @@ acceptance are still separate requirements.
 
 ## Provisioned witness identity regression
 
-The local commit `67f358d` adds
-`test_verify_mismatched_provisioned_witness_id_exit_3`. It checks that the CLI
-rejects a trust entry whose witness identity differs from the signed
-manifest, reports `WITNESS_ID_MISMATCH`, and does not create verifier state.
-The focused test passed locally. This evidence is on the feature branch but
-is not yet part of `main`. Broader review coverage and the release gates
-above remain open.
+PR 20 merged the provisioned witness identity regression test,
+`test_verify_mismatched_provisioned_witness_id_exit_3`, into `main`. It checks
+that the CLI rejects a trust entry whose witness identity differs from the
+signed manifest, reports `WITNESS_ID_MISMATCH`, and does not create verifier
+state. PR 20's six GitHub checks passed. The current mapping includes this
+assertion under T12. Release decisions and the bounded external review are
+recorded in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).

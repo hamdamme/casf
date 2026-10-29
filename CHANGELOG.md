@@ -57,7 +57,14 @@ stabilization (SPEC §26).
   takes an optional output directory so a second machine replication
   (T19) never overwrites committed results. 1 new test (208 total,
   all green).
-- C12: release candidate preparation. Requirement to test
+- Initial C12 release candidate status, later superseded by the
+  [2026-10-28 closeout record](docs/release/phase3-closeout-2026-10-28.md).
+  At that earlier review point, the outstanding items were a Linux
+  benchmark matrix, disclosure channel test submission, external review,
+  and final hash approval. The later closeout records the completed
+  platform and disclosure evidence, the maintainer's accepted historical
+  benchmark scope and limited external review, and the remaining candidate
+  artifact approval. Requirement to test
   traceability is now enforced in CI by an audit test covering R01
   to R12 and T01 to T22; the audit found and closed a real gap (T10:
   restored old writer database compared with a newer anchor reports

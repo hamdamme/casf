@@ -3,6 +3,10 @@
 Date: 2026-10-27. Source revision: `070ea05a62c82ce12f76e63af63b22464ef526a6`.
 This is a focused rehearsal, not release approval.
 
+This historical record describes the earlier `0.1.0.dev0` build and its
+recorded hashes. It is superseded for release approval by the `0.1.0rc1`
+artifacts and hashes in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md).
+
 ## Setup and results
 
 - Built the wheel and source archive with uv 0.13.5 from a temporary copy of

@@ -11,7 +11,7 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Development version:** `0.1.0.dev0` · **Protocol:** proposed `casf-v1` profile · **Stage:** research and release candidate review
+**Current version:** `0.1.0rc1` · **Protocol:** proposed `casf-v1` profile · **Stage:** experimental release candidate, not yet published
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
@@ -43,6 +43,8 @@ python3 -m venv .venv-tools
 
 This checks out the development source and runs its tests. It is **not** a production deployment guide. For current protocol and verification rules, see the [project specification](docs/specification/CASF_SPEC_001.md). The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
 
+For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc1` candidate is not published to a package index. Do not install it with a package index command yet.
+
 The committed `uv.lock` records exact dependency versions for development and
 new experiments. See the [dependency guide](docs/dependencies.md) for checks,
 package builds, and deliberate dependency updates. Existing research results
@@ -67,9 +69,10 @@ These are different assurances. A valid local signature chain alone cannot prove
 | [Architecture decisions](docs/adr/ADR-001-through-004-baseline-decisions.md) | Design choices and their rationale |
 | [Development guide](DEVELOPMENT.md) | Working rules for implementation and review |
 | [Verification manual](docs/05-verification-manual.md) | Historical design background; consult the specification for current rules |
+| [Install and use CASF](docs/installation.md) | Candidate installation, verification modes, and retained verifier state |
 | [Research protocol](research/protocol.md) | Research questions, methods, and reproducibility |
 | [Research limitations](research/limitations.md) | Detection boundaries and limits of the experiments |
-| [Release checklist](docs/release/checklist-v0.1.md) | Candidate review gates and pending maintainer actions |
+| [Release checklist](docs/release/checklist-v0.1.md) | Candidate gates and the remaining artifact approval |
 | [Contributing](CONTRIBUTING.md) | Contribution expectations |
 | [Security policy](SECURITY.md) | Private vulnerability reporting and support scope |
 
