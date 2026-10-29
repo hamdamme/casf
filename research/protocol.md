@@ -57,20 +57,23 @@ moves witness p50 from 196 ms to 209 ms: on this slow hardware the
 witness signature processing dominates the network term, an honest
 observation that limits how strongly the delay model generalizes.
 Total wall clock for the full matrix was about 2.2 hours on that
-machine (RQ4 evidence).
+machine. This records run duration; elapsed time alone does not establish
+reproducibility. RQ4 evidence is the independent rerun of the pinned manifest,
+which reproduced record counts and database sizes as described above.
 
 Wide area matrix (benchmarks/manifest.v3.json,
 benchmarks/results/wide-area-v3/): writer on a Dell Linux machine,
 witness on an AWS Lightsail instance in Frankfurt
-(eu-central-1), 20 runs, zero failures. RQ2: a witnessed checkpoint round
+(eu-central-1), 20 runs, zero failures. RQ3: a witnessed checkpoint round
 trip cost about 1.18 s at batch 128 and 0.67 s at batch 16 on this
 path, while append throughput stayed at 1273 to 1462 records per
-second because checkpoint submission is asynchronous. RQ3 and H2:
+second because checkpoint submission is asynchronous. RQ3:
 batching cuts total witness time per 10000 records from about 420 s
 (626 submissions) to about 95 s (80 submissions), roughly 9.5 ms
 against 42 ms per record, in exchange for a longer pending
-unwitnessed suffix (128 against 16 records). One path only; no
-general wide area claim is made.
+unwitnessed suffix (128 against 16 records). The longer suffix is a security
+trade off relevant to RQ2; this measurement does not test H2. One path only;
+no general wide area claim is made.
 
 ## Recorded experiment commits
 
