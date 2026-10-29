@@ -9,7 +9,19 @@ chain offline, compare it with a trusted checkpoint, or query a witness for a
 fresh signed view. This release candidate is intended for evaluation and
 research, not as production security infrastructure.
 
-## Included
+## Repository and distribution contents
+
+The repository contains the test suite, protocol vectors, research methods,
+and historical benchmark data used to develop and evaluate CASF. These
+materials are not included in the installable release artifacts.
+
+The wheel contains the CASF Python package, command line entry point, package
+metadata, and license. The source archive contains the package source and
+build metadata, README, and license. Neither artifact contains the repository
+test suite, protocol vectors, research materials, benchmark scripts or results,
+or release documentation.
+
+## Release capabilities
 
 - Python package and command line interface for writing, exporting, and
   verifying audit evidence.
@@ -20,7 +32,6 @@ research, not as production security infrastructure.
   limits.
 - Integrity, anchored, and online verification modes with retained verifier
   state.
-- Tests, protocol vectors, research methods, and historical benchmark data.
 
 ## Security and behavior notes
 
