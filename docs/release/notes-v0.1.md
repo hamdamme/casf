@@ -68,5 +68,6 @@ artifacts and their SHA 256 values. See the [candidate install guide](../install
 
 The historical benchmark scope and limited external review are accepted for
 the first experimental release, with their limitations recorded. The exact
-candidate artifact hashes and notes still require maintainer approval.
-Publication is not authorized by this document.
+candidate artifact hashes and these notes were approved by the maintainer on
+2026-10-28 after the actual wheel and source archive hashes matched the
+recorded values. Publication is not authorized by this document.

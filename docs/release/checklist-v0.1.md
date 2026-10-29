@@ -28,11 +28,14 @@ that every proposed experiment or release requirement is complete.
 | Recorded wide area benchmark matrix | pass | [Report](../../benchmarks/results/wide-area-v3/report.md) and 20 raw run files cover two batch sizes on one network path; writer geography is not recorded. |
 | Disclosure channel delivery | pass | A real private report was received and inspected. Its findings and dispositions are listed in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). |
 | External review of protocol and design | pass | The maintainer accepts the limited review for the first experimental release. The [Phase 3 closeout record](phase3-closeout-2026-10-28.md) lists what was examined and what was not. No more reviews are expected. |
-| Maintainer approval of artifact hashes and notes | blocked | The exact candidate version, rebuilt artifact hashes, and final notes still require maintainer approval. Approval to publish remains separate and has not been given. |
+| Maintainer approval of artifact hashes and notes | pass | On 2026-10-28, the maintainer approved the exact candidate and notes after confirming that both artifact files match the recorded SHA 256 values in the [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Approval to publish remains separate and has not been given. |
 
 The detailed current status of the six Phase 3 gates is in the
 [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Historical entries
 below are retained as dated evidence; they do not override the current table.
+
+All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
+still subject to separate maintainer approval.
 
 ## Session 4 review status
 

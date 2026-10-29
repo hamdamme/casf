@@ -2,8 +2,9 @@
 
 Review date: 2026-10-28. This record updates the release evidence after PR 20.
 The maintainer accepts the historical benchmark scope and the limited
-external review for the first experimental release. This does not authorize
-publication.
+external review for the first experimental release and approved the exact
+candidate artifacts and notes after both artifact hashes were confirmed.
+Phase 3 is closed. This does not authorize publication.
 
 ## Reviewer findings and disposition
 
@@ -63,6 +64,7 @@ match.
 | Full CLI mode rehearsal | The complete synthetic integrity, anchored, and online command line rehearsal passed on the earlier `21619f0` candidate. Application source and `pyproject.toml` have not changed since that source revision. Each mode passed first with `--initialize-state` and again with the same `--state` file without initialization. The exact rebuilt artifact received the clean install and smoke checks above. |
 | Package and license inspection | Wheel has 29 files; source archive has 34. Both declare Apache-2.0 and include LICENSE bytes matching the repository. Neither contains backup, research, RQ2, database, or key paths, nor private key blocks. The wheel bundles no third party dependencies. Installed cryptography, cffi, pycparser, Uvicorn, Click, and h11 distributions each include license files; cryptography includes Apache and BSD license files. |
 | Dependency advisories | The exact version query for 24 locked packages plus uv 0.13.5 completed on 2026-10-28. OSV and PyPI returned no listed advisories. See [the saved query result](dependency-review-2026-10-28.json). Refresh immediately before publication. |
+| Artifact hash confirmation | Both actual candidate files were hashed on 2026-10-28 and matched the values below. Byte for byte local copies were preserved with a checksum manifest outside the repository. |
 | PR 20 validation | PR 20 merged as `26cbb0c`. Its [CI run](https://github.com/hamdamme/casf/actions/runs/40724739683) completed successfully: three locked dependency jobs and three minimum dependency jobs for Python 3.12, 3.13, and 3.14. |
 
 Artifact SHA 256 values:
@@ -109,8 +111,8 @@ Linux images, Windows, or other processor types.
 | Platform and native component review | PASS | macOS candidate components and the Ubuntu runtime versions from PR 21 are recorded above. The locked tests and runtime inventory passed for CPython 3.12, 3.13, and 3.14. No component issue was identified within the stated validation scope. |
 | License and reporting channel | PASS | Candidate license metadata and bytes match Apache-2.0; external runtime package license files were present; no third party dependencies are bundled. A real private report established delivery. No specific unresolved license or contact issue was found. |
 | External protocol review | PASS | The maintainer accepts the recorded limited review for the first experimental release. The areas not examined and system limits remain explicit above. No further external review is expected. |
-| Artifact and notes approval | BLOCKED | The version, notes, artifacts, and hashes are recorded above. Maintainer approval is needed for this exact candidate. Publishing requires a separate explicit approval and has not occurred. |
+| Artifact and notes approval | PASS | On 2026-10-28, after checking both actual SHA 256 values against the recorded values above, the maintainer approved this exact `0.1.0rc1` candidate and its release notes. Publication requires separate explicit approval and has not occurred. |
 
-Phase 3 remains open only for final candidate artifact and notes approval.
-The historical benchmark scope and limited external review are accepted as
-stated above. Publishing remains a separate action and has not occurred.
+All six Phase 3 closeout gates are PASS. Phase 3 is closed. The historical
+benchmark scope and limited external review are accepted as stated above.
+Publishing remains a separate action and has not occurred.
