@@ -1,0 +1,799 @@
+{
+  "experiment": "h1-writer-rollback-v1",
+  "hypothesis": "C, a signed chain with an external witness, detects restoration below the witness retained state when that witness remains honest and reachable. B, an isolated signed chain with only local checkpoints, cannot distinguish the same old valid snapshot from its original history when it has no newer independent reference.",
+  "hypothesis_source": "CASF_SPEC_001.md Section 22",
+  "manifest_sha256": "af144a3032c21cadb560c54310e6ae5fda4550e47add52900a818131aa01d4b3",
+  "configuration": {
+    "old_count": 24,
+    "new_count": 32,
+    "checkpoint_batch": 8,
+    "target_bytes": 512,
+    "runs": 10,
+    "seeds": [
+      7301,
+      7307,
+      7313,
+      7319,
+      7325,
+      7331,
+      7337,
+      7343,
+      7349,
+      7355
+    ],
+    "extension_seed_offset": 50000,
+    "fresh_databases_per_run": true,
+    "fresh_verifier_context_per_case": true
+  },
+  "expected": {
+    "b_current_control": "PASS",
+    "c_current_control": "PASS",
+    "b_restored_old": "PASS",
+    "c_restored_old_primary": "FAIL",
+    "c_restored_old_retained_pin": "FAIL",
+    "c_recovered_control": "PASS"
+  },
+  "classification_rules": {
+    "detection": "Observed result matches the predeclared expectation with diagnostic codes attributable to the history mismatch",
+    "evidence_against": "The restored old snapshot is accepted as current (PASS) in the primary C case",
+    "outcome_mismatch": "A non PASS result that is not the predeclared FAIL, for example INCONCLUSIVE; it is investigated and reported, and is not counted as a detection",
+    "invalid_trial": "Setup, connectivity, trust provisioning, or infrastructure failure; the trial is invalid rather than a detection or a refutation"
+  },
+  "environment": {
+    "os": "macOS-15.6.1-arm64-arm-64bit",
+    "python": "3.12.11",
+    "sqlite": "3.54.0",
+    "cryptography": "50.0.2",
+    "commit": "7fc4273a941845eac838a5f9fdcba5f2329c9c74",
+    "working_tree_status": "M research/limitations.md\n M research/protocol.md\n?? benchmarks/h3-witness-outage-pilot.v1.json\n?? benchmarks/h3-witness-outage.v1.json\n?? benchmarks/h3_witness_outage.py\n?? benchmarks/manifest.rq2.json\n?? benchmarks/results/h3-witness-outage-pilot-v1/\n?? benchmarks/results/h3-witness-outage-v1/\n?? benchmarks/rq2.md\n?? benchmarks/rq2.py\n?? research/h3-witness-outage.md\n?? tests/test_h3_witness_outage.py",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "ram_bytes": 17179869184,
+    "dependency_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe",
+    "harness_sha256": "b37ed166dea2982b1c72148af4d830e94f3b4da51d092843acc9a33613c6e28e",
+    "casf_module_path": "/Users/nazar/Desktop/PROJECTS/casf/src/casf/__init__.py",
+    "casf_source_tree_sha256": "5d074fe95783b70610060a70a6c795e5addb5cd51b0a4a443ba35888e21e2022"
+  },
+  "runs": [
+    {
+      "run_id": "run-00",
+      "seed": 7301,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 17.665
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 16.102,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "0c28892141b09b671dba7d6c58e4abe4768a70cd341cd21f4be9be3b8bec4093",
+            "count": 32,
+            "head_hash": "e02eafa77f49d5e6f44e99b161b90fcd8eaf8000a73fdf42a81b4f2c21471e12"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.74,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 27.563
+        }
+      }
+    },
+    {
+      "run_id": "run-01",
+      "seed": 7307,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.614
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 16.329,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "77cc1909cd07f5c6d7761ea04c8033c0f714432046a0781c9326ec45f0f97445",
+            "count": 32,
+            "head_hash": "ccb5b697518aad576ffe8041597e9b4a7418b8cc74e9541cffbf9dd420c02fec"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.85,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 27.044
+        }
+      }
+    },
+    {
+      "run_id": "run-02",
+      "seed": 7313,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.431
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 16.34,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "195dea6949e810b5df7d30e75a69104e42887c316b5d30a4acc3b86bd05d8883",
+            "count": 32,
+            "head_hash": "8eb88dbae4ad7daf64662df3aa4ffa252ee00e2cbcefe4d5974d45a8a6be6194"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.979,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 28.076
+        }
+      }
+    },
+    {
+      "run_id": "run-03",
+      "seed": 7319,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.601
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 14.19,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "cf9ee1596c076074be0a58f557e20321dbd0f68086b80ac7be8142d8d90ddad6",
+            "count": 32,
+            "head_hash": "7ca8d71c893f4d5b6e92ab065d02a0dd7419a97832dc5ac7ecba1b4300399263"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.246,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 28.275
+        }
+      }
+    },
+    {
+      "run_id": "run-04",
+      "seed": 7325,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.922
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 18.284,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "e07f68f9fdee65c10dc34232581a69c2dfd314ee0a2c86e6bb4793077654754b",
+            "count": 32,
+            "head_hash": "a16ea84f74c4abfa08e597758ac82b352f684fb5f04778a9d7909cf3160977b5"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 12.93,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 26.386
+        }
+      }
+    },
+    {
+      "run_id": "run-05",
+      "seed": 7331,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.494
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 12.076,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "09314ccf912aa64c9202cb43e0e8c9b72e9f71bbde33362b939f37f7435232b0",
+            "count": 32,
+            "head_hash": "e8f84b729911abc11242fb86e8c3ac72b333b225ebe15b425a192a48aec251d7"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 10.092,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 28.413
+        }
+      }
+    },
+    {
+      "run_id": "run-06",
+      "seed": 7337,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.962
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 16.519,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "0703a24bdc2a1fb001305a62a99da65a1fc528a5d1d88a07ba4e1fd047782ac2",
+            "count": 32,
+            "head_hash": "689986289b925c033d4528de5ba2b99352613c74243e31fccef6c2ca41baeda4"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.773,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 28.695
+        }
+      }
+    },
+    {
+      "run_id": "run-07",
+      "seed": 7343,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.538
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 15.843,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "37541b46328d62ef1411c9429c1ea90802ddb9d53463dd12588dd0eed57dc44e",
+            "count": 32,
+            "head_hash": "9574957223897e501586d40b8b8d77e5b210b1d9154e155649654f3f3e0dfeb6"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.757,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 24.611
+        }
+      }
+    },
+    {
+      "run_id": "run-08",
+      "seed": 7349,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 15.424
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 15.786,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "800a27214bd4e69a9b187db39849613fe1a14421e935e0c8c631be0da433f0ef",
+            "count": 32,
+            "head_hash": "d51f0ecf363efb98c7378a1de854627d28b1cd7820cd6b0d70a65a78c282e17a"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 11.647,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 26.636
+        }
+      }
+    },
+    {
+      "run_id": "run-09",
+      "seed": 7355,
+      "counts": {
+        "old": 24,
+        "new": 32,
+        "restored_b": 24,
+        "restored_c": 24
+      },
+      "retained_pin_checkpoint_index": 3,
+      "cases": {
+        "b_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected"
+        },
+        "c_current_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 14.693
+        },
+        "b_restored_old": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [],
+          "classification": "as_expected",
+          "checkpoints_validated": 3,
+          "currentness": "not established: no newer independent reference exists"
+        },
+        "c_restored_old_primary": {
+          "expected": "FAIL",
+          "observed": "INCONCLUSIVE",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_AHEAD"
+          ],
+          "classification": "outcome_mismatch",
+          "verification_ms": 16.647,
+          "witness_view": {
+            "checkpoint_index": 3,
+            "checkpoint_hash": "6bd639a8977155c52c579492d8ec1fb77f56370d072f6a64cf3bebc0c781cb1b",
+            "count": 32,
+            "head_hash": "c6468c7a816a596abc5d018bd0c4dea72170bd5593c9d0904baa6d853dab83a7"
+          },
+          "freshness": "INCONCLUSIVE"
+        },
+        "c_restored_old_retained_pin": {
+          "expected": "FAIL",
+          "observed": "FAIL",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED",
+            "WITNESS_STATE_CONFLICT"
+          ],
+          "classification": "detection",
+          "verification_ms": 12.247,
+          "witness_view": null,
+          "freshness": "CONFLICT"
+        },
+        "c_recovered_control": {
+          "expected": "PASS",
+          "observed": "PASS",
+          "codes": [
+            "STATUS_CURRENTNESS_UNCONFIRMED"
+          ],
+          "classification": "as_expected",
+          "verification_ms": 28.788
+        }
+      }
+    }
+  ]
+}
