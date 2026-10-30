@@ -1,0 +1,12 @@
+[
+  {
+    "configuration": "outage",
+    "position": 0,
+    "seed": 71001
+  },
+  {
+    "configuration": "healthy",
+    "position": 1,
+    "seed": 71001
+  }
+]

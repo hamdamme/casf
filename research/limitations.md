@@ -26,7 +26,8 @@ correctly remain undetectable offline:
   reflect that hardware and are reported alongside the macOS subset
   rather than generalized. On that hardware the witness processing
   cost dominates the injected 25 ms network delay, so the delay
-  model says little about fast server pairs.
+  model says little about fast server pairs. This fixed delay remains
+  separate from the canonical outage experiment below.
 - The wide area matrix measured exactly one network path (one
   writer, one Lightsail witness in Frankfurt (eu-central-1),
   writer geography not recorded in the artifacts); its round trip
@@ -42,6 +43,24 @@ correctly remain undetectable offline:
   holding the database file can drop them, which is why integrity
   rests on the hash chain and the witness, not on the triggers
   (confirmed by the tamper cases, which drop the triggers first).
+
+## Canonical H3 outage experiment
+
+The new experiment in `benchmarks/results/h3-witness-outage-v1/` supports
+both canonical H3 outcomes within its tested scope. Ten matched loopback
+runs showed a longer record 24 commit to persisted receipt interval during
+the fixed three second outage; all ten online freshness attempts became
+inconclusive while offline integrity checks passed. The experiment did
+not observe data loss. Authority status currentness remained unconfirmed
+even when online witness freshness passed.
+
+The evidence uses one host, one accept and close fault mode, one batch size,
+32 synthetic events, ten seed pairs, and a manual recovery call. It does
+not cover wide area partitions, delayed responses, connection refusal,
+witness process failure, an automatic recovery worker, larger workloads,
+or the full SPEC §22 matrix. The historical injected delay runs are not
+outage evidence. See `h3-witness-outage.md` for the method, measurements,
+and separate H3a and H3b conclusions.
 
 ## Omitted configurations and reasons
 

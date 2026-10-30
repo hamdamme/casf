@@ -1,0 +1,31 @@
+{
+  "experiment": "canonical-h3-witness-outage-pilot",
+  "version": 1,
+  "purpose": "Feasibility pilot only; excluded from the measured analysis.",
+  "fault_mode": "The loopback HTTP proxy reads the complete request body, accepts the connection, then closes without forwarding while the fault gate is active. Healthy requests use the same proxy and are forwarded to the intact witness HTTP service.",
+  "configuration": {
+    "events_per_run": 32,
+    "batch_size": 8,
+    "event_target_bytes": 256,
+    "interarrival_seconds": 0.01,
+    "query_timeout_seconds": 0.5,
+    "submission_timeout_seconds": 0.5,
+    "retry_budget": 0,
+    "outage_seconds": 3.0,
+    "recovery_observation_deadline_seconds": 10.0,
+    "warmup": "One paired pilot is excluded from measured rows. Event generation and key setup occur before timing. Measured contexts start fresh; no database operations are silently discarded."
+  },
+  "seeds": [71001],
+  "run_order_seed": null,
+  "run_order": [
+    {"configuration": "outage", "seed": 71001},
+    {"configuration": "healthy", "seed": 71001}
+  ],
+  "expected_outcomes": {
+    "healthy": "Both online checks pass and all intended checkpoints receive persisted receipts.",
+    "outage_submission": "Submitting the checkpoint through record 24 fails over the blocked HTTP path and leaves the same checkpoint pending.",
+    "outage_freshness": "The previously valid record-16 bundle returns INCONCLUSIVE with FRESHNESS_INCONCLUSIVE while offline integrity verification passes.",
+    "outage_recovery": "After the fixed outage interval, one explicit retry accepts the same pending checkpoint; the log advances through record 32 and final online verification passes."
+  },
+  "interpretation_boundary": "Controlled loopback fault injection. This is not wide area deployment evidence and tests only the specified accept-and-drop fault mode."
+}

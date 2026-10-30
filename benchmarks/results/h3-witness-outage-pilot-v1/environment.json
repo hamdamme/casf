@@ -1,0 +1,29 @@
+{
+  "captured_at_utc": "2026-10-29T20:13:04.023315+00:00",
+  "commit": "1948a982cef52eabbf5cfdb3846d6e9b75ef7413",
+  "cpu": "arm",
+  "cryptography": "50.0.2",
+  "exact_command": "python -m benchmarks.h3_witness_outage --manifest <frozen-manifest> --output <new-directory>",
+  "filesystem": "",
+  "git_status": "## benchmark/h1-writer-rollback\n?? benchmarks/h1-writer-rollback.v1.json\n?? benchmarks/h1_writer_rollback.py\n?? benchmarks/h3-witness-outage-pilot.v1.json\n?? benchmarks/h3_witness_outage.py\n?? benchmarks/manifest.rq2.json\n?? benchmarks/results/h3-witness-outage-pilot-v1/\n?? benchmarks/rq2.md\n?? benchmarks/rq2.py\n?? tests/test_h3_witness_outage.py\n?? tests/unit/test_h1_writer_rollback.py\n",
+  "logical_cpu_count": 8,
+  "machine": "arm64",
+  "manifest_sha256": "8ffb43e95e09f586ec6131a764a36b9b046caf9241b757bbaa4e34842fe0e4ff",
+  "memory": "unavailable",
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "3.12.11",
+  "run_order": [
+    {
+      "configuration": "outage",
+      "position": 0,
+      "seed": 71001
+    },
+    {
+      "configuration": "healthy",
+      "position": 1,
+      "seed": 71001
+    }
+  ],
+  "sqlite": "3.54.0",
+  "uv_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe"
+}

@@ -1,0 +1,147 @@
+{
+  "captured_at_utc": "2026-10-29T20:17:22.028764+00:00",
+  "commit": "1948a982cef52eabbf5cfdb3846d6e9b75ef7413",
+  "cpu": "arm",
+  "cryptography": "50.0.2",
+  "environment_supplement": {
+    "captured_at_utc": "2026-10-29T20:20:26Z",
+    "filesystem_report": "/dev/disk3s5 228Gi 169Gi 22Gi 89% /System/Volumes/Data",
+    "filesystem_type": "Not confirmed; DiskManagement information was unavailable",
+    "memory_source": "Python os.sysconf physical page count multiplied by page size",
+    "note": "The initial memory query was unavailable and the initial filesystem type query returned a mount path. Read only system queries were used after the runs to supplement these environment details.",
+    "physical_memory_bytes": 17179869184
+  },
+  "exact_command": ".venv/bin/python -m benchmarks.h3_witness_outage --manifest <frozen-manifest> --output <new-directory>",
+  "executed_command": ".venv/bin/python -m benchmarks.h3_witness_outage --manifest benchmarks/h3-witness-outage.v1.json --output benchmarks/results/h3-witness-outage-v1",
+  "filesystem_type": null,
+  "git_status": "## benchmark/h1-writer-rollback\n?? benchmarks/h1-writer-rollback.v1.json\n?? benchmarks/h1_writer_rollback.py\n?? benchmarks/h3-witness-outage-pilot.v1.json\n?? benchmarks/h3-witness-outage.v1.json\n?? benchmarks/h3_witness_outage.py\n?? benchmarks/manifest.rq2.json\n?? benchmarks/results/h3-witness-outage-pilot-v1/\n?? benchmarks/results/h3-witness-outage-v1/\n?? benchmarks/rq2.md\n?? benchmarks/rq2.py\n?? tests/test_h3_witness_outage.py\n?? tests/unit/test_h1_writer_rollback.py\n",
+  "logical_cpu_count": 8,
+  "machine": "arm64",
+  "manifest_sha256": "9cda30cdbc1ca38c73b0aabb168a3ae4c2294e97bde72dbcdd1120cf19cef730",
+  "memory": "unavailable",
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "3.12.11",
+  "reproduction_command_with_new_output": ".venv/bin/python -m benchmarks.h3_witness_outage --manifest benchmarks/h3-witness-outage.v1.json --output benchmarks/results/h3-witness-outage-reproduction-v1",
+  "run_order": [
+    {
+      "configuration": "healthy",
+      "position": 0,
+      "seed": 81007
+    },
+    {
+      "configuration": "healthy",
+      "position": 1,
+      "seed": 81001
+    },
+    {
+      "configuration": "outage",
+      "position": 2,
+      "seed": 81005
+    },
+    {
+      "configuration": "outage",
+      "position": 3,
+      "seed": 81002
+    },
+    {
+      "configuration": "healthy",
+      "position": 4,
+      "seed": 81005
+    },
+    {
+      "configuration": "outage",
+      "position": 5,
+      "seed": 81007
+    },
+    {
+      "configuration": "outage",
+      "position": 6,
+      "seed": 81003
+    },
+    {
+      "configuration": "outage",
+      "position": 7,
+      "seed": 81008
+    },
+    {
+      "configuration": "outage",
+      "position": 8,
+      "seed": 81001
+    },
+    {
+      "configuration": "healthy",
+      "position": 9,
+      "seed": 81004
+    },
+    {
+      "configuration": "outage",
+      "position": 10,
+      "seed": 81010
+    },
+    {
+      "configuration": "healthy",
+      "position": 11,
+      "seed": 81006
+    },
+    {
+      "configuration": "healthy",
+      "position": 12,
+      "seed": 81009
+    },
+    {
+      "configuration": "healthy",
+      "position": 13,
+      "seed": 81002
+    },
+    {
+      "configuration": "healthy",
+      "position": 14,
+      "seed": 81003
+    },
+    {
+      "configuration": "healthy",
+      "position": 15,
+      "seed": 81010
+    },
+    {
+      "configuration": "outage",
+      "position": 16,
+      "seed": 81006
+    },
+    {
+      "configuration": "outage",
+      "position": 17,
+      "seed": 81004
+    },
+    {
+      "configuration": "healthy",
+      "position": 18,
+      "seed": 81008
+    },
+    {
+      "configuration": "outage",
+      "position": 19,
+      "seed": 81009
+    }
+  ],
+  "sqlite": "3.54.0",
+  "storage": {
+    "free_bytes": 23127973888,
+    "total_bytes": 245107195904,
+    "used_bytes": 221979222016
+  },
+  "tested_source_sha256": {
+    "benchmarks/h3-witness-outage.v1.json": "9cda30cdbc1ca38c73b0aabb168a3ae4c2294e97bde72dbcdd1120cf19cef730",
+    "benchmarks/h3_witness_outage.py": "60fbff86c1301c7ddf0d0dc3fdb6711b416167a4fc1577b3e704ffedf268d848",
+    "benchmarks/workload.py": "4f2e92d962f5bb125004db2139669e243d6372801315aa3998524aaac3dd4203",
+    "src/casf/cli/__init__.py": "713ab16af9fd4e758ee544a6772cf2afe42948fa3f2ab712de71f73dc73ae19b",
+    "src/casf/online.py": "8e177f1a767b60887c6013bbe9b0393433d36027405c79d4ed0064baf909aa38",
+    "src/casf/verifier/__init__.py": "a7ce531e1a8c2a9a6b509f939e8eddfe6cc45e629b0b2b8d75fb2585baab598d",
+    "src/casf/witness/http.py": "8b08c061d7f0a8af5ea183d3ffcd845d647facf5bb6fbbb8236988a6cd926d6a",
+    "src/casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+    "src/casf/writer/__init__.py": "332105c1a812f7123805f4ad1c207c04c021d9192420cfbe43a1051a9335d0b4",
+    "tests/test_h3_witness_outage.py": "3091d9f051a4aaca944f6eecf0e21f34ec3d55567112c09c9159920c34c71a8c"
+  },
+  "tracked_worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "uv_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe"
+}
