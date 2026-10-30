@@ -1,10 +1,12 @@
 # Research protocol
 
 Experimental design for RQ1 to RQ4 and H1 to H3 (SPEC §22-§23).
-Status reviewed on 2026-10-24: recorded local experiments, Linux
-replication, the Linux matrix with injected delay, and the wide area
-matrix are present. Their raw files retain the original environments
-and commit identifiers. Release approval remains separate.
+Historical experiment status recorded on 2026-10-24: local experiments,
+Linux replication, the Linux matrix with injected delay, and the wide
+area matrix are present. Their raw files retain the original environments
+and commit identifiers. The canonical outage hypothesis in SPEC §22 was
+tested separately on 2026-10-29; its method and results are recorded in
+`h3-witness-outage.md`. Release approval remains separate.
 
 ## Questions and hypotheses
 
@@ -16,10 +18,16 @@ and commit identifiers. Release approval remains separate.
   key (T20), and witness rollback against an isolated client (T21)
   pass verification and are documented as boundaries, not detections.
 - RQ3 (cost): append, witness round trip, and verification latency
-  at fixed record sizes and checkpoint batch sizes. H3: verification
-  grows linearly with record count at constant per record cost.
+  at fixed record sizes and checkpoint batch sizes. Historical protocol
+  H3 predicted linear verification cost. Its evidence remains in the
+  extended matrix below and is not the canonical H3 in SPEC §22.
 - RQ4 (procedure): an independent rerun of the pinned manifest
   reproduces sizes and counts (T19).
+
+Canonical SPEC §22 H3 predicts that network outages increase time to
+witnessed completion and may prevent a freshness conclusion. It was
+tested as two outcomes, H3a and H3b, in the separate controlled outage
+experiment. Historical protocol labels in old reports remain unchanged.
 
 ## Detection experiment (Section 23)
 
@@ -52,8 +60,9 @@ Extended matrix (benchmarks/manifest.v2.json,
 benchmarks/results/linux-matrix-v2/): on the laptop, 1 KiB records
 append at about 75 records per second, 4 KiB at 60, 16 KiB at 39;
 full verification grows linearly at about 1 ms per 1 KiB record
-(10.1 s for 10100 records, H3 holds). The 25 ms injected round trip
-moves witness p50 from 196 ms to 209 ms: on this slow hardware the
+(10.1 s for 10100 records, consistent with historical protocol H3).
+The 25 ms injected round trip moves witness p50 from 196 ms to 209 ms:
+on this slow hardware the
 witness signature processing dominates the network term, an honest
 observation that limits how strongly the delay model generalizes.
 Total wall clock for the full matrix was about 2.2 hours on that
@@ -74,6 +83,46 @@ against 42 ms per record, in exchange for a longer pending
 unwitnessed suffix (128 against 16 records). The longer suffix is a security
 trade off relevant to RQ2; this measurement does not test H2. One path only;
 no general wide area claim is made.
+
+## Canonical H3 outage experiment (SPEC §22)
+
+The controlled loopback experiment is specified in
+`benchmarks/h3-witness-outage.v1.json`; the feasibility pilot is separate
+and excluded. Ten matched seed pairs were measured, with fresh writer,
+witness, and verifier state for each run. Each run used 32 synthetic
+events, checkpoint batches of eight, and the same event schedule in both
+conditions. The proxy accepted and read blocked HTTP requests, then closed
+the connection without forwarding. The witness process and database
+remained intact.
+
+H3a was supported within this tested scope. For record 24, the median time
+from local commit to persisted receipt was 10.042 ms in healthy runs and
+2983.300 ms in outage runs. The paired mean difference was 2969.935 ms;
+its run pair bootstrap 95 percent interval was 2963.087 to 2975.774 ms.
+The full nanosecond values are retained in the machine readable summary.
+
+H3b was supported within this tested scope. All ten outage attempts to
+verify the already valid baseline bundle online returned INCONCLUSIVE
+with `FRESHNESS_INCONCLUSIVE` and exit status 4. Offline integrity
+verification passed in all ten runs. Healthy baseline and recovered final
+online verification passed in all ten outage runs. Each online PASS also
+reported `STATUS_CURRENTNESS_UNCONFIRMED`; the experiment does not establish
+currentness of authority status.
+
+The checkpoint through record 24 remained pending with the same signed
+bytes after each failed delivery. Local appends continued through record
+32, producing a maximum observed unwitnessed suffix of 16 records. After
+connectivity returned, one explicit retry per run persisted the receipt;
+the median recovery time was 14.561 ms. This is manual recovery through
+the existing API, not automatic retry behavior. No data loss was observed
+or inferred.
+
+The test covers one accept and close loopback fault, one host, one batch
+size, a short synthetic workload, and ten seed pairs. It does not establish
+wide area outage behavior, a maximum safe outage length, availability for
+other failure modes, or the full matrix proposed by SPEC §22. The results
+and raw evidence are in `benchmarks/results/h3-witness-outage-v1/`;
+pilot evidence is in `benchmarks/results/h3-witness-outage-pilot-v1/`.
 
 ## Recorded experiment commits
 

@@ -1,0 +1,552 @@
+{
+  "batch_size": 8,
+  "checkpoints": [
+    {
+      "checkpoint_hash": "6c2b54671fa10ff2bb16abd9a6d7aa564a2bfee0859bb8cda6117a63b41017f9",
+      "created_monotonic_ns": 620151717201208,
+      "from_seq": 1,
+      "index": 0,
+      "pending_checkpoint_sha256": "58b4c8370b4c49d69756f92823853cd3d5567990ed80174cd0b274ef288e8ca1",
+      "receipt_hash": "9583b83d823eb254e2930af8f119a93d2cebc2b837594b8ca88f1cf60b12bd22",
+      "receipt_persisted_monotonic_ns": 620151728729958,
+      "result": "accepted",
+      "to_seq": 8
+    },
+    {
+      "checkpoint_hash": "7eb27076a0e44cfed9d6bdb5b94e0a0e9e0ab32194bb6862b99b40370e1b6997",
+      "created_monotonic_ns": 620151797139666,
+      "from_seq": 9,
+      "index": 1,
+      "pending_checkpoint_sha256": "15318d1d0808a51244ceb855cc47c6f99b9bad1b3a045a514c1401312cae6173",
+      "receipt_hash": "f929ef8c4cd3d4ec397a15724a9c21c7f134739d52675883cb844747fc4ebbd0",
+      "receipt_persisted_monotonic_ns": 620151806733625,
+      "result": "accepted",
+      "to_seq": 16
+    },
+    {
+      "checkpoint_hash": "852b918f8d54be2d0f68a1aedcc30c3febc3e453485a1a0096349c3d8136fab7",
+      "created_monotonic_ns": 620151877266000,
+      "from_seq": 17,
+      "index": 2,
+      "pending_checkpoint_sha256": "3a56e51b4dde835e3f4ba7fd789a1cd22d168ecfef88398a520d6d9c739a68c1",
+      "receipt_hash": "3f62facb62d6b86b3e2b0b2b2e3f756f7ff911e9e3f699eccc480b8f425e0b81",
+      "receipt_persisted_monotonic_ns": 620151885012458,
+      "result": "accepted",
+      "to_seq": 24
+    },
+    {
+      "checkpoint_hash": "8a406d390475e4693b8b7bc559c8b0d37742641f5a15d18e97c384b7422eb092",
+      "created_monotonic_ns": 620151956824083,
+      "from_seq": 25,
+      "index": 3,
+      "pending_checkpoint_sha256": "21f6511d347f98cb3cf23cb9d0620dc2c4006b1bd9cceec377b420a77c1b2b74",
+      "receipt_hash": "5c211a65408794a0fa9ed2c9d33200e59ce191281d7a47b45df683ae01debe3f",
+      "receipt_persisted_monotonic_ns": 620151966301875,
+      "result": "accepted",
+      "to_seq": 32
+    }
+  ],
+  "configuration": "healthy",
+  "event_count": 32,
+  "event_request_sizes_bytes": [
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256
+  ],
+  "events": [
+    {
+      "append_elapsed_ns": 1308500,
+      "commit_monotonic_ns": 620151644025250,
+      "commit_to_witnessed_ns": 84704708,
+      "event_id": "7fe48ed0-1947-4be5-07d5-296cdc7047b9",
+      "scheduled_offset_seconds": 0.0,
+      "seq": 1,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1216916,
+      "commit_monotonic_ns": 620151657580291,
+      "commit_to_witnessed_ns": 71149667,
+      "event_id": "ddf6edbd-63d8-48da-8807-8122d8485daa",
+      "scheduled_offset_seconds": 0.01,
+      "seq": 2,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1212042,
+      "commit_monotonic_ns": 620151666160000,
+      "commit_to_witnessed_ns": 62569958,
+      "event_id": "334e460e-34ce-479b-0feb-b80495930491",
+      "scheduled_offset_seconds": 0.02,
+      "seq": 3,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1413416,
+      "commit_monotonic_ns": 620151677423916,
+      "commit_to_witnessed_ns": 51306042,
+      "event_id": "551a75b5-af7c-457b-ee66-b2b7fc4c5b23",
+      "scheduled_offset_seconds": 0.03,
+      "seq": 4,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1321333,
+      "commit_monotonic_ns": 620151684469666,
+      "commit_to_witnessed_ns": 44260292,
+      "event_id": "91712b1b-a626-4a93-9766-722eefb3211e",
+      "scheduled_offset_seconds": 0.04,
+      "seq": 5,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1374792,
+      "commit_monotonic_ns": 620151698221875,
+      "commit_to_witnessed_ns": 30508083,
+      "event_id": "cf0420e0-c1e4-46ec-a9f5-1094043787f2",
+      "scheduled_offset_seconds": 0.05,
+      "seq": 6,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1972542,
+      "commit_monotonic_ns": 620151706349583,
+      "commit_to_witnessed_ns": 22380375,
+      "event_id": "b8a0c46a-5d39-45e8-7940-8715540ade4e",
+      "scheduled_offset_seconds": 0.06,
+      "seq": 7,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 1287709,
+      "commit_monotonic_ns": 620151717195375,
+      "commit_to_witnessed_ns": 11534583,
+      "event_id": "a02e50b7-3252-4a57-ddf3-eaefa94d76aa",
+      "scheduled_offset_seconds": 0.07,
+      "seq": 8,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 620151728729958
+    },
+    {
+      "append_elapsed_ns": 975583,
+      "commit_monotonic_ns": 620151729714166,
+      "commit_to_witnessed_ns": 77019459,
+      "event_id": "7c529de2-10f5-440a-1db4-4d70db0b9c65",
+      "scheduled_offset_seconds": 0.08,
+      "seq": 9,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 987583,
+      "commit_monotonic_ns": 620151735205208,
+      "commit_to_witnessed_ns": 71528417,
+      "event_id": "5ebf45aa-ebe8-491b-31c3-ca52449373a9",
+      "scheduled_offset_seconds": 0.09,
+      "seq": 10,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 3255625,
+      "commit_monotonic_ns": 620151749735791,
+      "commit_to_witnessed_ns": 56997834,
+      "event_id": "b455b5e2-eccf-4233-bf5e-aba3e4e22458",
+      "scheduled_offset_seconds": 0.1,
+      "seq": 11,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 1286708,
+      "commit_monotonic_ns": 620151755509583,
+      "commit_to_witnessed_ns": 51224042,
+      "event_id": "4ff82ff6-c198-4677-fe43-678c2d81e207",
+      "scheduled_offset_seconds": 0.11,
+      "seq": 12,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 1205458,
+      "commit_monotonic_ns": 620151767532708,
+      "commit_to_witnessed_ns": 39200917,
+      "event_id": "1fe742be-7005-41c3-776c-8019ee7a5ed4",
+      "scheduled_offset_seconds": 0.12,
+      "seq": 13,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 1151541,
+      "commit_monotonic_ns": 620151776466541,
+      "commit_to_witnessed_ns": 30267084,
+      "event_id": "9eb25d86-4ddc-4431-92aa-c41aebaa6876",
+      "scheduled_offset_seconds": 0.13,
+      "seq": 14,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 1172500,
+      "commit_monotonic_ns": 620151786344500,
+      "commit_to_witnessed_ns": 20389125,
+      "event_id": "7d0d8b94-242b-49d6-2348-494d68fd9b92",
+      "scheduled_offset_seconds": 0.14,
+      "seq": 15,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 1224458,
+      "commit_monotonic_ns": 620151797135208,
+      "commit_to_witnessed_ns": 9598417,
+      "event_id": "b92803b7-f83a-4e37-3aed-8e2af8e60087",
+      "scheduled_offset_seconds": 0.15,
+      "seq": 16,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 620151806733625
+    },
+    {
+      "append_elapsed_ns": 965125,
+      "commit_monotonic_ns": 620151827105291,
+      "commit_to_witnessed_ns": 57907167,
+      "event_id": "565377c6-24b5-4141-c185-2e23de3a364d",
+      "scheduled_offset_seconds": 0.16,
+      "seq": 17,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 754750,
+      "commit_monotonic_ns": 620151827863958,
+      "commit_to_witnessed_ns": 57148500,
+      "event_id": "29efa197-6bfe-486c-4901-967344dfc492",
+      "scheduled_offset_seconds": 0.17,
+      "seq": 18,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 815708,
+      "commit_monotonic_ns": 620151828682291,
+      "commit_to_witnessed_ns": 56330167,
+      "event_id": "419e380e-17ee-4718-c21e-27bd94d89d0e",
+      "scheduled_offset_seconds": 0.18,
+      "seq": 19,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 831083,
+      "commit_monotonic_ns": 620151835569666,
+      "commit_to_witnessed_ns": 49442792,
+      "event_id": "fe120464-776c-48cf-0f64-c3aa3c3443df",
+      "scheduled_offset_seconds": 0.19,
+      "seq": 20,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 882875,
+      "commit_monotonic_ns": 620151843918583,
+      "commit_to_witnessed_ns": 41093875,
+      "event_id": "29e71917-15a1-4d35-f4d3-1ba1c12ca555",
+      "scheduled_offset_seconds": 0.2,
+      "seq": 21,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 897542,
+      "commit_monotonic_ns": 620151856747083,
+      "commit_to_witnessed_ns": 28265375,
+      "event_id": "22af212f-ebc0-4b42-7dd2-db80350465b8",
+      "scheduled_offset_seconds": 0.21,
+      "seq": 22,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 943917,
+      "commit_monotonic_ns": 620151865311333,
+      "commit_to_witnessed_ns": 19701125,
+      "event_id": "9f85e3c1-de1a-4b74-9c63-bd30484588e2",
+      "scheduled_offset_seconds": 0.22,
+      "seq": 23,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 842208,
+      "commit_monotonic_ns": 620151877261666,
+      "commit_to_witnessed_ns": 7750792,
+      "event_id": "3c96032d-2551-4f14-d321-a452a68ede7b",
+      "scheduled_offset_seconds": 0.23,
+      "seq": 24,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 620151885012458
+    },
+    {
+      "append_elapsed_ns": 815250,
+      "commit_monotonic_ns": 620151885836875,
+      "commit_to_witnessed_ns": 80465000,
+      "event_id": "95f90e0a-becb-4e4f-a710-e78ff943ec46",
+      "scheduled_offset_seconds": 0.24,
+      "seq": 25,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 966000,
+      "commit_monotonic_ns": 620151897126208,
+      "commit_to_witnessed_ns": 69175667,
+      "event_id": "7d8c806d-3a96-4427-5281-ff78f3091cb6",
+      "scheduled_offset_seconds": 0.25,
+      "seq": 26,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 798542,
+      "commit_monotonic_ns": 620151906308875,
+      "commit_to_witnessed_ns": 59993000,
+      "event_id": "37c81d31-9aab-41e4-42f0-afe3019fa70a",
+      "scheduled_offset_seconds": 0.26,
+      "seq": 27,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 1091458,
+      "commit_monotonic_ns": 620151917015666,
+      "commit_to_witnessed_ns": 49286209,
+      "event_id": "c36ad5fb-64f3-4df3-9833-a7e369b9de8c",
+      "scheduled_offset_seconds": 0.27,
+      "seq": 28,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 975708,
+      "commit_monotonic_ns": 620151926541791,
+      "commit_to_witnessed_ns": 39760084,
+      "event_id": "60e9e39e-3da1-4856-859c-35215fc1ff18",
+      "scheduled_offset_seconds": 0.28,
+      "seq": 29,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 1089291,
+      "commit_monotonic_ns": 620151936896541,
+      "commit_to_witnessed_ns": 29405334,
+      "event_id": "c4af10bf-a966-4e6a-09d9-b0eecc4aeb61",
+      "scheduled_offset_seconds": 0.29,
+      "seq": 30,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 1123875,
+      "commit_monotonic_ns": 620151946754750,
+      "commit_to_witnessed_ns": 19547125,
+      "event_id": "729c58fd-556e-4892-c202-a97e74f91540",
+      "scheduled_offset_seconds": 0.3,
+      "seq": 31,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    },
+    {
+      "append_elapsed_ns": 1119666,
+      "commit_monotonic_ns": 620151956818041,
+      "commit_to_witnessed_ns": 9483834,
+      "event_id": "43597078-9a97-4bb2-5cac-38d18f88ddec",
+      "scheduled_offset_seconds": 0.31,
+      "seq": 32,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 24,
+      "witnessed_monotonic_ns": 620151966301875
+    }
+  ],
+  "final_witness_checkpoint_index": 3,
+  "final_witness_count": 32,
+  "final_writer_count": 32,
+  "log_id": "e3183487-a6ce-4fbc-484c-83e399aa5d4c",
+  "max_unwitnessed_backlog_records": 8,
+  "outage": null,
+  "proxy_counters": {
+    "blocked_requests": 0,
+    "forwarded_requests": 6
+  },
+  "run_index": 1,
+  "seed": 81001,
+  "status": "complete",
+  "submission_attempts": [
+    {
+      "checkpoint_hash": "6c2b54671fa10ff2bb16abd9a6d7aa564a2bfee0859bb8cda6117a63b41017f9",
+      "end_monotonic_ns": 620151728729958,
+      "result": "accepted",
+      "start_monotonic_ns": 620151718554625
+    },
+    {
+      "checkpoint_hash": "7eb27076a0e44cfed9d6bdb5b94e0a0e9e0ab32194bb6862b99b40370e1b6997",
+      "end_monotonic_ns": 620151806733625,
+      "result": "accepted",
+      "start_monotonic_ns": 620151798201083
+    },
+    {
+      "checkpoint_hash": "852b918f8d54be2d0f68a1aedcc30c3febc3e453485a1a0096349c3d8136fab7",
+      "end_monotonic_ns": 620151885012458,
+      "result": "accepted",
+      "start_monotonic_ns": 620151878179708
+    },
+    {
+      "checkpoint_hash": "8a406d390475e4693b8b7bc559c8b0d37742641f5a15d18e97c384b7422eb092",
+      "end_monotonic_ns": 620151966301875,
+      "result": "accepted",
+      "start_monotonic_ns": 620151958098875
+    }
+  ],
+  "verifications": {
+    "final_online": {
+      "argv": [
+        "casf",
+        "verify",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/final-bundle",
+        "--state",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/state-final-online.json",
+        "--trust",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/trust.json",
+        "--mode",
+        "online",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 19522792,
+      "ended_monotonic_ns": 620151996083583,
+      "exit_code": 0,
+      "report": {
+        "anchor_status": "OK",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "VERIFIER_STATE_INITIALIZED",
+          "CHECKPOINT_FIRST_OBSERVATION"
+        ],
+        "freshness_status": "FRESH_WITNESS_VIEW",
+        "mode": "online",
+        "result": "PASS",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 32,
+        "witnessed_through": 32
+      },
+      "started_monotonic_ns": 620151976560791,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"OK\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"VERIFIER_STATE_INITIALIZED\", \"CHECKPOINT_FIRST_OBSERVATION\"], \"freshness_status\": \"FRESH_WITNESS_VIEW\", \"mode\": \"online\", \"result\": \"PASS\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 32, \"witnessed_through\": 32}\n"
+    },
+    "healthy_baseline_online": {
+      "argv": [
+        "casf",
+        "verify",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/baseline-bundle",
+        "--state",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/state-baseline.json",
+        "--trust",
+        "benchmarks/results/h3-witness-outage-v1/run-01-healthy-seed-81001/trust.json",
+        "--mode",
+        "online",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 13224292,
+      "ended_monotonic_ns": 620151826122750,
+      "exit_code": 0,
+      "report": {
+        "anchor_status": "OK",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "VERIFIER_STATE_INITIALIZED",
+          "CHECKPOINT_FIRST_OBSERVATION"
+        ],
+        "freshness_status": "FRESH_WITNESS_VIEW",
+        "mode": "online",
+        "result": "PASS",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 16,
+        "witnessed_through": 16
+      },
+      "started_monotonic_ns": 620151812898458,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"OK\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"VERIFIER_STATE_INITIALIZED\", \"CHECKPOINT_FIRST_OBSERVATION\"], \"freshness_status\": \"FRESH_WITNESS_VIEW\", \"mode\": \"online\", \"result\": \"PASS\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 16, \"witnessed_through\": 16}\n"
+    }
+  }
+}
