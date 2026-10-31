@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Checkpoint batch size, client witness round trip, and configured pending suffix</title>
+  <desc id="desc">Across ten 10,000 record runs per setting, batch 128 had a mean summed successful client submit round trip of 93.86 seconds and a configured maximum pending suffix of 128 records. Batch 16 had 477.64 seconds and a configured maximum of 16 records. The suffix values are configured bounds, not observed data loss.</desc>
+  <rect width="1200" height="760" fill="#ffffff"/>
+  <text x="600" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#172b4d">Checkpoint batching tradeoff in the recorded workload</text>
+  <text x="600" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#52657a">10,000 synthetic 1 KiB records per run; ten runs per batch setting</text>
+
+  <text x="320" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#172b4d">Mean summed submit round trip per run</text>
+  <text x="320" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#52657a">seconds; successful calls measured by the client</text>
+  <text transform="translate(35 378) rotate(-90)" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Mean summed client submit round trip (seconds)</text>
+  <line x1="105" y1="560" x2="555" y2="560" stroke="#425466" stroke-width="2"/>
+  <line x1="105" y1="195" x2="105" y2="560" stroke="#425466" stroke-width="2"/>
+  <g font-family="Arial, sans-serif" font-size="13" fill="#52657a" text-anchor="end">
+    <text x="92" y="565">0</text><text x="92" y="495">100</text><text x="92" y="425">200</text><text x="92" y="355">300</text><text x="92" y="285">400</text><text x="92" y="215">500</text>
+  </g>
+  <g stroke="#d9e1ea" stroke-width="1">
+    <line x1="105" y1="490" x2="555" y2="490"/><line x1="105" y1="420" x2="555" y2="420"/><line x1="105" y1="350" x2="555" y2="350"/><line x1="105" y1="280" x2="555" y2="280"/><line x1="105" y1="210" x2="555" y2="210"/>
+  </g>
+  <rect x="195" y="494.3" width="112" height="65.7" rx="4" fill="#2f6f9f"/>
+  <rect x="365" y="225.65" width="112" height="334.35" rx="4" fill="#d17a32"/>
+  <g font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#172b4d" text-anchor="middle">
+    <text x="251" y="484">93.86 s</text><text x="421" y="217">477.64 s</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#172b4d" text-anchor="middle">
+    <text x="251" y="588">Batch 128</text><text x="421" y="588">Batch 16</text>
+    <text x="251" y="614" font-size="13" fill="#52657a">79 timed submits</text><text x="421" y="614" font-size="13" fill="#52657a">625 timed submits</text>
+  </g>
+  <text x="330" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Configured checkpoint batch (records)</text>
+
+  <text x="875" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#172b4d">Maximum pending suffix</text>
+  <text x="875" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#52657a">records; configured batch bound</text>
+  <text transform="translate(595 378) rotate(-90)" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Configured maximum pending suffix (records)</text>
+  <line x1="665" y1="560" x2="1115" y2="560" stroke="#425466" stroke-width="2"/>
+  <line x1="665" y1="195" x2="665" y2="560" stroke="#425466" stroke-width="2"/>
+  <g font-family="Arial, sans-serif" font-size="13" fill="#52657a" text-anchor="end">
+    <text x="652" y="565">0</text><text x="652" y="461">40</text><text x="652" y="357">80</text><text x="652" y="253">120</text><text x="652" y="201">140</text>
+  </g>
+  <g stroke="#d9e1ea" stroke-width="1">
+    <line x1="665" y1="456" x2="1115" y2="456"/><line x1="665" y1="352" x2="1115" y2="352"/><line x1="665" y1="248" x2="1115" y2="248"/><line x1="665" y1="196" x2="1115" y2="196"/>
+  </g>
+  <rect x="755" y="228" width="112" height="332" rx="4" fill="#2f6f9f"/>
+  <rect x="925" y="518" width="112" height="42" rx="4" fill="#d17a32"/>
+  <g font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#172b4d" text-anchor="middle">
+    <text x="811" y="219">128 records</text><text x="981" y="509">16 records</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="16" fill="#172b4d" text-anchor="middle">
+    <text x="811" y="588">Batch 128</text><text x="981" y="588">Batch 16</text>
+  </g>
+  <text x="890" y="640" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Configured checkpoint batch (records)</text>
+
+  <line x1="80" y1="660" x2="1120" y2="660" stroke="#c8d2de" stroke-width="1"/>
+  <text x="80" y="690" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Source: raw wide area run files and benchmarks/manifest.v3.json.</text>
+  <text x="80" y="718" font-family="Arial, sans-serif" font-size="14" fill="#34495e">Suffix values are configured bounds, not measured record loss. Historical results, not release performance.</text>
+</svg>

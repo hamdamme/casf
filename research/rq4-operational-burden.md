@@ -1,80 +1,95 @@
 # RQ4 operational burden evidence
 
-Canonical research question (CASF SPEC 001 Section 22): what operational
-burden and implementation complexity does the constrained approach impose
-on a solo maintained project?
+Canonical RQ4 in CASF SPEC 001 Section 22 asks what operational burden and
+implementation complexity the constrained approach imposes on a solo
+maintained project. This document reports repository complexity and process
+proxies. It does not estimate the maintainer's total effort or cost.
 
-Status: executed on 2026-10-30. Measured values and the generated report
-live in `benchmarks/results/rq4-operational-burden-v1/`. The predeclared
-manifest is `benchmarks/rq4-operational-burden.v1.json`; it declares the
-metrics and counting methods and deliberately contains no numbers.
+## Measurement provenance
+
+All repository counts describe the tracked files at commit
+`7c388d385242238a40e572ed67e7e5fc9a1ab194`. The collector reads a temporary
+snapshot created from that commit with `git archive`; changes and untracked
+files in the collector's checkout are excluded. Git history queries also end
+at that commit. The collector implementation and its SHA 256 hash are recorded
+separately from the measured commit in
+`benchmarks/results/rq4-operational-burden-v1/measurements.v1.json`.
+
+The manifest records metric definitions and counting methods. No session log or
+other independent evidence was found to establish that the metrics were
+declared before collection, so this report does not make that claim.
 
 ## Method
 
-Unlike H1 and H3, RQ4 is not a runtime experiment and has no hypothesis.
-It is answered from repository evidence: the size of the code, tests,
-benchmark harnesses, and documentation; the direct and locked dependency
-surface; the identifier burden of the governing specification
-(requirements R01 to R12, tests T01 to T22, tasks C00 to C12, milestones
-M0 to M8, plus architecture decision records); the CI matrix; the
-installation guide; and the maintenance history recorded in git.
+The collector reports source, test, benchmark, documentation, dependency,
+specification, CI, installation guide, and repository history counts. Python
+test definitions are counted by parsing each test file with Python's abstract
+syntax tree and counting `FunctionDef` and `AsyncFunctionDef` nodes whose name
+starts with `test_`. This is a syntax based count; it does not establish which
+tests pytest discovers or executes.
 
-The collector `benchmarks/rq4_burden.py` measures every value at run
-time; nothing is hand entered. Reproduce with:
+Source code is grouped into its nine directories under `src/casf` plus one
+group for Python files directly in `src/casf`. The research document count is
+for `research/*.md` in the selected commit snapshot only; it excludes Markdown
+files inside nested research directories.
+
+The history metric counts commits whose messages match the text
+`Merge pull request`. Such a message match identifies a merge record, not
+evidence that the corresponding pull request received substantive review.
+Calendar span is the difference in calendar dates between the first and latest
+commit dates in the history of the selected commit. The reported daily rate is
+the message match count divided by that elapsed day count.
+
+Reproduce the collection from the repository root with:
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m benchmarks.rq4_burden benchmarks/rq4-operational-burden.v1.json benchmarks/results/rq4-operational-burden-v1
+PYTHONPATH=src .venv/bin/python -m benchmarks.rq4_burden \
+  benchmarks/rq4-operational-burden.v1.json /tmp/rq4-results \
+  --repo . --commit 7c388d385242238a40e572ed67e7e5fc9a1ab194
 ```
 
-## Measured values (commit 7c388d3)
+The collector refuses to overwrite an existing output directory.
+
+## Results
 
 | area | measured value |
 | --- | --- |
-| source under src/casf | 23 files, 4457 total lines, 10 modules |
-| tests | 39 files, 5855 lines, 319 test functions |
-| benchmark harnesses | 11 files, 2949 lines |
-| documentation under docs | 24 markdown files, 2461 lines |
-| direct runtime dependencies | 1 (cryptography) |
-| direct external dependencies, all extras and groups | 9 |
+| source under `src/casf` | 23 files, 4,457 lines, 3,962 non blank lines |
+| source groups | 9 directories plus a group for files directly in `src/casf` |
+| tests | 38 files, 5,738 lines, 310 syntax counted `test_*` function definitions |
+| benchmark harnesses | 10 files, 2,636 lines |
+| Markdown under `docs` | 24 files, 2,461 lines |
+| Markdown at `research` root in the measured snapshot | 4 files |
+| direct runtime dependencies | 1 (`cryptography>=41.0`) |
+| direct external dependencies, including extras and groups | 9 |
 | locked external packages | 24 |
 | specification identifiers | 12 requirements, 22 tests, 13 tasks, 9 milestones |
 | architecture decision records | 2 |
-| CI | 1 workflow, 3 Python versions |
-| installation guide | 85 lines, 6 command blocks |
-| maintenance history | 124 commits and 24 merged pull requests over 18 calendar days |
+| CI | 1 workflow, Python 3.12, 3.13, and 3.14 |
+| installation guide | 85 lines, 6 Bash command blocks |
+| repository history | 124 commits; 24 commit messages matching `Merge pull request` |
+| first and latest commit dates | 2026-10-11 to 2026-10-29 |
+| elapsed calendar span | 18 days |
+| merge message matches per elapsed calendar day | 24 / 18 = 1.33 |
+| release documents | 11 |
+| benchmark result directories | 9 |
 
-## Findings
+The full counts, grouped source breakdown, collection environment, measured
+commit, collector version, and collector hash are in the generated report and
+JSON measurement record under `benchmarks/results/rq4-operational-burden-v1/`.
+The measured environment was Python 3.12.11 on macOS 15.6.1 arm64.
 
-The constrained approach concentrates its burden in process rather than
-in runtime dependencies. The deployed dependency surface is small: one
-direct runtime dependency and 24 locked external packages including
-development and build tooling. The code under src/casf is compact
-relative to the evidence around it: tests exceed source lines, and the
-benchmark harnesses plus documentation together are comparable in size
-to the source itself.
+## Interpretation and limits
 
-The specification imposes the largest measurable burden on a solo
-maintainer: 12 requirements, 22 tracked tests, 13 ordered tasks, and 9
-milestones, all kept traceable in CI, plus per change review rules and
-release gates. The maintenance history shows what this means in
-practice: 124 commits and 24 reviewed pull requests in 18 days, an
-average of several reviewed units per day, before the release candidate
-was approved.
+These are descriptive complexity and process proxies. The counts do not rank
+which part of CASF creates the greatest burden or establish how difficult CASF
+is to use. The data do not support comparing risk across pull request
+workflows. The 24 merge message matches cannot be read as 24 reviewed pull
+requests. The rate
+of 1.33 message matches per elapsed calendar day is a property of this commit
+history and date span, not a measure of review effort or a steady state rate.
 
-## Limitations
-
-Per SPEC Section 23, lines of code, dependency counts, deployment steps,
-and maintenance notes describe complexity, but they are proxies rather
-than objective measures of usability or total cost. In particular:
-
-- All values are a snapshot of one commit; they change as the project
-  evolves.
-- Git history and document counts record the maintainer's own process,
-  so they carry self report bias and cannot be compared with projects
-  that follow a different process. A project without the pull request
-  discipline would look lighter by these measures while carrying more
-  unexamined risk.
-- No developer hours, cognitive load, or monetary cost are measured
-  here; RQ4 cannot be answered in those terms from repository evidence.
-- The 18 day calendar span reflects an intensive development period,
-  not a steady state maintenance rate.
+This one repository snapshot cannot establish developer hours, cognitive load,
+usability, or total cost. Those quantities were not measured. The numbers also
+change as the repository changes, and the history and documentation counts
+reflect this maintainer's process rather than a comparable sample of projects.

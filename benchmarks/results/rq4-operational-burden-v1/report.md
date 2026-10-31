@@ -1,26 +1,26 @@
 # RQ4 operational burden evidence (SPEC Section 22)
 
 question source: CASF_SPEC_001.md Section 22
-manifest sha256: 4f5e321dbe01e717ecdf0dfd79c045dde255a530f0b53be54074ca5a51bfd701
+manifest sha256: 656d523697849fa60aea382a574fcab770aa96a15c3b066529e3c3632bf59dc8
 
-Descriptive collection only; no hypothesis and no pass or fail expectation. All values measured at collection time.
+Descriptive collection only; no hypothesis and no pass or fail expectation. Repository counts come from a temporary snapshot of tracked files at the measured commit.
 
 ## Measured values
 
 | metric | value |
 | --- | --- |
-| source modules under src/casf | 10 |
+| source groups under src/casf | 10 (9 directories plus files directly in src/casf) |
 | source files | 23 |
 | source total lines | 4457 |
 | source non blank lines | 3962 |
-| test files | 39 |
-| test total lines | 5855 |
-| test functions | 319 |
-| benchmark harness files | 11 |
-| benchmark harness total lines | 2949 |
+| test files | 38 |
+| test total lines | 5738 |
+| AST function definitions named test_* | 310 |
+| benchmark harness files | 10 |
+| benchmark harness total lines | 2636 |
 | docs markdown files | 24 |
 | docs markdown lines | 2461 |
-| research top level markdown files | 4 |
+| research/*.md files in measured snapshot | 4 |
 | direct runtime dependencies | 1 (cryptography>=41.0) |
 | direct external dependencies total (runtime, extras, groups) | 9 |
 | locked external packages | 24 |
@@ -34,16 +34,17 @@ Descriptive collection only; no hypothesis and no pass or fail expectation. All 
 | installation guide lines | 85 |
 | installation bash command blocks | 6 |
 | commits at measured commit | 124 |
-| merged pull requests | 24 |
+| commit messages matching 'Merge pull request' | 24 |
+| message matches per elapsed calendar day | 1.33 |
 | first commit date | 2026-10-11 |
 | latest commit date | 2026-10-29 |
 | calendar span days | 18 |
 | release documents | 11 |
 | committed result directories | 9 |
 
-## Source size by module
+## Source size by group
 
-| module | files | total lines | non blank lines |
+| group | files | total lines | non blank lines |
 | --- | ---: | ---: | ---: |
 | canonical | 3 | 198 | 174 |
 | cli | 1 | 508 | 443 |
@@ -54,28 +55,24 @@ Descriptive collection only; no hypothesis and no pass or fail expectation. All 
 | verifier | 1 | 573 | 524 |
 | witness | 4 | 1004 | 900 |
 | writer | 1 | 721 | 669 |
-| (top level) | 7 | 738 | 632 |
+| files directly in src/casf | 7 | 738 | 632 |
 
 ## Interpretation limits
 
-- Per SPEC Section 23, lines of code, dependency counts, deployment steps, and maintenance notes describe complexity, but they are proxies rather than objective measures of usability or total cost.
-- All values are a snapshot of one commit on one machine; they change as the project evolves.
+- Per SPEC Section 23, line counts, dependency counts, documentation, and repository history describe complexity, but they are proxies rather than objective measures of usability or total cost.
+- All repository values are a snapshot of one commit's tracked files; they change as the project evolves. Runtime details describe the collector environment.
 - Git history and document counts record the maintainer's own process, so they carry self report bias and cannot be compared with projects that follow a different process.
 - This collection makes no claim about developer hours, cognitive load, or monetary cost, none of which are measured here.
+- Commit messages matching 'Merge pull request' are message-pattern counts only; they do not establish substantive review. The rate divides those matches by elapsed calendar days (latest date minus earliest date).
 
 ## Environment
 
-- commit: 7c388d385242238a40e572ed67e7e5fc9a1ab194
+- collector_version: 2.0.0
+- collector_sha256: 25513096a07ea989dc2dd11ae821afa9af6e51648c7d2582d0093c3b4963ab1b
 - cpu_count: 8
 - dependency_lock_sha256: 74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe
-- harness_sha256: 21334a27576cc5730c3a5717ffbcde03391c4f95a4581378524da40dbe546edb
 - machine: arm64
+- measured_commit: 7c388d385242238a40e572ed67e7e5fc9a1ab194
 - platform: macOS-15.6.1-arm64-arm-64bit
 - python_version: 3.12.11
-- working_tree_status: M research/limitations.md
- M research/protocol.md
-?? benchmarks/rq4-operational-burden.v1.json
-?? benchmarks/rq4_burden.py
-?? research/editorial/
-?? research/preprint/
-?? tests/unit/test_rq4_burden.py
+- snapshot_method: git archive of selected commit tracked files
