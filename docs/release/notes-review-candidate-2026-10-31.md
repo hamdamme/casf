@@ -48,9 +48,11 @@ H3 run is recorded separately in
 ## Status
 
 Built for review on macOS 15.6.1 arm64 with Python 3.12.11, setuptools
-84.2.1, and the pinned build frontend 1.6.1. The exact `uv 0.13.5` lock check
-passed. The wheel installed in a clean environment and passed the base wheel
-smoke check, CLI administration help, required `--state` help check, and
+84.2.1, and the pinned build frontend 1.6.1 from source commit
+`0d0d34411f36e088e453c79d5a8bfd19333bbf7c`
+(`docs: record H3 review run and release checks`). The exact `uv 0.13.5` lock
+check passed. The wheel installed in a clean environment and passed the base
+wheel smoke check, CLI administration help, required `--state` help check, and
 `py.typed` check. The source archive installed in a clean environment and
 passed import, administration command, typing marker, and required state
 option checks. The full suite passed 402 tests; the focused security and H3
@@ -59,8 +61,8 @@ no known vulnerabilities for all 24 exact locked package versions.
 
 | Artifact | SHA 256 | Size |
 |---|---|---:|
-| `casf-0.1.0rc1-py3-none-any.whl` | `fe08da491e767b44149bf37d4553a615f1022cd03317b67e8b46e8bdf617eb5a` | 68531 bytes |
-| `casf-0.1.0rc1.tar.gz` | `67eb78da13b4f62fe789b8717b5273ce3da31434396f620fe18b2ea4f764e423` | 62757 bytes |
+| `casf-0.1.0rc1-py3-none-any.whl` | `d403d3f5bd58bdca074b31be1d47d08993260e32bf88658a98a31f4ae165b9a2` | 68531 bytes |
+| `casf-0.1.0rc1.tar.gz` | `b253a7d6523d3b15b1bbd31a53d35afa4d1a0509450976fd651f2a6afe7f8f64` | 62777 bytes |
 
 These are review candidate artifacts, not the maintainer approved artifacts
 from 2026-10-28. The checked runtime and optional witness dependency metadata
