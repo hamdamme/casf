@@ -1,0 +1,237 @@
+{
+  "experiment": "rq4-operational-burden-v1",
+  "research_question_id": "RQ4",
+  "question_source": "CASF_SPEC_001.md Section 22",
+  "question_text": "What operational burden and implementation complexity does the constrained approach impose on a solo maintained project?",
+  "manifest_sha256": "656d523697849fa60aea382a574fcab770aa96a15c3b066529e3c3632bf59dc8",
+  "collector": {
+    "version": "2.0.0",
+    "sha256": "25513096a07ea989dc2dd11ae821afa9af6e51648c7d2582d0093c3b4963ab1b"
+  },
+  "metric_methods": {
+    "source_size": "Measured in a temporary snapshot made from tracked files at measured_commit using git archive. A line is counted by splitlines; a non blank line contains at least one non whitespace character.",
+    "test_size": "Python files are parsed with ast.parse. Count each FunctionDef or AsyncFunctionDef node whose name starts with test_; this is a syntax based definition count, not a pytest discovery or execution count.",
+    "benchmark_size": "Same line counts, non recursive over benchmarks/*.py.",
+    "documentation_size": "Same line counting over *.md in the selected commit snapshot. The research count covers only research/*.md at the top level, excluding all nested research subdirectories.",
+    "dependencies": "pyproject.toml parsed with tomllib: project.dependencies, optional dependencies by extra, and dependency groups by name. uv.lock parsed as text: every [[package]] entry whose source is not the editable project root counts as one locked external package.",
+    "spec_burden": "Unique identifiers matching the patterns R + two digits, T + two digits, C + two digits, and M + one digit in docs/specification/CASF_SPEC_001.md, plus the count of ADR documents under docs/adr.",
+    "ci_surface": "Workflow files under .github/workflows, and the distinct quoted python-version entries appearing in matrix blocks of the ci workflow.",
+    "installation_burden": "Line count of docs/installation.md and the number of fenced bash command blocks (lines equal to ```bash) inside it.",
+    "maintenance_history": "Git history is queried through measured_commit: total reachable commit count, commit messages matching 'Merge pull request', first and latest author calendar dates, and elapsed calendar days as latest date minus first date; plus counts of release documents under docs/release/*.md and benchmark result directories under benchmarks/results. Message matches are not proof that a pull request received substantive review."
+  },
+  "interpretation_limits": [
+    "Per SPEC Section 23, line counts, dependency counts, documentation, and repository history describe complexity, but they are proxies rather than objective measures of usability or total cost.",
+    "All repository values are a snapshot of one commit's tracked files; they change as the project evolves. Runtime details describe the collector environment.",
+    "Git history and document counts record the maintainer's own process, so they carry self report bias and cannot be compared with projects that follow a different process.",
+    "This collection makes no claim about developer hours, cognitive load, or monetary cost, none of which are measured here."
+  ],
+  "measurements": {
+    "source_size": {
+      "root": "src/casf",
+      "modules": {
+        "canonical": {
+          "files": 3,
+          "total_lines": 198,
+          "non_blank_lines": 174
+        },
+        "cli": {
+          "files": 1,
+          "total_lines": 508,
+          "non_blank_lines": 443
+        },
+        "crypto": {
+          "files": 1,
+          "total_lines": 213,
+          "non_blank_lines": 171
+        },
+        "model": {
+          "files": 2,
+          "total_lines": 224,
+          "non_blank_lines": 202
+        },
+        "storage": {
+          "files": 1,
+          "total_lines": 99,
+          "non_blank_lines": 89
+        },
+        "trust": {
+          "files": 2,
+          "total_lines": 179,
+          "non_blank_lines": 158
+        },
+        "verifier": {
+          "files": 1,
+          "total_lines": 573,
+          "non_blank_lines": 524
+        },
+        "witness": {
+          "files": 4,
+          "total_lines": 1004,
+          "non_blank_lines": 900
+        },
+        "writer": {
+          "files": 1,
+          "total_lines": 721,
+          "non_blank_lines": 669
+        },
+        "(top level)": {
+          "files": 7,
+          "total_lines": 738,
+          "non_blank_lines": 632
+        }
+      },
+      "total": {
+        "files": 23,
+        "total_lines": 4457,
+        "non_blank_lines": 3962
+      }
+    },
+    "test_size": {
+      "files": 38,
+      "total_lines": 5738,
+      "non_blank_lines": 4894,
+      "test_functions": 310
+    },
+    "benchmark_size": {
+      "files": 10,
+      "total_lines": 2636,
+      "non_blank_lines": 2342
+    },
+    "documentation_size": {
+      "docs": {
+        "files": 24,
+        "total_lines": 2461,
+        "non_blank_lines": 2077
+      },
+      "research_top_level": {
+        "files": 4,
+        "total_lines": 420,
+        "non_blank_lines": 335
+      }
+    },
+    "dependencies": {
+      "direct_runtime": [
+        "cryptography>=41.0"
+      ],
+      "optional_extras": {
+        "witness": [
+          "h11>=0.16.0",
+          "uvicorn==0.54.0"
+        ],
+        "dev": [
+          "hypothesis>=6.0",
+          "mypy>=1.10",
+          "pytest>=8.0",
+          "ruff>=0.5"
+        ]
+      },
+      "dependency_groups": {
+        "build": [
+          "build>=1.2",
+          "setuptools==84.2.1"
+        ]
+      },
+      "direct_external_total": 9,
+      "locked_external_packages": 24
+    },
+    "spec_burden": {
+      "requirement_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "test_ids": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T18",
+        "T19",
+        "T20",
+        "T21",
+        "T22"
+      ],
+      "task_ids": [
+        "C00",
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12"
+      ],
+      "milestone_ids": [
+        "M0",
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8"
+      ],
+      "adr_documents": 2
+    },
+    "ci_surface": {
+      "workflow_files": [
+        "ci.yml"
+      ],
+      "ci_python_versions": [
+        "3.12",
+        "3.13",
+        "3.14"
+      ]
+    },
+    "installation_burden": {
+      "guide_lines": 85,
+      "bash_command_blocks": 6
+    },
+    "maintenance_history": {
+      "commits_at_head": 124,
+      "merge_pull_request_message_matches": 24,
+      "first_commit_date": "2026-10-11",
+      "latest_commit_date": "2026-10-29",
+      "calendar_span_days": 18,
+      "release_documents": 11,
+      "committed_result_directories": 9
+    }
+  },
+  "environment": {
+    "measured_commit": "7c388d385242238a40e572ed67e7e5fc9a1ab194",
+    "snapshot_method": "git archive of selected commit tracked files",
+    "python_version": "3.12.11",
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "dependency_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe"
+  }
+}

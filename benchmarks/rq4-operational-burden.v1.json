@@ -1,0 +1,53 @@
+{
+  "experiment": "rq4-operational-burden-v1",
+  "research_question_id": "RQ4",
+  "question_source": "CASF_SPEC_001.md Section 22",
+  "question_text": "What operational burden and implementation complexity does the constrained approach impose on a solo maintained project?",
+  "measured_commit": "7c388d385242238a40e572ed67e7e5fc9a1ab194",
+  "study_type": "Descriptive repository evidence collection. RQ4 has no hypothesis and no pass or fail expectation. Metrics and methods are recorded here; values are collected from the selected commit's tracked files.",
+  "metrics": {
+    "source_size": {
+      "definition": "Python file count, total lines, and non blank lines under src/casf, recursive, by each of its nine directories and the group of top level files, plus in total; __pycache__ excluded.",
+      "method": "Measured in a temporary snapshot made from tracked files at measured_commit using git archive. A line is counted by splitlines; a non blank line contains at least one non whitespace character."
+    },
+    "test_size": {
+      "definition": "Same line counts under tests, plus the number of test functions.",
+      "method": "Python files are parsed with ast.parse. Count each FunctionDef or AsyncFunctionDef node whose name starts with test_; this is a syntax based definition count, not a pytest discovery or execution count."
+    },
+    "benchmark_size": {
+      "definition": "Python harness files directly under benchmarks (results and __pycache__ excluded).",
+      "method": "Same line counts, non recursive over benchmarks/*.py."
+    },
+    "documentation_size": {
+      "definition": "Markdown file counts and line totals for docs (recursive) and research root only, excluding nested research directories.",
+      "method": "Same line counting over *.md in the selected commit snapshot. The research count covers only research/*.md at the top level, excluding all nested research subdirectories."
+    },
+    "dependencies": {
+      "definition": "Direct dependency surface versus locked dependency surface.",
+      "method": "pyproject.toml parsed with tomllib: project.dependencies, optional dependencies by extra, and dependency groups by name. uv.lock parsed as text: every [[package]] entry whose source is not the editable project root counts as one locked external package."
+    },
+    "spec_burden": {
+      "definition": "The size of the governing specification in distinct tracked identifiers.",
+      "method": "Unique identifiers matching the patterns R + two digits, T + two digits, C + two digits, and M + one digit in docs/specification/CASF_SPEC_001.md, plus the count of ADR documents under docs/adr."
+    },
+    "ci_surface": {
+      "definition": "Continuous integration breadth.",
+      "method": "Workflow files under .github/workflows, and the distinct quoted python-version entries appearing in matrix blocks of the ci workflow."
+    },
+    "installation_burden": {
+      "definition": "Size of the operator facing installation guide.",
+      "method": "Line count of docs/installation.md and the number of fenced bash command blocks (lines equal to ```bash) inside it."
+    },
+    "maintenance_history": {
+      "definition": "Repository history and process records at the selected commit.",
+      "method": "Git history is queried through measured_commit: total reachable commit count, commit messages matching 'Merge pull request', first and latest author calendar dates, and elapsed calendar days as latest date minus first date; plus counts of release documents under docs/release/*.md and benchmark result directories under benchmarks/results. Message matches are not proof that a pull request received substantive review."
+    }
+  },
+  "interpretation_limits": [
+    "Per SPEC Section 23, line counts, dependency counts, documentation, and repository history describe complexity, but they are proxies rather than objective measures of usability or total cost.",
+    "All repository values are a snapshot of one commit's tracked files; they change as the project evolves. Runtime details describe the collector environment.",
+    "Git history and document counts record the maintainer's own process, so they carry self report bias and cannot be compared with projects that follow a different process.",
+    "This collection makes no claim about developer hours, cognitive load, or monetary cost, none of which are measured here."
+  ],
+  "reproduction": "PYTHONPATH=src .venv/bin/python -m benchmarks.rq4_burden benchmarks/rq4-operational-burden.v1.json /tmp/rq4-results --repo . --commit 7c388d385242238a40e572ed67e7e5fc9a1ab194"
+}
