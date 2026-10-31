@@ -43,10 +43,20 @@ artifacts in that approval record. Subsequent repository changes under review
 modify parser behavior, network transport, packaging metadata, CLI behavior,
 and documentation. The old artifacts remain preserved as historical
 evidence, but they do not represent this source tree. A candidate containing
-these changes is not yet built or approved. Release readiness for the current
-source is therefore blocked pending focused and full validation, clean wheel
-and source archive installation checks, dependency refresh, and maintainer
-approval of new artifact hashes.
+these changes has now been built for review and checked locally. Exact wheel
+and source archive hashes, package contents, install checks, lint, typing,
+focused and full test outcomes, dependency advisory query, and H3 follow up
+are recorded in the [review candidate notes](notes-review-candidate-2026-10-31.md)
+and [H3 supplement](../../research/h3-witness-outage-review-2026-10-31.md).
+The wheel and source archive passed clean environment installation checks.
+The lock check passed with the pinned uv version. All 402 tests passed on the
+local macOS Python 3.12 environment; the hosted Python matrix has not yet run
+for this branch.
+
+The existing 0.1.0rc1 publication approval does not cover this changed source
+or these new artifact hashes. Publication of this candidate is blocked pending
+the hosted checks and the maintainer's separate approval of the exact new
+hashes and notes. No release has been published.
 
 All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
 still subject to separate maintainer approval.

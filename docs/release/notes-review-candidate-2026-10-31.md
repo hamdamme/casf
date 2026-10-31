@@ -26,10 +26,10 @@ and installed wheel checks before a new candidate can be approved.
 
 The wheel contains the installable `casf` package, command entry point,
 package metadata, license, and typing marker. The source archive contains the
-package source and build metadata, README, license, and typing marker. Neither
-artifact is expected to include the repository research tree, raw benchmark
-results, RQ2 experiment files, reviewer material, local databases, or private
-keys. These contents must be checked against the actual rebuilt artifacts.
+package source and build metadata, README, license, and typing marker. The
+source archive excludes tests, benchmarks, docs, and research. Neither
+artifact contains the repository research tree, raw benchmark results, RQ2
+experiment files, reviewer material, local databases, or private keys.
 
 ## Verification workflow
 
@@ -41,11 +41,30 @@ registration, and epoch setup are described in the
 
 The historical research measurements remain tied to their original code and
 environment. The source changes listed here do not retroactively update those
-measurements. The bounded network transport changes affect H3 timing, so a new
-H3 run, if used, must have a separate result directory and provenance.
+measurements. The bounded network transport changes affect H3 timing; a new
+H3 run is recorded separately in
+[`research/h3-witness-outage-review-2026-10-31.md`](../../research/h3-witness-outage-review-2026-10-31.md).
 
 ## Status
 
-Not a built candidate. No artifact hashes are recorded here, and no release
-has been published. Required checks and new maintainer approval remain
-outstanding.
+Built for review on macOS 15.6.1 arm64 with Python 3.12.11, setuptools
+84.2.1, and the pinned build frontend 1.6.1. The exact `uv 0.13.5` lock check
+passed. The wheel installed in a clean environment and passed the base wheel
+smoke check, CLI administration help, required `--state` help check, and
+`py.typed` check. The source archive installed in a clean environment and
+passed import, administration command, typing marker, and required state
+option checks. The full suite passed 402 tests; the focused security and H3
+tests passed 179 tests; Ruff and mypy passed. The OSV advisory check returned
+no known vulnerabilities for all 24 exact locked package versions.
+
+| Artifact | SHA 256 | Size |
+|---|---|---:|
+| `casf-0.1.0rc1-py3-none-any.whl` | `fe08da491e767b44149bf37d4553a615f1022cd03317b67e8b46e8bdf617eb5a` | 68531 bytes |
+| `casf-0.1.0rc1.tar.gz` | `67eb78da13b4f62fe789b8717b5273ce3da31434396f620fe18b2ea4f764e423` | 62757 bytes |
+
+These are review candidate artifacts, not the maintainer approved artifacts
+from 2026-10-28. The checked runtime and optional witness dependency metadata
+shows no actual security or license issue; CASF does not vendor their code.
+No release has been published. Release remains blocked on hosted Python
+matrix checks for this branch and separate maintainer approval of these exact
+hashes and notes.
