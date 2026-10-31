@@ -6,6 +6,18 @@ build/
 dist/
 .venv/
 .venv-tools/
+.venv-*/
+
+# Local signing material and state databases. Public fixtures belong in
+# tests/fixtures and may be explicitly unignored there.
+*.pem
+!tests/fixtures/**/*.pem
+*.key
+*.db
+*.sqlite
+*.sqlite3
+*-wal
+*-shm
 
 # Tooling
 .pytest_cache/

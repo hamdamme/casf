@@ -239,7 +239,7 @@ def _witness_stack(root: Path, cfg: dict, log_id: str):
         # its store is not measurable from here, so witness_db is None.
         yield (_http_submit(parts.hostname, parts.port or 80, token,
                             log_id),
-               lambda manifest: None, None)
+               lambda manifest, status: None, None)
     else:
         raise ValueError(f"unknown witness mode {mode!r}")
 
@@ -260,7 +260,8 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                     submit, register, witness_db):
                 manifest = _manifest(log_id)
                 writer.create_log(manifest)
-                register(manifest)
+                register(manifest, workload.active_status(
+                    str(manifest["manifest_hash"])))
                 witness_lat: list[int] = []
                 witness_retries: list[int] = []
                 witnessed_through = 0

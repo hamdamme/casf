@@ -15,8 +15,10 @@ import pytest
 
 from casf import crypto
 from casf.witness.http import WitnessService, make_server
+from tests.status import register_active
 from tests.unit.test_witness import _checkpoint, _records
 from tests.unit.test_writer import (
+    AUTH,
     AUTH_PUB,
     LOG_ID,
     WIT,
@@ -33,7 +35,7 @@ def service(tmp_path):
     svc = WitnessService(tmp_path / "wit.db", WIT, token=TOKEN,
                          authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB},
                          max_request_bytes=4096, max_inflight=8)
-    svc.witness.register_log(_manifest_envelope())
+    register_active(svc.witness, _manifest_envelope(), AUTH)
     yield svc
     svc.close()
 
@@ -105,6 +107,33 @@ def test_submit_bad_json_is_400(conn):
     assert status == 400
     assert err["code"] == "BAD_REQUEST"
     assert err["retryable"] is False
+
+
+def test_submit_duplicate_json_key_is_rejected_before_acceptance(tmp_path, conn):
+    _writer_db, body = _submission(tmp_path, 1)
+    checkpoint = json.dumps(body["checkpoint"], separators=(",", ":"))
+    records = json.dumps(body["records"], separators=(",", ":"))
+    raw = (f'{{"checkpoint":{checkpoint},"checkpoint":{checkpoint},'
+           f'"records":{records}}}').encode()
+    status, err = _post(conn, f"/v1/logs/{LOG_ID}/checkpoints", None, raw=raw)
+    assert status == 400
+    assert err["code"] == "BAD_REQUEST"
+    checkpoint_hash = body["checkpoint"]["checkpoint_hash"]
+    status, missing = _get(
+        conn, f"/v1/logs/{LOG_ID}/receipts/{checkpoint_hash}")
+    assert status == 404
+    assert missing["code"] == "RECEIPT_NOT_FOUND"
+
+
+def test_latest_duplicate_nonce_is_rejected_before_signing(tmp_path, conn):
+    _writer_db, body = _submission(tmp_path, 1)
+    status, _ = _post(conn, f"/v1/logs/{LOG_ID}/checkpoints", body)
+    assert status == 201
+    nonce = crypto.b64url_encode(b"n" * 32)
+    raw = f'{{"nonce":"{nonce}","nonce":"{nonce}"}}'.encode()
+    status, err = _post(conn, f"/v1/logs/{LOG_ID}/latest", None, raw=raw)
+    assert status == 400
+    assert err["code"] == "BAD_REQUEST"
 
 def test_submit_wrong_shape_is_400(conn):
     status, _err = _post(conn, f"/v1/logs/{LOG_ID}/checkpoints",

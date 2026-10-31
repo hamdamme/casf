@@ -1,0 +1,230 @@
+{
+  "complete_runs": 20,
+  "experiment": "canonical-h3-witness-outage",
+  "h3a": "outage versus healthy witnessed-completion time; paired at run level",
+  "h3b": "online freshness result during outage versus offline validity",
+  "incomplete_runs": 0,
+  "paired_analysis": {
+    "backlog_and_recovery": {
+      "automatic_retry_attempts": 0,
+      "explicit_same_pending_checkpoint_retries": 10,
+      "failed_outage_submission_attempts": 10,
+      "outage_blocked_request_counts": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outage_max_unwitnessed_backlog_records": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "outage_recovery_elapsed_ns": [
+        19888542,
+        19077625,
+        19783667,
+        20223792,
+        20002458,
+        19994417,
+        20381000,
+        20903875,
+        18204083,
+        20808541
+      ]
+    },
+    "h3b_freshness_and_offline_validity": {
+      "final_online_pass": 10,
+      "healthy_online_baseline_pass": 10,
+      "offline_integrity_pass": 10,
+      "online_inconclusive_with_freshness_diagnostic": 10,
+      "outage_runs": 10
+    },
+    "record24_commit_to_persisted_receipt_latency_ns": {
+      "healthy_run_level": {
+        "bootstrap_95_percentile_interval_ns": [
+          7693670.8,
+          9930745.7
+        ],
+        "mean_ns": 8878499.9,
+        "median_ns": 9671708.0,
+        "n": 10
+      },
+      "outage_run_level": {
+        "bootstrap_95_percentile_interval_ns": [
+          2988655312.3,
+          2999472758.3
+        ],
+        "mean_ns": 2994751466.7,
+        "median_ns": 2999388792.0,
+        "n": 10
+      },
+      "paired_outage_minus_healthy_run_level_difference": {
+        "bootstrap_95_percentile_interval_ns": [
+          2980064591.8,
+          2990566545.9
+        ],
+        "mean_ns": 2985872966.8,
+        "median_ns": 2989690125.5,
+        "n": 10
+      }
+    }
+  },
+  "results": [
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 0,
+      "seed": 81007,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 1,
+      "seed": 81001,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 2,
+      "seed": 81005,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 3,
+      "seed": 81002,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 4,
+      "seed": 81005,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 5,
+      "seed": 81007,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 6,
+      "seed": 81003,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 7,
+      "seed": 81008,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 8,
+      "seed": 81001,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 9,
+      "seed": 81004,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 10,
+      "seed": 81010,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 11,
+      "seed": 81006,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 12,
+      "seed": 81009,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 13,
+      "seed": 81002,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 14,
+      "seed": 81003,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 15,
+      "seed": 81010,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 16,
+      "seed": 81006,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 17,
+      "seed": 81004,
+      "status": "complete"
+    },
+    {
+      "configuration": "healthy",
+      "error": null,
+      "run_index": 18,
+      "seed": 81008,
+      "status": "complete"
+    },
+    {
+      "configuration": "outage",
+      "error": null,
+      "run_index": 19,
+      "seed": 81009,
+      "status": "complete"
+    }
+  ],
+  "status": "complete",
+  "total_runs": 20
+}

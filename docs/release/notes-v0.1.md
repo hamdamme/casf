@@ -65,9 +65,11 @@ machines, workloads, and network path. The maintainer accepts them as
 historical research evidence only. They are not performance measurements of
 0.1.0rc1 and do not establish general deployment throughput.
 
-The release validation scope is macOS arm64 and Ubuntu 24.04 x86_64 with
-CPython 3.12 through 3.14. Other systems and processor types have not been
-validated for this candidate.
+The recorded checks cover manual local validation on macOS arm64 with CPython
+3.12 through 3.14, and GitHub hosted Ubuntu x86_64 CI runners with the same
+Python versions. The workflow uses `ubuntu-latest`, so it does not pin an
+Ubuntu point release. macOS is not covered by GitHub Actions. Other systems
+and processor types have not been validated for this candidate.
 
 ## Install
 

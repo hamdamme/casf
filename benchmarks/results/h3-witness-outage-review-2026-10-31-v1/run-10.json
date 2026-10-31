@@ -1,0 +1,657 @@
+{
+  "batch_size": 8,
+  "checkpoints": [
+    {
+      "checkpoint_hash": "8bc175c45dbbb2f40c270ad122c96a642c2eb75461d4d3f2465bfcafb2e89010",
+      "created_monotonic_ns": 741349543839875,
+      "from_seq": 1,
+      "index": 0,
+      "pending_checkpoint_sha256": "c591769ffb9fe7df75d586267667d57037daca5b2c517702add3221537d21fe7",
+      "receipt_hash": "8508bea0a11b47f95b21574b16c1a6f2b7a533b591f695464029262afe2c55a9",
+      "receipt_persisted_monotonic_ns": 741349562566458,
+      "result": "accepted",
+      "to_seq": 8
+    },
+    {
+      "checkpoint_hash": "2a6cca66f02d28af2fe4cbe9f4d06fe5b718e3e115a044d77f744c0913781e68",
+      "created_monotonic_ns": 741349623562208,
+      "from_seq": 9,
+      "index": 1,
+      "pending_checkpoint_sha256": "bf0c7050d84c778067cdb331b16b16c95a380a5be44cdf1fcfb3492ff17ab072",
+      "receipt_hash": "ea1f28b0ae7ee9a0c708dd87527ba068ad9512728fd5c224995c167a0ff62f98",
+      "receipt_persisted_monotonic_ns": 741349640394416,
+      "result": "accepted",
+      "to_seq": 16
+    },
+    {
+      "checkpoint_hash": "df314f50920669a09db24abcc6bd3c5ec8130288d92f32a671ffaa41d7970e77",
+      "created_monotonic_ns": 741349700337625,
+      "error": "witness unreachable; the pending checkpoint keeps its bytes for retry",
+      "failure_monotonic_ns": 741349701858791,
+      "from_seq": 17,
+      "index": 2,
+      "pending_checkpoint_sha256": "c39686f5dd4e6656fbed7068df95d52d63400688383ef3c9200a739e1b1daeb7",
+      "receipt_hash": "7ac5e6392b06fd9d2adbb9ae5efb384d5c2660772ae21e9124e3a2ab97eed103",
+      "receipt_persisted_monotonic_ns": 741352700843833,
+      "recovered_result": "accepted",
+      "recovery_deadline_monotonic_ns": 741362680462833,
+      "recovery_elapsed_ns": 20381000,
+      "result": "failed_pending",
+      "same_checkpoint_hash_retried": true,
+      "same_pending_bytes_after_failure": true,
+      "to_seq": 24
+    },
+    {
+      "checkpoint_hash": "4459b45f131d678c38fdb0b7ddf080e53672a0871e43bccd05800c8d8a923985",
+      "created_monotonic_ns": 741352700862166,
+      "from_seq": 25,
+      "index": 3,
+      "pending_checkpoint_sha256": "d33ee9ee828ca7269b15afd2745ceb34fc636cbd5e942ebbf7b0da42e374dc65",
+      "receipt_hash": "cd1854137dee4ef92aa3339fe626c80cb39ed7b806c75202c945f51dab16dbd1",
+      "receipt_persisted_monotonic_ns": 741352714181000,
+      "result": "accepted",
+      "to_seq": 32
+    }
+  ],
+  "configuration": "outage",
+  "event_count": 32,
+  "event_request_sizes_bytes": [
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256,
+    256
+  ],
+  "events": [
+    {
+      "append_elapsed_ns": 3019125,
+      "commit_monotonic_ns": 741349471356541,
+      "commit_to_witnessed_ns": 91209917,
+      "event_id": "ea7b6c91-a492-4630-07a4-096c5de259d5",
+      "scheduled_offset_seconds": 0.0,
+      "seq": 1,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2966166,
+      "commit_monotonic_ns": 741349484809166,
+      "commit_to_witnessed_ns": 77757292,
+      "event_id": "a15c0b57-4d55-4acf-d3ba-c377e51d2731",
+      "scheduled_offset_seconds": 0.01,
+      "seq": 2,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2201458,
+      "commit_monotonic_ns": 741349492311208,
+      "commit_to_witnessed_ns": 70255250,
+      "event_id": "58036ca6-c27b-41a9-3bfb-6440bc700633",
+      "scheduled_offset_seconds": 0.02,
+      "seq": 3,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2682625,
+      "commit_monotonic_ns": 741349502113291,
+      "commit_to_witnessed_ns": 60453167,
+      "event_id": "0a636a79-9cb1-4c3d-ed1a-82bfd3058827",
+      "scheduled_offset_seconds": 0.03,
+      "seq": 4,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2263959,
+      "commit_monotonic_ns": 741349512765875,
+      "commit_to_witnessed_ns": 49800583,
+      "event_id": "4b0a5453-6a20-4f53-010e-b37c70092e5b",
+      "scheduled_offset_seconds": 0.04,
+      "seq": 5,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2435375,
+      "commit_monotonic_ns": 741349523560666,
+      "commit_to_witnessed_ns": 39005792,
+      "event_id": "a2c47c73-9fe0-47ea-7de5-5fbafb00f5e8",
+      "scheduled_offset_seconds": 0.05,
+      "seq": 6,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 1708959,
+      "commit_monotonic_ns": 741349531825875,
+      "commit_to_witnessed_ns": 30740583,
+      "event_id": "fbb12140-57e6-4645-d937-6721b9f96db7",
+      "scheduled_offset_seconds": 0.06,
+      "seq": 7,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 2217708,
+      "commit_monotonic_ns": 741349543828541,
+      "commit_to_witnessed_ns": 18737917,
+      "event_id": "94254564-0b37-44f8-68fd-48896f732283",
+      "scheduled_offset_seconds": 0.07,
+      "seq": 8,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 0,
+      "witnessed_monotonic_ns": 741349562566458
+    },
+    {
+      "append_elapsed_ns": 1253750,
+      "commit_monotonic_ns": 741349563833875,
+      "commit_to_witnessed_ns": 76560541,
+      "event_id": "c103a9b8-467e-47ca-df9d-441cdb93e05d",
+      "scheduled_offset_seconds": 0.08,
+      "seq": 9,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1123625,
+      "commit_monotonic_ns": 741349564963833,
+      "commit_to_witnessed_ns": 75430583,
+      "event_id": "57d725e0-8d9e-45be-831b-b1385fc72e68",
+      "scheduled_offset_seconds": 0.09,
+      "seq": 10,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1222916,
+      "commit_monotonic_ns": 741349570171291,
+      "commit_to_witnessed_ns": 70223125,
+      "event_id": "87454723-4f1c-472c-5b47-f35d65a4da3a",
+      "scheduled_offset_seconds": 0.1,
+      "seq": 11,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1433500,
+      "commit_monotonic_ns": 741349579833166,
+      "commit_to_witnessed_ns": 60561250,
+      "event_id": "fa19eb86-589c-4b54-9547-efec83335e73",
+      "scheduled_offset_seconds": 0.11,
+      "seq": 12,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1363375,
+      "commit_monotonic_ns": 741349593942833,
+      "commit_to_witnessed_ns": 46451583,
+      "event_id": "dc958543-7ff7-463f-d114-61d2d6135ef8",
+      "scheduled_offset_seconds": 0.12,
+      "seq": 13,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1611084,
+      "commit_monotonic_ns": 741349602134125,
+      "commit_to_witnessed_ns": 38260291,
+      "event_id": "ce013230-b4da-4829-9a2d-5544b82d7e66",
+      "scheduled_offset_seconds": 0.13,
+      "seq": 14,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 2090333,
+      "commit_monotonic_ns": 741349611537458,
+      "commit_to_witnessed_ns": 28856958,
+      "event_id": "ce38107b-2dee-41b7-8772-f10186d9474e",
+      "scheduled_offset_seconds": 0.14,
+      "seq": 15,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 1820583,
+      "commit_monotonic_ns": 741349623556416,
+      "commit_to_witnessed_ns": 16838000,
+      "event_id": "9941b921-fc59-4321-0429-0fded4b3f97c",
+      "scheduled_offset_seconds": 0.15,
+      "seq": 16,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 8,
+      "witnessed_monotonic_ns": 741349640394416
+    },
+    {
+      "append_elapsed_ns": 732250,
+      "commit_monotonic_ns": 741349695834250,
+      "commit_to_witnessed_ns": 3005009583,
+      "event_id": "e9a710fb-5be1-4e67-1321-8546acae1c39",
+      "scheduled_offset_seconds": 0.16,
+      "seq": 17,
+      "unwitnessed_backlog_after_commit": 1,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 675584,
+      "commit_monotonic_ns": 741349696513250,
+      "commit_to_witnessed_ns": 3004330583,
+      "event_id": "f3ebd293-a2eb-4f17-580d-7c1a43cef248",
+      "scheduled_offset_seconds": 0.17,
+      "seq": 18,
+      "unwitnessed_backlog_after_commit": 2,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 651292,
+      "commit_monotonic_ns": 741349697168000,
+      "commit_to_witnessed_ns": 3003675833,
+      "event_id": "580f9241-9d15-4900-cc7d-6c9b0e0184c9",
+      "scheduled_offset_seconds": 0.18,
+      "seq": 19,
+      "unwitnessed_backlog_after_commit": 3,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 647500,
+      "commit_monotonic_ns": 741349697817791,
+      "commit_to_witnessed_ns": 3003026042,
+      "event_id": "00aed0b5-9450-4eff-6e8e-0f5360856160",
+      "scheduled_offset_seconds": 0.19,
+      "seq": 20,
+      "unwitnessed_backlog_after_commit": 4,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 641000,
+      "commit_monotonic_ns": 741349698460541,
+      "commit_to_witnessed_ns": 3002383292,
+      "event_id": "c5edeb4c-f034-4d2f-de5e-ace3ce7b9a73",
+      "scheduled_offset_seconds": 0.2,
+      "seq": 21,
+      "unwitnessed_backlog_after_commit": 5,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 603708,
+      "commit_monotonic_ns": 741349699065833,
+      "commit_to_witnessed_ns": 3001778000,
+      "event_id": "6e83a3e4-c02d-46f8-a8a4-2a1683ce1536",
+      "scheduled_offset_seconds": 0.21,
+      "seq": 22,
+      "unwitnessed_backlog_after_commit": 6,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 634375,
+      "commit_monotonic_ns": 741349699701791,
+      "commit_to_witnessed_ns": 3001142042,
+      "event_id": "c70be957-4333-409d-43d6-eadcc55c4997",
+      "scheduled_offset_seconds": 0.22,
+      "seq": 23,
+      "unwitnessed_backlog_after_commit": 7,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 633000,
+      "commit_monotonic_ns": 741349700336166,
+      "commit_to_witnessed_ns": 3000507667,
+      "event_id": "434352ea-8cf6-4c98-59c8-39b096b8f3ad",
+      "scheduled_offset_seconds": 0.23,
+      "seq": 24,
+      "unwitnessed_backlog_after_commit": 8,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352700843833
+    },
+    {
+      "append_elapsed_ns": 667459,
+      "commit_monotonic_ns": 741349709480375,
+      "commit_to_witnessed_ns": 3004700625,
+      "event_id": "4589f129-6f4a-411d-953e-898ec886f189",
+      "scheduled_offset_seconds": 0.24,
+      "seq": 25,
+      "unwitnessed_backlog_after_commit": 9,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 1041625,
+      "commit_monotonic_ns": 741349723322291,
+      "commit_to_witnessed_ns": 2990858709,
+      "event_id": "fd759284-99cd-46c4-14cf-7497ae1cae20",
+      "scheduled_offset_seconds": 0.25,
+      "seq": 26,
+      "unwitnessed_backlog_after_commit": 10,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 758459,
+      "commit_monotonic_ns": 741349731588875,
+      "commit_to_witnessed_ns": 2982592125,
+      "event_id": "83ee7f57-5530-4e54-42e2-c479103aaa1b",
+      "scheduled_offset_seconds": 0.26,
+      "seq": 27,
+      "unwitnessed_backlog_after_commit": 11,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 798792,
+      "commit_monotonic_ns": 741349742510583,
+      "commit_to_witnessed_ns": 2971670417,
+      "event_id": "bb714f2d-ceb1-4d70-7509-fb9cb5fe0154",
+      "scheduled_offset_seconds": 0.27,
+      "seq": 28,
+      "unwitnessed_backlog_after_commit": 12,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 883542,
+      "commit_monotonic_ns": 741349751389208,
+      "commit_to_witnessed_ns": 2962791792,
+      "event_id": "04d73ef5-ef1a-4e70-e422-b5be9d23ee42",
+      "scheduled_offset_seconds": 0.28,
+      "seq": 29,
+      "unwitnessed_backlog_after_commit": 13,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 823416,
+      "commit_monotonic_ns": 741349762656791,
+      "commit_to_witnessed_ns": 2951524209,
+      "event_id": "1218dd26-bdc8-4c9d-c455-1188b2ec8d2c",
+      "scheduled_offset_seconds": 0.29,
+      "seq": 30,
+      "unwitnessed_backlog_after_commit": 14,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 859167,
+      "commit_monotonic_ns": 741349769960958,
+      "commit_to_witnessed_ns": 2944220042,
+      "event_id": "f01d31f3-a93a-43d0-9464-45a0143ee6f1",
+      "scheduled_offset_seconds": 0.3,
+      "seq": 31,
+      "unwitnessed_backlog_after_commit": 15,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    },
+    {
+      "append_elapsed_ns": 915625,
+      "commit_monotonic_ns": 741349779341791,
+      "commit_to_witnessed_ns": 2934839209,
+      "event_id": "239a9471-95a1-4640-95f3-91d7267ba57a",
+      "scheduled_offset_seconds": 0.31,
+      "seq": 32,
+      "unwitnessed_backlog_after_commit": 16,
+      "witnessed_count_after_commit": 16,
+      "witnessed_monotonic_ns": 741352714181000
+    }
+  ],
+  "final_witness_checkpoint_index": 3,
+  "final_witness_count": 32,
+  "final_writer_count": 32,
+  "log_id": "f0878e48-2dc0-472f-2837-218482b10657",
+  "max_unwitnessed_backlog_records": 16,
+  "outage": {
+    "activated_monotonic_ns": 741349670403000,
+    "actual_duration_ns": 3010059833,
+    "blocked_requests_after": 2,
+    "blocked_requests_before": 0,
+    "duration_seconds": 3.0,
+    "fault_mode": "proxy_drop_after_body_read",
+    "forwarded_requests_after": 3,
+    "forwarded_requests_before": 3,
+    "restored_monotonic_ns": 741352680462833,
+    "witness_state_after_failed_submit": {
+      "checkpoint_index": 1,
+      "count": 16
+    },
+    "witness_state_after_query": {
+      "checkpoint_index": 1,
+      "count": 16
+    }
+  },
+  "proxy_counters": {
+    "blocked_requests": 2,
+    "forwarded_requests": 6
+  },
+  "run_index": 10,
+  "seed": 81010,
+  "status": "complete",
+  "submission_attempts": [
+    {
+      "checkpoint_hash": "8bc175c45dbbb2f40c270ad122c96a642c2eb75461d4d3f2465bfcafb2e89010",
+      "end_monotonic_ns": 741349562566458,
+      "result": "accepted",
+      "start_monotonic_ns": 741349545832791
+    },
+    {
+      "checkpoint_hash": "2a6cca66f02d28af2fe4cbe9f4d06fe5b718e3e115a044d77f744c0913781e68",
+      "end_monotonic_ns": 741349640394416,
+      "result": "accepted",
+      "start_monotonic_ns": 741349625586208
+    },
+    {
+      "checkpoint_hash": "df314f50920669a09db24abcc6bd3c5ec8130288d92f32a671ffaa41d7970e77",
+      "end_monotonic_ns": 741349701858791,
+      "error": "witness unreachable; the pending checkpoint keeps its bytes for retry",
+      "result": "failed",
+      "start_monotonic_ns": 741349701009125
+    },
+    {
+      "checkpoint_hash": "df314f50920669a09db24abcc6bd3c5ec8130288d92f32a671ffaa41d7970e77",
+      "end_monotonic_ns": 741352700843833,
+      "result": "recovered_same_pending",
+      "start_monotonic_ns": 741352681165458
+    },
+    {
+      "checkpoint_hash": "4459b45f131d678c38fdb0b7ddf080e53672a0871e43bccd05800c8d8a923985",
+      "end_monotonic_ns": 741352714181000,
+      "result": "accepted",
+      "start_monotonic_ns": 741352702319125
+    }
+  ],
+  "verifications": {
+    "final_online": {
+      "argv": [
+        "casf",
+        "verify",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/final-bundle",
+        "--state",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/state-final-online.json",
+        "--trust",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/trust.json",
+        "--mode",
+        "online",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 26559333,
+      "ended_monotonic_ns": 741352753604791,
+      "exit_code": 0,
+      "report": {
+        "anchor_status": "OK",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "VERIFIER_STATE_INITIALIZED",
+          "CHECKPOINT_FIRST_OBSERVATION"
+        ],
+        "freshness_status": "FRESH_WITNESS_VIEW",
+        "mode": "online",
+        "result": "PASS",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 32,
+        "witnessed_through": 32
+      },
+      "started_monotonic_ns": 741352727045458,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"OK\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"VERIFIER_STATE_INITIALIZED\", \"CHECKPOINT_FIRST_OBSERVATION\"], \"freshness_status\": \"FRESH_WITNESS_VIEW\", \"mode\": \"online\", \"result\": \"PASS\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 32, \"witnessed_through\": 32}\n"
+    },
+    "healthy_baseline_online": {
+      "argv": [
+        "casf",
+        "verify",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/baseline-bundle",
+        "--state",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/state-baseline.json",
+        "--trust",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/trust.json",
+        "--mode",
+        "online",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 20563958,
+      "ended_monotonic_ns": 741349670382833,
+      "exit_code": 0,
+      "report": {
+        "anchor_status": "OK",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "VERIFIER_STATE_INITIALIZED",
+          "CHECKPOINT_FIRST_OBSERVATION"
+        ],
+        "freshness_status": "FRESH_WITNESS_VIEW",
+        "mode": "online",
+        "result": "PASS",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 16,
+        "witnessed_through": 16
+      },
+      "started_monotonic_ns": 741349649818875,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"OK\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"VERIFIER_STATE_INITIALIZED\", \"CHECKPOINT_FIRST_OBSERVATION\"], \"freshness_status\": \"FRESH_WITNESS_VIEW\", \"mode\": \"online\", \"result\": \"PASS\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 16, \"witnessed_through\": 16}\n"
+    },
+    "offline_during_outage": {
+      "argv": [
+        "casf",
+        "verify",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/baseline-bundle",
+        "--state",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/state-outage-offline.json",
+        "--trust",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/trust.json",
+        "--mode",
+        "integrity",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 10432375,
+      "ended_monotonic_ns": 741349695090916,
+      "exit_code": 0,
+      "report": {
+        "anchor_status": "NOT_REQUESTED",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "VERIFIER_STATE_INITIALIZED"
+        ],
+        "freshness_status": "NOT_REQUESTED",
+        "mode": "integrity",
+        "result": "PASS",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 16,
+        "witnessed_through": null
+      },
+      "started_monotonic_ns": 741349684658541,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"NOT_REQUESTED\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"VERIFIER_STATE_INITIALIZED\"], \"freshness_status\": \"NOT_REQUESTED\", \"mode\": \"integrity\", \"result\": \"PASS\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 16, \"witnessed_through\": null}\n"
+    },
+    "online_during_outage": {
+      "argv": [
+        "casf",
+        "verify",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/baseline-bundle",
+        "--state",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/state-outage-online.json",
+        "--trust",
+        "/private/tmp/casf-h3-review-2026-10-31-v1/run-10-outage-seed-81010/trust.json",
+        "--mode",
+        "online",
+        "--json",
+        "--initialize-state"
+      ],
+      "elapsed_ns": 13907708,
+      "ended_monotonic_ns": 741349684335583,
+      "exit_code": 4,
+      "query_window_end_ns": 741349684345625,
+      "query_window_start_ns": 741349670405125,
+      "query_window_within_outage": true,
+      "report": {
+        "anchor_status": "OK",
+        "diagnostic_codes": [
+          "STATUS_CURRENTNESS_UNCONFIRMED",
+          "FRESHNESS_INCONCLUSIVE"
+        ],
+        "freshness_status": "INCONCLUSIVE",
+        "mode": "online",
+        "result": "INCONCLUSIVE",
+        "trust_status": "OK",
+        "unwitnessed_count": 0,
+        "verified_through": 16,
+        "witnessed_through": 16
+      },
+      "started_monotonic_ns": 741349670427875,
+      "stderr": "",
+      "stdout": "{\"anchor_status\": \"OK\", \"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\", \"FRESHNESS_INCONCLUSIVE\"], \"freshness_status\": \"INCONCLUSIVE\", \"mode\": \"online\", \"result\": \"INCONCLUSIVE\", \"trust_status\": \"OK\", \"unwitnessed_count\": 0, \"verified_through\": 16, \"witnessed_through\": 16}\n"
+    }
+  }
+}

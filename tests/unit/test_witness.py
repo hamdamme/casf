@@ -12,8 +12,11 @@ import pytest
 
 from casf import crypto
 from casf.errors import CasfError
+from casf.lifecycle import sign_status
 from casf.witness import ConflictError, Witness
+from tests.status import active_status, register_active
 from tests.unit.test_writer import (
+    AUTH,
     AUTH_PUB,
     LOG,
     LOG_ID,
@@ -31,7 +34,7 @@ from tests.unit.test_writer import (
 def _witness(tmp_path, name="wit.db", **kw):
     wit = Witness(tmp_path / name, WIT,
                   authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB}, **kw)
-    wit.register_log(_manifest_envelope())
+    register_active(wit, _manifest_envelope(), AUTH)
     return wit
 
 
@@ -305,7 +308,7 @@ def test_crash_after_commit_replays_same_receipt(tmp_path):
     _append(w, 1)
     wit = _CrashWitness(tmp_path / "wit.db", WIT,
                         authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    wit.register_log(_manifest_envelope())
+    register_active(wit, _manifest_envelope(), AUTH)
     cp = _checkpoint(w, index=0, count=1)
     with pytest.raises(RuntimeError):
         wit.submit(LOG_ID, cp, _records(w, 1, 1))
@@ -346,6 +349,8 @@ def test_concurrent_forks_single_winner(tmp_path):
               payload={"n": 777}, attributes={})  # divergent second record
     wit = _witness(tmp_path)  # register the log before spawning children
     wit.close()
+
+
     cp1 = _checkpoint(w1, index=0, count=2)
     cp2 = _checkpoint(w2, index=0, count=2)
     assert cp1["checkpoint_hash"] != cp2["checkpoint_hash"]
@@ -363,3 +368,59 @@ def test_concurrent_forks_single_winner(tmp_path):
     codes = sorted(p.exitcode for p in procs)
     assert codes == [0, 3]  # at most one extension accepted
     assert _state(db)[2] == 0  # exactly one checkpoint index retained
+
+
+def test_unknown_status_blocks_and_revocation_stops_new_checkpoints(tmp_path):
+    writer = _writer(tmp_path / "writer.db")
+    _append(writer, 1)
+    manifest = _manifest_envelope()
+    witness = Witness(tmp_path / "witness.db", WIT,
+                      authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
+    try:
+        witness.register_log(manifest)
+        checkpoint = writer.create_checkpoint(LOG_ID)
+        with pytest.raises(CasfError, match="status is unknown"):
+            witness.submit(LOG_ID, checkpoint, list(writer.records(LOG_ID)))
+        assert _state(tmp_path / "witness.db")[0] == 0
+
+        assert witness.install_status(
+            LOG_ID, active_status(AUTH, manifest["manifest_hash"]))
+        receipt = witness.submit(LOG_ID, checkpoint, list(writer.records(LOG_ID)))
+        writer.record_receipt(LOG_ID, receipt)
+        assert receipt["body"]["count"] == 1
+
+        _append(writer, 2)
+        next_checkpoint = writer.create_checkpoint(LOG_ID)
+        revoked = sign_status(
+            AUTH, serial=2, manifest_hash=manifest["manifest_hash"],
+            status="revoked", issued_at=TS, reason="test revocation")
+        assert witness.install_status(LOG_ID, revoked)
+        with pytest.raises(CasfError, match="revoked"):
+            witness.submit(LOG_ID, next_checkpoint,
+                           list(writer.records(LOG_ID))[1:])
+        assert _state(tmp_path / "witness.db")[0] == 1
+        assert witness.receipt(checkpoint["checkpoint_hash"])[1] == receipt
+        with pytest.raises(CasfError, match="terminal"):
+            witness.install_status(
+                LOG_ID, sign_status(
+                    AUTH, serial=3, manifest_hash=manifest["manifest_hash"],
+                    status="active", issued_at=TS, reason="invalid restore"))
+    finally:
+        writer.close()
+        witness.close()
+
+
+def test_invalid_initial_status_does_not_register_manifest(tmp_path):
+    manifest = _manifest_envelope()
+    status = active_status(AUTH, manifest["manifest_hash"])
+    status["body"]["serial"] = 2
+    witness = Witness(tmp_path / "witness.db", WIT,
+                      authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
+    try:
+        with pytest.raises(CasfError):
+            witness.register_log(manifest, status)
+        row = witness._db.connection.execute(
+            "SELECT COUNT(*) FROM manifests").fetchone()
+        assert row == (0,)
+    finally:
+        witness.close()
