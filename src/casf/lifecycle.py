@@ -10,11 +10,15 @@ atomic state file.
 
 import json
 import os
+import re
 from pathlib import Path
+from typing import cast
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
+from casf.canonical.jcs import parse
+from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, SchemaError
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject, JsonValue
@@ -70,12 +74,23 @@ class StatusBook:
         self._state: dict[str, JsonObject] = {}
         if self._path.exists():
             try:
-                data = json.loads(self._path.read_text())
-            except ValueError as e:
+                raw = self._path.read_bytes()
+                if len(raw) > 1024 * 1024:
+                    raise ValueError("status book exceeds its size limit")
+                data = parse(raw)
+            except (OSError, CasfError, ValueError) as e:
                 raise CasfError("status book is corrupt") from e
-            if not isinstance(data, dict):
+            if not isinstance(data, dict) or any(
+                    not isinstance(digest, str)
+                    or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+                    or not isinstance(entry, dict)
+                    or set(entry) != {"serial", "status"}
+                    or type(entry["serial"]) is not int
+                    or not 1 <= entry["serial"] <= SAFE_INT_MAX
+                    or entry["status"] not in ("active", "revoked")
+                    for digest, entry in data.items()):
                 raise CasfError("status book is corrupt")
-            self._state = data
+            self._state = cast(dict[str, JsonObject], data)
 
     def observed_serial(self, manifest_hash: str) -> int:
         entry = self._state.get(manifest_hash)

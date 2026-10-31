@@ -5,6 +5,20 @@ Format follows Keep a Changelog; versions follow SemVer after API
 stabilization (SPEC §26).
 
 ## [Unreleased]
+### Security
+- Reject duplicate JSON fields in external CASF input and apply bounded,
+  total timeouts to online queries and witness submissions. Require signed
+  witness status before checkpoint acceptance and stop new acceptance after
+  a verified revocation. These changes are under review and require a new
+  candidate build; they are not present in the previously approved artifacts.
+
+### Changed
+- Export no longer requires a log signing key because it reads a consistent
+  database snapshot without signing. Append and checkpoint operations still
+  require the private log key.
+- Add administration commands for explicit manifest, trust, status, witness
+  registration, and epoch provisioning. See `docs/administration.md`.
+
 ### Added
 - Wide area benchmark execution (RQ2, RQ3, H2): 20 runs with the
   writer on a Dell Linux machine and the witness on an AWS Lightsail

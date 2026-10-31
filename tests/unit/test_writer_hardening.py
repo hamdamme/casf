@@ -1,12 +1,16 @@
 """SPEC §17/§18 hardening: immutability triggers, backup, startup checks,
 and the remaining T07 kill points."""
 
+import http.server
 import os
 import sqlite3
+import threading
+import time
 
 import pytest
 
 from casf.errors import CasfError
+from casf.transport import MAX_RESPONSE_BYTES
 from casf.verifier import Result
 from casf.writer import Writer
 from tests.unit.test_writer import (
@@ -189,3 +193,97 @@ def test_retry_succeeds_after_brief_contention(tmp_path):
     env = _append(w)  # must wait, retry, and succeed
     t.join()
     assert env["body"]["seq"] == 1
+
+
+def test_writer_rejects_duplicate_json_response_without_receipt(
+        tmp_path, monkeypatch):
+    w = _writer(tmp_path / "response.db")
+    _append(w)
+    pending = w.create_checkpoint(LOG_ID)
+
+    monkeypatch.setattr(
+        "casf.writer.http_request",
+        lambda *_args, **_kwargs: (201, b'{"receipt":{},"receipt":{}}'))
+    with pytest.raises(CasfError, match="witness answer was not valid JSON"):
+        w.submit_pending(LOG_ID, "http://127.0.0.1:9999", "test-token")
+    assert w.pending_checkpoint(LOG_ID)[0] == pending
+    stored = w._db.connection.execute(
+        "SELECT 1 FROM receipts WHERE checkpoint_hash = ?",
+        (pending["checkpoint_hash"],)).fetchone()
+    assert stored is None
+
+
+def test_writer_remote_http_is_rejected_without_sending_token(tmp_path):
+    w = _writer(tmp_path / "remote-http.db")
+    _append(w)
+    pending = w.create_checkpoint(LOG_ID)
+    with pytest.raises(CasfError, match="HTTP requires a literal loopback"):
+        w.submit_pending(LOG_ID, "http://example.com", "test-token")
+    assert w.pending_checkpoint(LOG_ID)[0] == pending
+
+
+def test_writer_submission_total_deadline_keeps_pending_checkpoint(tmp_path):
+    class StalledHandler(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers["Content-Length"]))
+            self.send_response(201)
+            self.send_header("Content-Length", "2")
+            self.end_headers()
+            time.sleep(0.5)
+
+        def log_message(self, *_args):
+            pass
+
+    service = http.server.HTTPServer(("127.0.0.1", 0), StalledHandler)
+    thread = threading.Thread(target=service.serve_forever, daemon=True)
+    thread.start()
+    w = _writer(tmp_path / "deadline.db")
+    _append(w)
+    pending = w.create_checkpoint(LOG_ID)
+    started = time.monotonic()
+    try:
+        with pytest.raises(CasfError, match="witness unreachable"):
+            w.submit_pending(
+                LOG_ID, f"http://127.0.0.1:{service.server_port}",
+                "test-token", timeout=0.15)
+        assert time.monotonic() - started < 0.35
+        assert w.pending_checkpoint(LOG_ID)[0] == pending
+        attempts = w._db.connection.execute(
+            "SELECT attempts FROM outbox WHERE log_id = ?", (LOG_ID,)).fetchone()
+        assert attempts == (1,)
+    finally:
+        service.shutdown()
+        service.server_close()
+        thread.join(timeout=5)
+
+
+def test_writer_submission_bounds_oversized_response(tmp_path):
+    class OversizedHandler(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers["Content-Length"]))
+            self.send_response(201)
+            self.send_header("Content-Length", str(MAX_RESPONSE_BYTES + 1))
+            self.end_headers()
+
+        def log_message(self, *_args):
+            pass
+
+    service = http.server.HTTPServer(("127.0.0.1", 0), OversizedHandler)
+    thread = threading.Thread(target=service.serve_forever, daemon=True)
+    thread.start()
+    w = _writer(tmp_path / "oversized.db")
+    _append(w)
+    pending = w.create_checkpoint(LOG_ID)
+    try:
+        with pytest.raises(CasfError, match="witness unreachable"):
+            w.submit_pending(
+                LOG_ID, f"http://127.0.0.1:{service.server_port}",
+                "test-token", timeout=2)
+        assert w.pending_checkpoint(LOG_ID)[0] == pending
+        assert w._db.connection.execute(
+            "SELECT 1 FROM receipts WHERE checkpoint_hash = ?",
+            (pending["checkpoint_hash"],)).fetchone() is None
+    finally:
+        service.shutdown()
+        service.server_close()
+        thread.join(timeout=5)

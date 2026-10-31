@@ -138,7 +138,8 @@ def _build_history(root: Path, records: int = RECORDS) -> str:
     try:
         manifest = runner._manifest()
         writer.create_log(manifest)
-        witness.register_log(manifest)
+        witness.register_log(
+            manifest, workload.active_status(str(manifest["manifest_hash"])))
         appended: list[dict] = []
         for i, event in enumerate(
                 workload.generate(41, records, TARGET), start=1):

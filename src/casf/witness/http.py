@@ -24,13 +24,15 @@ import threading
 from dataclasses import dataclass, field
 from io import BytesIO
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
+from casf.canonical.jcs import parse
 from casf.canonical.limits import MAX_WITNESS_REQUEST_BYTES
 from casf.errors import CasfError, SchemaError
+from casf.types import JsonObject
 from casf.witness import (
     ConflictError,
     NoCheckpointError,
@@ -134,8 +136,8 @@ def _submit(service: WitnessService, handler: _Request,
         return
     raw = handler.rfile.read(int(length))
     try:
-        payload = json.loads(raw)
-    except (ValueError, UnicodeDecodeError, RecursionError):
+        payload = parse(raw)
+    except (CasfError, RecursionError):
         _error(handler, 400, "BAD_REQUEST", "request body is not valid JSON")
         return
     if not isinstance(payload, dict) \
@@ -147,7 +149,8 @@ def _submit(service: WitnessService, handler: _Request,
         return
     try:
         receipt, accepted = service.witness._submit(
-            log_id, payload["checkpoint"], payload["records"])
+            log_id, payload["checkpoint"],
+            cast(list[JsonObject], payload["records"]))
     except UnknownLogError:
         _error(handler, 404, "LOG_NOT_FOUND", "log is not registered")
     except ConflictError as e:
@@ -177,8 +180,8 @@ def _read_json(service: WitnessService,
         return None
     raw = handler.rfile.read(int(length))
     try:
-        return json.loads(raw)
-    except (ValueError, UnicodeDecodeError, RecursionError):
+        return parse(raw)
+    except (CasfError, RecursionError):
         _error(handler, 400, "BAD_REQUEST", "request body is not valid JSON")
         return None
 

@@ -20,7 +20,6 @@ import time
 from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
-from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -31,6 +30,8 @@ from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
 from casf.errors import CasfError, SchemaError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
+from casf.transport import ResponseLimitError
+from casf.transport import request as http_request
 from casf.types import JsonObject
 
 __all__ = ["BusyError", "EventIdConflictError",
@@ -62,19 +63,28 @@ class RestoreBehindWitnessError(SealedError):
 class Writer:
     """Appends signed records to one SQLite store."""
 
-    def __init__(self, db_path: str | Path, log_priv: Ed25519PrivateKey, *,
+    def __init__(self, db_path: str | Path,
+                 log_priv: Ed25519PrivateKey | None = None, *,
                  busy_timeout_ms: int = 5000, max_retries: int = 3,
                  retry_jitter: float = 0.05) -> None:
         self._db = Database(db_path, busy_timeout_ms)
         self._log_priv = log_priv
-        self._log_pub = crypto.public_key_raw(log_priv)
-        self._log_key_id = crypto.key_id(self._log_pub)
+        self._log_pub = (crypto.public_key_raw(log_priv)
+                         if log_priv is not None else None)
+        self._log_key_id = (crypto.key_id(self._log_pub)
+                            if self._log_pub is not None else None)
         self._max_retries = max_retries
         self._retry_jitter = retry_jitter
         self._check_heads()
 
     def close(self) -> None:
         self._db.close()
+
+    def _signing_key(self) -> tuple[Ed25519PrivateKey, bytes, str]:
+        if self._log_priv is None or self._log_pub is None \
+                or self._log_key_id is None:
+            raise CasfError("this operation requires the log signing key")
+        return self._log_priv, self._log_pub, self._log_key_id
 
     def backup(self, dest_path: str | Path) -> None:
         """Consistent backup through the SQLite backup API (SPEC §18).
@@ -138,6 +148,7 @@ class Writer:
 
     def create_log(self, manifest_envelope: JsonObject) -> str:
         """Store the manifest and genesis transactionally (SPEC §10)."""
+        _log_priv, _log_pub, log_key_id = self._signing_key()
         if set(manifest_envelope) != {"body", "manifest_hash", "signature"}:
             raise SchemaError("manifest envelope must be exactly "
                               "body, manifest_hash, signature")
@@ -148,7 +159,7 @@ class Writer:
         validate_protocol_body("manifest", body)
         if crypto.digest_manifest(body) != manifest_hash:
             raise SchemaError("manifest_hash does not match the body")
-        if body["log_key_id"] != self._log_key_id:
+        if body["log_key_id"] != log_key_id:
             raise CasfError("writer key does not match the manifest log key")
         log_id = body["log_id"]
         if not isinstance(log_id, str):
@@ -196,6 +207,7 @@ class Writer:
                event_type: str, payload: JsonObject,
                attributes: JsonObject) -> JsonObject:
         """Append one record; idempotent by event ID (SPEC §11, §17)."""
+        _ = self._signing_key()
         if not isinstance(payload, dict) or not isinstance(attributes, dict):
             raise SchemaError("payload and attributes must be objects")
         request: JsonObject = {
@@ -217,6 +229,7 @@ class Writer:
 
     def _append_once(self, log_id: str, request: JsonObject,
                      request_digest: str) -> JsonObject:
+        log_priv, _log_pub, log_key_id = self._signing_key()
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -259,13 +272,13 @@ class Writer:
                 "actor": request["actor"], "event_type": request["event_type"],
                 "payload": request["payload"],
                 "attributes": request["attributes"],
-                "prev_hash": head_hash, "key_id": self._log_key_id,
+                "prev_hash": head_hash, "key_id": log_key_id,
             }
             validate_protocol_body("record", body)
             record_hash = crypto.digest_record(body)
             envelope: JsonObject = {
                 "body": body, "record_hash": record_hash,
-                "signature": crypto.sign_record(self._log_priv, body),
+                "signature": crypto.sign_record(log_priv, body),
             }
             self._debug_hook("before_insert")
             con.execute(
@@ -444,6 +457,7 @@ class Writer:
                         index: int, envelope: JsonObject,
                         prev_hash: str) -> str:
         """Verify one restored record and insert it; return its hash."""
+        _log_priv, log_pub, _log_key_id = self._signing_key()
         if set(envelope) != {"body", "record_hash", "signature"}:
             raise SchemaError("record envelope must be exactly "
                               "body, record_hash, signature")
@@ -464,7 +478,7 @@ class Writer:
             raise CasfError("record chain is broken at the restore input")
         if crypto.digest_record(body) != record_hash:
             raise CasfError("record_hash does not match the body")
-        crypto.verify_record(self._log_pub, body, signature)
+        crypto.verify_record(log_pub, body, signature)
         request: JsonObject = {
             "event_id": body["event_id"], "actor": body["actor"],
             "event_type": body["event_type"], "payload": body["payload"],
@@ -488,6 +502,7 @@ class Writer:
         stored. A final checkpoint covers the whole committed head
         and seals appends in the same transaction.
         """
+        log_priv, _log_pub, log_key_id = self._signing_key()
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -535,7 +550,7 @@ class Writer:
                 "manifest_hash": self._manifest_hash(log_id),
                 "index": index, "count": to_seq, "head_hash": tip,
                 "previous_checkpoint_hash": prev_cp,
-                "key_id": self._log_key_id,
+                "key_id": log_key_id,
                 "issued_at": datetime.now(UTC).strftime(
                     "%Y-%m-%dT%H:%M:%S.%fZ"),
                 "final": bool(final),
@@ -544,7 +559,7 @@ class Writer:
             envelope: JsonObject = {
                 "body": body,
                 "checkpoint_hash": crypto.digest_checkpoint(body),
-                "signature": crypto.sign_checkpoint(self._log_priv, body),
+                "signature": crypto.sign_checkpoint(log_priv, body),
             }
             con.execute(
                 "INSERT INTO checkpoints VALUES (?, ?, ?, ?, ?, 'pending')",
@@ -668,26 +683,13 @@ class Writer:
             if not isinstance(env, dict):
                 raise CasfError("stored record is corrupt")
             records.append(env)
-        parts = urlsplit(base_url)
-        if not parts.hostname:
-            raise CasfError("witness URL has no host")
         request = json.dumps(
             {"checkpoint": envelope, "records": records}).encode()
         try:
-            conn = http.client.HTTPConnection(parts.hostname,
-                                              parts.port or 80,
-                                              timeout=timeout)
-            try:
-                conn.request(
-                    "POST", f"/v1/logs/{log_id}/checkpoints", body=request,
-                    headers={"Content-Type": "application/json",
-                             "Authorization": f"Bearer {token}"})
-                resp = conn.getresponse()
-                payload = resp.read()
-                status = resp.status
-            finally:
-                conn.close()
-        except (OSError, http.client.HTTPException) as e:
+            status, payload = http_request(
+                base_url, "POST", f"/v1/logs/{log_id}/checkpoints", token,
+                request, timeout=timeout)
+        except (OSError, http.client.HTTPException, ResponseLimitError) as e:
             self._db.connection.execute(
                 "UPDATE outbox SET attempts = attempts + 1 "
                 "WHERE log_id = ?", (log_id,))
@@ -695,9 +697,11 @@ class Writer:
             raise CasfError(
                 "witness unreachable; the pending checkpoint keeps its "
                 "bytes for retry") from e
-        try:
-            data = json.loads(payload)
         except ValueError as e:
+            raise CasfError(str(e)) from e
+        try:
+            data = parse(payload)
+        except CasfError as e:
             raise CasfError("witness answer was not valid JSON") from e
         if status not in (200, 201) or not isinstance(data, dict) \
                 or not isinstance(data.get("receipt"), dict):

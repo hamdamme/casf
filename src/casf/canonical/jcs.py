@@ -15,12 +15,13 @@ JCS core rules implemented (RFC 8785 §3.2):
 """
 
 import json
+import math
 
 from casf.canonical.limits import SAFE_INT_MAX, SAFE_INT_MIN, Limits
 from casf.errors import DuplicateKeyError, LimitError, NumericError, SchemaError, UnicodeError_
 from casf.types import JsonValue
 
-__all__ = ["canonicalize", "parse", "utf16_sort_key", "validate"]
+__all__ = ["canonicalize", "parse", "parse_config", "utf16_sort_key", "validate"]
 
 # ---------------------------------------------------------------- JCS core
 
@@ -154,6 +155,72 @@ def parse(text: str | bytes) -> JsonValue:
         raise SchemaError(f"invalid JSON: {e.msg}") from e
     # reject lone surrogates surviving escapes (json accepts "\ud800")
     _check_strings(value, set())
+    return value
+
+
+def parse_config(text: str | bytes) -> object:
+    """Parse bounded configuration JSON with strict names and numbers.
+
+    Unlike authenticated CASF wire objects, configuration may contain finite
+    decimal values such as a fractional timeout. Duplicate fields, unsafe
+    integers, negative zero, nonfinite numbers, BOM, invalid UTF 8, and lone
+    surrogates remain rejected.
+    """
+    if isinstance(text, bytes):
+        if text.startswith(b"\xef\xbb\xbf"):
+            raise SchemaError("byte order mark is forbidden")
+        try:
+            text = text.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise SchemaError("input is not valid UTF-8") from exc
+
+    def parse_float(token: str) -> float:
+        value = float(token)
+        if not math.isfinite(value) or (value == 0.0 and token.startswith("-")):
+            raise NumericError(f"forbidden numeric token: {token!r}")
+        return value
+
+    def no_duplicate_config(pairs: list[tuple[str, object]]) -> dict[str, object]:
+        result: dict[str, object] = {}
+        for key, value in pairs:
+            if key in result:
+                raise DuplicateKeyError(f"duplicate property name: {key!r}")
+            result[key] = value
+        return result
+
+    try:
+        value = json.loads(
+            text, object_pairs_hook=no_duplicate_config,
+            parse_int=_parse_int, parse_float=parse_float,
+            parse_constant=_reject_number_token)
+    except (DuplicateKeyError, NumericError):
+        raise
+    except (json.JSONDecodeError, RecursionError) as exc:
+        raise SchemaError("invalid configuration JSON") from exc
+
+    def check(current: object, depth: int = 1) -> None:
+        if depth > 16:
+            raise SchemaError("configuration nesting limit exceeded")
+        if isinstance(current, str):
+            try:
+                size = len(current.encode("utf-8"))
+            except UnicodeEncodeError as exc:
+                raise SchemaError("configuration contains invalid Unicode") from exc
+            if size > 32768:
+                raise SchemaError("configuration string exceeds its limit")
+        elif isinstance(current, dict):
+            for key, item in current.items():
+                try:
+                    size = len(key.encode("utf-8"))
+                except UnicodeEncodeError as exc:
+                    raise SchemaError("configuration contains invalid Unicode") from exc
+                if size > 32768:
+                    raise SchemaError("configuration key exceeds its limit")
+                check(item, depth + 1)
+        elif isinstance(current, list):
+            for item in current:
+                check(item, depth + 1)
+    check(value)
     return value
 
 def _check_strings(value: JsonValue, seen: set[int]) -> None:
