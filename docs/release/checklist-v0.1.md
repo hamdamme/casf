@@ -33,6 +33,20 @@ that every proposed experiment or release requirement is complete.
 The detailed current status of the six Phase 3 gates is in the
 [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Historical entries
 below are retained as dated evidence; they do not override the current table.
+The review candidate's coverage status and outstanding limits are tracked in
+the [test coverage record](test-coverage-status.md).
+
+## Candidate status update, 2026-10-31
+
+The 0.1.0rc1 artifact hashes approved on 2026-10-28 identify the exact
+artifacts in that approval record. Subsequent repository changes under review
+modify parser behavior, network transport, packaging metadata, CLI behavior,
+and documentation. The old artifacts remain preserved as historical
+evidence, but they do not represent this source tree. A candidate containing
+these changes is not yet built or approved. Release readiness for the current
+source is therefore blocked pending focused and full validation, clean wheel
+and source archive installation checks, dependency refresh, and maintainer
+approval of new artifact hashes.
 
 All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
 still subject to separate maintainer approval.
