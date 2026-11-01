@@ -45,11 +45,13 @@ class _BoundedResponseReader:
         line = self._stream.readline(limit if size < 0 else min(size, limit))
         if len(line) > _MAX_RESPONSE_LINE:
             raise http.client.LineTooLong("status or header line")
-        status_line = line.startswith(b"HTTP/")
-        if not self._reading_headers or status_line:
+        if not self._reading_headers:
             self._header_lines = 0
             self._reading_headers = True
-        elif line not in (b"\r\n", b"\n"):
+        elif line in (b"\r\n", b"\n"):
+            # Only a completed header block can precede another status line.
+            self._reading_headers = False
+        else:
             self._header_lines += 1
             if self._header_lines > _MAX_RESPONSE_HEADERS:
                 raise http.client.HTTPException("too many response headers")

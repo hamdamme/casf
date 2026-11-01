@@ -306,6 +306,8 @@ def test_online_rejects_misleading_oversized_content_length():
 
 
 @pytest.mark.parametrize("response", [
+    b"HTTP/1.1 200 OK\r\n" + b"HTTP/X: value\r\n" * 40
+    + b"Content-Length: 2\r\n\r\n{}",
     b"HTTP/1.1 200 " + b"x" * (transport._MAX_RESPONSE_LINE + 1) + b"\r\n\r\n",
     b"HTTP/1.1 200 OK\r\nX-Long: "
     + b"x" * (transport._MAX_RESPONSE_LINE + 1) + b"\r\n\r\n",
@@ -341,3 +343,16 @@ def test_unsafe_url_rejected_before_connection(url, monkeypatch):
     monkeypatch.setattr(online.http.client, "HTTPSConnection", unexpected)
     with pytest.raises(CasfError):
         online.fetch_latest(url, LOG_ID, TOKEN)
+
+
+@pytest.mark.parametrize("interim", [b"", b"HTTP/1.1 100 Continue\r\nX-Interim: ok\r\n\r\n"])
+def test_online_accepts_exact_header_limit(interim):
+    response = (interim + b"HTTP/1.1 200 OK\r\n"
+                + b"X-Field: value\r\n" * 31
+                + b"Content-Length: 2\r\n\r\n{}")
+    with raw_response_server(response) as (port, closed, failures):
+        result, _ = online.fetch_latest(f"http://127.0.0.1:{port}", LOG_ID,
+                                        TOKEN, timeout=1.0)
+        assert result == {}
+        assert closed.wait(timeout=1.0)
+        assert failures == []
