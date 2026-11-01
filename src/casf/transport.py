@@ -15,7 +15,7 @@ import ssl
 import threading
 import time
 from concurrent.futures import Future
-from typing import Any
+from typing import Any, cast
 from urllib.parse import urlsplit
 
 MAX_RESPONSE_BYTES = 64 * 1024
@@ -28,9 +28,45 @@ class ResponseLimitError(ValueError):
     """The peer exceeded the configured response bound."""
 
 
+class _BoundedResponseReader:
+    """Apply per response line and header count limits without globals."""
+
+    def __init__(self, stream: Any) -> None:
+        self._stream = stream
+        self._reading_headers = False
+        self._header_lines = 0
+
+    def start_status(self) -> None:
+        self._reading_headers = False
+        self._header_lines = 0
+
+    def readline(self, size: int = -1) -> bytes:
+        limit = _MAX_RESPONSE_LINE + 1
+        line = self._stream.readline(limit if size < 0 else min(size, limit))
+        if len(line) > _MAX_RESPONSE_LINE:
+            raise http.client.LineTooLong("status or header line")
+        status_line = line.startswith(b"HTTP/")
+        if not self._reading_headers or status_line:
+            self._header_lines = 0
+            self._reading_headers = True
+        elif line not in (b"\r\n", b"\n"):
+            self._header_lines += 1
+            if self._header_lines > _MAX_RESPONSE_HEADERS:
+                raise http.client.HTTPException("too many response headers")
+        return cast(bytes, line)
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._stream, name)
+
+
 class _BoundedResponse(http.client.HTTPResponse):
-    _MAXLINE = _MAX_RESPONSE_LINE
-    _MAXHEADERS = _MAX_RESPONSE_HEADERS
+    def begin(self) -> None:
+        stream: Any = self.fp
+        if not isinstance(stream, _BoundedResponseReader):
+            stream = _BoundedResponseReader(stream)
+            self.fp = cast(Any, stream)
+        stream.start_status()
+        super().begin()
 
 
 def _remaining(deadline: float) -> float:

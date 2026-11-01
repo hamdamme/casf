@@ -88,6 +88,49 @@ def trust_certificate(monkeypatch, certificate):
     monkeypatch.setattr(transport.ssl, "create_default_context", lambda: context)
 
 
+@contextlib.contextmanager
+def raw_response_server(response):
+    """Serve one raw response and observe when the client closes it."""
+    listener = socket.socket()
+    listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    listener.bind(("127.0.0.1", 0))
+    listener.listen(1)
+    closed = threading.Event()
+    failures: list[Exception] = []
+
+    def serve():
+        try:
+            connection, _address = listener.accept()
+            with connection:
+                stream = connection.makefile("rb")
+                stream.readline()
+                headers = {}
+                while line := stream.readline():
+                    if line in (b"\r\n", b"\n"):
+                        break
+                    name, value = line.decode("ascii").split(":", 1)
+                    headers[name.lower()] = value.strip()
+                body_length = int(headers.get("content-length", "0"))
+                if body_length:
+                    stream.read(body_length)
+                connection.sendall(response)
+                connection.settimeout(1.0)
+                if connection.recv(1) == b"":
+                    closed.set()
+                stream.close()
+        except (OSError, ValueError, UnicodeError) as exc:
+            failures.append(exc)
+            closed.set()
+
+    thread = threading.Thread(target=serve, daemon=True)
+    thread.start()
+    try:
+        yield listener.getsockname()[1], closed, failures
+    finally:
+        listener.close()
+        thread.join(timeout=2)
+
+
 def test_https_accepts_trusted_certificate(certificate, monkeypatch):
     trust_certificate(monkeypatch, certificate)
     with server(certificate) as (port, received):
@@ -260,6 +303,28 @@ def test_online_rejects_misleading_oversized_content_length():
             pytest.raises(InconclusiveError):
         online.fetch_latest(f"http://127.0.0.1:{port}", LOG_ID, TOKEN,
                             timeout=2)
+
+
+@pytest.mark.parametrize("response", [
+    b"HTTP/1.1 200 " + b"x" * (transport._MAX_RESPONSE_LINE + 1) + b"\r\n\r\n",
+    b"HTTP/1.1 200 OK\r\nX-Long: "
+    + b"x" * (transport._MAX_RESPONSE_LINE + 1) + b"\r\n\r\n",
+    b"HTTP/1.1 200 OK\r\n"
+    + b"".join(f"X-{index}: value\r\n".encode() for index in range(
+        transport._MAX_RESPONSE_HEADERS + 1))
+    + b"\r\n",
+])
+def test_online_rejects_over_limit_response_headers_within_deadline(response):
+    timeout = 1.0
+    with raw_response_server(response) as (port, closed, failures):
+        started = time.monotonic()
+        with pytest.raises(InconclusiveError):
+            online.fetch_latest(f"http://127.0.0.1:{port}", LOG_ID, TOKEN,
+                                timeout=timeout)
+        elapsed = time.monotonic() - started
+        assert elapsed < timeout
+        assert closed.wait(timeout=1.0)
+        assert failures == []
 
 
 @pytest.mark.parametrize("url", [
