@@ -56,11 +56,12 @@ test and minimum dependency jobs on Python 3.12, 3.13, and 3.14 for revision
 header limit changes in the current PR update; hosted checks for the updated
 revision must pass before release approval.
 
-The existing 0.1.0rc1 publication approval does not cover this changed source
+The earlier approval of exact 0.1.0rc1 candidate artifacts does not cover this changed source
 or these new artifact hashes. A candidate containing these changes has
 passed hosted CI, but still needs the maintainer's separate approval of the
 exact new hashes and notes before publication. Passing CI is validation, not
-release approval. No release has been published.
+release approval. The maintainer has not approved a release or publication;
+explicit approval must be requested before either action. No release has been published.
 
 All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
 still subject to separate maintainer approval.
