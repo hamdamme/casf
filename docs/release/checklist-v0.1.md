@@ -33,6 +33,34 @@ that every proposed experiment or release requirement is complete.
 The detailed current status of the six Phase 3 gates is in the
 [Phase 3 closeout record](phase3-closeout-2026-10-28.md). Historical entries
 below are retained as dated evidence; they do not override the current table.
+The review candidate's coverage status and outstanding limits are tracked in
+the [test coverage record](test-coverage-status.md).
+
+## Candidate status update, 2026-10-31
+
+The 0.1.0rc1 artifact hashes approved on 2026-10-28 identify the exact
+artifacts in that approval record. Subsequent repository changes under review
+modify parser behavior, network transport, packaging metadata, CLI behavior,
+and documentation. The old artifacts remain preserved as historical
+evidence, but they do not represent this source tree. A candidate containing
+these changes has now been built for review and checked locally. Exact wheel
+and source archive hashes, package contents, install checks, lint, typing,
+focused and full test outcomes, dependency advisory query, and H3 follow up
+are recorded in the [review candidate notes](notes-review-candidate-2026-10-31.md)
+and [H3 supplement](../../research/h3-witness-outage-review-2026-10-31.md).
+The wheel and source archive passed clean environment installation checks.
+The lock check passed with the pinned uv version. All 402 tests passed on the
+local macOS Python 3.12 environment. GitHub Actions run 114 passed all six
+test and minimum dependency jobs on Python 3.12, 3.13, and 3.14 for revision
+`ffbbcea56f046be483e5336d83e7337bb950a101`. That run predates the response
+header limit changes in the current PR update; hosted checks for the updated
+revision must pass before release approval.
+
+The existing 0.1.0rc1 publication approval does not cover this changed source
+or these new artifact hashes. A candidate containing these changes has
+passed hosted CI, but still needs the maintainer's separate approval of the
+exact new hashes and notes before publication. Passing CI is validation, not
+release approval. No release has been published.
 
 All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
 still subject to separate maintainer approval.

@@ -22,7 +22,7 @@ from casf.lifecycle import (
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
 from casf.writer import SealedError
-from tests.status import active_status
+from tests.status import active_status, register_active
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -106,7 +106,7 @@ def _final_evidence(tmp_path):
     _append(w, 2)
     wit = Witness(tmp_path / "wit.db", WIT,
                   authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    wit.register_log(_manifest_envelope())
+    register_active(wit, _manifest_envelope(), AUTH)
     cp = w.create_checkpoint(LOG_ID, final=True)
     _env, from_seq, to_seq = w.pending_checkpoint(LOG_ID)
     records = list(w.records(LOG_ID))[from_seq - 1:to_seq]
@@ -140,7 +140,7 @@ def test_rotation_rejects_nonfinal_checkpoint(tmp_path):
     _env, from_seq, to_seq = w.pending_checkpoint(LOG_ID)
     wit = Witness(tmp_path / "wit.db", WIT,
                   authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    wit.register_log(_manifest_envelope())
+    register_active(wit, _manifest_envelope(), AUTH)
     receipt = wit.submit(LOG_ID, cp,
                          list(w.records(LOG_ID))[from_seq - 1:to_seq])
     with pytest.raises(CasfError):
@@ -220,6 +220,18 @@ def test_status_book_retains_largest_serial(tmp_path):
     assert book.observed_serial(mh) == 2
     book2 = StatusBook(tmp_path / "status.json")  # retained across restart
     assert book2.observed_serial(mh) == 2
+
+
+@pytest.mark.parametrize("raw", [
+    '{"' + "a" * 64 + '":{"serial":1,"serial":2,"status":"active"}}',
+    '{"' + "a" * 64 + '":{"serial":-0,"status":"active"}}',
+])
+def test_status_book_rejects_non_strict_json_without_replacing_file(tmp_path, raw):
+    path = tmp_path / "status.json"
+    path.write_text(raw)
+    with pytest.raises(CasfError, match="status book is corrupt"):
+        StatusBook(path)
+    assert path.read_text() == raw
 
 def test_revocation_is_terminal(tmp_path):
     book = StatusBook(tmp_path / "status.json")

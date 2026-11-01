@@ -1,0 +1,141 @@
+{
+  "captured_at_utc": "2026-10-31T05:56:49.269277+00:00",
+  "commit": "b95348b77b73c71ac77dad8e99a191284e390b2e",
+  "cpu": "arm",
+  "cryptography": "50.0.2",
+  "exact_command": ".venv/bin/python -m benchmarks.h3_witness_outage --manifest <frozen-manifest> --output <new-directory>",
+  "filesystem_type": "/",
+  "git_status": "## review/repository-issues-2026-10...origin/main [ahead 2]\n",
+  "logical_cpu_count": 8,
+  "machine": "arm64",
+  "manifest_sha256": "9cda30cdbc1ca38c73b0aabb168a3ae4c2294e97bde72dbcdd1120cf19cef730",
+  "memory": "17179869184",
+  "os": "macOS-15.6.1-arm64-arm-64bit",
+  "python": "3.12.11",
+  "run_order": [
+    {
+      "configuration": "healthy",
+      "position": 0,
+      "seed": 81007
+    },
+    {
+      "configuration": "healthy",
+      "position": 1,
+      "seed": 81001
+    },
+    {
+      "configuration": "outage",
+      "position": 2,
+      "seed": 81005
+    },
+    {
+      "configuration": "outage",
+      "position": 3,
+      "seed": 81002
+    },
+    {
+      "configuration": "healthy",
+      "position": 4,
+      "seed": 81005
+    },
+    {
+      "configuration": "outage",
+      "position": 5,
+      "seed": 81007
+    },
+    {
+      "configuration": "outage",
+      "position": 6,
+      "seed": 81003
+    },
+    {
+      "configuration": "outage",
+      "position": 7,
+      "seed": 81008
+    },
+    {
+      "configuration": "outage",
+      "position": 8,
+      "seed": 81001
+    },
+    {
+      "configuration": "healthy",
+      "position": 9,
+      "seed": 81004
+    },
+    {
+      "configuration": "outage",
+      "position": 10,
+      "seed": 81010
+    },
+    {
+      "configuration": "healthy",
+      "position": 11,
+      "seed": 81006
+    },
+    {
+      "configuration": "healthy",
+      "position": 12,
+      "seed": 81009
+    },
+    {
+      "configuration": "healthy",
+      "position": 13,
+      "seed": 81002
+    },
+    {
+      "configuration": "healthy",
+      "position": 14,
+      "seed": 81003
+    },
+    {
+      "configuration": "healthy",
+      "position": 15,
+      "seed": 81010
+    },
+    {
+      "configuration": "outage",
+      "position": 16,
+      "seed": 81006
+    },
+    {
+      "configuration": "outage",
+      "position": 17,
+      "seed": 81004
+    },
+    {
+      "configuration": "healthy",
+      "position": 18,
+      "seed": 81008
+    },
+    {
+      "configuration": "outage",
+      "position": 19,
+      "seed": 81009
+    }
+  ],
+  "sqlite": "3.54.0",
+  "storage": {
+    "free_bytes": 19107454976,
+    "total_bytes": 245107195904,
+    "used_bytes": 225999740928
+  },
+  "tested_source_sha256": {
+    "benchmarks/h3-witness-outage.v1.json": "9cda30cdbc1ca38c73b0aabb168a3ae4c2294e97bde72dbcdd1120cf19cef730",
+    "benchmarks/h3_witness_outage.py": "3fa08e435c9d9f909985a539e20bed7ec9ea3df2d14fc36c4eda9cbe1c2bec27",
+    "benchmarks/workload.py": "4f2e92d962f5bb125004db2139669e243d6372801315aa3998524aaac3dd4203",
+    "src/casf/canonical/jcs.py": "e7645cee473e1bdb0bfe3221fa7636d9383b0906f6a8dd38bd19a55c236a3a3c",
+    "src/casf/cli/__init__.py": "2d60b31b59ae4e7b9cbaf8b026077cc5d447825a816b87aea1e0d8ce62aa5cc9",
+    "src/casf/lifecycle.py": "19b9dc51c34a1d35e10fc77b1f980a02cde2e11220743d005cfb375c6108f036",
+    "src/casf/online.py": "aba233d9e80a7906492efda43c8988faa4a26f07a6cda50e3e6c588d99981475",
+    "src/casf/transport.py": "54ec7d92065b3a3daa509744d6dd2ef43ca16abf91118fe702070bbf1a2af182",
+    "src/casf/verifier/__init__.py": "a7ce531e1a8c2a9a6b509f939e8eddfe6cc45e629b0b2b8d75fb2585baab598d",
+    "src/casf/witness/__init__.py": "489936f9655f58f505bfe388ee65265347d970420276d184a50d095c6acf1b0f",
+    "src/casf/witness/http.py": "ab430cdd801b512598006afea59edbc3a9a60cf0511c9f83628051c0b15e3c0b",
+    "src/casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+    "src/casf/writer/__init__.py": "c5874cff61a132fb9f0694299dee76d1f4d88a3a00d0c5fe9b610c5f257182c5",
+    "tests/test_h3_witness_outage.py": "3091d9f051a4aaca944f6eecf0e21f34ec3d55567112c09c9159920c34c71a8c"
+  },
+  "tracked_worktree_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "uv_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe"
+}

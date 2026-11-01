@@ -230,7 +230,9 @@ def test_missing_wal_copy_is_incomplete_against_external_anchor(tmp_path):
         con.execute('PRAGMA wal_checkpoint(TRUNCATE)')  # baseline contains the manifest
         _append(writer, 1)
         manifest = writer.manifest_envelope(LOG_ID)
-        witness.register_log(manifest)
+        from tests.status import register_active
+        from tests.unit.test_writer import AUTH
+        register_active(witness, manifest, AUTH)
         cp = writer.create_checkpoint(LOG_ID)
         receipt = witness.submit(LOG_ID, cp, list(writer.records(LOG_ID)))
         assert db.with_name('live.db-wal').stat().st_size > 0

@@ -51,6 +51,11 @@ CREATE TABLE IF NOT EXISTS w_state(
     receipt_hash TEXT NOT NULL,
     sealed INTEGER NOT NULL DEFAULT 0
 );
+CREATE TABLE IF NOT EXISTS w_status(
+    manifest_hash TEXT PRIMARY KEY,
+    serial INTEGER NOT NULL CHECK(serial >= 1),
+    status TEXT NOT NULL CHECK(status IN ('active', 'revoked'))
+);
 CREATE TABLE IF NOT EXISTS w_checkpoints(
     log_id TEXT NOT NULL,
     idx INTEGER NOT NULL,
@@ -140,18 +145,23 @@ class Witness:
 
     # ------------------------------------------------------ registration
 
-    def register_log(self, manifest_envelope: JsonObject) -> str:
+    def register_log(self, manifest_envelope: JsonObject,
+                     initial_status: JsonObject | None = None) -> str:
         """Register a preapproved manifest (SPEC §10, §13).
 
         This is the local administrator command; remote callers
         cannot register logs. The authority signature is verified
         against the configured pins and the manifest must name this
-        witness.
+        witness. Supplying the active serial 1 status statement stores
+        manifest, witness head, and status in one transaction. Omitting it
+        leaves the log unable to accept new checkpoints until status is
+        installed.
         """
         with self._lock:
-            return self._register_log(manifest_envelope)
+            return self._register_log(manifest_envelope, initial_status)
 
-    def _register_log(self, manifest_envelope: JsonObject) -> str:
+    def _register_log(self, manifest_envelope: JsonObject,
+                      initial_status: JsonObject | None) -> str:
         if set(manifest_envelope) != {"body", "manifest_hash", "signature"}:
             raise SchemaError("manifest envelope must be exactly "
                               "body, manifest_hash, signature")
@@ -183,6 +193,28 @@ class Witness:
         log_pub = crypto.b64url_decode(log_key_value)
         if crypto.key_id(log_pub) != body["log_key_id"]:
             raise CasfError("manifest log key id does not match its key")
+        status_values: tuple[int, str] | None = None
+        if initial_status is not None:
+            if set(initial_status) != {"body", "signature"}:
+                raise SchemaError("status envelope must be exactly body, signature")
+            status_body = initial_status["body"]
+            status_signature = initial_status["signature"]
+            if not isinstance(status_body, dict) or not isinstance(status_signature, str):
+                raise SchemaError("status envelope field types are wrong")
+            validate_protocol_body("status", status_body)
+            status_issuer = status_body["issuer_id"]
+            status_authority = self._authority_keys.get(status_issuer) \
+                if isinstance(status_issuer, str) else None
+            if status_authority is None:
+                raise CasfError("initial status issuer is not provisioned")
+            if (status_issuer != issuer
+                    or status_body["manifest_hash"] != manifest_hash
+                    or status_body["serial"] != 1
+                    or status_body["status"] != "active"):
+                raise SchemaError(
+                    "initial witness status must be active serial 1 for this manifest")
+            crypto.verify_status(status_authority, status_body, status_signature)
+            status_values = (1, "active")
         log_id = body["log_id"]
         if not isinstance(log_id, str):
             raise SchemaError("log_id: expected string")
@@ -196,11 +228,71 @@ class Witness:
                 "INSERT INTO w_state VALUES (?, 0, ?, -1, ?, ?, 0)",
                 (log_id, crypto.genesis_hash(manifest_hash),
                  ZERO_HASH, ZERO_HASH))
+            if status_values is not None:
+                con.execute(
+                    "INSERT INTO w_status(manifest_hash, serial, status) "
+                    "VALUES (?, ?, ?)",
+                    (manifest_hash, status_values[0], status_values[1]))
             con.commit()
         except sqlite3.IntegrityError as e:
             con.rollback()
             raise CasfError("log already registered") from e
         return log_id
+
+    def install_status(self, log_id: str,
+                       status_envelope: JsonObject) -> bool:
+        """Install a verified authority status statement for a registered log.
+
+        The first statement must be active with serial 1. Later statements
+        must advance the serial. Revocation is terminal. Unknown status blocks
+        new checkpoint acceptance until this method installs the initial one.
+        """
+        with self._lock:
+            manifest, manifest_hash, _log_pub = self._manifest(log_id)
+            if set(status_envelope) != {"body", "signature"}:
+                raise SchemaError("status envelope must be exactly body, signature")
+            body = status_envelope["body"]
+            signature = status_envelope["signature"]
+            if not isinstance(body, dict) or not isinstance(signature, str):
+                raise SchemaError("status envelope field types are wrong")
+            validate_protocol_body("status", body)
+            issuer = body["issuer_id"]
+            authority = self._authority_keys.get(issuer) \
+                if isinstance(issuer, str) else None
+            if authority is None:
+                raise CasfError("status issuer is not provisioned")
+            if body["manifest_hash"] != manifest_hash:
+                raise CasfError("status names a different manifest")
+            crypto.verify_status(authority, body, signature)
+            if manifest["issuer_id"] != issuer:
+                raise CasfError("status issuer differs from manifest authority")
+            serial, status = body["serial"], body["status"]
+            con = self._db.connection
+            con.execute("BEGIN IMMEDIATE")
+            try:
+                previous = con.execute(
+                    "SELECT serial, status FROM w_status WHERE manifest_hash = ?",
+                    (manifest_hash,)).fetchone()
+                if previous is None:
+                    if serial != 1 or status != "active":
+                        raise CasfError(
+                            "initial witness status must be active serial 1")
+                else:
+                    old_serial, old_status = previous
+                    if old_status == "revoked":
+                        raise CasfError("revocation is terminal")
+                    if serial <= old_serial:
+                        raise CasfError("status serial must increase")
+                con.execute(
+                    "INSERT INTO w_status(manifest_hash, serial, status) "
+                    "VALUES (?, ?, ?) ON CONFLICT(manifest_hash) DO UPDATE "
+                    "SET serial=excluded.serial, status=excluded.status",
+                    (manifest_hash, serial, status))
+                con.commit()
+            except BaseException:
+                con.rollback()
+                raise
+            return True
 
     def _manifest(self, log_id: str) -> tuple[JsonObject, str, bytes]:
         row = self._db.connection.execute(
@@ -268,6 +360,15 @@ class Witness:
                 if not isinstance(receipt, dict):
                     raise CasfError("stored receipt is corrupt")
                 return receipt, False
+            status_row = con.execute(
+                "SELECT status FROM w_status WHERE manifest_hash = ?",
+                (manifest_hash,)).fetchone()
+            if status_row is None:
+                raise CasfError(
+                    "witness status is unknown; install active serial 1")
+            if status_row[0] == "revoked":
+                raise CasfError(
+                    "manifest is revoked; new checkpoints are refused")
             if sealed:
                 raise CasfError(
                     "log is sealed; only receipt retrieval is accepted")

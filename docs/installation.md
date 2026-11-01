@@ -1,16 +1,20 @@
 # Install and use CASF
 
-CASF `0.1.0rc1` is an experimental candidate and has not been published to a
-package index. The candidate wheel and source archive are being checked in
-[PR 21](release/phase3-closeout-2026-10-28.md). Do not use `pip install casf`
-until a release is announced. After publication, the release notice will give
-the exact install command and artifact hashes.
+CASF `0.1.0rc1` was an experimental candidate and has not been published to a
+package index. Its previously approved artifacts predate the current source
+changes and are no longer a candidate for these changes. A new wheel and
+source archive must be built, checked, and separately approved before any
+publication. Do not use `pip install casf` until a release is announced.
 
 ## Install from a checked candidate wheel
 
-Use CPython 3.12, 3.13, or 3.14 on macOS arm64 or Ubuntu 24.04 x86_64. Those
-are the platforms and versions covered by the current release checks. Other
-systems and processor types have not been validated for this candidate.
+The recorded checks cover CPython 3.12, 3.13, and 3.14 on macOS arm64 through
+manual local validation, and those Python versions on GitHub hosted Ubuntu
+x86_64 CI runners. The workflow uses `ubuntu-latest`, so it does not pin a
+specific Ubuntu point release. macOS is not covered by GitHub Actions. Other
+operating systems and processor types have not been validated for this
+candidate. These checks describe evidence scope, not a broad compatibility
+guarantee.
 
 Download the wheel supplied with the approved release, then create a separate
 environment and install that file. Replace the example filename with the
@@ -78,7 +82,8 @@ lost or damaged, restore a trusted copy before relying on rollback checks.
 See the [verification guide](verification.md) for required status evidence,
 error results, input limits, and recovery behavior. The CLI help lists all
 commands; the [witness server guide](witness-server.md) describes the server
-API and operating limits.
+API and operating limits. The [local administration guide](administration.md)
+explains manifest, trust, status, registration, and epoch commands.
 
 The release rehearsal uses temporary synthetic evidence to check the
 installed program. It is a software check, not a research result or the

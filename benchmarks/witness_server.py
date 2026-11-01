@@ -36,7 +36,9 @@ def build_server(host: str, port: int, *, token: str, seeds: list[int],
                              authority_keys=_authority_keys())
     for i in range(runs):
         log_id = workload.run_log_id(seeds[i % len(seeds)], i)
-        service.witness.register_log(workload.manifest(log_id))
+        manifest = workload.manifest(log_id)
+        service.witness.register_log(
+            manifest, workload.active_status(str(manifest["manifest_hash"])))
     server = make_server(service, host, port)
     return service, server
 

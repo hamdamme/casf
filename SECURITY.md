@@ -3,14 +3,16 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.x (pre-1.0) | Best effort, single maintainer |
+| 0.x (pre-1.0) | No published release is currently supported; the 0.1.0rc1 candidate is unpublished and has no support guarantee |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 
 ## Reporting a vulnerability
 **Private channel (preferred):** GitHub private vulnerability reporting
 on this repository (enabled), or email the maintainer address listed
-in the repository profile. A test report submission by the maintainer
-is pending before any published release (decision D07).
+in the repository profile. Private reporting was enabled and a real report
+was received through the channel during release preparation. This confirms
+delivery for that report; it is not an independent security audit and does
+not establish a response service level.
 
 Please include: affected version/commit, configuration, minimal
 **synthetic** reproduction evidence, and impact assessment. Do **not**

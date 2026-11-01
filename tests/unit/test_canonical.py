@@ -2,7 +2,7 @@
 
 import pytest
 
-from casf.canonical.jcs import canonicalize, parse
+from casf.canonical.jcs import canonicalize, parse, parse_config
 from casf.errors import DuplicateKeyError, LimitError, NumericError, SchemaError, UnicodeError_
 
 # ---------------- T01: reject before signing/verification ----------------
@@ -10,6 +10,15 @@ from casf.errors import DuplicateKeyError, LimitError, NumericError, SchemaError
 def test_reject_duplicate_keys():
     with pytest.raises(DuplicateKeyError):
         parse('{"a":1,"a":2}')
+
+
+def test_configuration_json_allows_finite_timeout_but_rejects_ambiguity():
+    assert parse_config('{"timeout":0.2}') == {"timeout": 0.2}
+    for raw in ('{"a":1,"a":2}', '{"timeout":-0.0}',
+                '{"timeout":1e999}', '{"timeout":NaN}',
+                '{"value":"\\ud800"}'):
+        with pytest.raises((DuplicateKeyError, NumericError, SchemaError)):
+            parse_config(raw)
 
 def test_reject_float():
     with pytest.raises(NumericError):

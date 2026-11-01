@@ -215,7 +215,9 @@ def test_checkpoint_cycle_retries_transient_timeout(tmp_path):
     witness = Witness(tmp_path / "wit.db", workload.seeded_key("witness"),
                       authority_keys={crypto.key_id(auth_pub): auth_pub})
     writer.create_log(workload.manifest(workload.LOG_ID))
-    witness.register_log(workload.manifest(workload.LOG_ID))
+    from tests.status import register_active
+    manifest = workload.manifest(workload.LOG_ID)
+    register_active(witness, manifest, workload.seeded_key("authority"))
     for event in workload.generate(7, 5, 512):
         writer.append(workload.LOG_ID, **event)
 

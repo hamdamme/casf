@@ -7,19 +7,22 @@ I/O or internal error. Secrets never appear in output (T17) and
 malicious input is rejected inside bounded resources (T16).
 """
 
+import io
 import json
 import os
 import stat
 import threading
 
 import pytest
+from cryptography.hazmat.primitives import serialization
 
 from casf import crypto
 from casf.canonical.jcs import canonicalize
 from casf.cli import main
 from casf.keys import load_key
+from casf.storage import Database
 from casf.witness.http import WitnessService, make_server
-from tests.status import active_status
+from tests.status import active_status, register_active
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -105,9 +108,119 @@ def test_key_generate_and_refuse_overwrite(tmp_path, capsys):
     out = capsys.readouterr()
     assert PASS.decode() not in out.out + out.err  # T17
 
+
+def test_init_rejects_duplicate_json_before_opening_store(tmp_path, capsys):
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text('{"body":{},"body":{}}')
+    db = tmp_path / "log.db"
+    assert main(["init", "--manifest", str(manifest), "--db", str(db),
+                 "--key", str(tmp_path / "unused.key")]) == 2
+    assert not db.exists()
+    assert "invalid CASF JSON" in capsys.readouterr().err
+
+
+def test_admin_manifest_trust_and_status_commands(tmp_path, capsys):
+    auth = tmp_path / "authority.pem"
+    log = tmp_path / "log.pem"
+    witness = tmp_path / "witness.pem"
+    for role, path in (("authority", auth), ("log", log),
+                       ("witness", witness)):
+        assert main(["key", "generate", "--role", role,
+                     "--out", str(path)]) == 0
+        capsys.readouterr()
+    for role, path in (("authority", auth), ("log", log),
+                       ("witness", witness)):
+        key = load_key(path, passphrase=PASS)
+        public_path = tmp_path / f"{role}.pub.pem"
+        public_path.write_bytes(key.public_key().public_bytes(
+            serialization.Encoding.PEM,
+            serialization.PublicFormat.SubjectPublicKeyInfo))
+        if role == "authority":
+            authority_pub_path = public_path
+        elif role == "log":
+            log_pub_path = public_path
+        else:
+            witness_pub_path = public_path
+
+    manifest_path = tmp_path / "manifest.json"
+    assert main(["admin", "manifest", "--authority-key", str(auth),
+                 "--log-public-key", str(log_pub_path),
+                 "--witness-public-key", str(witness_pub_path),
+                 "--out", str(manifest_path)]) == 0
+    manifest = json.loads(manifest_path.read_text())
+    capsys.readouterr()
+    auth_key = load_key(auth, passphrase=PASS)
+    crypto.verify_manifest(crypto.public_key_raw(auth_key), manifest["body"],
+                           manifest["signature"])
+
+    trust_path = tmp_path / "trust.json"
+    assert main(["admin", "trust", "--manifest", str(manifest_path),
+                 "--authority-public-key", str(authority_pub_path),
+                 "--mode", "anchored", "--out", str(trust_path)]) == 0
+    trust = json.loads(trust_path.read_text())
+    assert manifest["body"]["log_id"] in trust["logs"]
+    capsys.readouterr()
+
+    status_path = tmp_path / "status.json"
+    assert main(["admin", "status", "sign", "--manifest", str(manifest_path),
+                 "--authority-key", str(auth), "--serial", "1",
+                 "--status", "active", "--reason", "initial setup",
+                 "--out", str(status_path)]) == 0
+    status = json.loads(status_path.read_text())
+    crypto.verify_status(crypto.public_key_raw(auth_key), status["body"],
+                         status["signature"])
+    assert stat.S_IMODE(os.stat(status_path).st_mode) == 0o600
+    capsys.readouterr()
+
+    witness_db = tmp_path / "witness.db"
+    assert main(["admin", "register", "--manifest", str(manifest_path),
+                 "--status-file", str(status_path),
+                 "--authority-public-key", str(authority_pub_path),
+                 "--witness-key", str(witness), "--db", str(witness_db)]) == 0
+    capsys.readouterr()
+    revoked_path = tmp_path / "revoked.json"
+    assert main(["admin", "status", "sign", "--manifest", str(manifest_path),
+                 "--authority-key", str(auth), "--serial", "2",
+                 "--status", "revoked", "--reason", "test revocation",
+                 "--out", str(revoked_path)]) == 0
+    capsys.readouterr()
+    assert main(["admin", "status", "install", "--status-file",
+                 str(revoked_path), "--log-id", manifest["body"]["log_id"],
+                 "--authority-public-key", str(authority_pub_path),
+                 "--witness-key", str(witness), "--db", str(witness_db)]) == 0
+    capsys.readouterr()
+
+
+def test_append_duplicate_json_from_stdin_rejected_before_signing(
+        tmp_path, capsys, monkeypatch):
+    key = _key(tmp_path, capsys)
+    env = _manifest_for(key)
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(env))
+    db = tmp_path / "log.db"
+    assert main(["init", "--manifest", str(manifest_path), "--db", str(db),
+                 "--key", str(key)]) == 0
+    capsys.readouterr()
+    before = Database(db)
+    try:
+        count_before = before.connection.execute("SELECT COUNT(*) FROM records").fetchone()[0]
+    finally:
+        before.close()
+    monkeypatch.setattr("sys.stdin", io.TextIOWrapper(io.BytesIO(
+        b'{"event_id":"one","event_id":"two","actor":"a",'
+        b'"event_type":"x","payload":{},"attributes":{}}')))
+    assert main(["append", "--db", str(db), "--key", str(key),
+                 "--event", "-"]) == 2
+    assert "invalid CASF JSON" in capsys.readouterr().err
+    after = Database(db)
+    try:
+        assert after.connection.execute("SELECT COUNT(*) FROM records").fetchone()[0] == count_before
+    finally:
+        after.close()
+
 # ---------------- happy path through the commands ----------------
 
-def test_full_command_flow(tmp_path, capsys):
+def test_full_command_flow(tmp_path, capsys, monkeypatch):
     key = _key(tmp_path, capsys)
     env = _manifest_for(key)
     manifest = tmp_path / "manifest.json"
@@ -121,8 +234,8 @@ def test_full_command_flow(tmp_path, capsys):
     assert main(["checkpoint", "--db", str(db), "--key", str(key)]) == 0
     # second call reuses the pending checkpoint, no new one is invented
     bundle = tmp_path / "bundle"
-    assert main(["export", "--db", str(db), "--key", str(key),
-                 "--out", str(bundle)]) == 0
+    monkeypatch.delenv("CASF_PASSPHRASE")
+    assert main(["export", "--db", str(db), "--out", str(bundle)]) == 0
     (bundle / "status.jsonl").write_bytes(
         canonicalize(active_status(AUTH, env["manifest_hash"])) + b"\n")
     trust = _trust(tmp_path, env)
@@ -134,12 +247,38 @@ def test_full_command_flow(tmp_path, capsys):
     assert main(["status", "--db", str(db)]) == 0
     assert "count" in capsys.readouterr().out
 
+
+def test_append_reads_strict_json_from_stdin(tmp_path, capsys, monkeypatch):
+    key = _key(tmp_path, capsys)
+    env = _manifest_for(key)
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps(env))
+    db = tmp_path / "stdin.db"
+    assert main(["init", "--manifest", str(manifest), "--db", str(db),
+                 "--key", str(key)]) == 0
+    capsys.readouterr()
+    raw = json.dumps({
+        "event_id": "123e4567-e89b-42d3-a456-426600000011",
+        "actor": "alice", "event_type": "login", "payload": {},
+        "attributes": {},
+    }).encode()
+    monkeypatch.setattr("sys.stdin", io.TextIOWrapper(io.BytesIO(raw)))
+    assert main(["append", "--db", str(db), "--key", str(key),
+                 "--event", "-"]) == 0
+    check = Database(db)
+    try:
+        assert check.connection.execute(
+            "SELECT COUNT(*) FROM records WHERE log_id = ?", (LOG_ID,)
+        ).fetchone() == (1,)
+    finally:
+        check.close()
+
 def test_witness_submit_then_status(tmp_path, capsys):
     key = _key(tmp_path, capsys)
     env = _manifest_for(key)
     svc = WitnessService(tmp_path / "wit.db", WIT, token=TOKEN,
                          authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    svc.witness.register_log(env)
+    register_active(svc.witness, env, AUTH)
     server = make_server(svc, "127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -174,7 +313,7 @@ def _exported(tmp_path, capsys, records=2):
         _append(w, n)
     wit = Witness(tmp_path / "wit.db", WIT,
                   authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    wit.register_log(_manifest_envelope())
+    register_active(wit, _manifest_envelope(), AUTH)
     cp = w.create_checkpoint(LOG_ID)  # anchor the full history
     _, from_seq, to_seq = w.pending_checkpoint(LOG_ID)
     extension = list(w.records(LOG_ID))[from_seq - 1:to_seq]
@@ -300,7 +439,7 @@ def test_token_never_printed(tmp_path, capsys, monkeypatch):
     env = _manifest_for(key)
     svc = WitnessService(tmp_path / "wit.db", WIT, token=TOKEN,
                          authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    svc.witness.register_log(env)
+    register_active(svc.witness, env, AUTH)
     server = make_server(svc, "127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()

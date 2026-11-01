@@ -24,7 +24,7 @@ from casf.verifier import (
     verify,
 )
 from casf.witness.http import WitnessService, make_server
-from tests.status import active_status
+from tests.status import active_status, register_active
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -49,7 +49,7 @@ def _pins(mh):
 def _service(tmp_path):
     svc = WitnessService(tmp_path / "wit.db", WIT, token=TOKEN,
                          authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    svc.witness.register_log(_manifest_envelope())
+    register_active(svc.witness, _manifest_envelope(), AUTH)
     server = make_server(svc, "127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()

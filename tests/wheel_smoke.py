@@ -18,6 +18,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--witness", action="store_true")
     args = parser.parse_args()
+    package_init = Path(__import__("casf").__file__).resolve()
+    assert package_init.with_name("py.typed").is_file()
     with tempfile.TemporaryDirectory() as directory:
         service = WitnessService(Path(directory) / "smoke.db",
                                  Ed25519PrivateKey.from_private_bytes(b"s" * 32),

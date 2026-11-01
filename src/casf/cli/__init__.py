@@ -11,20 +11,30 @@ output ever prints a private key, passphrase or token (T17).
 
 import argparse
 import json
+import math
 import os
 import sys
+import uuid
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
 
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
 from casf import crypto
 from casf.bundle import BundleReadError, StreamingBundle, open_bundle
+from casf.canonical.jcs import parse, parse_config
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError
 from casf.keys import generate_key, load_key
+from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
+from casf.model.schema import validate_protocol_body
 from casf.online import query_latest
 from casf.storage import Database
 from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
+from casf.witness import Witness
 from casf.writer import Writer
 
 __all__ = ["main"]
@@ -64,14 +74,23 @@ def _sole_log_id(db_path: str) -> str:
         db.close()
 
 
-def _read_json_file(path: str) -> JsonObject:
+def _read_json_file(path: str, *, configuration: bool = False) -> JsonObject:
     try:
-        data = json.loads(Path(path).read_text())
-    except (OSError, ValueError) as e:
+        if path == "-":
+            raw = sys.stdin.buffer.read(1024 * 1024 + 1)
+        else:
+            with Path(path).open("rb") as stream:
+                raw = stream.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise SchemaError("JSON input exceeds the 1 MiB limit")
+        data = parse_config(raw) if configuration else parse(raw)
+    except OSError as e:
         raise SchemaError(f"cannot read JSON from {path}") from e
+    except CasfError as e:
+        raise SchemaError(f"invalid CASF JSON in {path}") from e
     if not isinstance(data, dict):
         raise SchemaError(f"expected a JSON object in {path}")
-    return data
+    return cast(JsonObject, data)
 
 
 def _print(args: argparse.Namespace, obj: JsonObject, human: str) -> None:
@@ -86,6 +105,215 @@ def _body_of(envelope: JsonObject) -> JsonObject:
     if not isinstance(body, dict):
         raise SchemaError("envelope body is missing or not an object")
     return body
+
+
+def _validate_initial_status(manifest: JsonObject,
+                             status: JsonObject,
+                             authority_pub: bytes) -> None:
+    body = _body_of(manifest)
+    status_body = _body_of(status)
+    signature = status.get("signature")
+    if not isinstance(signature, str):
+        raise SchemaError("status signature is invalid")
+    validate_protocol_body("status", status_body)
+    if (body.get("issuer_id") != crypto.key_id(authority_pub)
+            or status_body.get("issuer_id") != body.get("issuer_id")
+            or status_body.get("manifest_hash") != manifest.get("manifest_hash")
+            or status_body.get("serial") != 1
+            or status_body.get("status") != "active"):
+        raise SchemaError("initial status must be active serial 1 for this manifest")
+    crypto.verify_status(authority_pub, status_body, signature)
+
+
+def _public_key(path: str) -> bytes:
+    try:
+        key = serialization.load_pem_public_key(Path(path).read_bytes())
+    except (OSError, ValueError, TypeError) as exc:
+        raise SchemaError(f"cannot read Ed25519 public key from {path}") from exc
+    if not isinstance(key, Ed25519PublicKey):
+        raise SchemaError("public key must be Ed25519 PEM")
+    return key.public_bytes(serialization.Encoding.Raw,
+                            serialization.PublicFormat.Raw)
+
+
+def _write_json_new(path: str, obj: object) -> None:
+    """Create a private, non-overwriting JSON file."""
+    target = Path(path)
+    raw = json.dumps(obj, sort_keys=True, separators=(",", ":"),
+                     allow_nan=False).encode("utf-8") + b"\n"
+    try:
+        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as exc:
+        raise CasfError("output already exists; overwrite refused") from exc
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except OSError:
+        target.unlink(missing_ok=True)
+        raise
+
+
+def _cmd_admin_manifest(args: argparse.Namespace) -> int:
+    authority = load_key(args.authority_key,
+                         passphrase=_secret(args.passphrase_env))
+    log_pub = _public_key(args.log_public_key)
+    witness_pub = _public_key(args.witness_public_key)
+    body: JsonObject = {
+        "version": 1, "type": "manifest", "log_id": str(uuid.uuid4()),
+        "issuer_id": crypto.key_id(crypto.public_key_raw(authority)),
+        "log_key_id": crypto.key_id(log_pub),
+        "log_public_key": crypto.b64url_encode(log_pub),
+        "witness_id": crypto.key_id(witness_pub),
+        "witness_public_key": crypto.b64url_encode(witness_pub),
+        "created_at": datetime.now(UTC).isoformat(timespec="microseconds").replace(
+            "+00:00", "Z"),
+        "predecessor": None,
+    }
+    from casf.model.schema import validate_protocol_body
+    validate_protocol_body("manifest", body)
+    envelope: JsonObject = {
+        "body": body,
+        "manifest_hash": crypto.digest_manifest(body),
+        "signature": crypto.sign_manifest(authority, body),
+    }
+    _write_json_new(args.out, envelope)
+    _print(args, {"manifest": args.out, "log_id": body["log_id"]},
+           f"created signed manifest for log {body['log_id']}")
+    return 0
+
+
+def _cmd_admin_status(args: argparse.Namespace) -> int:
+    authority = load_key(args.authority_key,
+                         passphrase=_secret(args.passphrase_env))
+    manifest = _read_json_file(args.manifest)
+    body = _body_of(manifest)
+    authority_pub = crypto.public_key_raw(authority)
+    if body.get("issuer_id") != crypto.key_id(authority_pub):
+        raise SchemaError("authority key does not match the manifest issuer")
+    crypto.verify_manifest(authority_pub, body, str(manifest.get("signature", "")))
+    if crypto.digest_manifest(body) != manifest.get("manifest_hash"):
+        raise SchemaError("manifest hash does not match the body")
+    statement = sign_status(
+        authority, serial=args.serial, manifest_hash=str(manifest["manifest_hash"]),
+        status=args.status, issued_at=datetime.now(UTC).isoformat(
+            timespec="microseconds").replace("+00:00", "Z"), reason=args.reason)
+    _write_json_new(args.out, statement)
+    _print(args, {"status": args.status, "serial": args.serial, "out": args.out},
+           f"created signed {args.status} status statement, serial {args.serial}")
+    return 0
+
+
+def _cmd_admin_status_install(args: argparse.Namespace) -> int:
+    witness_key = load_key(args.witness_key,
+                           passphrase=_secret(args.passphrase_env))
+    status = _read_json_file(args.status_file)
+    authority_pub = _public_key(args.authority_public_key)
+    witness = Witness(args.db, witness_key,
+                      authority_keys={crypto.key_id(authority_pub): authority_pub})
+    try:
+        witness.install_status(args.log_id, status)
+    finally:
+        witness.close()
+    _print(args, {"installed": True, "log_id": args.log_id},
+           f"installed signed status for log {args.log_id}")
+    return 0
+
+
+def _cmd_admin_trust(args: argparse.Namespace) -> int:
+    manifest = _read_json_file(args.manifest)
+    body = _body_of(manifest)
+    authority_pub = _public_key(args.authority_public_key)
+    issuer = crypto.key_id(authority_pub)
+    if body.get("issuer_id") != issuer:
+        raise SchemaError("authority public key does not match the manifest issuer")
+    crypto.verify_manifest(authority_pub, body, str(manifest.get("signature", "")))
+    if crypto.digest_manifest(body) != manifest.get("manifest_hash"):
+        raise SchemaError("manifest hash does not match the body")
+    log_id = body.get("log_id")
+    witness_id = body.get("witness_id")
+    if not isinstance(log_id, str) or not isinstance(witness_id, str):
+        raise SchemaError("manifest identity fields are invalid")
+    trust: dict[str, object] = {
+        "version": 1,
+        "authorities": {issuer: crypto.b64url_encode(authority_pub)},
+        "logs": {log_id: {
+            "manifest_hash": manifest["manifest_hash"],
+            "witness_id": witness_id,
+            "witness_url": args.witness_url,
+            "minimum_status_serial": 1,
+        }},
+        "policy": {
+            "mode": args.mode, "allow_unwitnessed": args.allow_unwitnessed,
+            "query_timeout_seconds": args.timeout,
+            "max_chain_steps": args.max_chain_steps,
+        },
+    }
+    _write_json_new(args.out, trust)
+    _print(args, {"trust": args.out, "log_id": log_id},
+           f"created trust pins for log {log_id}; verify identity out of band")
+    return 0
+
+
+def _cmd_admin_register(args: argparse.Namespace) -> int:
+    witness_key = load_key(args.witness_key,
+                           passphrase=_secret(args.passphrase_env))
+    authority_pub = _public_key(args.authority_public_key)
+    manifest = _read_json_file(args.manifest)
+    status = _read_json_file(args.status_file)
+    _validate_initial_status(manifest, status, authority_pub)
+    witness = Witness(args.db, witness_key,
+                      authority_keys={crypto.key_id(authority_pub): authority_pub})
+    try:
+        witness.register_log(manifest, status)
+        manifest_hash = str(manifest["manifest_hash"])
+    finally:
+        witness.close()
+    _print(args, {"registered": True, "manifest_hash": manifest_hash},
+           f"registered manifest {manifest_hash} in local witness state")
+    return 0
+
+
+def _cmd_admin_rotate(args: argparse.Namespace) -> int:
+    authority = load_key(args.authority_key,
+                         passphrase=_secret(args.passphrase_env))
+    new_log = load_key(args.new_log_key,
+                       passphrase=_secret(args.passphrase_env))
+    witness_pub = _public_key(args.witness_public_key)
+    old_manifest = _read_json_file(args.old_manifest)
+    old_body = _body_of(old_manifest)
+    authority_pub = crypto.public_key_raw(authority)
+    if old_body.get("issuer_id") != crypto.key_id(authority_pub):
+        raise SchemaError("authority key does not match the old manifest issuer")
+    crypto.verify_manifest(authority_pub, old_body,
+                           str(old_manifest.get("signature", "")))
+    if crypto.digest_manifest(old_body) != old_manifest.get("manifest_hash"):
+        raise SchemaError("old manifest hash does not match its body")
+    old_log_value = old_body.get("log_public_key")
+    old_witness_value = old_body.get("witness_public_key")
+    if not isinstance(old_log_value, str) or not isinstance(old_witness_value, str):
+        raise SchemaError("old manifest public keys are invalid")
+    old_log_pub = crypto.b64url_decode(old_log_value)
+    if crypto.b64url_decode(old_witness_value) != witness_pub:
+        raise SchemaError("witness public key differs from the old manifest")
+    checkpoint = _read_json_file(args.final_checkpoint)
+    receipt = _read_json_file(args.final_receipt)
+    cp_body = _body_of(checkpoint)
+    if (cp_body.get("log_id") != old_body.get("log_id")
+            or cp_body.get("manifest_hash") != old_manifest.get("manifest_hash")):
+        raise SchemaError("final checkpoint does not belong to the old manifest")
+    manifest = rotate_epoch(
+        authority_priv=authority, new_log_priv=new_log,
+        new_log_id=str(uuid.uuid4()), witness_pub=witness_pub,
+        created_at=datetime.now(UTC).isoformat(timespec="microseconds").replace(
+            "+00:00", "Z"), final_checkpoint=checkpoint, final_receipt=receipt)
+    verify_predecessor(manifest, checkpoint, receipt, old_log_pub, witness_pub)
+    _write_json_new(args.out, manifest)
+    _print(args, {"manifest": args.out,
+                  "log_id": _body_of(manifest)["log_id"]},
+           f"created linked epoch manifest for log {_body_of(manifest)['log_id']}")
+    return 0
 
 
 def _count_of(envelope: JsonObject) -> JsonValue:
@@ -174,9 +402,12 @@ def _cmd_witness_submit(args: argparse.Namespace) -> int:
 
 
 def _cmd_export(args: argparse.Namespace) -> int:
-    writer = _writer(args)
+    writer = Writer(args.db)
     log_id = _sole_log_id(args.db)
-    dest = writer.export_bundle(log_id, args.out)
+    try:
+        dest = writer.export_bundle(log_id, args.out)
+    finally:
+        writer.close()
     _print(args, {"bundle": str(dest)}, f"exported bundle to {dest}")
     return 0
 
@@ -237,7 +468,7 @@ _TRUST_POLICY_FIELDS = {"mode", "allow_unwitnessed",
 
 def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
                                                  JsonObject, JsonObject]:
-    trust = _read_json_file(path)
+    trust = _read_json_file(path, configuration=True)
     if set(trust) != _TRUST_FIELDS:
         raise SchemaError("trust file must be exactly version, "
                           "authorities, logs, policy")
@@ -249,6 +480,10 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
         raise SchemaError("trust file field types are wrong")
     if set(policy) != _TRUST_POLICY_FIELDS:
         raise SchemaError("trust policy fields are wrong")
+    timeout = policy["query_timeout_seconds"]
+    if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
+            or not math.isfinite(timeout) or timeout <= 0):
+        raise SchemaError("query_timeout_seconds must be positive and finite")
     keys: dict[str, bytes] = {}
     for issuer, encoded in authorities.items():
         if not isinstance(encoded, str):
@@ -415,6 +650,78 @@ def _parser() -> argparse.ArgumentParser:
     gen.add_argument("--passphrase-env", default=PASS_ENV)
     gen.set_defaults(func=_cmd_key_generate)
 
+    admin = sub.add_parser("admin", parents=[common],
+                           help="explicit local trust administration")
+    admin_sub = admin.add_subparsers(dest="admin_command", required=True)
+    manifest_create = admin_sub.add_parser("manifest", parents=[common],
+                                           help="create a signed initial manifest")
+    manifest_create.add_argument("--authority-key", required=True)
+    manifest_create.add_argument("--log-public-key", required=True)
+    manifest_create.add_argument("--witness-public-key", required=True)
+    manifest_create.add_argument("--out", required=True)
+    manifest_create.add_argument("--passphrase-env", default=PASS_ENV)
+    manifest_create.set_defaults(func=_cmd_admin_manifest)
+
+    status_admin = admin_sub.add_parser("status", parents=[common],
+                                        help="sign or install manifest status")
+    status_sub = status_admin.add_subparsers(dest="status_command", required=True)
+    status_sign = status_sub.add_parser("sign", parents=[common],
+                                        help="sign manifest status")
+    status_sign.add_argument("--manifest", required=True)
+    status_sign.add_argument("--authority-key", required=True)
+    status_sign.add_argument("--serial", required=True, type=_positive_int)
+    status_sign.add_argument("--status", required=True,
+                             choices=["active", "revoked"])
+    status_sign.add_argument("--reason", required=True)
+    status_sign.add_argument("--out", required=True)
+    status_sign.add_argument("--passphrase-env", default=PASS_ENV)
+    status_sign.set_defaults(func=_cmd_admin_status)
+
+    status_install = status_sub.add_parser("install", parents=[common],
+                                           help="install status in local witness state")
+    status_install.add_argument("--status-file", required=True)
+    status_install.add_argument("--log-id", required=True)
+    status_install.add_argument("--authority-public-key", required=True)
+    status_install.add_argument("--witness-key", required=True)
+    status_install.add_argument("--db", required=True)
+    status_install.add_argument("--passphrase-env", default=PASS_ENV)
+    status_install.set_defaults(func=_cmd_admin_status_install)
+
+    trust_create = admin_sub.add_parser("trust", parents=[common],
+                                        help="create explicit verifier trust pins")
+    trust_create.add_argument("--manifest", required=True)
+    trust_create.add_argument("--authority-public-key", required=True)
+    trust_create.add_argument("--witness-url", default="")
+    trust_create.add_argument("--mode", choices=["integrity", "anchored", "online"],
+                              default="integrity")
+    trust_create.add_argument("--allow-unwitnessed", action="store_true")
+    trust_create.add_argument("--timeout", type=float, default=10.0)
+    trust_create.add_argument("--max-chain-steps", type=_positive_int, default=10000)
+    trust_create.add_argument("--out", required=True)
+    trust_create.set_defaults(func=_cmd_admin_trust)
+
+    register = admin_sub.add_parser("register", parents=[common],
+                                    help="register a manifest in local witness state")
+    register.add_argument("--manifest", required=True)
+    register.add_argument("--status-file", required=True)
+    register.add_argument("--authority-public-key", required=True)
+    register.add_argument("--witness-key", required=True)
+    register.add_argument("--db", required=True)
+    register.add_argument("--passphrase-env", default=PASS_ENV)
+    register.set_defaults(func=_cmd_admin_register)
+
+    rotate = admin_sub.add_parser("rotate", parents=[common],
+                                  help="create a successor epoch manifest")
+    rotate.add_argument("--final-checkpoint", required=True)
+    rotate.add_argument("--final-receipt", required=True)
+    rotate.add_argument("--old-manifest", required=True)
+    rotate.add_argument("--authority-key", required=True)
+    rotate.add_argument("--new-log-key", required=True)
+    rotate.add_argument("--witness-public-key", required=True)
+    rotate.add_argument("--out", required=True)
+    rotate.add_argument("--passphrase-env", default=PASS_ENV)
+    rotate.set_defaults(func=_cmd_admin_rotate)
+
     init = sub.add_parser("init", parents=[common])
     init.add_argument("--manifest", required=True)
     init.add_argument("--db", required=True)
@@ -448,9 +755,7 @@ def _parser() -> argparse.ArgumentParser:
 
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
-    export.add_argument("--key", required=True)
     export.add_argument("--out", required=True)
-    export.add_argument("--passphrase-env", default=PASS_ENV)
     export.set_defaults(func=_cmd_export)
 
     ver = sub.add_parser("verify", parents=[common])

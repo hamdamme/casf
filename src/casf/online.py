@@ -13,14 +13,16 @@ record.
 import http.client
 import ipaddress
 import json
+import math
 import os
-import ssl
-import time
 from dataclasses import dataclass
 from urllib.parse import urlsplit
 
 from casf import crypto
+from casf.canonical.jcs import parse
 from casf.errors import CasfError, InconclusiveError, NoCheckpointError, SchemaError
+from casf.transport import ResponseLimitError
+from casf.transport import request as http_request
 from casf.types import JsonObject
 
 __all__ = [
@@ -49,6 +51,11 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
                  timeout: float = 10.0) -> tuple[JsonObject, bytes]:
     """Query the witness; return the raw response and the nonce sent."""
     nonce = os.urandom(32)  # a fresh nonce per query, never reused
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) \
+            or not math.isfinite(timeout):
+        raise CasfError("timeout must be positive and finite")
+    if timeout <= 0:
+        raise InconclusiveError("witness query time budget is exhausted")
     request = json.dumps({"nonce": crypto.b64url_encode(nonce)}).encode()
     try:
         parts = urlsplit(base_url)
@@ -66,34 +73,16 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
             loopback = False
         if not loopback:
             raise CasfError("HTTP requires a literal loopback address; use HTTPS")
-    start = time.monotonic()
     try:
-        conn: http.client.HTTPConnection
-        if parts.scheme == "https":
-            conn = http.client.HTTPSConnection(
-                host, port if port is not None else 443, timeout=timeout,
-                context=ssl.create_default_context())
-        else:
-            conn = http.client.HTTPConnection(
-                host, port if port is not None else 80, timeout=timeout)
-        try:
-            conn.request(
-                "POST", f"/v1/logs/{log_id}/latest", body=request,
-                headers={"Content-Type": "application/json",
-                         "Authorization": f"Bearer {token}"})
-            resp = conn.getresponse()
-            payload = resp.read()
-            status = resp.status
-        finally:
-            conn.close()
-    except (OSError, http.client.HTTPException) as e:
+        status, payload = http_request(
+            base_url, "POST", f"/v1/logs/{log_id}/latest", token,
+            request, timeout=timeout)
+    except (OSError, http.client.HTTPException, ResponseLimitError) as e:
         raise InconclusiveError(
             "witness unreachable within the time budget") from e
-    if time.monotonic() - start > timeout:
-        raise InconclusiveError("response arrived outside the time budget")
     try:
-        parsed = json.loads(payload)
-    except ValueError as e:
+        parsed = parse(payload)
+    except CasfError as e:
         raise InconclusiveError("witness answer was not valid JSON") from e
     if status != 200:
         code = parsed.get("code") if isinstance(parsed, dict) else None

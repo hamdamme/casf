@@ -10,7 +10,7 @@ from casf.bundle import read_bundle
 from casf.errors import CasfError
 from casf.verifier import AnchorStatus, Mode, Result, TrustPins, verify
 from casf.writer import RestoreBehindWitnessError, Writer
-from tests.status import active_status
+from tests.status import active_status, register_active
 from tests.unit.test_writer import (
     AUTH,
     AUTH_PUB,
@@ -199,7 +199,7 @@ def test_t10_restored_old_db_reports_incomplete_against_newer_anchor(
 
     witness = Witness(tmp_path / "wit.db", WIT,
                       authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
-    witness.register_log(_manifest_envelope())
+    register_active(witness, _manifest_envelope(), AUTH)
     w = _writer(tmp_path / "w.db")
     for n in range(1, 5):
         _append(w, n)

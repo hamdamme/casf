@@ -139,7 +139,8 @@ def _build_arm(root: Path, manifest: dict, events_old: list[dict],
     try:
         writer.create_log(manifest)
         if witness is not None:
-            witness.register_log(manifest)
+            witness.register_log(
+                manifest, workload.active_status(str(manifest["manifest_hash"])))
         appended: list[dict] = []
         prev_cp = ZERO
         for i, event in enumerate(events_old, start=1):

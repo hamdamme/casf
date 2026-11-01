@@ -9,8 +9,9 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import cast
 
+from casf.canonical.jcs import parse
 from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError
 
@@ -31,18 +32,9 @@ def _integer(value: object, minimum: int) -> bool:
     return type(value) is int and minimum <= value <= SAFE_INT_MAX
 
 
-def _unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
-    result: dict[str, Any] = {}
-    for key, value in pairs:
-        if key in result:
-            raise ValueError("duplicate state key")
-        result[key] = value
-    return result
-
-
 def _decode(raw: bytes) -> dict[str, SavedState]:
     try:
-        data = json.loads(raw, object_pairs_hook=_unique)
+        data = parse(raw)
         if not isinstance(data, dict) or set(data) != {"version", "manifests"}:
             raise ValueError("state fields")
         if type(data["version"]) is not int or data["version"] != 1:
@@ -65,10 +57,10 @@ def _decode(raw: bytes) -> dict[str, SavedState]:
                     raise ValueError("checkpoint fields")
                 if not _integer(cp["index"], 0) or not _digest(cp["hash"]):
                     raise ValueError("checkpoint values")
-                checkpoint = (cp["index"], cp["hash"])
-            result[digest] = SavedState(serial, checkpoint)
+                checkpoint = (cast(int, cp["index"]), cast(str, cp["hash"]))
+            result[digest] = SavedState(cast(int, serial), checkpoint)
         return result
-    except (ValueError, TypeError, RecursionError) as e:
+    except (CasfError, ValueError, TypeError, RecursionError) as e:
         raise CasfError("verifier state is malformed; restore trusted state") from e
 
 

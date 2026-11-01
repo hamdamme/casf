@@ -305,7 +305,10 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
     service = WitnessService(
         witness_db, witness_key, token=TOKEN,
         authority_keys={crypto.key_id(auth_pub): auth_pub})
-    service.witness.register_log(manifest)
+    service.witness.register_log(
+        manifest, sign_status(
+            auth, serial=1, manifest_hash=str(manifest["manifest_hash"]),
+            status="active", issued_at=workload.TS, reason=""))
     witness_server = make_server(service, "127.0.0.1", 0)
     server_thread = threading.Thread(target=witness_server.serve_forever,
                                      daemon=True)
@@ -737,6 +740,10 @@ def _environment(manifest_path: Path, run_order: list[dict[str, Any]]) -> dict[s
         "src/casf/cli/__init__.py",
         "src/casf/online.py",
         "src/casf/verifier/__init__.py",
+        "src/casf/transport.py",
+        "src/casf/canonical/jcs.py",
+        "src/casf/lifecycle.py",
+        "src/casf/witness/__init__.py",
         "src/casf/witness/http.py",
         "src/casf/witness/server.py",
     ]

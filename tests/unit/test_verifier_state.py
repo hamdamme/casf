@@ -8,7 +8,7 @@ import stat
 import pytest
 
 from casf.errors import CasfError
-from casf.trust.state import MAX_STATE_BYTES, locked_state
+from casf.trust.state import MAX_STATE_BYTES, _decode, locked_state
 
 MANIFEST = "a" * 64
 CHECKPOINT = "b" * 64
@@ -74,6 +74,14 @@ def test_bad_state_never_reinitialized(tmp_path, raw):
     with pytest.raises(CasfError), locked_state(str(path), MANIFEST, initialize=True):
         pytest.fail("damaged state was reset")
     assert path.read_bytes() == raw
+
+
+def test_state_rejects_negative_zero_checkpoint_index():
+    raw = (b'{"version":1,"manifests":{"' + MANIFEST.encode()
+           + b'":{"status_serial":1,"checkpoint":{"index":-0,"hash":"'
+           + CHECKPOINT.encode() + b'"}}}}')
+    with pytest.raises(CasfError, match="verifier state is malformed"):
+        _decode(raw)
 
 
 @pytest.mark.parametrize("target", ["state", "lock"])
