@@ -70,7 +70,10 @@ no known vulnerabilities for all 24 exact locked package versions.
 These are review candidate artifacts, not the maintainer approved artifacts
 from 2026-10-28. The checked runtime and optional witness dependency metadata
 shows no actual security or license issue; CASF does not vendor their code.
-GitHub Actions run 114 for PR 27 passed all six test and minimum dependency
-jobs on Python 3.12, 3.13, and 3.14. This passing CI does not approve the
-release. Separate maintainer approval of these exact hashes and notes is
-still required. No release has been published.
+GitHub Actions run 114 passed all six test and minimum dependency jobs on
+Python 3.12, 3.13, and 3.14 for revision
+`ffbbcea56f046be483e5336d83e7337bb950a101`. That run predates the response
+header limit changes in the current PR update, so the updated revision needs
+its own passing hosted checks. Passing CI is validation, not release approval.
+Separate maintainer approval of the exact candidate hashes and notes is still
+required. No release has been published.

@@ -50,8 +50,11 @@ are recorded in the [review candidate notes](notes-review-candidate-2026-10-31.m
 and [H3 supplement](../../research/h3-witness-outage-review-2026-10-31.md).
 The wheel and source archive passed clean environment installation checks.
 The lock check passed with the pinned uv version. All 402 tests passed on the
-local macOS Python 3.12 environment. GitHub Actions run 114 for PR 27 passed
-all six test and minimum dependency jobs on Python 3.12, 3.13, and 3.14.
+local macOS Python 3.12 environment. GitHub Actions run 114 passed all six
+test and minimum dependency jobs on Python 3.12, 3.13, and 3.14 for revision
+`ffbbcea56f046be483e5336d83e7337bb950a101`. That run predates the response
+header limit changes in the current PR update; hosted checks for the updated
+revision must pass before release approval.
 
 The existing 0.1.0rc1 publication approval does not cover this changed source
 or these new artifact hashes. A candidate containing these changes has
