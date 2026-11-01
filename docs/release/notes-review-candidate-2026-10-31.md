@@ -51,11 +51,14 @@ Built for review on macOS 15.6.1 arm64 with Python 3.12.11, setuptools
 84.2.1, and the pinned build frontend 1.6.1 from source commit
 `0d0d34411f36e088e453c79d5a8bfd19333bbf7c`
 (`docs: record H3 review run and release checks`). The exact `uv 0.13.5` lock
-check passed. The wheel installed in a clean environment and passed the base
-wheel smoke check, CLI administration help, required `--state` help check, and
-`py.typed` check. The source archive installed in a clean environment and
-passed import, administration command, typing marker, and required state
-option checks. The full suite passed 402 tests; the focused security and H3
+check passed. The wheel installed in a fresh package environment and passed
+the base wheel smoke check, CLI administration help, required `--state` help, and
+`py.typed` check. The source archive installed in a fresh package environment
+and passed import, administration command, typing marker, and required state
+option checks. Those local artifact installs used the existing cryptography
+files and did not resolve dependencies. GitHub Actions separately installed
+the locked dependencies and passed its wheel checks. The full suite passed
+402 tests; the focused security and H3
 tests passed 179 tests; Ruff and mypy passed. The OSV advisory check returned
 no known vulnerabilities for all 24 exact locked package versions.
 
@@ -67,6 +70,7 @@ no known vulnerabilities for all 24 exact locked package versions.
 These are review candidate artifacts, not the maintainer approved artifacts
 from 2026-10-28. The checked runtime and optional witness dependency metadata
 shows no actual security or license issue; CASF does not vendor their code.
-No release has been published. Release remains blocked on hosted Python
-matrix checks for this branch and separate maintainer approval of these exact
-hashes and notes.
+GitHub Actions run 114 for PR 27 passed all six test and minimum dependency
+jobs on Python 3.12, 3.13, and 3.14. This passing CI does not approve the
+release. Separate maintainer approval of these exact hashes and notes is
+still required. No release has been published.

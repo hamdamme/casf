@@ -50,13 +50,14 @@ are recorded in the [review candidate notes](notes-review-candidate-2026-10-31.m
 and [H3 supplement](../../research/h3-witness-outage-review-2026-10-31.md).
 The wheel and source archive passed clean environment installation checks.
 The lock check passed with the pinned uv version. All 402 tests passed on the
-local macOS Python 3.12 environment; the hosted Python matrix has not yet run
-for this branch.
+local macOS Python 3.12 environment. GitHub Actions run 114 for PR 27 passed
+all six test and minimum dependency jobs on Python 3.12, 3.13, and 3.14.
 
 The existing 0.1.0rc1 publication approval does not cover this changed source
-or these new artifact hashes. Publication of this candidate is blocked pending
-the hosted checks and the maintainer's separate approval of the exact new
-hashes and notes. No release has been published.
+or these new artifact hashes. A candidate containing these changes has
+passed hosted CI, but still needs the maintainer's separate approval of the
+exact new hashes and notes before publication. Passing CI is validation, not
+release approval. No release has been published.
 
 All six Phase 3 closeout gates are PASS. Phase 3 is closed; publication is
 still subject to separate maintainer approval.
