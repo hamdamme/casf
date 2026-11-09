@@ -1,5 +1,9 @@
 # Locked dependency review
 
+This is a dated decision and validation record. Subsequent platform and
+redistribution evidence is in the [October 28 closeout](phase3-closeout-2026-10-28.md). Use the
+[current checklist](checklist-v0.1.md) for active requirements.
+
 Review date: 2026-10-24. Scope: all 24 external Python packages recorded in
 uv.lock, including conditional packages, plus uv 0.13.5 used for installation
 and builds. CASF itself is excluded from the external package count.

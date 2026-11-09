@@ -1,5 +1,9 @@
 # CASF 0.1.0rc1 release candidate notes
 
+Historical notes for the exact candidate approved on 28 October 2026. Later
+source changes are not included in those artifacts. See the
+[current checklist](checklist-v0.1.md) and [later source notes](notes-review-candidate-2026-10-31.md).
+
 CASF 0.1.0rc1 is the proposed first experimental release candidate. It has
 not been published. Publication needs a separate explicit approval.
 

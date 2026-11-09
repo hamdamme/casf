@@ -1,5 +1,9 @@
 # Architecture Decision Records — Baseline Gate Decisions
 
+This is a dated decision and validation record. Subsequent platform and
+redistribution evidence is in the [October 28 closeout](../release/phase3-closeout-2026-10-28.md). Use the
+[current checklist](../release/checklist-v0.1.md) for active requirements.
+
 **Date:** 2026-10-10 · **Status:** APPROVED 2026-10-11 (maintainer decision)
 
 ## ADR-001 (closes D02): One fixed witness, full record disclosure
