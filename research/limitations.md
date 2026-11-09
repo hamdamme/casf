@@ -1,8 +1,8 @@
 # Limitations
 
-Declared limitations and negative findings. Never overwrite with
-stronger claims than the experiments support (SPEC §23). Updated
-with the second machine matrix results.
+Current interpretation of the recorded evidence, using the canonical labels
+in the [research guide](README.md). Original reports and measurements remain
+unchanged. No stronger claim is made than those observations support.
 
 ## Boundaries confirmed by the detection matrix
 
@@ -13,7 +13,8 @@ correctly remain undetectable offline:
   verification (T18). No rollback protection is claimed without an
   external anchor.
 - A false suffix written with a stolen writer key after the last
-  witnessed checkpoint passes anchored verification offline (T20).
+  witnessed checkpoint passes anchored verification offline when the policy
+  explicitly allows unwitnessed records (T20).
   Rewriting inside the witnessed prefix is detected as divergent.
 - Witness rollback against an isolated client holding no earlier pin
   is not detectable; detection holds only for a client that retained
@@ -37,16 +38,33 @@ correctly remain undetectable offline:
 - Ten runs per configuration is the SPEC minimum; the extended
   matrix met it on a second machine, wider hardware diversity is
   still open.
-- Self authored code and self reviewed tests create assessment bias;
-  external review has not happened and is not claimed.
+- Maintainer development and test review create assessment bias. Limited
+  external review examined witness and online behavior and part of the
+  verifier; it did not cover the entire implementation or benchmark methods.
+  The [scope record](../docs/release/phase3-closeout-2026-10-28.md#review-coverage)
+  lists unexamined areas. No independent security audit is claimed.
 - SQLite append only triggers guard honest writers; an attacker
   holding the database file can drop them, which is why integrity
   rests on the hash chain and the witness, not on the triggers
   (confirmed by the tamper cases, which drop the triggers first).
 
+## Canonical H1 and H2 scope
+
+The [H1 comparison](h1-writer-rollback.md) did not fully meet its original
+expected result: without a retained client checkpoint, the honest reachable
+witness returned INCONCLUSIVE with WITNESS_AHEAD rather than FAIL in ten
+runs. With the retained checkpoint, all ten returned WITNESS_STATE_CONFLICT.
+This distinction is retained; refusal to accept is not relabeled as the
+predeclared positive failure classification.
+
+Canonical H2 is supported only for successful client submit time per record
+in one matched historical remote workload. It does not isolate server CPU
+cost. Configured batch limits are not measurements of record loss and do not
+bound backlog during arbitrary outages. See the [batching interpretation](README.md#batching-interpretation).
+
 ## Canonical H3 outage experiment
 
-The new experiment in `benchmarks/results/h3-witness-outage-v1/` supports
+The recorded experiment in `benchmarks/results/h3-witness-outage-v1/` supports
 both canonical H3 outcomes within its tested scope. Ten matched loopback
 runs showed a longer record 24 commit to persisted receipt interval during
 the fixed three second outage; all ten online freshness attempts became
@@ -58,7 +76,9 @@ The evidence uses one host, one accept and close fault mode, one batch size,
 32 synthetic events, ten seed pairs, and a manual recovery call. It does
 not cover wide area partitions, delayed responses, connection refusal,
 witness process failure, an automatic recovery worker, larger workloads,
-or the full SPEC §22 matrix. The historical injected delay runs are not
+or the full SPEC §22 matrix. The [October 31 follow up](h3-witness-outage-review-2026-10-31.md)
+records later transport behavior separately; the two result sets are not pooled.
+The historical injected delay runs are not
 outage evidence. See `h3-witness-outage.md` for the method, measurements,
 and separate H3a and H3b conclusions.
 
