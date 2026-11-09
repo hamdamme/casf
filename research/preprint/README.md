@@ -16,7 +16,7 @@ Verify package files with `shasum -a 256 -c SHA256SUMS.txt`.
 
 The paper is separate from the CASF software and evidence archive. The measurement source revisions and the manuscript package revision have different roles. H1 results record measurement source commit `7fc4273a941845eac838a5f9fdcba5f2329c9c74`; H3 results record `1948a982cef52eabbf5cfdb3846d6e9b75ef7413`; and the RQ4 collector records measured snapshot `7c388d385242238a40e572ed67e7e5fc9a1ab194`. The RQ4 snapshot predates the manuscript package and is not a source revision for reproducing the assembled paper. Historical benchmark runs retain their own source revisions. Do not replace any recorded measurement revision with a later commit.
 
-The manuscript and its rendered package files were first added together in commit [`e0b74f6cccb56fc27240609b60244210204e40df`](https://github.com/hamdamme/casf/tree/e0b74f6cccb56fc27240609b60244210204e40df). The supporting publication copy and provenance material were added in [`b95348b77b73c71ac77dad8e99a191284e390b2e`](https://github.com/hamdamme/casf/tree/b95348b77b73c71ac77dad8e99a191284e390b2e). The retrieval instructions below use commit [`67306f9dc0c411e57e9a33608a692ec0e01d68ae`](https://github.com/hamdamme/casf/tree/67306f9dc0c411e57e9a33608a692ec0e01d68ae), which contains the same paper artifacts and supporting files with the corrected checksum list. Newer repository commits may contain unrelated changes.
+The manuscript and its rendered package files were first added together in commit [`e0b74f6cccb56fc27240609b60244210204e40df`](https://github.com/hamdamme/casf/tree/e0b74f6cccb56fc27240609b60244210204e40df). The supporting publication copy and provenance material were added in [`b95348b77b73c71ac77dad8e99a191284e390b2e`](https://github.com/hamdamme/casf/tree/b95348b77b73c71ac77dad8e99a191284e390b2e). The earlier package with corrected checksums is preserved at [`67306f9dc0c411e57e9a33608a692ec0e01d68ae`](https://github.com/hamdamme/casf/tree/67306f9dc0c411e57e9a33608a692ec0e01d68ae). The retrieval instructions below use [`cca6e33a7a6991fd3a7e8808d92ec071c25ae00e`](https://github.com/hamdamme/casf/tree/cca6e33a7a6991fd3a7e8808d92ec071c25ae00e), which contains the corrected manuscript, Word and PDF copies, Figure 1, refreshed checksums, and the current research guide. This is a manuscript revision, not a new measurement source.
 
 The evidence uses synthetic workloads and keys. The practical PDF demonstration package stays outside the repository and is not part of this deposit. This package contains no private PDF, private fingerprint, key, token, verifier state, or local database.
 
@@ -29,7 +29,7 @@ To retrieve and verify the committed manuscript package, run:
 ```sh
 git clone https://github.com/hamdamme/casf.git
 cd casf
-git checkout 67306f9dc0c411e57e9a33608a692ec0e01d68ae
+git checkout cca6e33a7a6991fd3a7e8808d92ec071c25ae00e
 cd research/preprint
 shasum -a 256 -c SHA256SUMS.txt
 ```
