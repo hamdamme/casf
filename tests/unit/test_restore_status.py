@@ -33,7 +33,7 @@ def test_restore_accepts_active_status_at_provisioned_minimum(tmp_path, serial):
 
 @pytest.mark.parametrize("change", [
     "missing", "forged", "revoked", "revoked_then_active", "old_serial",
-    "unrelated", "wrong_issuer", "no_pins", "unprovisioned",
+    "unrelated", "wrong_issuer", "no_pins", "unprovisioned", "unknown_status",
 ])
 def test_restore_rejects_untrusted_status_before_creating_store(tmp_path, change):
     path, bundle, pins = evidence(tmp_path)
@@ -53,6 +53,9 @@ def test_restore_rejects_untrusted_status_before_creating_store(tmp_path, change
     elif change == "wrong_issuer":
         statements[0]["body"]["issuer_id"] = crypto.key_id(crypto.public_key_raw(LOG))
         statements[0]["signature"] = crypto.sign_status(LOG, statements[0]["body"])
+    elif change == "unknown_status":
+        statements[0]["body"]["status"] = "unexpected"
+        statements[0]["signature"] = crypto.sign_status(AUTH, statements[0]["body"])
     elif change == "no_pins":
         pins = None
     else:

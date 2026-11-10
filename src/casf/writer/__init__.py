@@ -641,7 +641,7 @@ class Writer:
                 raise SchemaError("minimum_status_serial must be a positive safe integer")
             report = verify(bundle.manifest, bundle.records, pins,
                             status_envelopes=bundle.statuses)
-            if report.trust_status is not TrustStatus.OK:
+            if report.trust_status is not TrustStatus.TRUSTED:
                 raise TrustError("restore authority status rejected: "
                                  + ", ".join(report.diagnostic_codes))
             if report.result is not Result.PASS:
