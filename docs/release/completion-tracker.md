@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 42 is merged into main at `08206bb577daf23d0e6c257a1f5c4ed09bc286fa`. The export/report batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 43 is merged into main at `ee76c7dff57727fd87b965b5580d83e6f4669cec`. The typed-append batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration is complete, and public interface conformance is in progress.
 
@@ -51,22 +51,23 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 42 is merged. F11 is complete: constrained versioned schemas and explicit writer/witness migrations have been accepted.
-- F12 remains in progress. This review batch adds prefix exports, private streaming publication that cannot replace an existing destination, and complete diagnostic serialization shared by the Python verifier and CLI.
-- Export tests cover exact envelope bytes, checkpoint/receipt boundaries, concurrent appends, bounded Python allocations, file/directory failures, destination races and process exits. Pending final seals remain protected; late publication errors never expose a partial bundle.
-- Report tests cover full success/failure/inconclusive output, exact record ranges, checkpoint identity, policy assumptions, detached serialization and late malformed input. Existing enum values and exit categories are preserved.
-- Remaining F12 acceptance: immutable typed requests/results, alignment of report enum names and missing-trust verdicts with SPEC section 15, and the incremental verification contract. These are required follow-up changes; this batch does not close Session 6 or Phase 2.
-- Validation: exact local and hosted results belong to the draft PR. Selected crash tests do not close the broader process crash/concurrency matrix or final candidate package gates.
-- Preservation: authenticated formats, cryptographic vectors, schema version 1 and historical research outputs are unchanged. No release was published.
+- PR 43 is merged. Prefix export, exclusive publication and complete diagnostic serialization have been accepted. F12 remains in progress.
+- This review batch adds immutable `EventRequest` and `AppendResult` models and `Writer.append_event`. Existing `Writer.append` retains its dictionary result while sharing the same snapshot and transaction implementation.
+- The input-mutation regression demonstrates and fixes a request-digest/content mismatch. Witness coverage is observed in the append transaction and returned only after commit: local, covered by a pending checkpoint, or witnessed. Same-event retries retain the record while refreshing that observation.
+- CLI append adds committed/witness state without payloads. Tests cover request/result isolation, strict inputs, generated body budgets, commit failures, uncertain responses, lock contention, concurrent retries, verified authorization and all three CLI observations.
+- Remaining F12 acceptance: other public result/interface contracts, alignment of report enums and missing-trust verdicts with SPEC section 15, and incremental verification. The typed append batch awaits review; Session 6 and Phase 2 stay open.
+- Validation: exact local and hosted results belong to the draft PR. Broader process crash/concurrency, affected experiment reruns and final candidate package checks remain separate gates.
+- Preservation: authenticated formats, request digest domains, frozen vectors, storage schema version 1 and historical research outputs are unchanged. No release was published.
 - Remaining: 17 tasks, 9 sessions and 5 phases. F12 stays in the remaining total after this batch is accepted.
-- User action: review the export/report draft PR and its checks. Nothing is merged or released by this work.
-- Next task: continue F12 with the typed public API and report-semantics decisions. Property/fuzz coverage, broader crash tests, research/package validation and publication approval remain separate gates.
+- User action: review the typed-append draft PR and its checks. Nothing is merged or released by this work.
+- Next task: continue the remaining F12 public result and report-semantics decisions, followed by incremental verification and the later validation gates.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
+- [Typed append requests and results](../append-api.md)
 - [Prefix export and complete diagnostics](../export-and-reports.md)
 - [Storage integrity and migration](../storage-migrations.md)
 - [Checkpoint worker behavior and reports](../checkpoint-worker.md)

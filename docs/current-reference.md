@@ -20,6 +20,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |
+| Immutable append requests and results | [Append API](append-api.md) |
 | Prefix exports and machine diagnostics | [Export and reports](export-and-reports.md) |
 | SQLite schema checks and upgrades | [Storage migration](storage-migrations.md) |
 | Automatic checkpoint scheduling and retries | [Checkpoint worker](checkpoint-worker.md) |
@@ -75,8 +76,11 @@ saved and writing resumes. Already open verified writers check retained status
 before further signing. Status distribution remains administrative, so an
 active statement does not prove there is no undistributed revocation.
 
-The conceptual free functions and `AppendResult` in SPEC section 19 remain
-separate interface work. See [ADR-008](adr/ADR-008-verified-writer-startup.md)
+`Writer.append_event(log_id, EventRequest)` returns an immutable `AppendResult`
+with the committed record and its transaction's witness observation. The
+existing `Writer.append` keeps its dictionary return and now snapshots nested
+input before calculating the request digest. See the [typed append guide](append-api.md).
+Other conceptual interfaces and result types in SPEC section 19 remain open. See [ADR-008](adr/ADR-008-verified-writer-startup.md)
 and the [recovery guide](writer-recovery.md) for current signatures and migration.
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
