@@ -614,6 +614,36 @@ def _cmd_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_witness_work(args: argparse.Namespace) -> int:
+    from threading import Event
+
+    from casf.writer.worker import CheckpointWorker, WorkerResult
+
+    writer = _writer(args)
+    try:
+        worker = CheckpointWorker(
+            writer, _sole_log_id(args.db), interval_seconds=args.interval,
+            retry_initial_seconds=args.retry_initial, retry_max_seconds=args.retry_max)
+
+        def report(result: WorkerResult) -> None:
+            _print(args, result.as_json(),
+                   f"worker {result.state}: committed {result.committed}, "
+                   f"witnessed {result.witnessed}, backlog {result.backlog}")
+            sys.stdout.flush()
+
+        if args.once:
+            result = worker.tick()
+            report(result)
+            return 4 if result.backlog or result.state in ("retry", "waiting") else 0
+        try:
+            worker.run(Event(), poll_interval=args.poll_interval, on_result=report)
+        except KeyboardInterrupt:
+            return 0
+    finally:
+        writer.close()
+    return 0
+
+
 _TRUST_FIELDS = {"version", "authorities", "logs", "policy"}
 _TRUST_LOG_FIELDS = {"manifest_hash", "witness_id", "witness_url",
                      "minimum_status_serial"}
@@ -943,6 +973,23 @@ def _parser() -> argparse.ArgumentParser:
     recover.add_argument("--url", required=True)
     recover.add_argument("--token-env", default=TOKEN_ENV)
     recover.set_defaults(func=_cmd_witness_recover)
+
+    work = wit_sub.add_parser("work", parents=[common],
+                              help="run verified checkpoint scheduling and durable retries")
+    work.add_argument("--db", required=True)
+    work.add_argument("--key", required=True)
+    work.add_argument("--trust", required=True)
+    work.add_argument("--status-file", required=True)
+    work.add_argument("--state", required=True)
+    work.add_argument("--initialize-state", action="store_true")
+    work.add_argument("--passphrase-env", default=PASS_ENV)
+    work.add_argument("--token-env", default=TOKEN_ENV)
+    work.add_argument("--interval", type=float, default=60.0, help="checkpoint interval in seconds")
+    work.add_argument("--retry-initial", type=float, default=1.0)
+    work.add_argument("--retry-max", type=float, default=60.0)
+    work.add_argument("--poll-interval", type=float, default=1.0)
+    work.add_argument("--once", action="store_true", help="perform at most one submission")
+    work.set_defaults(func=_cmd_witness_work, local_only=False)
 
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
