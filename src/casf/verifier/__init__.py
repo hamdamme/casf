@@ -258,7 +258,8 @@ def verify(manifest_envelope: JsonObject,
         fail("WITNESS_PIN_CONFLICT")
         set_trust(TrustStatus.CONFLICT)
         return report
-    witness_trust_missing = (mode is not Mode.INTEGRITY or anchor is not None) and pinned_witness is None
+    witness_trust_missing = ((mode is not Mode.INTEGRITY or anchor is not None)
+                             and pinned_witness is None)
     if witness_trust_missing:
         inconclusive("WITNESS_UNTRUSTED")
 
@@ -347,7 +348,8 @@ def verify(manifest_envelope: JsonObject,
             set_trust(TrustStatus.UNKNOWN)
             return report
         try:
-            crypto.verify_checkpoint(log_raw, start_body, _field_str(anchor.checkpoint.to_dict(), 'signature'))
+            crypto.verify_checkpoint(
+                log_raw, start_body, _field_str(anchor.checkpoint.to_dict(), 'signature'))
         except CasfError:
             fail("START_CHECKPOINT_SIGNATURE")
             report.signature_status = Dimension.INVALID
@@ -377,7 +379,8 @@ def verify(manifest_envelope: JsonObject,
         candidate_body = candidate.get("body")
         if isinstance(candidate_body, dict):
             candidate_count = candidate_body.get("count")
-            if type(candidate_count) is int and start_count < candidate_count <= start_count + max_records:
+            if (type(candidate_count) is int
+                    and start_count < candidate_count <= start_count + max_records):
                 head_targets.add(candidate_count)
     verified_heads: dict[int, str] = {start_count: start_head}
     verified_count = start_count
@@ -452,8 +455,8 @@ def verify(manifest_envelope: JsonObject,
         return report
 
     # ------------------------------------------------- checkpoints (anchored)
-    checkpoints: list[tuple[JsonObject, str]] = ([(start_body, start_cp)]
-                                                  if start_body is not None else [])
+    checkpoints: list[tuple[JsonObject, str]] = (
+        [(start_body, start_cp)] if start_body is not None else [])
     prev_cp, prev_count, prev_head = start_cp, start_count, start_head
     previous_final = start_final
     for offset, env in enumerate(checkpoint_input):

@@ -170,4 +170,3 @@ def test_incremental_bundle_budget_counts_prefix_too(tmp_path):
     path, _, anchor = setup_bundle(tmp_path)
     with pytest.raises(LimitError):
         verify_bundle(path, public_pins(path), Mode.ANCHORED, anchor=anchor, max_records=128)
-

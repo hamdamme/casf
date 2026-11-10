@@ -20,7 +20,8 @@ class VerificationAnchor:
 
     def __init__(self, checkpoint: JsonObject, receipt: JsonObject, *,
                  expected_checkpoint_hash: str) -> None:
-        if not isinstance(expected_checkpoint_hash, str) or not DIGEST_RE.fullmatch(expected_checkpoint_hash):
+        if (not isinstance(expected_checkpoint_hash, str)
+                or not DIGEST_RE.fullmatch(expected_checkpoint_hash)):
             raise SchemaError('expected checkpoint hash must be a lowercase digest')
         cp, rc = Checkpoint(checkpoint), WitnessResult(receipt)
         if cp.checkpoint_hash != expected_checkpoint_hash:
