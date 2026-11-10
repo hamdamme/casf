@@ -33,7 +33,7 @@ from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
 from casf.model.schema import validate_protocol_body
 from casf.online import query_latest
-from casf.storage import Database
+from casf.storage import Database, migrate_database
 from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
@@ -548,6 +548,14 @@ def _cmd_seal(args: argparse.Namespace) -> int:
         writer.close()
 
 
+def _cmd_storage_migrate(args: argparse.Namespace) -> int:
+    migrate_database(args.source, args.destination, kind=args.kind)
+    _print(args, {"migrated": True, "kind": args.kind, "schema_version": 1,
+                  "destination": args.destination},
+           f"migrated {args.kind} store to {args.destination}; schema version 1")
+    return 0
+
+
 def _cmd_restore(args: argparse.Namespace) -> int:
     if os.path.lexists(args.db):
         raise CasfError("restore destination already exists")
@@ -849,6 +857,15 @@ def _parser() -> argparse.ArgumentParser:
         prog="casf", description="Cryptographic audit and signing "
                                  "framework commands (SPEC §19)")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    storage = sub.add_parser("storage", parents=[common], help="explicit database migration")
+    storage_sub = storage.add_subparsers(dest="storage_command", required=True)
+    migrate = storage_sub.add_parser("migrate", parents=[common],
+                                    help="copy an unversioned store to a new destination")
+    migrate.add_argument("--source", required=True)
+    migrate.add_argument("--destination", required=True)
+    migrate.add_argument("--kind", required=True, choices=["writer", "witness"])
+    migrate.set_defaults(func=_cmd_storage_migrate)
 
     key = sub.add_parser("key", parents=[common])
     key_sub = key.add_subparsers(dest="key_command", required=True)
