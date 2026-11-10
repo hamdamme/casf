@@ -22,6 +22,9 @@ its checks.
   rollback and pending receipt recovery after an outage. Selected process
   exits and injected filesystem errors do not establish physical disk or
   power-loss durability.
+- [Checkpoint worker](../checkpoint-worker.md) tests cover the record/time
+  triggers, bounded batch draining, durable backoff, interrupted attempts,
+  restarts, lost replies, final seals, concurrent workers and safe reports.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

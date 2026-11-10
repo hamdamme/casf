@@ -38,6 +38,6 @@ Deadlines use local Unix time to survive restarts; in-process elapsed waiting
 uses the stop event's wait operation. Clock changes affect operating timing,
 not trust. Future deadlines are clamped to the configured interval or retry
 maximum so a backward clock adjustment cannot impose a larger wait. Durations
-must be positive and no greater than one day. These are scheduling targets,
+must be between one millisecond and one day. These are scheduling targets,
 not a maximum unwitnessed exposure guarantee. Fresh startup still requires a
 reachable witness; an offline restart cannot bypass it to run the worker.

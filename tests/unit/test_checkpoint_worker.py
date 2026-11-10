@@ -106,6 +106,18 @@ def test_record_threshold_drains_backlog_in_bounded_batches(environment):
     assert worker.tick().state == "idle"
 
 
+def test_checkpoint_threshold_is_exactly_128_unwitnessed_records(environment):
+    arm(environment)
+    worker, _, requests, _, _ = environment
+    for n in range(4, 131):
+        _append(worker.writer, n)
+    assert worker.tick().state == "idle"
+    assert not requests
+    _append(worker.writer, 131)
+    assert worker.tick().witnessed == 131
+    assert len(parse(requests[0])["records"]) == 128
+
+
 def test_retry_deadline_and_identical_bytes_survive_restart(environment):
     arm(environment)
     worker, clock, requests, failures, _ = environment

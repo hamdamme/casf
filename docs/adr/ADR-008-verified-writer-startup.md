@@ -60,3 +60,6 @@ Independent state must be retained outside the database's backup/rollback
 domain. Explicit local-only operations and arbitrary file-administrator changes
 are outside verified-startup authorization. Background scheduling, complete
 failure-matrix testing and release acceptance remain separate work.
+
+Follow-up: [ADR-009](ADR-009-checkpoint-worker.md) adds an explicitly run
+foreground checkpoint worker; startup itself still starts no background task.

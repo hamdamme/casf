@@ -20,6 +20,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |
+| Automatic checkpoint scheduling and retries | [Checkpoint worker](checkpoint-worker.md) |
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
 
 The specification states intended requirements, not proof of complete
@@ -103,7 +104,7 @@ of constant memory for every operation.
 | --- | --- | --- |
 | Startup | Verified opening checks independent pins, supplied active status, full local history and fresh witness continuity, then saves external high-water state before allowing writes. Revocation persists across restarts. Explicit local-only mode bypasses this authorization. Work grows with history size. | [Recovery guide](writer-recovery.md), [startup tests](../tests/unit/test_verified_startup.py) |
 | Restore | Verified records, checkpoints, receipts and seals are rebuilt atomically. Signed anchors require independent pins; bare anchors remain caller-authenticated. An anchor ahead of restored records seals the store. Offline restore returns a keyless reader; verified startup is required before signing. | [Recovery guide](writer-recovery.md), [anchor tests](../tests/unit/test_restore_anchors.py) |
-| Scheduling and recovery | Explicit fresh reconciliation verifies and recovers missing journal evidence, retains a write hold on failure and seals stores with missing records. Checkpoint creation, submission and recovery are explicit calls. There is no automatic background checkpoint or retry worker. A checkpoint batch limit is not a hard bound on the pending backlog during an outage. | [Checkpoint code](../src/casf/writer/__init__.py), [H3 method](../research/h3-witness-outage.md) |
+| Scheduling and recovery | Verified startup reconciles fresh witness history. The foreground checkpoint worker schedules 128-record/60-second checkpoints and durable bounded retries, preserving pending bytes and final seals. A checkpoint batch limit is not a hard bound on the backlog during an outage. | [Worker guide](checkpoint-worker.md), [historical H3 method](../research/h3-witness-outage.md) |
 | SQLite | WAL, FULL synchronization and foreign key enforcement are configured. The current DDL does not declare foreign key relationships. Enabling the pragma is not evidence that the proposed relationships in SPEC section 17 exist. | [Storage](../src/casf/storage/__init__.py) |
 | Export and status | Export includes accepted checkpoints and refuses export while a final checkpoint receipt is pending. Nonfinal pending checkpoints remain excluded; use a complete database backup to preserve pending state. Export does not create authority status. | [Recovery guide](writer-recovery.md), [verification](verification.md) |
 | Network | The client bounds total request time, response bytes, individual status and header lines, and header count. The reference service still needs operational TLS and access controls. | [Transport](../src/casf/transport.py), [server guide](witness-server.md) |
