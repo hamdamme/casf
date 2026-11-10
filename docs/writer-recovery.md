@@ -247,6 +247,13 @@ preserve the complete database, including its pending checkpoint. The backup
 API uses SQLite's consistent backup facility. Do not copy only a live main
 database file and discard its WAL state.
 
+Backup publication now uses a private temporary copy, flushes the complete
+file and publishes it without replacing an existing destination. Interrupted
+copies are not published. A directory-sync failure can leave a complete backup
+while still reporting failure; verify it and retry to a new path. See the
+[recovery drills and operating procedure](recovery-drills.md) for storage
+exhaustion, corrupt backup, key loss, rollback and witness outage handling.
+
 Nonfinal pending checkpoints remain outside the default accepted-only bundle
 export. Use the complete database backup when pending state must be recovered.
 Broader pending export/report behavior remains a separate interface task.

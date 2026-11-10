@@ -179,14 +179,7 @@ class Writer:
         procedure; this includes the required WAL state. Never
         overwrites an existing file.
         """
-        dest = str(dest_path)
-        if os.path.exists(dest):
-            raise CasfError("backup destination already exists")
-        target = sqlite3.connect(dest)
-        try:
-            self._db.connection.backup(target)
-        finally:
-            target.close()
+        self._db.backup(dest_path)
 
     def _check_heads(self) -> None:
         """Verify local records, indexes and journal in one snapshot.
@@ -388,7 +381,10 @@ class Writer:
             try:
                 return self._append_once(log_id, request, request_digest)
             except sqlite3.OperationalError as e:
-                if "locked" not in str(e) or attempt + 1 >= attempts:
+                if getattr(e, "sqlite_errorcode", 0) & 0xff not in (
+                        sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED):
+                    raise
+                if attempt + 1 >= attempts:
                     raise BusyError("append could not acquire the write lock "
                                     "within the retry budget") from e
                 time.sleep(self._retry_jitter * (attempt + 1)

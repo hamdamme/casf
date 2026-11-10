@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 38 is merged into main at `175a3692a2cf31934c1df72c8a239b2be4b810a9`. The verified-startup batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 39 is merged into main at `9227f6a765f9311c6d218dbdbfc0195b74844f88`. The recovery-drill batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phase 1 complete. Phase 2, Session 3 awaiting review; verified restore promotion also advances Session 4.
+**Current position:** Phase 1 and Session 3 complete. Phase 2, Session 4 awaiting review; checkpoint operation in Session 5 is next.
 
-**Progress:** 5/28 tasks complete; 23 remaining. 2/14 sessions complete; 12 remaining. 1/6 phases complete; 5 remaining, including the current phase.
+**Progress:** 7/28 tasks complete; 21 remaining. 3/14 sessions complete; 11 remaining. 1/6 phases complete; 5 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -18,10 +18,10 @@ These counts describe this completion plan, not the proportion of all historical
 | 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Complete |
 | 1 | 2 — Final requirements | F03 | Define exact experimental release version, platform and support scope | Complete |
 | 1 | 2 — Final requirements | F04 | Map each gap to a fix/design decision and acceptance check | Complete |
-| 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Awaiting review |
+| 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Complete |
 | 2 | 3 — Startup and trust | F06 | Add corruption, wrong-key and inconsistent-state regressions | Complete |
-| 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | Awaiting review |
-| 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | In progress |
+| 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | Complete |
+| 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | Awaiting review |
 | 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Pending |
 | 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | In progress |
 | 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Pending |
@@ -51,21 +51,21 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 38 is merged into main. The next batch requires verified startup by default for signing through the Python API and CLI; direct signing opens require an explicit local-only override.
-- F05 awaiting review: independent pins, full local checks, active status at the retained minimum, fresh witness reconciliation and durable external state precede write authorization. Revocation remains terminal across runs and already open verified writers recheck retained status.
-- F07 awaiting review: offline restore preserves authenticated journal/seal evidence and returns a keyless reader by default. Verified reopening checks fresh witness history and external state before promotion. Accepted receipts advance retained checkpoints before success.
-- F08 remains open: bootstrap retry, failed external persistence, concurrent receipt arrival and process interruption have regressions; the broader disk-full, lost-key, corrupt-backup and recovery drill matrix remains incomplete.
-- F10/F12: startup witnesses an empty checkpoint before the first record. The CLI requires trust, signed status and retained state and reports its startup mode. ADR-008 records the migration and corrects recovery locking so witness requests run outside SQLite transactions. Automatic checkpoint/retry scheduling and broader report/API contracts remain open.
-- Validation: exact local and hosted results belong to the draft PR. New tests cover default rejection, trusted startup, terminal revocation, old open writers, state-save failures, receipt high-water persistence, bootstrap retry and real CLI/witness flows.
-- Preservation: signed formats, frozen vectors and historical research outputs are unchanged. Research harnesses explicitly select local-only behavior to preserve their original experiment procedures. No release was published; review builds do not close final candidate F21/F22.
-- Remaining: 23 tasks, including 2 awaiting review; 12 sessions; 5 phases. After F05/F07 acceptance, 21 tasks remain and Session 3 can close. F08 keeps Session 4 open.
-- User action: review the verified-startup draft PR and its checks. Nothing is merged or released by this work.
-- Next task: complete the broader recovery failure matrix, then implement the agreed checkpoint/retry worker. Full specification conformance and release readiness remain separate acceptance gates.
+- PR 39 is merged. F05 and F07 are complete: verified startup, durable authority status and checkpoint retention, and authenticated offline restore followed by verified promotion have been accepted. Session 3 is complete.
+- F08 awaiting review: deterministic drills now cover storage exhaustion, corrupt backups, lost signing keys, writer and witness rollback, unavailable witnesses and interrupted backup/recovery. The matrix links each failure to assertions and an operating procedure.
+- Fixed three storage error paths: SQLite exhaustion remains distinguishable from lock contention, failed database initialization closes its connection, and CLI database errors return local error 5 without a traceback.
+- Backup publication uses a complete private temporary copy, file synchronization, atomic publication without replacement, and directory synchronization. Tests cover dangling symlinks, concurrent destination creation, copy/sync failure and process exit; source evidence and retry behavior are checked.
+- Validation: exact local and hosted results belong to the draft PR. The new drills use actual SQLite page-limit exhaustion, injected filesystem failures and selected process exits. They do not claim physical disk or power-loss validation.
+- Preservation: authenticated formats, frozen vectors and historical research outputs are unchanged. No release was published; review builds do not close final candidate F21/F22.
+- Remaining: 21 tasks, including F08 awaiting review; 11 sessions; 5 phases. After F08 acceptance, 20 tasks and 10 sessions remain, and Session 4 can close.
+- User action: review the recovery-drill draft PR and its checks. Nothing is merged or released by this work.
+- Next task: implement and test the agreed checkpoint/retry worker in Session 5. Broader process crashes, property/fuzz coverage, release validation and publication approval remain separate gates.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
+- [Recovery drill matrix and operating procedure](../recovery-drills.md)
 - [New integrity and recovery regressions](../../tests/unit/test_writer_integrity_recovery.py)
 - [Writer trust regressions](../../tests/unit/test_writer_trust.py) and [CLI trust regressions](../../tests/unit/test_cli_writer_trust.py)
 - [Requirement-to-test evidence](../../tests/requirement_evidence.json)
