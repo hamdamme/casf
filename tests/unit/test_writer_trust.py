@@ -1,4 +1,4 @@
-"""R02/R03/R04/R09: independently pinned writer manifest authority."""
+"""R02/R07/R09: independently pinned writer manifest authority."""
 
 from dataclasses import replace
 

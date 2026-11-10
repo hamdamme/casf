@@ -53,21 +53,22 @@ After every completed task, report: task ID and changes; checks actually run and
 
 - Completed F03: recorded the experimental release boundary, planned next review candidate 0.1.0rc2, supported validation targets, support limits and final release gates. The package version stays unchanged until final candidate preparation.
 - Completed F04: mapped all eight audit findings to completion tasks and acceptance evidence.
-- F05/F06: added full local record/index/journal verification on startup and wrong-signing-key protection. F06 is complete following review and merge of PR 30. Independent authority trust and fresh external-state reconciliation remain open under F05.
+- F05/F06: full local record/index/journal verification and wrong-signing-key protection merged in PR 30; F06 is complete. The next batch adds explicitly supplied authority, log, manifest and witness pins during creation, startup and restore, plus CLI `--trust` support. These changes await review. Compatibility calls without pins remain local-only; status, default-policy completion and fresh external-state reconciliation remain open under F05.
 - F07/F08: restore now preserves verified checkpoint/receipt chains, checkpoint indices, final seals and supplied pending tails. Added malformed-evidence, anchor, backup, continuation and process-interruption checks. Restore commits manifest, records and journal atomically. External anchor authentication/currentness and broader failure coverage remain open.
 - F19: removed the unused alternate test runner and three empty test-directory marker files. Updated coverage and recovery guidance. Incorporated merged PR 29 and reconciled the current reference with the startup/restore changes. Broader executable-documentation validation remains open.
 - Review follow-up: rejected incoming receipts that name the wrong manifest or previous receipt before committing them. Four regressions first reproduced the mismatch between receipt acceptance and startup verification; they now pass, including restart and recovery with the valid receipt. Added coverage for a restored nonfinal pending checkpoint with later unwitnessed records.
-- Verification: the revised local suite passed 455 tests, with 47 cases added by this PR. Ruff and mypy passed. The earlier PR head `af7555bb7f5be41f3034bca7ceead8d204e30249` passed all six GitHub jobs with 450 tests each and build/install checks. Current-head hosted results and merge-review status are recorded on [PR #30](https://github.com/hamdamme/casf/pull/30); prior results do not certify later changes. These are review-build checks, not completion of final-candidate F21/F22.
-- Preservation: the original local fix batch left 194 tracked files under frozen vectors, historical experiment results, research, and the specification byte-identical to the audit baseline. This branch preserves those areas relative to the merged PR 29 baseline, including its documentation corrections. The attack harness was adapted to generate corrupt evidence without using the newly guarded writer; expected outcomes were not changed.
+- Verification: PR 30 passed 455 tests locally and in all six hosted jobs before merge. The trust-pin batch adds 28 cases; all 483 tests pass locally, and Ruff and mypy pass. Hosted results must identify the final PR head; prior results do not certify later changes. These are review-build checks, not completion of final-candidate F21/F22.
+- Preservation: the trust-pin batch leaves specification bytes, frozen vectors, research and historical experiment results unchanged from merged PR 30. No experiments were rerun or releases published.
 - Remaining: 23 tasks, 12 sessions, 5 phases.
-- User action: nothing needed during the next implementation batch.
-- Next task: enforce independently supplied manifest trust pins during writer creation, startup and restore. Fresh-witness reconciliation and authenticated external anchors remain subsequent steps in F05/F07. No trust rule is waived; full specification conformance is not yet claimed.
+- User action: review the trust-pin changes and their checks before merge.
+- Next task: complete status and default trust policy, fresh witness reconciliation and authenticated external anchors under F05/F07. Full specification conformance is not yet claimed.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [New integrity and recovery regressions](../../tests/unit/test_writer_integrity_recovery.py)
+- [Writer trust regressions](../../tests/unit/test_writer_trust.py) and [CLI trust regressions](../../tests/unit/test_cli_writer_trust.py)
 - [Requirement-to-test evidence](../../tests/requirement_evidence.json)
 - [Coverage status](test-coverage-status.md)
 

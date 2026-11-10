@@ -72,7 +72,8 @@
         "tests/unit/test_crypto.py::test_wrong_domain_fails",
         "tests/unit/test_verifier.py::test_first_failure_seq_and_verified_range",
         "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_records_and_indexes",
-        "tests/unit/test_writer_integrity_recovery.py::test_wrong_signing_key_cannot_extend_existing_log"
+        "tests/unit/test_writer_integrity_recovery.py::test_wrong_signing_key_cannot_extend_existing_log",
+        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
       ],
       "remaining_review": ""
     },
@@ -149,12 +150,21 @@
       "remaining_review": ""
     },
     "T12": {
-      "assertion_scope": "Reject unknown versions, wrong keys, replaced manifests, and a provisioned witness identity that differs from the signed manifest.",
+      "assertion_scope": "Reject unknown versions, wrong keys, replaced manifests, unprovisioned logs and mismatching witness identities. Writer checks require explicitly supplied independent pins.",
       "nodeids": [
         "tests/unit/test_verifier.py::test_unknown_version_never_falls_back",
         "tests/unit/test_verifier.py::test_record_signature_wrong_key_fails",
         "tests/unit/test_verifier.py::test_manifest_replacement_fails",
-        "tests/unit/test_cli.py::test_verify_mismatched_provisioned_witness_id_exit_3"
+        "tests/unit/test_cli.py::test_verify_mismatched_provisioned_witness_id_exit_3",
+        "tests/unit/test_writer_trust.py::test_manifest_accepts_independently_pinned_authority",
+        "tests/unit/test_writer_trust.py::test_manifest_rejects_untrusted_pins",
+        "tests/unit/test_writer_trust.py::test_writer_never_falls_back_for_unprovisioned_log",
+        "tests/unit/test_writer_trust.py::test_writer_copies_supplied_trust_policy",
+        "tests/unit/test_cli_writer_trust.py::test_cli_initializes_and_appends_with_trust",
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_forged_authority_during_init",
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
+        "tests/unit/test_cli_writer_trust.py::test_cli_requires_provisioned_log",
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version"
       ],
       "remaining_review": ""
     },
@@ -205,7 +215,9 @@
         "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_checkpoint_journal",
         "tests/unit/test_writer_integrity_recovery.py::test_process_exit_during_restore_never_commits_partial_history",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_accepts_a_matching_older_anchor",
-        "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_or_conflicting_anchor"
+        "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_or_conflicting_anchor",
+        "tests/unit/test_writer_trust.py::test_writer_pins_apply_to_create_reopen_and_restore",
+        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
       ],
       "remaining_review": ""
     },
@@ -240,7 +252,8 @@
       "nodeids": [
         "tests/unit/test_cli.py::test_wrong_passphrase_never_printed",
         "tests/unit/test_cli.py::test_token_never_printed",
-        "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized"
+        "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized",
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store"
       ],
       "remaining_review": ""
     },

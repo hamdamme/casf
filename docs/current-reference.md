@@ -1,7 +1,7 @@
 # Current CASF implementation reference
 
-This guide includes the startup and restore fixes on top of the PR 29
-documentation baseline, `0f2df3de8dbee0da92c45d66167aac2813327a69`.
+This guide includes explicit writer trust pins on top of the PR 30
+startup and restore baseline, `65a0252ace032e5a5dae0a85d3d959b4c1b1e399`.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
 work from remaining trust and recovery requirements. Package metadata is
 `0.1.0rc1`; the proposed wire profile is `casf-v1`. These identify different
@@ -34,8 +34,10 @@ Dated release records describe only their recorded revisions and artifacts.
    Create or verify a signed manifest, provision trust pins, and obtain an
    authority signed status statement. Public key possession alone does not
    establish the operator's identity.
-2. Append events using `Writer` or `casf append`. The writer signs records and
-   commits them with the sequence and local head in a SQLite transaction.
+2. Initialize and append events using `Writer(..., trust_pins=...)` or CLI
+   writer commands with `--trust trust.json`. These pins authenticate the
+   manifest; they do not check status or fresh witness state. The writer signs
+   records and commits them with the sequence and local head in a transaction.
 3. Explicitly create a checkpoint and submit it to the registered witness.
    The witness validates the extension and stores a signed receipt. Append
    does not wait for a receipt or automatically schedule submission.
@@ -59,10 +61,13 @@ The implemented writer API is `casf.writer.Writer`, with methods such as
 The conceptual free functions and `AppendResult` in SPEC section 19 are not
 the current Python interface. Consult the method signatures in
 [`writer/__init__.py`](../src/casf/writer/__init__.py) before integrating.
-`create_log` checks the schema, manifest digest and writer key binding; it
-does not authenticate the authority signature. Establish that trust before
-initializing the writer, for example through `casf admin trust` with an
-independently obtained authority public key.
+`trust_pins` supplies independent authority, expected log, manifest and witness
+pins for creation, startup and restore. The writer checks the authority
+signature before accepting a provisioned manifest. Omitting pins preserves
+local-only validation for compatibility and does not authenticate the
+authority. Provision pins through a trusted channel, for example with
+`casf admin trust` and an independently obtained authority public key. Writer
+pins do not evaluate status serials, revocation or verifier mode policy.
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
 `FAIL` and `INCONCLUSIVE`; verification dimensions use `OK`, `FAIL` and
@@ -89,7 +94,7 @@ of constant memory for every operation.
 
 | Area | Implemented behavior and consequence | Source or evidence |
 | --- | --- | --- |
-| Startup | Local record signatures, chains, indexes, heads and checkpoint/receipt journals are verified in one snapshot. These checks use manifest keys; independent authority trust and fresh external-state reconciliation remain open requirements. Startup work grows with history size. | [Recovery guide](writer-recovery.md), [integrity tests](../tests/unit/test_writer_integrity_recovery.py) |
+| Startup | Local record signatures, chains, indexes, heads and checkpoint/receipt journals are verified in one snapshot. Supplied pins authenticate manifest authority and identity. The compatibility default has no independent pins; status and fresh external-state reconciliation remain open requirements. Startup work grows with history size. | [Recovery guide](writer-recovery.md), [trust tests](../tests/unit/test_writer_trust.py) |
 | Restore | Verified records, checkpoints, receipts and final seals are rebuilt in one transaction. A supplied pending tail retains its signed bytes. A supplied anchor count ahead of the restored history seals the store. The caller must authenticate the anchor; restore does not query the witness or establish currentness. | [Recovery guide](writer-recovery.md), [restore tests](../tests/unit/test_writer_integrity_recovery.py) |
 | Scheduling and recovery | Checkpoint creation, submission and recovery are explicit calls. There is no automatic background checkpoint or retry worker. A checkpoint batch limit is not a hard bound on the pending backlog during an outage. | [Checkpoint code](../src/casf/writer/__init__.py), [H3 method](../research/h3-witness-outage.md) |
 | SQLite | WAL, FULL synchronization and foreign key enforcement are configured. The current DDL does not declare foreign key relationships. Enabling the pragma is not evidence that the proposed relationships in SPEC section 17 exist. | [Storage](../src/casf/storage/__init__.py) |

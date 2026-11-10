@@ -2,9 +2,49 @@
 
 The writer verifies local records and the checkpoint journal when opening a
 database. Bundle restore preserves supplied, verified checkpoint and receipt
-history and any final seal. These checks use the public keys in the manifest;
-the application must establish independent authority trust before provisioning
-or promoting a restored store.
+history and any final seal. Independently supplied trust pins also authenticate
+the manifest authority and bind the expected log, manifest and witness.
+
+## Independently pinned manifests
+
+Pass `trust_pins` to `Writer` and `Writer.restore_from_bundle`. The mapping
+uses expected log IDs as keys and `casf.verifier.TrustPins` values. Each value
+must include an explicit `manifest_hash`, the authority public key under its
+derived issuer ID, and the witness public key under its derived witness ID.
+Obtain these pins through an authenticated channel independent of the database
+or bundle. Do not build a trust policy from the evidence being checked.
+
+```python
+from casf.writer import Writer
+
+# provisioned_pins is a separately loaded mapping of log IDs to TrustPins.
+writer = Writer("writer.db", log_private_key, trust_pins=provisioned_pins)
+try:
+    writer.create_log(manifest)
+finally:
+    writer.close()
+
+restored = Writer.restore_from_bundle(
+    "restored.db", log_private_key, "bundle", trust_pins=provisioned_pins,
+)
+restored.close()
+```
+
+The writer checks the authority signature and exact pinned identities at
+creation, startup and restore, and rechecks the manifest before appending or
+creating a checkpoint. A supplied policy never falls back for an unprovisioned
+log; an empty mapping authorizes no logs. The mapping and key dictionaries are
+copied at open so later caller changes cannot alter an active writer's policy.
+Pins can also be supplied to a keyless reader.
+
+For compatibility, omitting `trust_pins` retains local-only validation and does
+not authenticate the manifest authority. CLI writer commands accept `--trust
+trust.json`; see [administration](administration.md#use-pins-with-writer-commands).
+Supply it on every invocation. Pins are not persisted as trust inside the log
+database. Writer pin checks do not evaluate authority status or
+`minimum_status_serial`, apply the verifier's mode policy, or query fresh
+witness state. Use the verifier for status and evidence evaluation. Full
+startup and recovery conformance remains incomplete.
 
 ## Local startup checks
 
@@ -67,11 +107,12 @@ Broader pending export/report behavior remains a separate interface task.
 
 ## Remaining trust and recovery boundaries
 
-Local checks cannot distinguish an internally valid old snapshot from current
-history without independently retained or fresh witness evidence. They do not
-query the witness at startup, authenticate an authority key supplied by the
-bundle, establish current revocation knowledge, or implement the planned
-automatic checkpoint/retry worker. Reconcile external state before promoting
+Even with manifest pins, local checks cannot distinguish an internally valid
+old snapshot from current history without independently retained or fresh
+witness evidence. They do not query the witness at startup, establish current
+revocation knowledge, or implement the planned automatic checkpoint/retry
+worker. Authority keys inside a bundle never establish independent trust.
+Reconcile external state before promoting
 a restored or suspected-corrupt database. Full specification conformance is
 not claimed by these fixes.
 
@@ -86,3 +127,11 @@ coverage includes incoming receipt bindings and recovery of a nonfinal
 pending checkpoint with an unwitnessed suffix. Requirement links include R02,
 R04, R05, R08 and R09 with T03, T04, T08, T14 and T15. Existing concurrency and
 process-crash tests continue to exercise snapshot behavior and transaction boundaries.
+
+`tests/unit/test_writer_trust.py` covers supplied authority, witness, log and
+manifest pins; forged signatures at creation, startup and restore; missing
+provisioning; and caller policy mutation. `tests/unit/test_cli_writer_trust.py`
+covers trusted command flows, rejection before writer operations, trust-file
+versions and safe diagnostics. These checks support R02, R07, R09 and R10
+through T03, T12, T15 and T17. They do not establish status or fresh witness
+reconciliation coverage.

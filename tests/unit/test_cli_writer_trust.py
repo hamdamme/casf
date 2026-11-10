@@ -1,4 +1,4 @@
-"""R03/R10: writer CLI uses independently provisioned manifest trust."""
+"""R07/R10: writer CLI uses independently provisioned manifest trust."""
 
 import json
 
