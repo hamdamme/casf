@@ -68,21 +68,21 @@ def test_restore_rejects_invalid_signed_anchor_before_creating_store(tmp_path, c
     elif change == "ambiguous":
         extra["anchor"] = {"count": 2, "head_hash": checkpoint["body"]["head_hash"]}
     else:
-        checkpoint["body"]["created_at"] = "2026-10-12T00:00:00.000000Z"
+        checkpoint["body"]["issued_at"] = "2026-10-12T00:00:00.000000Z"
         checkpoint["checkpoint_hash"] = crypto.digest_checkpoint(checkpoint["body"])
         checkpoint["signature"] = crypto.sign_checkpoint(LOG, checkpoint["body"])
         receipt["body"]["checkpoint_hash"] = checkpoint["checkpoint_hash"]
         receipt["receipt_hash"] = crypto.digest_receipt(receipt["body"])
         receipt["signature"] = crypto.sign_receipt(WIT, receipt["body"])
     dest = tmp_path / "restored.db"
-    with pytest.raises(CasfError):
+    with pytest.raises(CasfError, match="journal" if change == "journal_conflict" else None):
         Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins,
                                    anchor_checkpoint=checkpoint, anchor_receipt=receipt, **extra)
     assert not dest.exists()
 
 
 def test_restore_behind_signed_anchor_is_retained_sealed(tmp_path):
-    path, bundle, pins = evidence(tmp_path)
+    _path, bundle, pins = evidence(tmp_path)
     old = _writer(tmp_path / "old.db")
     try:
         old_path = old.export_bundle(LOG_ID, tmp_path / "old-bundle")
