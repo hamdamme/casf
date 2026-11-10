@@ -101,8 +101,23 @@ anchor pair. A newer anchor beyond the restored record count retains the
 database sealed and raises `RESTORE_BEHIND_WITNESS`.
 
 Signed anchors are historical evidence. Their authenticity does not prove
-that the witness has no newer checkpoint. Fresh witness reconciliation and
-authority status evaluation remain separate requirements.
+that the witness has no newer checkpoint. Fresh witness reconciliation
+remains a separate requirement.
+
+### Authority status during restore
+
+Set `require_active_status=True` with independent `trust_pins` to check the
+bundle's signed status statements before creating the destination. This uses
+the public verifier's status and integrity rules: missing, forged, unrelated,
+revoked or below-minimum status fails. A later active statement cannot override
+a supplied revocation. The provisioned `minimum_status_serial` is enforced;
+pass the maximum independently retained minimum when recovering a known log.
+
+This option is false for compatibility with the local-only restore API.
+It checks supplied evidence, does not discover newer revocations, and does not
+persist or update external status high-water state. Writer startup and append
+do not inherit continuous status enforcement from a successful restore.
+Full default startup policy and fresh witness reconciliation remain open.
 
 ## Pending final seals and backups
 
