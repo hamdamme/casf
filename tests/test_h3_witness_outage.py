@@ -1,12 +1,14 @@
 """Focused tests for the real-transport canonical H3 experiment harness."""
 
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import pytest
 
 from benchmarks.h3_witness_outage import FaultProxy, execute, run_condition
+from casf.witness import Witness
 
 
 def test_fault_proxy_forwards_when_healthy_and_drops_during_fault():
@@ -54,21 +56,35 @@ def test_fault_proxy_forwards_when_healthy_and_drops_during_fault():
         thread.join(timeout=1)
 
 
-@pytest.mark.parametrize("condition", ["healthy", "outage"])
+@pytest.mark.parametrize("condition, recovery_delay", [("healthy", 0), ("outage", 0),
+                                                       ("outage", 0.3)])
 def test_one_real_run_exercises_verification_recovery_and_receipts(
-        tmp_path: Path, condition: str):
+        tmp_path: Path, monkeypatch, condition: str, recovery_delay: float):
+    submit = Witness._submit
+    delayed = []
+
+    def delayed_submit(self, log_id, checkpoint, records):
+        if checkpoint["body"]["index"] == 2:
+            delayed.append(checkpoint["checkpoint_hash"])
+            time.sleep(recovery_delay)
+        return submit(self, log_id, checkpoint, records)
+
+    monkeypatch.setattr(Witness, "_submit", delayed_submit)
     config = {
         "events_per_run": 32,
         "batch_size": 8,
         "event_target_bytes": 256,
         "interarrival_seconds": 0.001,
-        "query_timeout_seconds": 0.2,
-        "submission_timeout_seconds": 0.2,
+        # The proxy enforces the outage independently of client timeouts.
+        # Allow normal scheduler/crypto latency on shared CI runners.
+        "query_timeout_seconds": 2.0,
+        "submission_timeout_seconds": 2.0,
         "outage_seconds": 0.2,
-        "recovery_observation_deadline_seconds": 2.0,
+        "recovery_observation_deadline_seconds": 10.0,
     }
     row = run_condition(tmp_path, 71234, condition, config, 0)
     assert row["status"] == "complete", row.get("traceback")
+    assert len(delayed) == 1
     assert row["final_writer_count"] == 32
     assert row["final_witness_count"] == 32
     assert row["final_witness_checkpoint_index"] == 3
