@@ -112,7 +112,8 @@
       "nodeids": [
         "tests/unit/test_writer.py::test_crash_before_commit_is_all_or_none",
         "tests/unit/test_writer_hardening.py::test_crash_before_insert_leaves_nothing",
-        "tests/unit/test_writer_hardening.py::test_crash_after_commit_retry_returns_committed_record"
+        "tests/unit/test_writer_hardening.py::test_crash_after_commit_retry_returns_committed_record",
+        "tests/unit/test_recovery_storage.py::test_sqlite_full_preserves_history_and_same_event_retry"
       ],
       "remaining_review": ""
     },
@@ -144,7 +145,8 @@
         "tests/unit/test_restore_anchors.py::test_restore_behind_signed_anchor_is_retained_sealed",
         "tests/unit/test_writer_reconciliation.py::test_record_loss_is_terminal_even_after_witness_rollback",
         "tests/unit/test_writer_reconciliation.py::test_rejects_retained_checkpoint_rollback_or_fork",
-        "tests/unit/test_writer_reconciliation.py::test_rejects_fresh_witness_behind_local_journal"
+        "tests/unit/test_writer_reconciliation.py::test_rejects_fresh_witness_behind_local_journal",
+        "tests/unit/test_recovery_drills.py::test_writer_and_witness_rollback_cannot_replace_retained_checkpoint"
       ],
       "remaining_review": ""
     },
@@ -223,7 +225,7 @@
       "remaining_review": ""
     },
     "T15": {
-      "assertion_scope": "Export and restore verify; malformed bundles fail. Explicit fresh reconciliation recovers missing journals and retains write holds after failed or interrupted recovery.",
+      "assertion_scope": "Export and restore verify; malformed bundles fail. Explicit fresh reconciliation recovers missing journals and retains write holds after failed or interrupted recovery. Storage exhaustion, corrupt backups, key loss, rollback and witness outages have deterministic drills; incomplete backups are not published.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
         "tests/unit/test_bundle.py::test_restore_continues_chain",
@@ -265,7 +267,19 @@
         "tests/unit/test_verified_startup.py::test_verified_receipt_updates_retained_checkpoint_before_success",
         "tests/unit/test_cli_verified_startup.py::test_cli_defaults_to_verified_init_append_checkpoint_submit",
         "tests/unit/test_cli_verified_startup.py::test_interrupted_bootstrap_retries_identical_checkpoint",
-        "tests/unit/test_writer_reconciliation.py::test_concurrent_receipt_is_rechecked_before_journal_promotion"
+        "tests/unit/test_writer_reconciliation.py::test_concurrent_receipt_is_rechecked_before_journal_promotion",
+        "tests/unit/test_recovery_storage.py::test_corrupt_database_open_closes_connection",
+        "tests/unit/test_backup_failures.py::test_interrupted_backup_leaves_no_destination_and_can_retry",
+        "tests/unit/test_backup_failures.py::test_backup_destination_appears_only_after_complete_copy",
+        "tests/unit/test_backup_failures.py::test_backup_rejects_dangling_destination_symlink",
+        "tests/unit/test_backup_failures.py::test_backup_preserves_destination_created_during_copy",
+        "tests/unit/test_backup_failures.py::test_backup_sync_failure_never_exposes_partial_database",
+        "tests/unit/test_backup_failures.py::test_backup_process_exit_does_not_publish_partial_copy",
+        "tests/unit/test_recovery_drills.py::test_sqlite_full_during_reconciliation_keeps_hold_and_retries",
+        "tests/unit/test_recovery_drills.py::test_corrupt_backup_cannot_replace_independent_state",
+        "tests/unit/test_recovery_drills.py::test_missing_key_preserves_public_evidence_and_prevents_signing",
+        "tests/unit/test_recovery_drills.py::test_old_writer_backup_with_lost_records_is_not_promoted",
+        "tests/unit/test_recovery_drills.py::test_unavailable_witness_preserves_pending_bytes_until_verified_retry"
       ],
       "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
     },
@@ -304,7 +318,8 @@
         "tests/unit/test_cli.py::test_token_never_printed",
         "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized",
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
-        "tests/unit/test_receipt_recovery.py::test_cli_recovers_receipt_without_signing_key"
+        "tests/unit/test_receipt_recovery.py::test_cli_recovers_receipt_without_signing_key",
+        "tests/unit/test_recovery_storage.py::test_cli_corrupt_backup_returns_local_error_without_traceback"
       ],
       "remaining_review": ""
     },
