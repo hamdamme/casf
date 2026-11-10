@@ -21,15 +21,16 @@ No signed formats, cryptographic domains or historical fixtures change.
 
 ## Durable hold and serialization
 
-Reserve local `heads.sealed=3` for reconciliation required. Commit this hold
-before network access, then hold a SQLite write transaction across the bounded
-fresh query, chain retrieval, validation and journal commit. This deliberately
-serializes reconciliation with appends, checkpoint creation and receipt writes;
-it avoids a stale response racing with another recovery or writer. Local
-verification is repeated inside that transaction. Ordinary reads remain possible
-in WAL mode. Network requests share one monotonic deadline and chain traversal
-has a separate step limit. Local verification and SQLite lock acquisition have
-their own costs; the network deadline is not a bound on the entire operation.
+Reserve local `heads.sealed=3` for reconciliation required and commit the hold
+before network access. [ADR-008](ADR-008-verified-writer-startup.md) corrects the
+initial implementation's network transaction: a bounded advisory recovery lock
+serializes recovery while network requests run outside SQLite transactions.
+Full local history and any concurrent receipt changes are rechecked in the
+final write transaction. The hold blocks appends/checkpoints; WAL readers and
+unrelated logs can continue. Network requests share one monotonic deadline and
+chain traversal has a separate step limit. Local verification and lock
+acquisition have their own costs; the network deadline does not bound the
+entire operation.
 
 Failure or interruption leaves the committed hold in place and preserves the
 previous journal and pending bytes. Restart accepts the hold for inspection,

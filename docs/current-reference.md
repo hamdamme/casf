@@ -34,10 +34,11 @@ Dated release records describe only their recorded revisions and artifacts.
    Create or verify a signed manifest, provision trust pins, and obtain an
    authority signed status statement. Public key possession alone does not
    establish the operator's identity.
-2. Initialize and append events using `Writer(..., trust_pins=...)` or CLI
-   writer commands with `--trust trust.json`. These pins authenticate the
-   manifest; they do not check status or fresh witness state. The writer signs
-   records and commits them with the sequence and local head in a transaction.
+2. Initialize with `Writer.initialize_verified` and reopen with
+   `Writer.open_verified`, passing independent pins and `StartupPolicy`.
+   CLI writing commands require trust, signed status and retained state by
+   default. Startup checks full local history, active status, a fresh witness
+   view and external persistence before permitting new signed records.
 3. Explicitly create a checkpoint and submit it to the registered witness.
    The witness validates the extension and stores a signed receipt. Append
    does not wait for a receipt or automatically schedule submission.
@@ -56,18 +57,23 @@ CASF does not automatically open, hash, or authenticate the document's origin.
 
 ## API and verification behavior
 
-The implemented writer API is `casf.writer.Writer`, with methods such as
-`create_log`, `append`, `export_bundle`, `backup`, and `restore_from_bundle`.
-The conceptual free functions and `AppendResult` in SPEC section 19 are not
-the current Python interface. Consult the method signatures in
-[`writer/__init__.py`](../src/casf/writer/__init__.py) before integrating.
-`trust_pins` supplies independent authority, expected log, manifest and witness
-pins for creation, startup and restore. The writer checks the authority
-signature before accepting a provisioned manifest. Omitting pins preserves
-local-only validation for compatibility and does not authenticate the
-authority. Provision pins through a trusted channel, for example with
-`casf admin trust` and an independently obtained authority public key. Writer
-pins do not evaluate status serials, revocation or verifier mode policy.
+The implemented writer API is `casf.writer.Writer`. Use `StartupPolicy` with
+`initialize_verified` or `open_verified` before `append` and checkpoint
+operations. A direct signing constructor requires explicit `local_only=True`;
+keyless readers remain available. Offline `restore_from_bundle` returns a
+keyless reader by default and must be promoted through verified startup.
+
+Independent pins authenticate the authority, expected log, manifest and
+witness. Supplied signed status is checked against both provisioned and retained
+serial minima; observed revocation is terminal across runs. A fresh witness
+query reconciles missing journal evidence before the external checkpoint is
+saved and writing resumes. Already open verified writers check retained status
+before further signing. Status distribution remains administrative, so an
+active statement does not prove there is no undistributed revocation.
+
+The conceptual free functions and `AppendResult` in SPEC section 19 remain
+separate interface work. See [ADR-008](adr/ADR-008-verified-writer-startup.md)
+and the [recovery guide](writer-recovery.md) for current signatures and migration.
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
 `FAIL` and `INCONCLUSIVE`; verification dimensions use `OK`, `FAIL` and
@@ -94,8 +100,8 @@ of constant memory for every operation.
 
 | Area | Implemented behavior and consequence | Source or evidence |
 | --- | --- | --- |
-| Startup | Local record signatures, chains, indexes, heads and checkpoint/receipt journals are verified in one snapshot. Supplied pins authenticate manifest authority and identity. The compatibility default has no independent pins; default status enforcement and automatic fresh reconciliation remain open requirements. Startup work grows with history size. | [Recovery guide](writer-recovery.md), [trust tests](../tests/unit/test_writer_trust.py) |
-| Restore | Verified records, checkpoints, receipts and seals are rebuilt in one transaction. A supplied signed anchor pair is authenticated with independent pins and checked against the journal; a bare anchor remains caller-authenticated. An anchor ahead of restored records seals the store. Restore does not query fresh witness state. | [Recovery guide](writer-recovery.md), [anchor tests](../tests/unit/test_restore_anchors.py) |
+| Startup | Verified opening checks independent pins, supplied active status, full local history and fresh witness continuity, then saves external high-water state before allowing writes. Revocation persists across restarts. Explicit local-only mode bypasses this authorization. Work grows with history size. | [Recovery guide](writer-recovery.md), [startup tests](../tests/unit/test_verified_startup.py) |
+| Restore | Verified records, checkpoints, receipts and seals are rebuilt atomically. Signed anchors require independent pins; bare anchors remain caller-authenticated. An anchor ahead of restored records seals the store. Offline restore returns a keyless reader; verified startup is required before signing. | [Recovery guide](writer-recovery.md), [anchor tests](../tests/unit/test_restore_anchors.py) |
 | Scheduling and recovery | Explicit fresh reconciliation verifies and recovers missing journal evidence, retains a write hold on failure and seals stores with missing records. Checkpoint creation, submission and recovery are explicit calls. There is no automatic background checkpoint or retry worker. A checkpoint batch limit is not a hard bound on the pending backlog during an outage. | [Checkpoint code](../src/casf/writer/__init__.py), [H3 method](../research/h3-witness-outage.md) |
 | SQLite | WAL, FULL synchronization and foreign key enforcement are configured. The current DDL does not declare foreign key relationships. Enabling the pragma is not evidence that the proposed relationships in SPEC section 17 exist. | [Storage](../src/casf/storage/__init__.py) |
 | Export and status | Export includes accepted checkpoints and refuses export while a final checkpoint receipt is pending. Nonfinal pending checkpoints remain excluded; use a complete database backup to preserve pending state. Export does not create authority status. | [Recovery guide](writer-recovery.md), [verification](verification.md) |

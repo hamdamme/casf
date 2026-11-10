@@ -74,17 +74,23 @@ retry normally instead of deleting it. Historical CLI examples predate this
 required option; use the commands above for the current implementation.
 
 These are local retained observations, not independently current revocation
-information. Rejected status statements, including revocations that cause a
-FAIL, are not persisted by this successful verification store. Administrators
-must maintain trusted revocation provisioning. If the witness and verifier
+information. An authenticated revocation is persisted even though the result is FAIL,
+and remains terminal across later runs. Invalid signatures and unrelated
+statements cannot set this flag. Revocation observation does not advance the
+accepted checkpoint. Administrators must still maintain trusted status
+provisioning; unavailable newer statements cannot be discovered offline. If the witness and verifier
 state are both restored, or an attacker controls the verifier state, rollback
 protection can be lost. Protect and back up this file separately from the
 witness and evidence. Do not store it in a public repository.
 
 Library callers remain responsible for durable state. The verifier report
-exposes `observed_status_serial` and `checkpoint`; persist them only for PASS,
-and supply them through the next call's `minimum_status_serial` trust pin
-and `retained_checkpoint` argument while holding an appropriate lock.
+exposes `observed_status_serial` and `checkpoint`. Advance an accepted
+checkpoint only for PASS. Separately retain authenticated terminal revocation
+even on FAIL, without advancing the checkpoint. Supply retained serial,
+checkpoint and revocation through `minimum_status_serial`,
+`retained_checkpoint` and `retained_revoked` while holding an appropriate lock.
+Verified writer entry points manage this state and also retain each accepted
+receipt before reporting successful submission.
 
 ## Unsigned online errors
 
