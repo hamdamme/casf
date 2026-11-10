@@ -29,6 +29,11 @@ its checks.
   writer and witness fixtures. They check exact row/BLOB preservation, schema
   identity and constraints, WAL snapshots, final receipt replay, interrupted
   copies, publication failures and refusal of unknown or modified schemas.
+- [Export and report](../export-and-reports.md) regressions cover prefix and
+  journal boundaries, exact envelope bytes, bounded Python allocations,
+  destination races, filesystem failures, process exits and full CLI reports
+  on successful, failed and inconclusive verification. Linux/macOS native
+  exclusive-rename behavior is exercised on the corresponding test host.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

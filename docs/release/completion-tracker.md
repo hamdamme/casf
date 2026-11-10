@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 41 is merged into main at `444b999af54d41455b0c0ea1801734212283f35e`. The storage-migration batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 42 is merged into main at `08206bb577daf23d0e6c257a1f5c4ed09bc286fa`. The export/report batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration awaits review, and public interface conformance is next.
+**Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration is complete, and public interface conformance is in progress.
 
-**Progress:** 10/28 tasks complete; 18 remaining. 5/14 sessions complete; 9 remaining. 1/6 phases complete; 5 remaining, including the current phase.
+**Progress:** 11/28 tasks complete; 17 remaining. 5/14 sessions complete; 9 remaining. 1/6 phases complete; 5 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -24,7 +24,7 @@ These counts describe this completion plan, not the proportion of all historical
 | 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | Complete |
 | 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Complete |
 | 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | Complete |
-| 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Awaiting review |
+| 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Complete |
 | 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | In progress |
 | 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Pending |
 | 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Pending |
@@ -51,21 +51,23 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 41 is merged. F09/F10 and Session 5 are complete: checkpoint scheduling, durable retries, outage/restart behavior and pending/witnessed reports have been accepted. The merged revision's Ubuntu CI run passed.
-- F11 awaiting review: writer and witness schema version 1 adds database identities, relationships, fixed lengths, type/range checks and fail-closed schema validation. Unknown, changed and unversioned stores do not silently initialize or upgrade.
-- Explicit migration copies recognized legacy stores to a new destination, preserving every stored row and envelope byte, retry state and final seals. A consistent SQLite snapshot includes committed WAL data. Invalid rows and interrupted copies preserve the source; publication never overwrites an existing destination.
-- Regression coverage includes frozen writer/witness fixtures, older optional-table layouts, pending final receipt replay, initialization rollback, unknown schemas, WAL snapshots, process exits and publication races. Existing cryptographic corruption tests retain their intended signature/index coverage.
-- Validation: exact local and hosted results belong to the draft PR. These checks do not close the broader process crash/concurrency matrix or final candidate package gates.
-- Preservation: authenticated formats, frozen cryptographic vectors and historical research outputs are unchanged. No release was published.
-- Remaining: 18 tasks, including F11 awaiting review; 9 sessions; 5 phases. After F11 acceptance, 17 tasks remain. Session 6 stays open until F12 is complete.
-- User action: review the storage-migration draft PR and its checks. Nothing is merged or released by this work.
-- Next task: F12, public API, export and verification-report conformance. Property/fuzz coverage, broader crash tests, research/package validation and publication approval remain separate gates.
+- PR 42 is merged. F11 is complete: constrained versioned schemas and explicit writer/witness migrations have been accepted.
+- F12 remains in progress. This review batch adds prefix exports, private streaming publication that cannot replace an existing destination, and complete diagnostic serialization shared by the Python verifier and CLI.
+- Export tests cover exact envelope bytes, checkpoint/receipt boundaries, concurrent appends, bounded Python allocations, file/directory failures, destination races and process exits. Pending final seals remain protected; late publication errors never expose a partial bundle.
+- Report tests cover full success/failure/inconclusive output, exact record ranges, checkpoint identity, policy assumptions, detached serialization and late malformed input. Existing enum values and exit categories are preserved.
+- Remaining F12 acceptance: immutable typed requests/results, alignment of report enum names and missing-trust verdicts with SPEC section 15, and the incremental verification contract. These are required follow-up changes; this batch does not close Session 6 or Phase 2.
+- Validation: exact local and hosted results belong to the draft PR. Selected crash tests do not close the broader process crash/concurrency matrix or final candidate package gates.
+- Preservation: authenticated formats, cryptographic vectors, schema version 1 and historical research outputs are unchanged. No release was published.
+- Remaining: 17 tasks, 9 sessions and 5 phases. F12 stays in the remaining total after this batch is accepted.
+- User action: review the export/report draft PR and its checks. Nothing is merged or released by this work.
+- Next task: continue F12 with the typed public API and report-semantics decisions. Property/fuzz coverage, broader crash tests, research/package validation and publication approval remain separate gates.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
+- [Prefix export and complete diagnostics](../export-and-reports.md)
 - [Storage integrity and migration](../storage-migrations.md)
 - [Checkpoint worker behavior and reports](../checkpoint-worker.md)
 - [New integrity and recovery regressions](../../tests/unit/test_writer_integrity_recovery.py)

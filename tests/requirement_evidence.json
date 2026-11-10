@@ -95,7 +95,9 @@
       "nodeids": [
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
         "tests/unit/test_verifier.py::test_integrity_pass_reports_verified_range",
-        "tests/unit/test_streaming.py::test_stream_matches_eager"
+        "tests/unit/test_streaming.py::test_stream_matches_eager",
+        "tests/unit/test_export_contract.py::test_prefix_limits_journal_and_preserves_exact_blobs",
+        "tests/unit/test_report_contract.py::test_report_serialization_covers_all_diagnostic_fields"
       ],
       "remaining_review": ""
     },
@@ -305,7 +307,13 @@
         "tests/unit/test_storage_migrations.py::test_constraints_reject_orphans_and_invalid_values",
         "tests/unit/test_storage_migrations.py::test_witness_rejects_invalid_keys_blobs_and_orphans",
         "tests/unit/test_storage_migrations.py::test_destination_created_during_migration_is_retained",
-        "tests/unit/test_cli_storage.py::test_cli_migration_and_repeat_refusal"
+        "tests/unit/test_cli_storage.py::test_cli_migration_and_repeat_refusal",
+        "tests/unit/test_export_contract.py::test_publication_preserves_destination_created_after_file_writes",
+        "tests/unit/test_export_contract.py::test_export_selects_exact_prefix",
+        "tests/unit/test_export_contract.py::test_export_failure_never_leaves_a_partial_destination",
+        "tests/unit/test_export_contract.py::test_process_exit_preserves_source_and_never_publishes_partial_bundle",
+        "tests/unit/test_export_contract.py::test_pending_final_seal_blocks_every_export_prefix",
+        "tests/unit/test_cli_export.py::test_cli_prefix_export_reports_and_validates_the_requested_range"
       ],
       "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
     },
@@ -333,7 +341,10 @@
         "tests/unit/test_streaming.py::test_open_descriptor_does_not_follow_replaced_record_path",
         "tests/unit/test_streaming.py::test_late_malformed_line",
         "tests/unit/test_writer_reconciliation.py::test_chain_budget_preserves_hold",
-        "tests/unit/test_writer_reconciliation.py::test_invalid_configuration_never_queries_witness"
+        "tests/unit/test_writer_reconciliation.py::test_invalid_configuration_never_queries_witness",
+        "tests/unit/test_export_contract.py::test_export_memory_does_not_materialize_record_history",
+        "tests/unit/test_report_contract.py::test_cli_preserves_complete_reports_for_every_verdict",
+        "tests/unit/test_report_contract.py::test_late_malformed_bundle_does_not_publish_report_or_checkpoint"
       ],
       "remaining_review": ""
     },
