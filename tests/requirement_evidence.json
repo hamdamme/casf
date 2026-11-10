@@ -114,7 +114,9 @@
         "tests/unit/test_writer_hardening.py::test_crash_before_insert_leaves_nothing",
         "tests/unit/test_writer_hardening.py::test_crash_after_commit_retry_returns_committed_record",
         "tests/unit/test_recovery_storage.py::test_sqlite_full_preserves_history_and_same_event_retry",
-        "tests/unit/test_checkpoint_worker.py::test_interrupted_attempt_retains_retry_deadline"
+        "tests/unit/test_checkpoint_worker.py::test_interrupted_attempt_retains_retry_deadline",
+        "tests/unit/test_storage_migrations.py::test_initialization_rolls_back_schema_and_markers_together",
+        "tests/unit/test_storage_migrations.py::test_process_exit_keeps_legacy_source_and_allows_retry"
       ],
       "remaining_review": ""
     },
@@ -230,12 +232,13 @@
         "tests/unit/test_writer_integrity_recovery.py::test_export_cannot_silently_drop_a_pending_final_seal",
         "tests/unit/test_writer_reconciliation.py::test_recovers_exact_pending_receipt",
         "tests/unit/test_writer_reconciliation.py::test_preserves_unaccepted_pending_tail",
-        "tests/unit/test_checkpoint_worker.py::test_pending_final_checkpoint_retries_and_stops"
+        "tests/unit/test_checkpoint_worker.py::test_pending_final_checkpoint_retries_and_stops",
+        "tests/unit/test_storage_migrations.py::test_migrated_pair_replays_pending_final_receipt_without_resigning"
       ],
       "remaining_review": ""
     },
     "T15": {
-      "assertion_scope": "Export and restore verify; malformed bundles fail. Explicit fresh reconciliation recovers missing journals and retains write holds after failed or interrupted recovery. Storage exhaustion, corrupt backups, key loss, rollback and witness outages have deterministic drills; incomplete backups are not published.",
+      "assertion_scope": "Export and restore verify; malformed bundles fail. Explicit fresh reconciliation recovers missing journals and retains write holds after failed or interrupted recovery. Storage exhaustion, corrupt backups, key loss, rollback and witness outages have deterministic drills; incomplete backups are not published. Versioned storage constraints and explicit legacy migrations preserve row and envelope bytes without replacing source stores.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
         "tests/unit/test_bundle.py::test_restore_continues_chain",
@@ -291,7 +294,18 @@
         "tests/unit/test_recovery_drills.py::test_old_writer_backup_with_lost_records_is_not_promoted",
         "tests/unit/test_recovery_drills.py::test_unavailable_witness_preserves_pending_bytes_until_verified_retry",
         "tests/unit/test_checkpoint_worker.py::test_heartbeat_deadline_survives_restart",
-        "tests/unit/test_checkpoint_worker.py::test_failed_external_receipt_save_stops_worker"
+        "tests/unit/test_checkpoint_worker.py::test_failed_external_receipt_save_stops_worker",
+        "tests/unit/test_storage_migrations.py::test_migration_preserves_every_row_and_authenticated_byte",
+        "tests/unit/test_storage_migrations.py::test_migration_supports_earlier_layout_without_inventing_state",
+        "tests/unit/test_storage_migrations.py::test_failed_migration_retains_source_and_publishes_nothing",
+        "tests/unit/test_storage_migrations.py::test_migration_includes_committed_wal_content",
+        "tests/unit/test_storage_migrations.py::test_migration_refuses_unknown_versions_layouts_and_kinds",
+        "tests/unit/test_storage_migrations.py::test_open_refuses_changed_schema_without_modifying_it",
+        "tests/unit/test_storage_migrations.py::test_open_detects_foreign_key_violation_written_outside_adapter",
+        "tests/unit/test_storage_migrations.py::test_constraints_reject_orphans_and_invalid_values",
+        "tests/unit/test_storage_migrations.py::test_witness_rejects_invalid_keys_blobs_and_orphans",
+        "tests/unit/test_storage_migrations.py::test_destination_created_during_migration_is_retained",
+        "tests/unit/test_cli_storage.py::test_cli_migration_and_repeat_refusal"
       ],
       "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
     },

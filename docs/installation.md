@@ -41,6 +41,13 @@ python3 -m venv .venv-tools
 .venv/bin/casf --help
 ```
 
+## Existing SQLite stores
+
+Current source uses schema version 1. Earlier unversioned writer and witness
+stores require an explicit copy migration before opening. Stop services, retain
+the source and external state, and follow the [migration guide](storage-migrations.md).
+Evidence bundles and authenticated `casf-v1` bytes are unchanged.
+
 ## Verify an evidence bundle
 
 Verification requires trusted public keys, an authority signed status

@@ -25,6 +25,10 @@ its checks.
 - [Checkpoint worker](../checkpoint-worker.md) tests cover the record/time
   triggers, bounded batch draining, durable backoff, interrupted attempts,
   restarts, lost replies, final seals, concurrent workers and safe reports.
+- [Storage migration](../storage-migrations.md) tests use frozen unversioned
+  writer and witness fixtures. They check exact row/BLOB preservation, schema
+  identity and constraints, WAL snapshots, final receipt replay, interrupted
+  copies, publication failures and refusal of unknown or modified schemas.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

@@ -21,5 +21,3 @@ def test_cli_migration_and_repeat_refusal(tmp_path, capsys, kind):
     assert main(command) == 5
     assert "already exists" in capsys.readouterr().err
     assert rows(dest) == rows(source)
-
-
