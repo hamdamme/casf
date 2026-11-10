@@ -124,6 +124,28 @@ def test_atomic_replace_failure_preserves_previous_state(tmp_path, monkeypatch):
     assert not list(tmp_path.glob(".casf-state-*"))
 
 
+def test_retained_revocation_survives_later_active_save(tmp_path):
+    path = tmp_path / "state.json"
+    seed(path)
+    with locked_state(str(path), MANIFEST) as transaction:
+        transaction.save(2, None, revoked=True)
+    with locked_state(str(path), MANIFEST) as transaction:
+        assert transaction.previous.revoked is True
+        transaction.save(3, None)
+    with locked_state(str(path), MANIFEST) as transaction:
+        assert transaction.previous.revoked is True
+        assert transaction.previous.status_serial == 3
+        assert transaction.previous.checkpoint == (0, CHECKPOINT)
+
+
+@pytest.mark.parametrize("value", [0, 1, "false", None])
+def test_retained_revocation_requires_a_boolean(value):
+    raw = json.dumps({"version": 1, "manifests": {MANIFEST: {
+        "status_serial": 1, "checkpoint": None, "revoked": value}}}).encode()
+    with pytest.raises(CasfError):
+        _decode(raw)
+
+
 def _first_worker(path, entered, release):
     with locked_state(path, MANIFEST) as transaction:
         entered.set()
