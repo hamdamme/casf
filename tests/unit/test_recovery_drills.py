@@ -81,12 +81,15 @@ def test_corrupt_backup_cannot_replace_independent_state(history, tmp_path, dama
 
 def test_missing_key_preserves_public_evidence_and_prevents_signing(
         cli_environment, tmp_path, capsys):
-    common, _, status, trust, _, _ = cli_environment
+    common, _, status, trust, url, _ = cli_environment
     assert initialize(cli_environment) == 0
+    assert main(["append", *common, "--event", str(_event(tmp_path))]) == 0
+    assert main(["checkpoint", *common]) == 0
+    assert main(["witness", "submit", *common, "--url", url]) == 0
     capsys.readouterr()
     (tmp_path / "log.pem").unlink()
     state_before = (tmp_path / "state.json").read_bytes()
-    assert main(["append", *common, "--event", str(_event(tmp_path))]) == 5
+    assert main(["append", *common, "--event", str(_event(tmp_path, 2))]) == 5
     output = capsys.readouterr()
     assert not output.out
     assert output.err
@@ -95,15 +98,17 @@ def test_missing_key_preserves_public_evidence_and_prevents_signing(
     bundle = tmp_path / "evidence"
     try:
         with pytest.raises(CasfError, match="signing key"):
-            _append(reader, 1)
+            _append(reader, 2)
         reader.export_bundle(LOG_ID, bundle)
-        assert len(list(reader.records(LOG_ID))) == 0
+        assert len(list(reader.records(LOG_ID))) == 1
     finally:
         reader.close()
     (bundle / "status.jsonl").write_bytes(status.read_bytes() + b"\n")
     assert main(["verify", str(bundle), "--trust", str(trust),
                  "--state", str(tmp_path / "state.json"), "--mode", "anchored", "--json"]) == 0
-    assert json.loads(capsys.readouterr().out)["result"] == "PASS"
+    report = json.loads(capsys.readouterr().out)
+    assert report["result"] == "PASS"
+    assert report["verified_through"] == 1
 
 
 def test_writer_and_witness_rollback_cannot_replace_retained_checkpoint(history, tmp_path):
