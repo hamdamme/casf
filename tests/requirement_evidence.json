@@ -105,7 +105,9 @@
       "assertion_scope": "Concurrent appends preserve sequence and event id uniqueness.",
       "nodeids": [
         "tests/unit/test_writer.py::test_concurrent_writers_contiguous_sequence",
-        "tests/unit/test_writer.py::test_concurrent_same_event_id_one_record"
+        "tests/unit/test_writer.py::test_concurrent_same_event_id_one_record",
+        "tests/unit/test_append_contract.py::test_concurrent_typed_retries_return_one_identical_record",
+        "tests/unit/test_append_contract.py::test_event_conflict_does_not_consume_a_sequence"
       ],
       "remaining_review": ""
     },
@@ -118,7 +120,10 @@
         "tests/unit/test_recovery_storage.py::test_sqlite_full_preserves_history_and_same_event_retry",
         "tests/unit/test_checkpoint_worker.py::test_interrupted_attempt_retains_retry_deadline",
         "tests/unit/test_storage_migrations.py::test_initialization_rolls_back_schema_and_markers_together",
-        "tests/unit/test_storage_migrations.py::test_process_exit_keeps_legacy_source_and_allows_retry"
+        "tests/unit/test_storage_migrations.py::test_process_exit_keeps_legacy_source_and_allows_retry",
+        "tests/unit/test_append_contract.py::test_append_copies_nested_input_before_digest_and_lock",
+        "tests/unit/test_append_contract.py::test_failed_commit_returns_no_success_and_can_retry",
+        "tests/unit/test_append_contract.py::test_exception_after_commit_resolves_by_same_event_retry"
       ],
       "remaining_review": ""
     },
@@ -135,7 +140,9 @@
         "tests/unit/test_checkpoint_worker.py::test_checkpoint_threshold_is_exactly_128_unwitnessed_records",
         "tests/unit/test_checkpoint_worker.py::test_record_threshold_drains_backlog_in_bounded_batches",
         "tests/unit/test_checkpoint_worker.py::test_permanent_errors_stop_without_reporting_witnessed",
-        "tests/unit/test_checkpoint_worker.py::test_competing_verified_workers_submit_only_one_checkpoint"
+        "tests/unit/test_checkpoint_worker.py::test_competing_verified_workers_submit_only_one_checkpoint",
+        "tests/unit/test_append_contract.py::test_idempotent_retry_refreshes_witness_observation_without_changing_record",
+        "tests/unit/test_append_contract.py::test_pending_checkpoint_does_not_cover_later_appends"
       ],
       "remaining_review": ""
     },
@@ -344,7 +351,10 @@
         "tests/unit/test_writer_reconciliation.py::test_invalid_configuration_never_queries_witness",
         "tests/unit/test_export_contract.py::test_export_memory_does_not_materialize_record_history",
         "tests/unit/test_report_contract.py::test_cli_preserves_complete_reports_for_every_verdict",
-        "tests/unit/test_report_contract.py::test_late_malformed_bundle_does_not_publish_report_or_checkpoint"
+        "tests/unit/test_report_contract.py::test_late_malformed_bundle_does_not_publish_report_or_checkpoint",
+        "tests/unit/test_append_contract.py::test_invalid_requests_fail_before_a_write_transaction",
+        "tests/unit/test_append_contract.py::test_body_budget_includes_generated_record_fields_before_signing",
+        "tests/unit/test_cli_append_contract.py::test_cli_body_limit_is_usage_error_without_commit"
       ],
       "remaining_review": ""
     },
@@ -357,7 +367,9 @@
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
         "tests/unit/test_receipt_recovery.py::test_cli_recovers_receipt_without_signing_key",
         "tests/unit/test_recovery_storage.py::test_cli_corrupt_backup_returns_local_error_without_traceback",
-        "tests/unit/test_submission_retry.py::test_submission_classifies_http_failure_and_counts_attempt"
+        "tests/unit/test_submission_retry.py::test_submission_classifies_http_failure_and_counts_attempt",
+        "tests/unit/test_cli_append_contract.py::test_cli_append_reports_all_three_states_on_same_event",
+        "tests/unit/test_typed_append_authorization.py::test_typed_append_retains_all_verified_authorization_checks"
       ],
       "remaining_review": ""
     },

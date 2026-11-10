@@ -31,6 +31,7 @@ from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
+from casf.model.api import EventRequest
 from casf.model.schema import validate_protocol_body
 from casf.online import query_latest
 from casf.storage import Database, migrate_database
@@ -419,30 +420,15 @@ def _cmd_init(args: argparse.Namespace) -> int:
 
 
 def _cmd_append(args: argparse.Namespace) -> int:
-    event = _read_json_file(args.event)
-    if set(event) != {"event_id", "actor", "event_type", "payload",
-                      "attributes"}:
-        raise SchemaError("event must be exactly event_id, actor, "
-                          "event_type, payload, attributes")
-    event_id = event["event_id"]
-    actor = event["actor"]
-    event_type = event["event_type"]
-    payload = event["payload"]
-    attributes = event["attributes"]
-    if not isinstance(event_id, str) or not isinstance(actor, str) \
-            or not isinstance(event_type, str) \
-            or not isinstance(payload, dict) \
-            or not isinstance(attributes, dict):
-        raise SchemaError("event field types are wrong")
+    request = EventRequest.from_dict(_read_json_file(args.event))
     writer = _writer(args)
     try:
         log_id = _sole_log_id(args.db)
-        envelope = writer.append(
-            log_id, event_id=event_id, actor=actor, event_type=event_type,
-            payload=payload, attributes=attributes)
-        seq = _body_of(envelope).get("seq", "unknown")
-        _print(args, {"seq": seq, "event_id": event_id},
-               f"appended record seq {seq}")
+        result = writer.append_event(log_id, request)
+        seq = _body_of(result.record).get("seq", "unknown")
+        _print(args, {"seq": seq, "event_id": request.event_id,
+                      "committed": result.committed, "witness_state": result.witness_state.value},
+               f"appended record seq {seq}; {result.witness_state.value}")
         return 0
     finally:
         writer.close()
@@ -1068,7 +1054,7 @@ def main(argv: list[str] | None = None) -> int:
         return int(e.code) if isinstance(e.code, int) else 2
     try:
         result = args.func(args)
-    except SchemaError as e:
+    except (SchemaError, LimitError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
     except TrustError as e:

@@ -34,6 +34,10 @@ its checks.
   destination races, filesystem failures, process exits and full CLI reports
   on successful, failed and inconclusive verification. Linux/macOS native
   exclusive-rename behavior is exercised on the corresponding test host.
+- [Typed append](../append-api.md) tests cover nested input mutation, detached
+  results, pending/accepted coverage, same-event retries, failed commits,
+  uncertain responses, concurrent processes, body limits and verified
+  retained-state authorization. Existing dictionary callers remain covered.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

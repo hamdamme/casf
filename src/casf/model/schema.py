@@ -93,7 +93,7 @@ def validate_body(body: JsonValue, fields: dict[str, Field], where: str) -> None
             if not isinstance(value, str) or not B64URL_RE.match(value):
                 raise SchemaError(f"{where}.{name}: expected unpadded base64url")
         elif f.kind == "uuid":
-            if not isinstance(value, str) or not UUID_RE.match(value):
+            if not isinstance(value, str) or not UUID_RE.fullmatch(value):
                 raise SchemaError(f"{where}.{name}: expected lowercase UUID string")
         elif f.kind == "object":
             if not isinstance(value, dict):
