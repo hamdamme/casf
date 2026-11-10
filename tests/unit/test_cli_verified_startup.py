@@ -5,13 +5,14 @@ import json
 import pytest
 from cryptography.hazmat.primitives import serialization
 
-from casf.canonical.jcs import canonicalize
+from casf import crypto
+from casf.canonical.jcs import canonicalize, parse
 from casf.cli import main
 from casf.writer import Writer
 from tests.unit.test_cli import PASS, _event, _trust
 from tests.unit.test_verified_startup import statement
 from tests.unit.test_verify_online import TOKEN, _service
-from tests.unit.test_writer import LOG, LOG_ID, _manifest_envelope
+from tests.unit.test_writer import LOG, LOG_ID, _append, _manifest_envelope
 
 
 @pytest.fixture
@@ -147,3 +148,30 @@ def test_interrupted_bootstrap_retries_identical_checkpoint(setup, tmp_path, cap
         assert len(list(reader.records(LOG_ID))) == 1
     finally:
         reader.close()
+
+
+def test_failed_record_verification_retains_authenticated_status_serial(setup, tmp_path, capsys):
+    _, _, _, trust, _, _ = setup
+    assert initialize(setup) == 0
+    capsys.readouterr()
+    writer = Writer(tmp_path / "writer.db", LOG, local_only=True)
+    bundle = tmp_path / "bad-record-bundle"
+    try:
+        _append(writer, 1)
+        writer.export_bundle(LOG_ID, bundle)
+    finally:
+        writer.close()
+    records = bundle / "records.jsonl"
+    envelope = parse(records.read_bytes().strip())
+    envelope["signature"] = crypto.b64url_encode(bytes(64))
+    records.write_bytes(canonicalize(envelope) + b"\n")
+    (bundle / "status.jsonl").write_bytes(canonicalize(statement(7)) + b"\n")
+    state_path = tmp_path / "state.json"
+    before = json.loads(state_path.read_text())["manifests"][_manifest_envelope()["manifest_hash"]]
+    assert main(["verify", str(bundle), "--trust", str(trust),
+                 "--state", str(state_path), "--json"]) == 1
+    report = json.loads(capsys.readouterr().out)
+    assert report["result"] == "FAIL"
+    after = json.loads(state_path.read_text())["manifests"][_manifest_envelope()["manifest_hash"]]
+    assert after["status_serial"] == 7
+    assert after["checkpoint"] == before["checkpoint"]

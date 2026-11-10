@@ -757,12 +757,13 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
             online_query=online_query,
             retained_checkpoint=previous.checkpoint if previous else None,
             retained_revoked=previous.revoked if previous else False)
-        if report.trust_status is TrustStatus.REVOKED:
+        if report.trust_status is TrustStatus.REVOKED \
+                or report.observed_status_serial > (previous.status_serial if previous else 0):
             state.save(max(report.observed_status_serial,
                            previous.status_serial if previous else 0),
-                       None, revoked=True)
+                       None, revoked=report.trust_status is TrustStatus.REVOKED)
         # EOF validates export counts and any tail after an early verdict.
-        # Never save accepted state or print PASS before this completes.
+        # Never advance the accepted checkpoint or print PASS before this completes.
         for _ in bundle.records:
             pass
         if report.result is Result.PASS:

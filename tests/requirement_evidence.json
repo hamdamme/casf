@@ -204,7 +204,8 @@
         "tests/unit/test_verified_startup.py::test_unauthenticated_status_cannot_poison_retained_state",
         "tests/unit/test_verified_startup.py::test_newer_status_survives_witness_failure_and_blocks_old_writer",
         "tests/unit/test_verifier_state.py::test_retained_revocation_survives_later_active_save",
-        "tests/unit/test_cli_verified_startup.py::test_cli_verifier_remembers_revocation_independently"
+        "tests/unit/test_cli_verified_startup.py::test_cli_verifier_remembers_revocation_independently",
+        "tests/unit/test_cli_verified_startup.py::test_failed_record_verification_retains_authenticated_status_serial"
       ],
       "remaining_review": ""
     },
@@ -232,7 +233,7 @@
         "tests/unit/test_release_gaps.py::test_export_snapshot_during_concurrent_append",
         "tests/unit/test_release_gaps.py::test_missing_wal_copy_is_incomplete_against_external_anchor",
         "tests/unit/test_streaming.py::test_context_closes_after_early_exit",
-        "tests/unit/test_streaming.py::test_cli_late_error_never_saves_or_prints_pass",
+        "tests/unit/test_streaming.py::test_cli_late_error_never_accepts_checkpoint_or_prints_pass",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_preserves_final_seal_and_evidence",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_continues_checkpoint_and_receipt_chains",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_checkpoint_evidence",

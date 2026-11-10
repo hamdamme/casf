@@ -28,7 +28,7 @@ by the current user, with mode 700, outside the bundle and witness backups.
 State and lock files use mode 600. The reference implementation supports local
 macOS and Linux filesystems; network filesystem locking is not established.
 
-Create the directory once. Explicitly initialize the first accepted observation:
+Create the directory once. Explicitly initialize the first observation:
 
 ```bash
 mkdir -m 700 verifier-state
@@ -41,10 +41,10 @@ For later verifications, omit `--initialize-state` and use the same state path:
 casf verify bundle --trust trust.json --state verifier-state/state.json --mode online
 ```
 
-The version 1 state file maps each manifest hash to the greatest authority
-status serial accepted during a successful verification, plus a checkpoint
-index and hash when anchored or online verification established one. First
-use reports `VERIFIER_STATE_INITIALIZED`; the first checkpoint observation
+The version 1 state file maps each manifest hash to the greatest authenticated
+authority status serial observed by verification, plus a checkpoint index
+and hash when anchored or online verification established one. Successful
+initialization reports `VERIFIER_STATE_INITIALIZED`; the first checkpoint observation
 also reports `CHECKPOINT_FIRST_OBSERVATION`. These indicate a new baseline,
 not proof that no history was lost before that observation.
 
@@ -58,7 +58,8 @@ One persistent sidecar lock covers reading state, verification, and saving.
 Concurrent processes wait for that lock and read the latest saved state before
 verifying. A successful result is reported only after a temporary file has
 been flushed, atomically replaced, and its directory flushed. Failed or
-inconclusive verification does not update the observations. The sidecar lock
+inconclusive verification does not advance the accepted checkpoint, but can
+retain independently authenticated status observations. The sidecar lock
 may be created even when verification fails; do not remove it while verifiers
 are running. State input is limited to 1 MiB and rejects duplicate or unknown
 fields, unsafe permissions, symbolic links, and hard links.
@@ -72,9 +73,14 @@ recovery step: deleting state and initializing again discards continuity.
 A save error after replacement may leave a valid newer file; inspect and
 retry normally instead of deleting it. Historical CLI examples predate this
 required option; use the commands above for the current implementation.
+An unsuccessful first verification can leave a status-only entry. Once that
+entry exists, retry without `--initialize-state`; it does not indicate that
+the bundle or a checkpoint was accepted.
 
 These are local retained observations, not independently current revocation
-information. An authenticated revocation is persisted even though the result is FAIL,
+information. Authenticated status serials reported by verification are retained
+even if record or witness checks fail, without advancing the accepted checkpoint.
+An authenticated revocation is persisted even though the result is FAIL,
 and remains terminal across later runs. Invalid signatures and unrelated
 statements cannot set this flag. Revocation observation does not advance the
 accepted checkpoint. Administrators must still maintain trusted status
@@ -85,8 +91,9 @@ witness and evidence. Do not store it in a public repository.
 
 Library callers remain responsible for durable state. The verifier report
 exposes `observed_status_serial` and `checkpoint`. Advance an accepted
-checkpoint only for PASS. Separately retain authenticated terminal revocation
-even on FAIL, without advancing the checkpoint. Supply retained serial,
+checkpoint only for PASS after validating the complete input. Separately retain
+authenticated status serials and terminal revocation even on FAIL, without
+advancing the checkpoint. Supply retained serial,
 checkpoint and revocation through `minimum_status_serial`,
 `retained_checkpoint` and `retained_revoked` while holding an appropriate lock.
 Verified writer entry points manage this state and also retain each accepted
