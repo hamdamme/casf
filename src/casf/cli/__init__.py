@@ -13,6 +13,7 @@ import argparse
 import json
 import math
 import os
+import sqlite3
 import sys
 import uuid
 from datetime import UTC, datetime
@@ -25,7 +26,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from casf import crypto
 from casf.bundle import BundleReadError, StreamingBundle, open_bundle
 from casf.canonical.jcs import parse, parse_config
-from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError
+from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
 from casf.model.schema import validate_protocol_body
@@ -54,9 +55,53 @@ def _secret(env_name: str) -> bytes:
     return value.encode()
 
 
-def _writer(args: argparse.Namespace) -> Writer:
+def _writer_trust_pins(args: argparse.Namespace,
+                       manifest: JsonObject | None = None) -> dict[str, TrustPins] | None:
+    path = getattr(args, "trust", None)
+    if path is None:
+        return None
+    if manifest is None:
+        try:
+            con = sqlite3.connect(Path(args.db).resolve().as_uri() + "?mode=ro", uri=True)
+            try:
+                rows = con.execute("SELECT envelope FROM manifests").fetchall()
+            finally:
+                con.close()
+        except sqlite3.Error as exc:
+            raise CasfError("cannot read writer manifests") from exc
+        if len(rows) != 1:
+            raise CasfError("expected exactly one log in the store")
+        blob = rows[0][0]
+        if not isinstance(blob, bytes):
+            raise SchemaError("stored manifest is not a byte string")
+        value = parse(blob)
+        if not isinstance(value, dict):
+            raise SchemaError("stored manifest is not an object")
+        manifest = value
+    body = _body_of(manifest)
+    log_id = body.get("log_id")
+    if not isinstance(log_id, str):
+        raise SchemaError("manifest log identity is invalid")
+    authorities, entry, _policy = _load_trust(path, log_id)
+    witness_id, witness_key = body.get("witness_id"), body.get("witness_public_key")
+    if not isinstance(witness_id, str) or not isinstance(witness_key, str):
+        raise SchemaError("manifest witness fields are invalid")
+    if entry["witness_id"] != witness_id:
+        raise TrustError("manifest witness does not match the provisioned identity")
+    manifest_hash = entry["manifest_hash"]
+    if not isinstance(manifest_hash, str):
+        raise SchemaError("trust manifest hash must be a string")
+    # The independently pinned manifest digest binds the supplied witness key;
+    # Writer also verifies its derived ID and the authority signature.
+    return {log_id: TrustPins(
+        authority_keys=authorities,
+        witness_keys={witness_id: crypto.b64url_decode(witness_key)},
+        log_id=log_id, manifest_hash=manifest_hash)}
+
+
+def _writer(args: argparse.Namespace, manifest: JsonObject | None = None) -> Writer:
     key = load_key(args.key, passphrase=_secret(args.passphrase_env))
-    return Writer(args.db, key)
+    return Writer(args.db, key, trust_pins=_writer_trust_pins(args, manifest))
 
 
 def _sole_log_id(db_path: str) -> str:
@@ -332,8 +377,11 @@ def _cmd_key_generate(args: argparse.Namespace) -> int:
 
 def _cmd_init(args: argparse.Namespace) -> int:
     manifest = _read_json_file(args.manifest)
-    writer = _writer(args)
-    writer.create_log(manifest)
+    writer = _writer(args, manifest)
+    try:
+        writer.create_log(manifest)
+    finally:
+        writer.close()
     log_id = _body_of(manifest).get("log_id", "unknown")
     _print(args, {"log_id": log_id, "count": 0},
            f"initialized log {log_id}")
@@ -402,7 +450,7 @@ def _cmd_witness_submit(args: argparse.Namespace) -> int:
 
 
 def _cmd_export(args: argparse.Namespace) -> int:
-    writer = Writer(args.db)
+    writer = Writer(args.db, trust_pins=_writer_trust_pins(args))
     log_id = _sole_log_id(args.db)
     try:
         dest = writer.export_bundle(log_id, args.out)
@@ -472,6 +520,8 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
     if set(trust) != _TRUST_FIELDS:
         raise SchemaError("trust file must be exactly version, "
                           "authorities, logs, policy")
+    if type(trust["version"]) is not int or trust["version"] != 1:
+        raise SchemaError("unsupported trust version")
     authorities = trust["authorities"]
     logs = trust["logs"]
     policy = trust["policy"]
@@ -491,8 +541,8 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
         keys[issuer] = crypto.b64url_decode(encoded)
     entry = logs.get(log_id)
     if entry is None:
-        raise CasfError("LOG_NOT_PROVISIONED: the trust file does not "
-                        "provision this log")
+        raise TrustError("LOG_NOT_PROVISIONED: the trust file does not "
+                         "provision this log")
     if not isinstance(entry, dict) or set(entry) != _TRUST_LOG_FIELDS:
         raise SchemaError("trust log entry fields are wrong")
     return keys, entry, policy
@@ -726,12 +776,14 @@ def _parser() -> argparse.ArgumentParser:
     init.add_argument("--manifest", required=True)
     init.add_argument("--db", required=True)
     init.add_argument("--key", required=True)
+    init.add_argument("--trust", help="independent manifest trust pins")
     init.add_argument("--passphrase-env", default=PASS_ENV)
     init.set_defaults(func=_cmd_init)
 
     append = sub.add_parser("append", parents=[common])
     append.add_argument("--db", required=True)
     append.add_argument("--key", required=True)
+    append.add_argument("--trust", help="independent manifest trust pins")
     append.add_argument("--event", required=True,
                         help="request JSON file (use - for stdin)")
     append.add_argument("--passphrase-env", default=PASS_ENV)
@@ -740,6 +792,7 @@ def _parser() -> argparse.ArgumentParser:
     checkpoint = sub.add_parser("checkpoint", parents=[common])
     checkpoint.add_argument("--db", required=True)
     checkpoint.add_argument("--key", required=True)
+    checkpoint.add_argument("--trust", help="independent manifest trust pins")
     checkpoint.add_argument("--passphrase-env", default=PASS_ENV)
     checkpoint.set_defaults(func=_cmd_checkpoint)
 
@@ -748,6 +801,7 @@ def _parser() -> argparse.ArgumentParser:
     submit = wit_sub.add_parser("submit", parents=[common])
     submit.add_argument("--db", required=True)
     submit.add_argument("--key", required=True)
+    submit.add_argument("--trust", help="independent manifest trust pins")
     submit.add_argument("--url", required=True)
     submit.add_argument("--token-env", default=TOKEN_ENV)
     submit.add_argument("--passphrase-env", default=PASS_ENV)
@@ -756,6 +810,7 @@ def _parser() -> argparse.ArgumentParser:
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
     export.add_argument("--out", required=True)
+    export.add_argument("--trust", help="independent manifest trust pins")
     export.set_defaults(func=_cmd_export)
 
     ver = sub.add_parser("verify", parents=[common])
@@ -775,6 +830,7 @@ def _parser() -> argparse.ArgumentParser:
     seal = sub.add_parser("seal", parents=[common])
     seal.add_argument("--db", required=True)
     seal.add_argument("--key", required=True)
+    seal.add_argument("--trust", help="independent manifest trust pins")
     seal.add_argument("--passphrase-env", default=PASS_ENV)
     seal.set_defaults(func=_cmd_seal)
 
@@ -796,6 +852,9 @@ def main(argv: list[str] | None = None) -> int:
     except SchemaError as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+    except TrustError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 3
     except InconclusiveError as e:
         print(f"error: {e}", file=sys.stderr)
         return 4

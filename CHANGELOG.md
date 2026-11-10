@@ -6,6 +6,10 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Authenticate manifest authority signatures and expected log, manifest and
+  witness identities when independent `trust_pins` are supplied to the writer
+  or restore API. Writer CLI commands accept `--trust`; omitted pins retain
+  local-only validation. Status and fresh witness reconciliation remain open.
 - Verify local writer history and checkpoint/receipt state at startup; reject
   wrong signing keys before extending an existing log.
 - Reject incoming receipts with a mismatching manifest or previous-receipt

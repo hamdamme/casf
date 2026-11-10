@@ -17,7 +17,7 @@ import re
 import shutil
 import sqlite3
 import time
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -27,12 +27,13 @@ from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
-from casf.errors import CasfError, SchemaError
+from casf.errors import CasfError, SchemaError, TrustError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
 from casf.types import JsonObject
+from casf.verifier import TrustPins
 from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
@@ -67,7 +68,19 @@ class Writer:
     def __init__(self, db_path: str | Path,
                  log_priv: Ed25519PrivateKey | None = None, *,
                  busy_timeout_ms: int = 5000, max_retries: int = 3,
-                 retry_jitter: float = 0.05) -> None:
+                 retry_jitter: float = 0.05,
+                 trust_pins: Mapping[str, TrustPins] | None = None) -> None:
+        self._trust_pins: dict[str, TrustPins] | None = None
+        if trust_pins is not None:
+            self._trust_pins = {}
+            for log_id, pins in trust_pins.items():
+                if log_id != pins.log_id:
+                    raise TrustError("trust policy log identity is inconsistent")
+                self._trust_pins[log_id] = TrustPins(
+                    authority_keys=dict(pins.authority_keys),
+                    witness_keys=dict(pins.witness_keys),
+                    log_id=pins.log_id, manifest_hash=pins.manifest_hash,
+                    minimum_status_serial=pins.minimum_status_serial)
         self._db = Database(db_path, busy_timeout_ms)
         self._log_priv = log_priv
         self._log_pub = (crypto.public_key_raw(log_priv)
@@ -84,6 +97,18 @@ class Writer:
 
     def close(self) -> None:
         self._db.close()
+
+    def _manifest_context(self, value: JsonObject) -> ManifestContext:
+        pins = None
+        if self._trust_pins is not None:
+            body = value.get("body")
+            log_id = body.get("log_id") if isinstance(body, dict) else None
+            if not isinstance(log_id, str):
+                raise SchemaError("manifest log identity is invalid")
+            pins = self._trust_pins.get(log_id)
+            if pins is None:
+                raise TrustError("manifest log is not provisioned in the trust policy")
+        return ManifestContext.read(value, pins=pins)
 
     def _signing_key(self) -> tuple[Ed25519PrivateKey, bytes, str]:
         if self._log_priv is None or self._log_pub is None \
@@ -130,7 +155,7 @@ class Writer:
                 raise CasfError("stored receipt has no matching checkpoint")
             for log_id, stored_manifest_hash, blob in con.execute(
                     "SELECT log_id, manifest_hash, envelope FROM manifests"):
-                context = ManifestContext.read(self._stored_object(blob))
+                context = self._manifest_context(self._stored_object(blob))
                 if context.body["log_id"] != log_id \
                         or context.digest != stored_manifest_hash:
                     raise CasfError("stored manifest index is inconsistent")
@@ -245,7 +270,7 @@ class Writer:
         if not isinstance(body, dict) or not isinstance(manifest_hash, str):
             raise SchemaError("manifest envelope field types are wrong")
         validate_protocol_body("manifest", body)
-        ManifestContext.read(manifest_envelope)
+        self._manifest_context(manifest_envelope)
         if crypto.digest_manifest(body) != manifest_hash:
             raise SchemaError("manifest_hash does not match the body")
         if body["log_key_id"] != log_key_id:
@@ -310,7 +335,7 @@ class Writer:
     def _append_once(self, log_id: str, request: JsonObject,
                      request_digest: str) -> JsonObject:
         log_priv, _log_pub, log_key_id = self._signing_key()
-        if ManifestContext.read(self.manifest_envelope(log_id)).body["log_key_id"] != log_key_id:
+        if self._manifest_context(self.manifest_envelope(log_id)).body["log_key_id"] != log_key_id:
             raise CasfError("writer key does not match the manifest log key")
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
@@ -482,7 +507,8 @@ class Writer:
     def restore_from_bundle(cls, db_path: str | Path,
                             log_priv: Ed25519PrivateKey,
                             bundle_dir: str | Path, *,
-                            anchor: JsonObject | None = None) -> "Writer":
+                            anchor: JsonObject | None = None,
+                            trust_pins: Mapping[str, TrustPins] | None = None) -> "Writer":
         """Restore verified records and their checkpoint/receipt journal.
 
         A final checkpoint keeps the log sealed. A supplied pending tail
@@ -517,7 +543,7 @@ class Writer:
         writer: Writer | None = None
         behind = anchor_count > len(bundle.records)
         try:
-            writer = cls(db_path, log_priv)
+            writer = cls(db_path, log_priv, trust_pins=trust_pins)
             con = writer._db.connection
             con.execute("BEGIN IMMEDIATE")
             try:
@@ -600,7 +626,7 @@ class Writer:
         and seals appends in the same transaction.
         """
         log_priv, _log_pub, log_key_id = self._signing_key()
-        context = ManifestContext.read(self.manifest_envelope(log_id))
+        context = self._manifest_context(self.manifest_envelope(log_id))
         if context.body["log_key_id"] != log_key_id:
             raise CasfError("writer key does not match the manifest log key")
         con = self._db.connection

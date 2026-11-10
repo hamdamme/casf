@@ -36,6 +36,13 @@ The completed duplicate, reorder, genesis, cross log splice, concurrent
 export, missing WAL and signed equivocation regressions are linked in the
 map; they are not outstanding review tasks.
 
+The writer trust tests add T03, T12, T15 and T17 coverage for explicitly
+supplied pins during creation, startup, restore and CLI operations. They reject
+forged authority signatures, replaced or unprovisioned manifests and wrong
+witness identities. Compatibility calls without pins still perform local-only
+validation. These assertions do not establish writer status checking or fresh
+witness reconciliation; see [writer recovery](../writer-recovery.md).
+
 ## Streaming and trust boundaries
 
 The CLI uses `open_bundle` and checks the unread tail before accepting a

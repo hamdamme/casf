@@ -54,6 +54,26 @@ the generated trust pins. The trust command checks the manifest signature;
 it does not establish that the key belongs to the person or service you
 intended.
 
+## Use pins with writer commands
+
+```sh
+casf init --manifest manifest.json --db writer.db --key log.pem --trust trust.json
+casf append --db writer.db --key log.pem --event event.json --trust trust.json
+casf checkpoint --db writer.db --key log.pem --trust trust.json
+casf witness submit --db writer.db --key log.pem --url https://witness.example \
+  --trust trust.json
+casf export --db writer.db --out bundle --trust trust.json
+```
+
+`seal` also accepts `--trust`. Supply the trust file on every invocation;
+omitting it retains local-only validation. Supplied pins reject an unprovisioned
+log, replaced manifest, mismatched witness or invalid authority signature.
+The writer uses the authority and identity pins only: it does not enforce the
+trust file's verification mode, status minimum or freshness policy. Continue
+to verify exported evidence with `casf verify` and separately retained state.
+See [writer recovery](writer-recovery.md) for the Python API and remaining
+startup and recovery requirements.
+
 ## Create a status statement
 
 ```sh

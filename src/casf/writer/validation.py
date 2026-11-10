@@ -1,7 +1,8 @@
 """Local writer consistency checks using the existing casf-v1 byte rules.
 
 These checks authenticate records and witness receipts against manifest keys.
-They do not establish independent authority trust or current witness state.
+Supplied trust pins also authenticate the manifest authority and identity.
+They do not establish current status or fresh witness state.
 """
 
 from collections.abc import Callable
@@ -10,9 +11,10 @@ from typing import cast
 
 from casf import crypto
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH
-from casf.errors import CasfError, SchemaError
+from casf.errors import CasfError, SchemaError, TrustError
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject
+from casf.verifier import TrustPins
 
 ZERO = "00" * 32
 
@@ -37,7 +39,7 @@ class ManifestContext:
     witness_key: bytes
 
     @classmethod
-    def read(cls, value: JsonObject) -> "ManifestContext":
+    def read(cls, value: JsonObject, *, pins: TrustPins | None = None) -> "ManifestContext":
         body, digest, signature = envelope(value, "manifest")
         if crypto.digest_manifest(body) != digest:
             raise CasfError("manifest hash disagrees with its body")
@@ -49,6 +51,23 @@ class ManifestContext:
         if crypto.key_id(log_key) != body["log_key_id"] \
                 or crypto.key_id(witness_key) != body["witness_id"]:
             raise CasfError("manifest public key binding is invalid")
+        if pins is not None:
+            if pins.log_id != body["log_id"]:
+                raise TrustError("manifest log identity does not match the trust pins")
+            if pins.manifest_hash is None or pins.manifest_hash != digest:
+                raise TrustError("manifest digest does not match an explicit trust pin")
+            issuer_id = cast(str, body["issuer_id"])
+            authority = pins.authority_keys.get(issuer_id)
+            if not isinstance(authority, bytes) or len(authority) != 32 \
+                    or crypto.key_id(authority) != issuer_id:
+                raise TrustError("manifest authority is not independently provisioned")
+            witness = pins.witness_keys.get(body["witness_id"])
+            if not isinstance(witness, bytes) or witness != witness_key:
+                raise TrustError("manifest witness does not match the trust pins")
+            try:
+                crypto.verify_manifest(authority, body, signature)
+            except CasfError as exc:
+                raise TrustError("manifest authority signature is invalid") from exc
         return cls(body, digest, log_key, witness_key)
 
     def record(self, value: JsonObject, seq: int,

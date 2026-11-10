@@ -10,6 +10,9 @@ class CasfError(Exception):
 class SchemaError(CasfError):
     """Input violates the CASF data profile or a fixed object schema."""
 
+class TrustError(CasfError):
+    """Evidence does not match independently provisioned trust."""
+
 class DuplicateKeyError(SchemaError):
     """An object contains a duplicate property name."""
 
