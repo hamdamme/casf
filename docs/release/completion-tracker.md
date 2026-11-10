@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 39 is merged into main at `9227f6a765f9311c6d218dbdbfc0195b74844f88`. The recovery-drill batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 40 is merged into main at `c64f2a8723bf3c873534e0fa6f3196999d9adf24`. The checkpoint-worker batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phase 1 and Session 3 complete. Phase 2, Session 4 awaiting review; checkpoint operation in Session 5 is next.
+**Current position:** Phase 1 and Sessions 3–4 complete. Phase 2, Session 5 awaiting review; storage and public interfaces in Session 6 are next.
 
-**Progress:** 7/28 tasks complete; 21 remaining. 3/14 sessions complete; 11 remaining. 1/6 phases complete; 5 remaining, including the current phase.
+**Progress:** 8/28 tasks complete; 20 remaining. 4/14 sessions complete; 10 remaining. 1/6 phases complete; 5 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -21,9 +21,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Complete |
 | 2 | 3 — Startup and trust | F06 | Add corruption, wrong-key and inconsistent-state regressions | Complete |
 | 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | Complete |
-| 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | Awaiting review |
-| 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Pending |
-| 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | In progress |
+| 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | Complete |
+| 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Awaiting review |
+| 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | Awaiting review |
 | 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Pending |
 | 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | In progress |
 | 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Pending |
@@ -51,21 +51,22 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 39 is merged. F05 and F07 are complete: verified startup, durable authority status and checkpoint retention, and authenticated offline restore followed by verified promotion have been accepted. Session 3 is complete.
-- F08 awaiting review: deterministic drills now cover storage exhaustion, corrupt backups, lost signing keys, writer and witness rollback, unavailable witnesses and interrupted backup/recovery. The matrix links each failure to assertions and an operating procedure.
-- Fixed three storage error paths: SQLite exhaustion remains distinguishable from lock contention, failed database initialization closes its connection, and CLI database errors return local error 5 without a traceback.
-- Backup publication uses a complete private temporary copy, file synchronization, atomic publication without replacement, and directory synchronization. Tests cover dangling symlinks, concurrent destination creation, copy/sync failure and process exit; source evidence and retry behavior are checked.
-- Validation: exact local and hosted results belong to the draft PR. The new drills use actual SQLite page-limit exhaustion, injected filesystem failures and selected process exits. They do not claim physical disk or power-loss validation.
-- Preservation: authenticated formats, frozen vectors and historical research outputs are unchanged. No release was published; review builds do not close final candidate F21/F22.
-- Remaining: 21 tasks, including F08 awaiting review; 11 sessions; 5 phases. After F08 acceptance, 20 tasks and 10 sessions remain, and Session 4 can close.
-- User action: review the recovery-drill draft PR and its checks. Nothing is merged or released by this work.
-- Next task: implement and test the agreed checkpoint/retry worker in Session 5. Broader process crashes, property/fuzz coverage, release validation and publication approval remain separate gates.
+- PR 40 is merged. F08 and Session 4 are complete: recovery drills, backup publication and storage failure handling have been accepted.
+- F09 awaiting review: an explicitly run foreground worker schedules 128-record/60-second checkpoints and heartbeats, drains backlogs in bounded batches, persists retry deadlines and reuses pending bytes across failures and restart. Temporary transport and HTTP 429/503 failures receive bounded exponential backoff.
+- F10 awaiting review: tests cover exact thresholds, restart timing, interrupted attempts, lost responses, final seals, competing workers, retained trust and state failures. The CLI reports committed/witnessed counts and pending retries separately, supports one tick, and has no local-only override.
+- CI investigation: the post-PR-39 main run failed an outage harness test with a 200 ms response budget. A delayed valid response reproduces the failure. CI tests now allow scheduling headroom while retaining the fault gate and all outage assertions. Historical measurement configurations and results are unchanged. The post-PR-40 main matrix passed and its public badge was verified as passing.
+- Validation: exact local and hosted results belong to the draft PR. This batch does not close the broader process crash/concurrency matrix or final candidate package gates.
+- Preservation: authenticated formats, frozen vectors and historical research outputs are unchanged. No release was published.
+- Remaining: 20 tasks, including F09/F10 awaiting review; 10 sessions; 5 phases. After F09/F10 acceptance, 18 tasks and 9 sessions remain, and Session 5 can close.
+- User action: review the checkpoint-worker draft PR and its checks. Nothing is merged or released by this work.
+- Next task: storage integrity/migration and public interface conformance in Session 6. Property/fuzz coverage, broader crash tests, research/package validation and publication approval remain separate gates.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
+- [Checkpoint worker behavior and reports](../checkpoint-worker.md)
 - [New integrity and recovery regressions](../../tests/unit/test_writer_integrity_recovery.py)
 - [Writer trust regressions](../../tests/unit/test_writer_trust.py) and [CLI trust regressions](../../tests/unit/test_cli_writer_trust.py)
 - [Requirement-to-test evidence](../../tests/requirement_evidence.json)
