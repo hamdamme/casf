@@ -91,6 +91,54 @@ match that exact prefix, even when it is older than the export. If log or
 manifest identity fields are supplied, they must match. The caller remains
 responsible for authenticating this anchor before passing it in.
 
+For signed external evidence, supply both `anchor_checkpoint` and
+`anchor_receipt` with independent `trust_pins`, and omit the bare `anchor`.
+Restore authenticates the manifest, both signatures and all pair bindings
+before creating the destination. An anchor within the restored record range
+must match its checkpoint journal; missing or conflicting journal evidence
+is rejected. A matching pending tail can obtain its original receipt from the
+anchor pair. A newer anchor beyond the restored record count retains the
+database sealed and raises `RESTORE_BEHIND_WITNESS`.
+
+Signed anchors are historical evidence. Their authenticity does not prove
+that the witness has no newer checkpoint. Fresh witness reconciliation
+remains a separate requirement.
+
+### Authority status during restore
+
+Set `require_active_status=True` with independent `trust_pins` to check the
+bundle's signed status statements before creating the destination. This uses
+the public verifier's status and integrity rules: missing, forged, unrelated,
+revoked or below-minimum status fails. A later active statement cannot override
+a supplied revocation. The provisioned `minimum_status_serial` is enforced;
+pass the maximum independently retained minimum when recovering a known log.
+
+This option is false for compatibility with the local-only restore API.
+It checks supplied evidence, does not discover newer revocations, and does not
+persist or update external status high-water state. Writer startup and append
+do not inherit continuous status enforcement from a successful restore.
+Full default startup policy and fresh witness reconciliation remain open.
+
+## Recover a pending receipt
+
+After a restart, `Writer.recover_pending_receipt(log_id, base_url, token)`
+looks up the existing pending checkpoint digest. It requires independently
+supplied trust pins and can use a keyless writer. The returned checkpoint must
+match the pending bytes; both signatures, identity bindings and the preceding
+receipt link are checked before the outbox clears atomically.
+
+```sh
+casf witness recover --db writer.db --trust trust.json \
+  --url https://witness.example --json
+```
+
+No checkpoint is resubmitted or regenerated. Missing receipts, transport
+failures and rejected evidence leave the pending checkpoint intact. The CLI
+returns 4 when the receipt is unavailable, and 1 for invalid signed evidence.
+Success reports `recovered: true`, its count and `freshness_checked: false`.
+This retrieves historical acceptance; it does not query a fresh witness view,
+recover a longer missing journal, or run an automatic retry worker.
+
 ## Pending final seals and backups
 
 The current bundle exporter includes accepted checkpoints and receipts.

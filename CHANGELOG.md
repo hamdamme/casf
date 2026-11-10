@@ -6,6 +6,15 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Bind witness receipt lookups to the log named in the request URL.
+- Add explicit active-status policy to restore. Verify supplied authority
+  statements and the provisioned serial minimum before creating a database;
+  missing or revoked status cannot authorize the import.
+- Authenticate signed checkpoint/receipt anchors during restore with supplied
+  trust pins. Reject journal conflicts and preserve sealed recovery behind
+  the anchor; recover a matching pending tail from its authentic receipt.
+- Reject malformed trust policy booleans, modes, budgets, serials and identity
+  pins before use; string values cannot enable unwitnessed verification.
 - Authenticate manifest authority signatures and expected log, manifest and
   witness identities when independent `trust_pins` are supplied to the writer
   or restore API. Writer CLI commands accept `--trust`; omitted pins retain
@@ -32,6 +41,12 @@ stabilization (SPEC §26).
   registration, and epoch provisioning. See `docs/administration.md`.
 
 ### Added
+- Recover an accepted pending receipt through `Writer.recover_pending_receipt`
+  or `casf witness recover`, without a private key or checkpoint resubmission.
+  Validate signed bindings before clearing the outbox; failures preserve it.
+- Add `casf restore` with required independent trust, signed authority status
+  and checkpoint/receipt anchors. Report offline scope and sealed recovery
+  explicitly; refuse to overwrite an existing destination.
 - Wide area benchmark execution (RQ2, RQ3, H2): 20 runs with the
   writer on a Dell Linux machine and the witness on an AWS Lightsail
   instance, zero failures, raw rows and a verified report in

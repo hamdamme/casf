@@ -13,6 +13,7 @@ import argparse
 import json
 import math
 import os
+import re
 import sqlite3
 import sys
 import uuid
@@ -26,6 +27,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from casf import crypto
 from casf.bundle import BundleReadError, StreamingBundle, open_bundle
 from casf.canonical.jcs import parse, parse_config
+from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
@@ -36,7 +38,7 @@ from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
-from casf.writer import Writer
+from casf.writer import RestoreBehindWitnessError, Writer
 
 __all__ = ["main"]
 
@@ -96,7 +98,8 @@ def _writer_trust_pins(args: argparse.Namespace,
     return {log_id: TrustPins(
         authority_keys=authorities,
         witness_keys={witness_id: crypto.b64url_decode(witness_key)},
-        log_id=log_id, manifest_hash=manifest_hash)}
+        log_id=log_id, manifest_hash=manifest_hash,
+        minimum_status_serial=cast(int, entry["minimum_status_serial"]))}
 
 
 def _writer(args: argparse.Namespace, manifest: JsonObject | None = None) -> Writer:
@@ -460,6 +463,25 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_witness_recover(args: argparse.Namespace) -> int:
+    writer = Writer(args.db, trust_pins=_writer_trust_pins(args))
+    try:
+        log_id = _sole_log_id(args.db)
+        receipt = writer.recover_pending_receipt(log_id, args.url,
+                                                  _secret(args.token_env).decode())
+        count = _count_of(receipt)
+        _print(args, {"recovered": True, "count": count, "freshness_checked": False},
+               f"recovered receipt through count {count}; fresh witness state was not checked")
+    except (SchemaError, TrustError, InconclusiveError):
+        raise
+    except CasfError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        writer.close()
+    return 0
+
+
 def _cmd_seal(args: argparse.Namespace) -> int:
     writer = _writer(args)
     log_id = _sole_log_id(args.db)
@@ -474,6 +496,42 @@ def _cmd_seal(args: argparse.Namespace) -> int:
     count = body["count"] if isinstance(body, dict) else "unknown"
     _print(args, {"sealed": True, "count": count},
            f"sealed at count {count}; final checkpoint pending receipt")
+    return 0
+
+
+def _cmd_restore(args: argparse.Namespace) -> int:
+    if os.path.lexists(args.db):
+        raise CasfError("restore destination already exists")
+    key = load_key(args.key, passphrase=_secret(args.passphrase_env))
+    summary: JsonObject = {"database": str(args.db), "freshness_checked": False}
+    try:
+        with open_bundle(args.path) as bundle:
+            pins = _writer_trust_pins(args, bundle.manifest)
+        checkpoint = _read_json_file(args.anchor_checkpoint)
+        receipt = _read_json_file(args.anchor_receipt)
+        writer = Writer.restore_from_bundle(
+            args.db, key, args.path, trust_pins=pins, require_active_status=True,
+            anchor_checkpoint=checkpoint, anchor_receipt=receipt)
+    except RestoreBehindWitnessError:
+        summary.update({"restored": True, "sealed": True,
+                        "diagnostic_codes": ["RESTORE_BEHIND_WITNESS"]})
+        _print(args, summary, "RESTORE_BEHIND_WITNESS: restored database retained sealed; "
+               "fresh witness state was not checked")
+        return 4
+    except (SchemaError, TrustError):
+        raise
+    except (BundleReadError, LimitError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except CasfError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    try:
+        summary["restored"] = True
+        _print(args, summary, f"restored database to {args.db}; "
+               "fresh witness state was not checked")
+    finally:
+        writer.close()
     return 0
 
 
@@ -530,6 +588,13 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
         raise SchemaError("trust file field types are wrong")
     if set(policy) != _TRUST_POLICY_FIELDS:
         raise SchemaError("trust policy fields are wrong")
+    if policy["mode"] not in ("integrity", "anchored", "online"):
+        raise SchemaError("unknown trust policy mode")
+    if type(policy["allow_unwitnessed"]) is not bool:
+        raise SchemaError("allow_unwitnessed must be a boolean")
+    steps = policy["max_chain_steps"]
+    if type(steps) is not int or not 1 <= steps <= SAFE_INT_MAX:
+        raise SchemaError("max_chain_steps must be a positive safe integer")
     timeout = policy["query_timeout_seconds"]
     if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
             or not math.isfinite(timeout) or timeout <= 0):
@@ -545,6 +610,15 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
                          "provision this log")
     if not isinstance(entry, dict) or set(entry) != _TRUST_LOG_FIELDS:
         raise SchemaError("trust log entry fields are wrong")
+    for field in ("manifest_hash", "witness_id"):
+        value = entry[field]
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise SchemaError(f"trust {field} must be a lowercase SHA-256 digest")
+    if not isinstance(entry["witness_url"], str):
+        raise SchemaError("witness_url must be a string")
+    minimum = entry["minimum_status_serial"]
+    if type(minimum) is not int or not 1 <= minimum <= SAFE_INT_MAX:
+        raise SchemaError("minimum_status_serial must be a positive safe integer")
     return keys, entry, policy
 
 
@@ -807,11 +881,30 @@ def _parser() -> argparse.ArgumentParser:
     submit.add_argument("--passphrase-env", default=PASS_ENV)
     submit.set_defaults(func=_cmd_witness_submit)
 
+    recover = wit_sub.add_parser("recover", parents=[common],
+                                 help="retrieve an accepted receipt for the pending checkpoint")
+    recover.add_argument("--db", required=True)
+    recover.add_argument("--trust", required=True)
+    recover.add_argument("--url", required=True)
+    recover.add_argument("--token-env", default=TOKEN_ENV)
+    recover.set_defaults(func=_cmd_witness_recover)
+
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
     export.add_argument("--out", required=True)
     export.add_argument("--trust", help="independent manifest trust pins")
     export.set_defaults(func=_cmd_export)
+
+    restore = sub.add_parser("restore", parents=[common],
+                             help="offline restore with signed trust and anchor evidence")
+    restore.add_argument("path")
+    restore.add_argument("--db", required=True)
+    restore.add_argument("--key", required=True)
+    restore.add_argument("--trust", required=True)
+    restore.add_argument("--anchor-checkpoint", required=True)
+    restore.add_argument("--anchor-receipt", required=True)
+    restore.add_argument("--passphrase-env", default=PASS_ENV)
+    restore.set_defaults(func=_cmd_restore)
 
     ver = sub.add_parser("verify", parents=[common])
     ver.add_argument("path")
