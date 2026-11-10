@@ -92,8 +92,10 @@ to the new values, and old string values are not accepted as canonical enums.
 `Report.overall` reads the existing `result` field.
 
 [ADR-013](adr/ADR-013-verification-report-semantics.md) records the decision and
-failure precedence. Typed writer operation results are implemented; the verify-bundle convenience
-interface and incremental verification remain open interface work.
+failure precedence. Typed writer operation results and the
+[complete bundle and incremental verifier APIs](verifier-api.md) are implemented.
+Incremental report assumptions identify the trusted checkpoint, skipped prefix
+and explicit absence of prefix signature checks; verified ranges cover the suffix.
 Historical reports retain their original labels and source revisions.
 
 See [ADR-011](adr/ADR-011-export-and-report-interfaces.md),

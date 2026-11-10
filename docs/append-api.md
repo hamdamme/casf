@@ -80,6 +80,7 @@ committed result. The startup flag remains separate from journal coverage.
 
 [ADR-012](adr/ADR-012-typed-append-results.md) records this method-based API
 decision. The [log API guide](log-api.md) covers typed checkpoint, witness and export
-results. The verify-bundle convenience API and incremental verification remain
-open. The [verification guide](verification.md) describes the current report contract. These examples do not claim the
+results. The [verifier API guide](verifier-api.md) covers complete bundle reads
+and incremental verification. The [verification guide](verification.md) describes
+the current report contract. These examples do not claim the
 whole experimental release is complete.

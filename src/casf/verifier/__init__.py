@@ -24,6 +24,8 @@ from casf.errors import (
 )
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject
+from casf.verifier.anchor import VerificationAnchor
+from casf.verifier.bundle import verify_bundle
 from casf.verifier.report import (
     AnchorStatus,
     Dimension,
@@ -46,7 +48,9 @@ __all__ = [
     "Result",
     "TrustPins",
     "TrustStatus",
+    "VerificationAnchor",
     "verify",
+    "verify_bundle",
 ]
 
 ZERO = "0" * 64
@@ -90,18 +94,26 @@ def verify(manifest_envelope: JsonObject,
            retained_checkpoint: tuple[int, str] | None = None,
            retained_revoked: bool = False,
            max_chain_steps: int = MAX_CHECKPOINT_CHAIN_STEPS,
-           max_records: int = 1_000_000) -> Report:
+           max_records: int = 1_000_000,
+           *, anchor: VerificationAnchor | None = None) -> Report:
     """Verify evidence using only pinned public trust (SPEC §15).
 
     Online mode additionally calls online_query, a callable returning
     a fresh witness view (see casf.online.query_latest), and compares
     it to the evidence and the retained high water checkpoint.
 
+    An explicit anchor authenticates a trusted checkpoint and receipt before
+    consuming records starting at its count + 1. Supply only checkpoint/receipt
+    extensions after its index. Report ranges cover only checked suffix bodies;
+    budgets count supplied extensions. Omit anchor for full verification.
+
     Records are consumed once. Anchored and online modes buffer at most
     max_chain_steps + 1 checkpoint envelopes before reading records and keep
     only the digests at their requested record counts. Iterator exceptions
     propagate, and checkpoint iterators must be independent of record iteration.
     """
+    if anchor is not None and not isinstance(anchor, VerificationAnchor):
+        raise SchemaError("anchor requires a VerificationAnchor")
     if type(max_chain_steps) is not int or max_chain_steps < 1:
         raise ValueError("max_chain_steps must be a positive integer")
     if type(pins.minimum_status_serial) is not int or pins.minimum_status_serial < 1:
@@ -125,12 +137,19 @@ def verify(manifest_envelope: JsonObject,
         assumptions={
             "authority_trust": "caller_provisioned",
             "status_currentness": "supplied_statements_only",
-            "witness_honesty_required": mode is not Mode.INTEGRITY,
+            "witness_honesty_required": mode is not Mode.INTEGRITY or anchor is not None,
             "allow_unwitnessed": allow_unwitnessed,
             "minimum_status_serial": pins.minimum_status_serial,
             "retained_checkpoint_supplied": retained_checkpoint is not None,
             "retained_revoked": retained_revoked,
             "max_records": max_records, "max_chain_steps": max_chain_steps,
+        })
+
+    if anchor is not None:
+        report.assumptions.update({
+            "anchor_checkpoint_hash": anchor.checkpoint.digest,
+            "trusted_prefix_through": anchor.checkpoint.count,
+            "prefix_signatures_checked": False,
         })
 
     def fail(code: str, seq: int | None = None) -> None:
@@ -239,7 +258,8 @@ def verify(manifest_envelope: JsonObject,
         fail("WITNESS_PIN_CONFLICT")
         set_trust(TrustStatus.CONFLICT)
         return report
-    witness_trust_missing = mode is not Mode.INTEGRITY and pinned_witness is None
+    witness_trust_missing = ((mode is not Mode.INTEGRITY or anchor is not None)
+                             and pinned_witness is None)
     if witness_trust_missing:
         inconclusive("WITNESS_UNTRUSTED")
 
@@ -306,7 +326,49 @@ def verify(manifest_envelope: JsonObject,
 
     # --------------------------------------------------------- record stream
     genesis = crypto.genesis_hash(manifest_hash)
-    expected_prev = genesis
+    start_count, start_index = 0, -1
+    start_head, start_cp, start_rc = genesis, ZERO, ZERO
+    start_final = False
+    start_body: JsonObject | None = None
+    start_receipt: JsonObject | None = None
+    if anchor is not None:
+        start_body, cp_hash = anchor.checkpoint.body, anchor.checkpoint.digest
+        receipt = anchor.receipt
+        receipt_body = receipt['body']
+        assert isinstance(receipt_body, dict)
+        start_receipt = receipt_body
+        if (start_body['log_id'] != pins.log_id or start_body['manifest_hash'] != manifest_hash
+                or start_body['key_id'] != body['log_key_id']
+                or start_receipt['witness_id'] != witness_id):
+            fail("START_BINDING")
+            report.chain_status = Dimension.INVALID
+            return report
+        if pinned_witness is None:
+            inconclusive("WITNESS_UNTRUSTED")
+            set_trust(TrustStatus.UNKNOWN)
+            return report
+        try:
+            crypto.verify_checkpoint(
+                log_raw, start_body, _field_str(anchor.checkpoint.to_dict(), 'signature'))
+        except CasfError:
+            fail("START_CHECKPOINT_SIGNATURE")
+            report.signature_status = Dimension.INVALID
+            return report
+        try:
+            crypto.verify_receipt(pinned_witness, start_receipt, _field_str(receipt, 'signature'))
+        except CasfError:
+            fail("START_RECEIPT_SIGNATURE")
+            report.signature_status = Dimension.INVALID
+            return report
+        start_count, start_index = anchor.checkpoint.count, anchor.checkpoint.index
+        start_head, start_cp = _field_str(start_body, 'head_hash'), cp_hash
+        start_rc = _field_str(receipt, 'receipt_hash')
+        start_final = anchor.checkpoint.final
+        if start_count == 0 and start_head != genesis:
+            fail("START_GENESIS_MISMATCH")
+            report.chain_status = Dimension.INVALID
+            return report
+    expected_prev = start_head
     # Only checkpoint boundaries need historical digests. Buffer at most the
     # configured protocol budget plus a sentinel, never the record history.
     # Validation stays below the record loop to preserve failure precedence.
@@ -317,18 +379,27 @@ def verify(manifest_envelope: JsonObject,
         candidate_body = candidate.get("body")
         if isinstance(candidate_body, dict):
             candidate_count = candidate_body.get("count")
-            if type(candidate_count) is int and 0 < candidate_count <= max_records:
+            if (type(candidate_count) is int
+                    and start_count < candidate_count <= start_count + max_records):
                 head_targets.add(candidate_count)
-    verified_heads: dict[int, str] = {}
-    verified_count = 0
+    verified_heads: dict[int, str] = {start_count: start_head}
+    verified_count = start_count
     records_complete = False
-    for seq, env in enumerate(records, start=1):
-        if seq > max_records:
-            report.verified_through = verified_count
+    for position, env in enumerate(records, start=1):
+        seq = start_count + position
+        if position > max_records:
             if report.result is not Result.FAIL:
                 report.result = Result.INCONCLUSIVE
             codes.append("RECORD_BUDGET_EXCEEDED")
             return report
+        if seq > SAFE_INT_MAX:
+            fail("SEQ_OVERFLOW")
+            report.chain_status = Dimension.INVALID
+            break
+        if start_final:
+            fail("RECORD_AFTER_FINAL", seq)
+            report.chain_status = Dimension.INVALID
+            break
         try:
             rbody, record_hash, rsig = _expect_envelope(env, "record_hash")
             if not supported(rbody, seq):
@@ -363,14 +434,20 @@ def verify(manifest_envelope: JsonObject,
             report.signature_status = Dimension.INVALID
             break
         verified_count = seq
-        report.verified_from = 1
+        report.verified_from = start_count + 1
+        report.verified_through = seq
         if seq in head_targets:
             verified_heads[seq] = record_hash
         expected_prev = record_hash
     else:
         records_complete = True
-    report.verified_through = verified_count
     if mode is Mode.INTEGRITY:
+        if anchor is not None and retained_checkpoint is not None:
+            kept_index, kept_hash = retained_checkpoint
+            if kept_index < start_index:
+                inconclusive("RETAINED_CHECKPOINT_UNAVAILABLE")
+            elif (kept_index, kept_hash) != (start_index, start_cp):
+                fail("WITNESS_STATE_CONFLICT")
         if records_complete:
             complete_checks(signatures_checked=not invalid_status)
         return report
@@ -378,12 +455,13 @@ def verify(manifest_envelope: JsonObject,
         return report
 
     # ------------------------------------------------- checkpoints (anchored)
-    checkpoints: list[tuple[JsonObject, str]] = []
-    prev_cp = ZERO
-    prev_count = 0
-    prev_head = genesis
-    for index, env in enumerate(checkpoint_input):
-        if index >= max_chain_steps:
+    checkpoints: list[tuple[JsonObject, str]] = (
+        [(start_body, start_cp)] if start_body is not None else [])
+    prev_cp, prev_count, prev_head = start_cp, start_count, start_head
+    previous_final = start_final
+    for offset, env in enumerate(checkpoint_input):
+        index = start_index + 1 + offset
+        if offset >= max_chain_steps:
             report.result = Result.INCONCLUSIVE
             report.anchor_status = AnchorStatus.INCOMPLETE
             codes.append("CHAIN_BUDGET_EXCEEDED")
@@ -401,6 +479,10 @@ def verify(manifest_envelope: JsonObject,
                 or _field_str(cbody, "manifest_hash") != manifest_hash \
                 or _field_str(cbody, "key_id") != _field_str(body, "log_key_id"):
             fail("CHECKPOINT_BINDING")
+            report.chain_status = Dimension.INVALID
+            return report
+        if previous_final:
+            fail("CHECKPOINT_AFTER_FINAL")
             report.chain_status = Dimension.INVALID
             return report
         if _field_int(cbody, "index") != index:
@@ -439,10 +521,12 @@ def verify(manifest_envelope: JsonObject,
             return report
         checkpoints.append((cbody, checkpoint_hash))
         prev_cp, prev_count, prev_head = checkpoint_hash, count, head
+        previous_final = cbody["final"] is True
 
     # ------------------------------------------------------ receipts
-    receipts: list[JsonObject] = []
-    prev_rc = ZERO
+    receipts: list[JsonObject] = [start_receipt] if start_receipt is not None else []
+    prev_rc = start_rc
+    checkpoint_map = {digest: value for value, digest in checkpoints}
     for receipt_index, env in enumerate(receipt_envelopes):
         if receipt_index >= max_chain_steps:
             report.result = Result.INCONCLUSIVE
@@ -482,6 +566,19 @@ def verify(manifest_envelope: JsonObject,
             fail("RECEIPT_SIGNATURE")
             report.signature_status = Dimension.INVALID
             return report
+        if checkpoints:
+            matching_checkpoint = checkpoint_map.get(_field_str(rbody2, "checkpoint_hash"))
+            if matching_checkpoint is None or any(
+                    rbody2[rc_field] != matching_checkpoint[cp_field]
+                    for rc_field, cp_field in (("checkpoint_index", "index"), ("count", "count"),
+                                              ("head_hash", "head_hash"))):
+                fail("RECEIPT_CHECKPOINT_MISMATCH")
+                report.chain_status = Dimension.INVALID
+                return report
+            if _field_int(rbody2, "checkpoint_index") != start_index + 1 + receipt_index:
+                fail("RECEIPT_INDEX_GAP")
+                report.chain_status = Dimension.INVALID
+                return report
         receipts.append(rbody2)
         prev_rc = receipt_hash
 
@@ -513,6 +610,13 @@ def verify(manifest_envelope: JsonObject,
         fail("ANCHOR_DIVERGENT")
         return report
 
+    if anchor_body['final'] is True and verified_count > anchor_count:
+        fail("RECORD_AFTER_FINAL", anchor_count + 1)
+        report.chain_status = Dimension.INVALID
+        report.verified_through = anchor_count if anchor_count > start_count else 0
+        if report.verified_through == 0:
+            report.verified_from = 0
+        return report
     complete_checks()
     report.witnessed_through = anchor_count
     report.unwitnessed_count = verified_count - anchor_count
@@ -528,8 +632,11 @@ def verify(manifest_envelope: JsonObject,
     # The validated chain must include the previously accepted checkpoint.
     if retained_checkpoint is not None:
         kept_index, kept_hash = retained_checkpoint
-        if (kept_index < 0 or kept_index >= len(checkpoints)
-                or checkpoints[kept_index][1] != kept_hash):
+        if anchor is not None and kept_index < start_index:
+            inconclusive("RETAINED_CHECKPOINT_UNAVAILABLE")
+            return report
+        known = {_field_int(value, "index"): digest for value, digest in checkpoints}
+        if kept_index not in known or known[kept_index] != kept_hash:
             report.anchor_status = AnchorStatus.DIVERGENT
             if mode is Mode.ONLINE:
                 report.freshness_status = FreshnessStatus.CONFLICT

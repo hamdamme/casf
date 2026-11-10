@@ -44,6 +44,13 @@ its checks.
 - [Typed log operations](../log-api.md) cover immutable protocol values,
   manifest/receipt mutation after validation, strict checkpoint flags, failed
   commits, exact retry bytes, export snapshot metadata and authorization checks.
+- [Incremental and bundle verification](../verifier-api.md) tests cover anchor
+  ownership/authentication, absolute suffix ranges, retained-state conflicts,
+  status/revocation, online freshness outcomes, extension budgets, receipt
+  binding, final checkpoints and sequence boundaries. Bundle tests cover EOF
+  failures after early verdicts, descriptor closure, complete-input budgets,
+  skipped-prefix disclosure and conflicting anchor evidence. Installed-wheel
+  checks exercise both APIs without loading writer or storage modules.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

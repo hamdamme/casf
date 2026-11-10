@@ -5,8 +5,7 @@ import sys
 from pathlib import Path
 
 from casf import crypto
-from casf.bundle import open_bundle
-from casf.verifier import Result, TrustPins, TrustStatus, verify
+from casf.verifier import Mode, Result, TrustPins, TrustStatus, VerificationAnchor, verify_bundle
 
 
 def main():
@@ -17,12 +16,20 @@ def main():
     pins = TrustPins(authority_keys={crypto.key_id(authority): authority},
                      witness_keys={crypto.key_id(witness): witness},
                      log_id=trust['log_id'], manifest_hash=trust['manifest_hash'])
-    with open_bundle(directory) as bundle:
-        report = verify(bundle.manifest, bundle.records, pins, status_envelopes=bundle.statuses)
+    report = verify_bundle(directory, pins)
     assert report.result is Result.PASS
     assert report.trust_status is TrustStatus.TRUSTED
     assert report.verified_through == 2
     assert 'STATUS_CURRENTNESS_UNCONFIRMED' in report.diagnostic_codes
+    checkpoint = json.loads((directory / 'checkpoints.jsonl').read_text())
+    receipt = json.loads((directory / 'receipts.jsonl').read_text())
+    anchor = VerificationAnchor(checkpoint, receipt,
+                                expected_checkpoint_hash=trust['checkpoint_hash'])
+    suffix = verify_bundle(directory, pins, Mode.ANCHORED, anchor=anchor, allow_unwitnessed=True)
+    assert suffix.result is Result.PASS
+    assert suffix.verified_from == suffix.verified_through == 2
+    assert suffix.witnessed_through == suffix.unwitnessed_count == 1
+    assert suffix.assumptions['prefix_signatures_checked'] is False
     forbidden = ('casf.writer', 'casf.storage', 'casf.witness', 'casf.cli', 'casf.keys')
     assert not any(name == prefix or name.startswith(prefix + '.')
                    for name in sys.modules for prefix in forbidden)

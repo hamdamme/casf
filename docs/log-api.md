@@ -86,6 +86,7 @@ now snapshot dictionary inputs before validation and storage. Fixed digest and
 base64url fields reject trailing characters, including a trailing newline.
 
 [ADR-014](adr/ADR-014-typed-log-operations.md) records these method-based
-contracts. The public verify-bundle convenience interface and incremental
-verification remain open. This API change does not complete the experimental
+contracts. The [verifier API guide](verifier-api.md) covers complete bundle
+reads and incremental verification from explicit trusted checkpoints. This API
+change does not complete the experimental
 release or alter authenticated formats, storage schema or historical results.

@@ -24,6 +24,7 @@ from casf import crypto
 from casf.canonical.jcs import parse
 from casf.canonical.limits import MAX_JSONL_LINE_BYTES
 from casf.errors import CasfError, LimitError
+from casf.model.operations import ExportResult
 from casf.types import JsonObject
 
 __all__ = ["Bundle", "BundleReadError", "StreamingBundle", "open_bundle", "read_bundle"]
@@ -193,6 +194,9 @@ def _prepare_bundle(bundle_dir: str | Path, *,
                         "generated_at")
     if metadata["version"] != 1 or metadata["type"] != "export":
         raise CasfError("unsupported export metadata")
+    # Share the writer API's strict metadata profile: booleans are not counts,
+    # and timestamps must use the protocol encoding.
+    ExportResult(directory, metadata)
 
     body = manifest.get("body")
     manifest_hash = manifest.get("manifest_hash")

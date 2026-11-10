@@ -84,10 +84,11 @@ input before calculating the request digest. See the [typed append guide](append
 `casf.api.open_log` binds an existing writer and exposes typed checkpoint,
 witness-submission, export and seal operations. The existing Writer return
 values remain available. See the [log API guide](log-api.md) for ownership,
-commit boundaries and creation behavior. The verify-bundle convenience API
-and incremental verification remain open interface work.
+commit boundaries and creation behavior. The [verifier API guide](verifier-api.md)
+covers complete bundle reads and explicit trusted checkpoint starts.
 
-The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
+The public verifier entry points are `casf.verifier.verify_bundle` and `verify`.
+Their `Report` uses overall `PASS`,
 `FAIL` and `INCONCLUSIVE`. Diagnostic JSON version 2 uses SPEC section 15 enum
 labels, explicit NOT_CHECKED dimensions and inconclusive missing-trust verdicts.
 `Report.to_dict()` and CLI JSON expose every diagnostic field, including the
@@ -95,15 +96,20 @@ verified range, failure position, checkpoint identity and requested policy.
 `overall` is the canonical verdict; `result` remains a compatibility field.
 See [export and report contracts](export-and-reports.md) for migration details.
 
-Verification starts from record 1. Retained checkpoints support continuity
-checks, but the public API does not implement a general incremental verifier
-starting from an arbitrary trusted suffix. A valid signature chain does not
+Verification starts from record 1 by default. An explicit `VerificationAnchor`
+authenticates a checkpoint and receipt against an independently retained hash
+and provisioned keys, then verifies only the contiguous suffix. Reports identify
+the trusted prefix and the bodies actually checked. Retained checkpoints still
+constrain continuity; missing earlier history cannot authorize advancement.
+A valid signature chain does not
 prove that it is the latest history. `WITNESS_AHEAD` can be inconclusive when
 intervening evidence is unavailable; a conflicting authenticated retained
 checkpoint produces `WITNESS_STATE_CONFLICT`. The H1 research guide records
 that distinction rather than treating both as the same observed outcome.
 
-`open_bundle`, writer export and the CLI stream records. The verifier retains record digests
+`verify_bundle`, `open_bundle`, writer export and the CLI stream records.
+`verify_bundle` drains input through EOF and closes files before returning.
+The verifier retains record digests
 only at checkpoint boundaries, subject to bounded protocol evidence and input
 budgets. `read_bundle` and restore remain eager and can use
 memory proportional to record count. Streaming verification is not a claim
