@@ -55,36 +55,44 @@ old temporary directories are never reused or deleted.
 
 ## Complete machine diagnostics
 
-`Report.to_dict()` and `casf verify --json` share diagnostic JSON version 1.
+`Report.to_dict()` and `casf verify --json` share diagnostic JSON version 2.
 This serialization version is separate from the `casf-v1` cryptographic profile
-and the SQLite schema version. Existing CLI fields remain present; additional
-fields expose the full report and policy. Each call returns independent lists
+and the SQLite schema version. Existing CLI fields remain present; `overall` duplicates the compatibility
+`result` verdict. Enum labels change as described below. Each call returns independent lists
 and objects, so changing the returned dictionary does not change the report.
 
 | Fields | Meaning |
 | --- | --- |
-| `report_version`, `mode`, `result` | Diagnostic format version, requested verification mode, and overall verdict. |
-| `protocol_status`, `signature_status`, `chain_status` | Separate dimensions using the existing `OK`, `FAIL`, `NOT_CHECKED` enum. |
-| `trust_status`, `anchor_status`, `freshness_status` | Existing trust, anchor and freshness enums; see the [verification guide](verification.md). |
+| `report_version`, `mode`, `overall`, `result` | Diagnostic format version, requested verification mode, and overall verdict. |
+| `protocol_status`, `signature_status`, `chain_status` | Protocol: `VALID`, `INVALID`, `UNSUPPORTED`. Signature and chain: `VALID`, `INVALID`, `NOT_CHECKED`. |
+| `trust_status`, `anchor_status`, `freshness_status` | Trust: `TRUSTED`, `UNKNOWN`, `REVOKED`, `CONFLICT`. Anchor: `NONE`, `MATCHED`, `PARTIAL_ANCHOR`, `INCOMPLETE`, `DIVERGENT`. Freshness labels are unchanged; see the [verification guide](verification.md). |
 | `verified_from`, `verified_through` | Successfully examined record range. An empty range is 0 through 0. |
-| `witnessed_through`, `unwitnessed_count` | Established witness coverage and the unanchored suffix. |
+| `witnessed_through`, `unwitnessed_count` | Established witness coverage and the unanchored suffix; null when unknown. |
 | `checkpoint_index`, `checkpoint_hash` | Established checkpoint identity, or null. A non-PASS report never authorizes advancing retained checkpoint state. |
 | `first_failure_seq`, `diagnostic_codes` | Exact first failed record when applicable and stable diagnostic identifiers. |
 | `observed_status_serial` | Authenticated authority status serial observed, independently of the overall verdict. |
 | `assumptions` | Caller-provisioned authority trust, supplied-status currentness limit, witness honesty requirement, unwitnessed-tail policy, retained-state inputs and configured work limits. |
 
-A FAIL or INCONCLUSIVE verification still emits this report with its existing
-nonzero exit category. Usage, malformed-bundle and local I/O failures remain
+A FAIL or INCONCLUSIVE verification still emits this report with the specific
+nonzero exit category described in the verification guide. Usage, malformed-bundle and local I/O failures remain
 errors rather than partial verification reports. The CLI consumes records to
 EOF before publishing a report or advancing an accepted checkpoint. It retains
 authenticated status/revocation observations independently, as documented in
 the [state guide](verification.md#remembered-verifier-state).
 
-The current enum labels and missing-trust verdicts still differ from the
-normative SPEC §15 contract. Aligning those semantics, immutable typed public
-requests/results and incremental verification remain open interface work.
-A breaking diagnostic-format change requires a new serialization version;
-this batch does not claim full interface conformance.
+Version 1 consumers must migrate dimension `OK` to `VALID`, dimension `FAIL`
+to `INVALID`, trust `OK` to `TRUSTED`, and anchor `NOT_REQUESTED`/`OK` to
+`NONE`/`MATCHED`. Missing trust now reports UNKNOWN/INCONCLUSIVE; actual trust
+conflicts use CONFLICT/FAIL. `ProtocolStatus` is distinct from signature/chain
+`Dimension`. Existing Python enum names remain aliases: `Dimension.OK/FAIL`,
+`TrustStatus.OK/UNTRUSTED`, and `AnchorStatus.NOT_REQUESTED/OK`. Aliases serialize
+to the new values, and old string values are not accepted as canonical enums.
+`Report.overall` reads the existing `result` field.
+
+[ADR-013](adr/ADR-013-verification-report-semantics.md) records the decision and
+failure precedence. The immutable append API is implemented; other public
+operation results and incremental verification remain open interface work.
+Historical reports retain their original labels and source revisions.
 
 See [ADR-011](adr/ADR-011-export-and-report-interfaces.md),
 [export regressions](../tests/unit/test_export_contract.py), and

@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 43 is merged into main at `ee76c7dff57727fd87b965b5580d83e6f4669cec`. The typed-append batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 44 is merged into main at `625666bd804d99e68f0abad6dc7cbd09245d7e3a`. The verification-report batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration is complete, and public interface conformance is in progress.
 
@@ -51,16 +51,16 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 43 is merged. Prefix export, exclusive publication and complete diagnostic serialization have been accepted. F12 remains in progress.
-- This review batch adds immutable `EventRequest` and `AppendResult` models and `Writer.append_event`. Existing `Writer.append` retains its dictionary result while sharing the same snapshot and transaction implementation.
-- The input-mutation regression demonstrates and fixes a request-digest/content mismatch. Witness coverage is observed in the append transaction and returned only after commit: local, covered by a pending checkpoint, or witnessed. Same-event retries retain the record while refreshing that observation.
-- CLI append adds committed/witness state without payloads. Tests cover request/result isolation, strict inputs, generated body budgets, commit failures, uncertain responses, lock contention, concurrent retries, verified authorization and all three CLI observations.
-- Remaining F12 acceptance: other public result/interface contracts, alignment of report enums and missing-trust verdicts with SPEC section 15, and incremental verification. The typed append batch awaits review; Session 6 and Phase 2 stay open.
-- Validation: exact local and hosted results belong to the draft PR. Broader process crash/concurrency, affected experiment reruns and final candidate package checks remain separate gates.
-- Preservation: authenticated formats, request digest domains, frozen vectors, storage schema version 1 and historical research outputs are unchanged. No release was published.
+- PR 44 is merged. Immutable append requests, commit/witness observations and CLI append reporting have been accepted. F12 remains in progress.
+- This review batch aligns verification dimensions and missing-evidence verdicts with SPEC section 15. Diagnostic JSON advances to version 2; `overall` and the compatibility `result` field carry the same verdict.
+- Missing trust, status or anchor evidence is inconclusive. Invalid signatures, schemas, identity conflicts, revocation and proven anchor mismatches remain failures. Unchecked dimensions and unknown witness coverage are explicit.
+- Trust checks reject unrecognized signed status values and keys configured under mismatching identifiers. CLI reports preserve specific error categories, and non-PASS reports cannot advance accepted checkpoints or authorize writer startup/restore.
+- Validation: exact local and hosted results belong to the draft PR. Tests cover version and enum migration, absent evidence, failure precedence, strict trust validation, CLI exits and retained-state behavior.
+- Preservation: authenticated formats, frozen vectors, storage schema version 1 and historical research outputs are unchanged. No release was published.
+- Remaining F12 acceptance: other public operation result/interface contracts and incremental verification. The report batch awaits review; Session 6 and Phase 2 stay open.
 - Remaining: 17 tasks, 9 sessions and 5 phases. F12 stays in the remaining total after this batch is accepted.
-- User action: review the typed-append draft PR and its checks. Nothing is merged or released by this work.
-- Next task: continue the remaining F12 public result and report-semantics decisions, followed by incremental verification and the later validation gates.
+- User action: review the verification-report draft PR and its checks. Nothing is merged or released by this work.
+- Next task: continue the remaining F12 public operation results, followed by incremental verification and the later validation gates.
 
 ## Evidence
 

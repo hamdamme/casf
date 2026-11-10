@@ -20,7 +20,7 @@ def main():
     with open_bundle(directory) as bundle:
         report = verify(bundle.manifest, bundle.records, pins, status_envelopes=bundle.statuses)
     assert report.result is Result.PASS
-    assert report.trust_status is TrustStatus.OK
+    assert report.trust_status is TrustStatus.TRUSTED
     assert report.verified_through == 2
     assert 'STATUS_CURRENTNESS_UNCONFIRMED' in report.diagnostic_codes
     forbidden = ('casf.writer', 'casf.storage', 'casf.witness', 'casf.cli', 'casf.keys')

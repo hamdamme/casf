@@ -73,7 +73,7 @@ def _status(writer: "Writer", log_id: str, policy: StartupPolicy,
     serial = max(report.observed_status_serial, previous.status_serial if previous else 0)
     if report.observed_status_serial or report.trust_status is TrustStatus.REVOKED:
         state.save(serial, None, revoked=report.trust_status is TrustStatus.REVOKED)
-    if report.result is not Result.PASS or report.trust_status is not TrustStatus.OK:
+    if report.result is not Result.PASS or report.trust_status is not TrustStatus.TRUSTED:
         raise TrustError("startup requires active signed status at the retained serial; "
                          + ", ".join(report.diagnostic_codes))
     return serial

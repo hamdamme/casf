@@ -8,12 +8,14 @@ workflow. Exporting writer records does not authorize the writer to create
 an authority statement.
 
 A missing or unrelated statement reports `STATUS_MISSING`, UNKNOWN trust,
-and FAIL. The CLI returns exit code 3. Invalid signatures, issuer mismatches,
-stale serials, and revocation also fail. A verified revoked statement cannot
-be undone by an active statement later in the supplied list. Malformed status
-input fails verification even if another valid active statement is present;
-valid statements for a different manifest are ignored. This strict handling
-prevents malformed evidence from being silently accepted.
+and INCONCLUSIVE. A supplied active statement below the required serial reports
+`STATUS_SERIAL_LOW` and remains inconclusive, including when other statements
+are supplied. The CLI keeps the specific trust exit code 3. Invalid signatures,
+issuer mismatches, unsupported status values and revocation remain failures.
+A verified revoked statement cannot be undone by a later active statement.
+Malformed status input fails even if another valid active statement is present;
+valid statements for a different manifest are ignored. Missing trust never
+becomes permission to write, restore or advance an accepted checkpoint.
 
 A signed active statement proves its signed content, not that no later
 revocation exists. `STATUS_CURRENTNESS_UNCONFIRMED` records this limitation.
@@ -23,11 +25,27 @@ statement; do not disable trust checks to recover an overall PASS.
 
 ## Machine-readable reports
 
-`casf verify --json` now uses `Report.to_dict()` and includes all diagnostic
-fields, exact verified/failure positions, checkpoint identity and policy
-assumptions. Existing enum values and exit categories are preserved. See the
-[field contract](export-and-reports.md#complete-machine-diagnostics), including
-remaining differences from SPEC section 15 and late-input error handling.
+`casf verify --json` uses `Report.to_dict()` with `report_version=2`.
+`overall` is the canonical verdict; `result` remains an identical compatibility
+field. Version 2 uses the SPEC section 15 labels and distinguishes missing
+evidence from proven mismatches. Existing version 1 JSON consumers must update
+their enum handling. The cryptographic profile and database schema stay version 1.
+See the [field and migration contract](export-and-reports.md#complete-machine-diagnostics).
+
+Missing anchors or receipts are INCONCLUSIVE (exit 4). A supplied history
+shorter than an authenticated anchor remains FAIL/INCOMPLETE: the count
+mismatch is proven. Divergence and invalid signatures remain FAIL. Schema
+errors in a report use exit 2; unsupported profiles and unknown, conflicting or
+revoked trust use exit 3. Other proven evidence failures use exit 1. These
+specific categories take precedence over the general inconclusive exit 4.
+Malformed bundle containers and I/O failures can still prevent a report.
+
+Signature and chain dimensions begin NOT_CHECKED; VALID is assigned only when
+the required traversal finishes. Protocol VALID describes the structure
+examined, not unseen input. `verified_from`/`verified_through` identify examined
+records, with 0 through 0 for an empty range. Unknown witness coverage and
+unwitnessed counts are null. An absent or unchecked anchor is never MATCHED,
+and an online check that has not obtained a view remains INCONCLUSIVE.
 
 ## Remembered verifier state
 

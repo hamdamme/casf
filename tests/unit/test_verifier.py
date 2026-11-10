@@ -198,14 +198,14 @@ def test_unknown_version_never_falls_back():
     assert report.result == Result.FAIL
     assert "VERSION_UNSUPPORTED" in report.diagnostic_codes
 
-def test_untrusted_issuer_fails():
+def test_untrusted_issuer_is_inconclusive():
     env = _manifest_env()
     pins = TrustPins(authority_keys={}, witness_keys={crypto.key_id(WIT_PUB): WIT_PUB},
                      log_id=LOG_ID)
     report = verify(env, _chain(1), pins,
                     status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
-    assert report.result == Result.FAIL
-    assert report.trust_status == TrustStatus.UNTRUSTED
+    assert report.result == Result.INCONCLUSIVE
+    assert report.trust_status == TrustStatus.UNKNOWN
     assert "ISSUER_UNTRUSTED" in report.diagnostic_codes
 
 def test_manifest_replacement_fails():
@@ -237,12 +237,12 @@ def test_revoked_status_fails_trust():
     assert report.trust_status == TrustStatus.REVOKED
     assert "STATUS_REVOKED" in report.diagnostic_codes
 
-def test_status_serial_below_minimum_fails():
+def test_status_serial_below_minimum_is_inconclusive():
     env = _manifest_env()
     mh = env["manifest_hash"]
     report = verify(env, _chain(1), _pins(mh, minimum_status_serial=5),
                     status_envelopes=[_status_env(mh, serial=2)])
-    assert report.result == Result.FAIL
+    assert report.result == Result.INCONCLUSIVE
     assert "STATUS_SERIAL_LOW" in report.diagnostic_codes
 
 def test_bad_status_signature_fails():
