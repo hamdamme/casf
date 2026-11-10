@@ -91,5 +91,7 @@ and active shutdown. The wheel smoke check exercises installation both with
 and without the optional server. Recorded research results retain their
 original implementation and environment; this change does not replace them.
 The [validation record](release/http-validation.md) lists the completed runs.
-D05 remains open until the maintainer accepts implementation and validation
-and completes the remaining release review.
+The [October 28 closeout](release/phase3-closeout-2026-10-28.md) records later
+platform and redistribution evidence. Use the [current checklist](release/checklist-v0.1.md)
+for current source validation and candidate requirements. The dated HTTP
+validation record is not a current release gate table.

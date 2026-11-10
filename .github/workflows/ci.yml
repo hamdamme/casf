@@ -115,5 +115,6 @@ jobs:
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
 
-# NOTE: full adversarial/crash matrix runs before release and
-# periodically on protected infra (SPEC §25). Actions pinned by commit ID.
+# These jobs run the committed test suite. Coverage limits are recorded in
+# docs/release/test-coverage-status.md; candidate gates are in checklist-v0.1.md.
+# Actions are pinned by commit ID.

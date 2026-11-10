@@ -244,7 +244,7 @@
         "tests/unit/test_benchmark.py::test_runner_smoke_produces_raw_rows",
         "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir"
       ],
-      "remaining_review": "The recorded historical Linux and wide area matrices are tied to their original code and environments and are not final candidate measurements. Accepting those results as historical research scope remains a maintainer decision; no historical experiment is being rerun."
+      "remaining_review": "The maintainer accepted the historical benchmark scope on 2026-10-28 in docs/release/phase3-closeout-2026-10-28.md. Those recorded Linux and wide area results apply only to their original source and environments, not the current candidate; no new candidate performance is claimed."
     },
     "T20": {
       "assertion_scope": "A stolen key cannot hide a prefix rewrite from an anchor but can sign a false suffix.",

@@ -1,4 +1,11 @@
-# Research protocol
+# Historical research protocol
+
+This is a preserved historical record. Use the [current research guide](README.md)
+for canonical SPEC section 22 labels, corrected batching interpretation and
+completed external review scope. RQ and H labels below are historical unless
+a section explicitly says canonical H3. The older approximate timing and
+asynchronous submission statements are not current implementation claims.
+The original text is available at [revision 93ba432](https://github.com/hamdamme/casf/blob/93ba4325675c948b108a0281c2b0d97c713decdc/research/protocol.md).
 
 Experimental design for RQ1 to RQ4 and H1 to H3 (SPEC §22-§23).
 Historical experiment status recorded on 2026-10-24: local experiments,

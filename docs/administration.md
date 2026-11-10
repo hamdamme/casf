@@ -90,7 +90,9 @@ Create a linked successor after retaining the old final checkpoint and
 receipt:
 
 ```sh
-casf admin rotate --final-checkpoint final-checkpoint.json \
+casf key generate --role log --out next-log.pem
+casf admin rotate --old-manifest manifest.json \
+  --final-checkpoint final-checkpoint.json \
   --final-receipt final-receipt.json --authority-key authority.pem \
   --new-log-key next-log.pem --witness-public-key witness.pub.pem \
   --out next-manifest.json

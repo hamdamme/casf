@@ -5,7 +5,7 @@ These notes describe source changes prepared after the previously approved
 instructions. The earlier artifacts and their recorded hashes remain
 preserved as historical evidence and do not contain these changes.
 
-## Changes under review
+## Changes since the October 28 candidate
 
 - Reject duplicate JSON properties and prohibited numeric forms in CLI,
   witness, writer response, and retained status state inputs.
@@ -19,8 +19,9 @@ preserved as historical evidence and do not contain these changes.
 - Permit export without a private key; append and checkpoint signing still
   require the log key.
 
-The commands and bounds require full regression, lock, build, clean install,
-and installed wheel checks before a new candidate can be approved.
+The dated checks below identify the revisions and artifacts actually tested.
+Use the [current checklist](checklist-v0.1.md) for the active candidate status;
+the artifact hashes in this note identify the October 31 build only.
 
 ## Artifact contents
 
@@ -73,7 +74,11 @@ shows no actual security or license issue; CASF does not vendor their code.
 GitHub Actions run 114 passed all six test and minimum dependency jobs on
 Python 3.12, 3.13, and 3.14 for revision
 `ffbbcea56f046be483e5336d83e7337bb950a101`. That run predates the response
-header limit changes in the current PR update, so the updated revision needs
-its own passing hosted checks. Passing CI is validation, not release approval.
+header corrections. Subsequently, [Actions run 118](https://github.com/hamdamme/casf/actions/runs/41265472713)
+passed all six jobs at `a3bfa110810e88e5736b451f8e25b3f968c609dd` for PR 28,
+including the effective status and header line limits and the header count
+regression. PR 28 merged as `93ba4325675c948b108a0281c2b0d97c713decdc`.
+Those passing jobs do not change the bytes or hashes of the earlier artifacts
+in this table. Passing CI is validation, not release approval.
 Separate maintainer approval of the exact candidate hashes and notes is still
 required. No release has been published.

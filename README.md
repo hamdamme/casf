@@ -41,7 +41,7 @@ python3 -m venv .venv-tools
 .venv/bin/python -m pytest tests/
 ```
 
-This checks out the development source and runs its tests. It is **not** a production deployment guide. For current protocol and verification rules, see the [project specification](docs/specification/CASF_SPEC_001.md). The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
+This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
 
 For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc1` candidate is not published to a package index. Do not install it with a package index command yet.
 
@@ -68,11 +68,12 @@ These are different assurances. A valid local signature chain alone cannot prove
 | [Project specification](docs/specification/CASF_SPEC_001.md) | Threat model, protocol rules, trust assumptions, and requirements |
 | [Architecture decisions](docs/adr/ADR-001-through-004-baseline-decisions.md) | Design choices and their rationale |
 | [Development guide](DEVELOPMENT.md) | Working rules for implementation and review |
-| [Verification manual](docs/05-verification-manual.md) | Historical design background; consult the specification for current rules |
+| [Implementation reference](docs/current-reference.md) | Current behavior, API boundaries and differences from the specification |
+| [Verification guide](docs/verification.md) | Trust, retained state, diagnostic outcomes and resource budgets |
 | [Install and use CASF](docs/installation.md) | Candidate installation, verification modes, and retained verifier state |
-| [Research protocol](research/protocol.md) | Research questions, methods, and reproducibility |
+| [Research guide](research/README.md) | Canonical questions, evidence, outcomes and historical label crosswalk |
 | [Research limitations](research/limitations.md) | Detection boundaries and limits of the experiments |
-| [Release checklist](docs/release/checklist-v0.1.md) | Candidate gates and the remaining artifact approval |
+| [Release checklist](docs/release/checklist-v0.1.md) | Current source checks, artifact status and historical decisions |
 | [Contributing](CONTRIBUTING.md) | Contribution expectations |
 | [Security policy](SECURITY.md) | Private vulnerability reporting and support scope |
 
@@ -84,7 +85,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | `tests/` | Unit and conformance tests and other validation |
 | `vectors/v1/` | Canonical encoding and cryptographic test vectors |
 | `benchmarks/` | Experiment runners, manifests, results, and reports |
-| `research/` | Research protocol and documented limitations |
+| `research/` | Current research guide, historical protocol, study methods and preprint |
 | `docs/specification/` | Governing specification draft |
 | `docs/adr/` | Recorded architectural decisions |
 | `docs/01-*.md` through `docs/05-*.md` | Earlier design documents, not the governing protocol |
