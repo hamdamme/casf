@@ -124,7 +124,7 @@ def _checkpoint_cycle(writer: Writer, witness: Witness,
 
 
 def _open(root: Path) -> tuple[Writer, Witness]:
-    writer = Writer(root / "writer.db", workload.seeded_key("log"))
+    writer = Writer(root / "writer.db", workload.seeded_key("log"), local_only=True)
     witness = Witness(root / "witness.db", workload.seeded_key("witness"),
                       authority_keys=_authority_keys())
     return writer, witness

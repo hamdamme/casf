@@ -147,6 +147,7 @@ def verify(manifest_envelope: JsonObject,
            allow_unwitnessed: bool = False,
            online_query: Callable[[], Any] | None = None,
            retained_checkpoint: tuple[int, str] | None = None,
+           retained_revoked: bool = False,
            max_chain_steps: int = MAX_CHECKPOINT_CHAIN_STEPS,
            max_records: int = 1_000_000) -> Report:
     """Verify evidence using only pinned public trust (SPEC §15).
@@ -248,7 +249,11 @@ def verify(manifest_envelope: JsonObject,
 
     # ---------------------------------------------------- status statements
     accepted_status = False
-    revoked = False
+    if type(retained_revoked) is not bool:
+        raise ValueError("retained_revoked must be boolean")
+    revoked = retained_revoked
+    if revoked:
+        fail("STATUS_REVOKED_RETAINED")
     for status_index, env in enumerate(status_envelopes):
         if status_index >= max_chain_steps:
             report.result = Result.FAIL if report.result is Result.FAIL else Result.INCONCLUSIVE
@@ -278,13 +283,13 @@ def verify(manifest_envelope: JsonObject,
         if _field_str(sbody, "status") == "revoked":
             revoked = True
             fail("STATUS_REVOKED")
+        report.observed_status_serial = max(
+            report.observed_status_serial, _field_int(sbody, "serial"))
         if _field_int(sbody, "serial") < pins.minimum_status_serial:
             fail("STATUS_SERIAL_LOW")
             report.trust_status = TrustStatus.UNKNOWN
             continue
         accepted_status = True
-        report.observed_status_serial = max(
-            report.observed_status_serial, _field_int(sbody, "serial"))
     if not accepted_status:
         fail("STATUS_MISSING")
         report.trust_status = TrustStatus.UNKNOWN

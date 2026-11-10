@@ -39,6 +39,7 @@ from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
 from casf.writer import RestoreBehindWitnessError, Writer
+from casf.writer.startup import StartupPolicy
 
 __all__ = ["main"]
 
@@ -103,8 +104,30 @@ def _writer_trust_pins(args: argparse.Namespace,
 
 
 def _writer(args: argparse.Namespace, manifest: JsonObject | None = None) -> Writer:
+    if args.local_only and (args.status_file or args.state or args.initialize_state):
+        raise SchemaError("--local-only cannot be combined with startup status or state options")
+    if not args.local_only and not (args.trust and args.status_file and args.state):
+        raise TrustError("verified startup requires --trust, --status-file and --state; "
+                         "--local-only explicitly selects unverified operation")
     key = load_key(args.key, passphrase=_secret(args.passphrase_env))
-    return Writer(args.db, key, trust_pins=_writer_trust_pins(args, manifest))
+    pins = _writer_trust_pins(args, manifest)
+    if args.local_only:
+        return Writer(args.db, key, trust_pins=pins, local_only=True)
+    assert pins is not None
+    log_id = next(iter(pins))
+    _, entry, configuration = _load_trust(args.trust, log_id)
+    url = getattr(args, "url", None) or entry["witness_url"]
+    if not isinstance(url, str) or not url:
+        raise TrustError("verified startup requires a provisioned witness URL")
+    startup = StartupPolicy(
+        state_path=args.state, status_envelopes=(_read_json_file(args.status_file),),
+        witness_url=url, token=_secret(args.token_env).decode(),
+        initialize_state=args.initialize_state,
+        timeout=cast(float, configuration["query_timeout_seconds"]),
+        max_chain_steps=cast(int, configuration["max_chain_steps"]))
+    if manifest is not None:
+        return Writer.initialize_verified(args.db, key, manifest, trust_pins=pins, startup=startup)
+    return Writer.open_verified(args.db, key, trust_pins=pins, startup=startup)
 
 
 def _sole_log_id(db_path: str) -> str:
@@ -142,6 +165,9 @@ def _read_json_file(path: str, *, configuration: bool = False) -> JsonObject:
 
 
 def _print(args: argparse.Namespace, obj: JsonObject, human: str) -> None:
+    if hasattr(args, "local_only"):
+        obj["startup_verified"] = not args.local_only
+        human += "; local-only validation" if args.local_only else "; startup verified"
     if args.json:
         print(json.dumps(obj, sort_keys=True))
     else:
@@ -382,7 +408,8 @@ def _cmd_init(args: argparse.Namespace) -> int:
     manifest = _read_json_file(args.manifest)
     writer = _writer(args, manifest)
     try:
-        writer.create_log(manifest)
+        if args.local_only:
+            writer.create_log(manifest)
     finally:
         writer.close()
     log_id = _body_of(manifest).get("log_id", "unknown")
@@ -408,48 +435,67 @@ def _cmd_append(args: argparse.Namespace) -> int:
             or not isinstance(attributes, dict):
         raise SchemaError("event field types are wrong")
     writer = _writer(args)
-    log_id = _sole_log_id(args.db)
-    envelope = writer.append(
-        log_id, event_id=event_id, actor=actor, event_type=event_type,
-        payload=payload, attributes=attributes)
-    seq = _body_of(envelope).get("seq", "unknown")
-    _print(args, {"seq": seq, "event_id": event_id},
-           f"appended record seq {seq}")
-    return 0
+    try:
+        log_id = _sole_log_id(args.db)
+        envelope = writer.append(
+            log_id, event_id=event_id, actor=actor, event_type=event_type,
+            payload=payload, attributes=attributes)
+        seq = _body_of(envelope).get("seq", "unknown")
+        _print(args, {"seq": seq, "event_id": event_id},
+               f"appended record seq {seq}")
+        return 0
+    finally:
+        writer.close()
 
 
 def _cmd_checkpoint(args: argparse.Namespace) -> int:
     writer = _writer(args)
-    log_id = _sole_log_id(args.db)
-    pending = writer.pending_checkpoint(log_id)
-    if pending is not None:
-        count = _count_of(pending[0])
+    try:
+        log_id = _sole_log_id(args.db)
+        pending = writer.pending_checkpoint(log_id)
+        if pending is not None:
+            count = _count_of(pending[0])
+            _print(args, {"pending": True, "count": count},
+                   f"reusing pending checkpoint through count {count}")
+            return 0
+        envelope = writer.create_checkpoint(log_id)
+        count = _count_of(envelope)
         _print(args, {"pending": True, "count": count},
-               f"reusing pending checkpoint through count {count}")
+               f"created pending checkpoint through count {count}")
         return 0
-    envelope = writer.create_checkpoint(log_id)
-    count = _count_of(envelope)
-    _print(args, {"pending": True, "count": count},
-           f"created pending checkpoint through count {count}")
-    return 0
+    finally:
+        writer.close()
 
 
 def _cmd_witness_submit(args: argparse.Namespace) -> int:
     writer = _writer(args)
-    log_id = _sole_log_id(args.db)
-    if writer.pending_checkpoint(log_id) is None:
-        print("error: no pending checkpoint for this log", file=sys.stderr)
-        return 4
-    token = _secret(args.token_env).decode()
     try:
-        receipt = writer.submit_pending(log_id, args.url, token)
-    except CasfError as e:
-        print(f"error: {e}", file=sys.stderr)
-        return 4  # pending or unavailable; identical bytes await retry
-    count = _count_of(receipt)
-    _print(args, {"accepted": True, "count": count},
-           f"receipt accepted through count {count}")
-    return 0
+        log_id = _sole_log_id(args.db)
+        if writer.pending_checkpoint(log_id) is None:
+            if not args.local_only:
+                row = writer._db.connection.execute(
+                    "SELECT count FROM checkpoints WHERE log_id=? AND state='accepted' "
+                    "ORDER BY idx DESC LIMIT 1", (log_id,)).fetchone()
+                if row is not None:
+                    writer.close()
+                    _print(args, {"accepted": True, "count": row[0]},
+                           f"receipt already accepted through count {row[0]}")
+                    return 0
+            print("error: no pending checkpoint for this log", file=sys.stderr)
+            writer.close()
+            return 4
+        token = _secret(args.token_env).decode()
+        try:
+            receipt = writer.submit_pending(log_id, args.url, token)
+        except CasfError as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 4  # pending or unavailable; identical bytes await retry
+        count = _count_of(receipt)
+        _print(args, {"accepted": True, "count": count},
+               f"receipt accepted through count {count}")
+        return 0
+    finally:
+        writer.close()
 
 
 def _cmd_export(args: argparse.Namespace) -> int:
@@ -484,19 +530,22 @@ def _cmd_witness_recover(args: argparse.Namespace) -> int:
 
 def _cmd_seal(args: argparse.Namespace) -> int:
     writer = _writer(args)
-    log_id = _sole_log_id(args.db)
     try:
-        envelope = writer.seal_log(log_id)
-    except CasfError as e:
-        if str(e).startswith("PENDING_DRAIN"):
-            print(f"error: {e}", file=sys.stderr)
-            return 4
-        raise
-    body = envelope["body"]
-    count = body["count"] if isinstance(body, dict) else "unknown"
-    _print(args, {"sealed": True, "count": count},
-           f"sealed at count {count}; final checkpoint pending receipt")
-    return 0
+        log_id = _sole_log_id(args.db)
+        try:
+            envelope = writer.seal_log(log_id)
+        except CasfError as e:
+            if str(e).startswith("PENDING_DRAIN"):
+                print(f"error: {e}", file=sys.stderr)
+                return 4
+            raise
+        body = envelope["body"]
+        count = body["count"] if isinstance(body, dict) else "unknown"
+        _print(args, {"sealed": True, "count": count},
+               f"sealed at count {count}; final checkpoint pending receipt")
+        return 0
+    finally:
+        writer.close()
 
 
 def _cmd_restore(args: argparse.Namespace) -> int:
@@ -706,9 +755,15 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
             max_records=args.max_records,
             allow_unwitnessed=bool(policy["allow_unwitnessed"]),
             online_query=online_query,
-            retained_checkpoint=previous.checkpoint if previous else None)
+            retained_checkpoint=previous.checkpoint if previous else None,
+            retained_revoked=previous.revoked if previous else False)
+        if report.trust_status is TrustStatus.REVOKED \
+                or report.observed_status_serial > (previous.status_serial if previous else 0):
+            state.save(max(report.observed_status_serial,
+                           previous.status_serial if previous else 0),
+                       None, revoked=report.trust_status is TrustStatus.REVOKED)
         # EOF validates export counts and any tail after an early verdict.
-        # Never save accepted state or print PASS before this completes.
+        # Never advance the accepted checkpoint or print PASS before this completes.
         for _ in bundle.records:
             pass
         if report.result is Result.PASS:
@@ -930,6 +985,15 @@ def _parser() -> argparse.ArgumentParser:
     status = sub.add_parser("status", parents=[common])
     status.add_argument("--db", required=True)
     status.set_defaults(func=_cmd_status)
+    for command in (init, append, checkpoint, submit, seal):
+        command.add_argument("--local-only", action="store_true",
+                             help="explicit local-only operation without verified startup")
+        command.add_argument("--status-file", help="signed authority status statement")
+        command.add_argument("--state", help="retained state in a protected external directory")
+        command.add_argument("--initialize-state", action="store_true",
+                             help="explicit first observation of this manifest")
+        if command is not submit:
+            command.add_argument("--token-env", default=TOKEN_ENV)
     return parser
 
 

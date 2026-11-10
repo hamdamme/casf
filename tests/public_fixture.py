@@ -31,7 +31,7 @@ def main():
     envelope = {'body': body, 'manifest_hash': manifest_hash,
                 'signature': crypto.sign_manifest(authority, body)}
     with tempfile.TemporaryDirectory() as private_work:
-        writer = Writer(Path(private_work) / 'writer.db', log)
+        writer = Writer(Path(private_work) / 'writer.db', log, local_only=True)
         try:
             writer.create_log(envelope)
             for n in (1, 2):

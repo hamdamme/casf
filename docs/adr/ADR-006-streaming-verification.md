@@ -19,9 +19,12 @@ The CLI and installed public verification check use `open_bundle`. Record
 schema, line, count, and byte errors can now occur during consumption.
 `BundleReadError` is a `CasfError`; resource violations retain `LimitError`.
 Callers must exhaust records before accepting a report. The CLI drains any
-remaining records after an early verdict, then saves state only after a
-successful report and validated EOF. Malformed input returns exit 2; local
-read errors return exit 5. Neither path prints PASS or advances saved state.
+remaining records after an early verdict, then advances the accepted checkpoint
+only after a successful report and validated EOF. Malformed input returns exit 2;
+local read errors return exit 5. Neither path prints PASS or advances the accepted
+checkpoint. Independently authenticated authority status observations, including
+terminal revocation, are retained when reported by the verifier even if later
+record or EOF checks fail. See [retained state](../verification.md).
 
 `verify` still accepts any record iterable and returns the same report type.
 It consumes records once and retains only the current chain head, count,

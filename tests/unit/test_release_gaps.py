@@ -191,7 +191,7 @@ def test_export_snapshot_during_concurrent_append(tmp_path, monkeypatch):
     _append(writer, 1)
     original = writer.records
     def records(log_id):
-        other = Writer(db, LOG)
+        other = Writer(db, LOG, local_only=True)
         try:
             _append(other, 2)
         finally:
@@ -238,7 +238,7 @@ def test_missing_wal_copy_is_incomplete_against_external_anchor(tmp_path):
         assert db.with_name('live.db-wal').stat().st_size > 0
         copy = tmp_path / 'incomplete.db'
         shutil.copyfile(db, copy)  # deliberately omit only this synthetic WAL
-        restored = Writer(copy, LOG)
+        restored = Writer(copy, LOG, local_only=True)
         try:
             report = verify(manifest, restored.records(LOG_ID),
                             writer_pins(manifest['manifest_hash']), mode=Mode.ANCHORED,
@@ -298,7 +298,7 @@ def test_signed_witness_equivocation_retained_and_isolated_clients():
 
 
 def test_cli_missing_status_reports_unknown(tmp_path, capsys):
-    from casf.cli import main
+    from tests.local_mode import local_cli as main
     from tests.unit.test_cli import _exported as exported
     from tests.unit.test_cli import _trust
     from tests.unit.test_writer import _manifest_envelope
@@ -317,7 +317,7 @@ def test_cli_honors_chain_budget(tmp_path, capsys):
     import json
 
     from casf.canonical.jcs import canonicalize
-    from casf.cli import main
+    from tests.local_mode import local_cli as main
     from tests.unit.test_cli import _exported as exported
     from tests.unit.test_cli import _trust
     from tests.unit.test_writer import _manifest_envelope
@@ -338,7 +338,7 @@ def test_cli_honors_chain_budget(tmp_path, capsys):
 def test_cli_rejects_invalid_chain_budget(tmp_path, capsys):
     import json
 
-    from casf.cli import main
+    from tests.local_mode import local_cli as main
     from tests.unit.test_cli import _exported as exported
     from tests.unit.test_cli import _trust
     from tests.unit.test_writer import _manifest_envelope
@@ -352,7 +352,7 @@ def test_cli_rejects_invalid_chain_budget(tmp_path, capsys):
 
 
 def test_cli_honors_bundle_count_limit(tmp_path, capsys):
-    from casf.cli import main
+    from tests.local_mode import local_cli as main
     from tests.unit.test_cli import _exported as exported
     from tests.unit.test_cli import _trust
     from tests.unit.test_writer import _manifest_envelope

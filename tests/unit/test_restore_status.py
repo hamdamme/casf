@@ -24,7 +24,7 @@ def test_restore_accepts_active_status_at_provisioned_minimum(tmp_path, serial):
     pins[LOG_ID] = replace(pins[LOG_ID], minimum_status_serial=serial)
     (path / "status.jsonl").write_text(json.dumps(status(bundle.manifest_hash, serial)) + "\n")
     writer = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, path,
-                                        trust_pins=pins, require_active_status=True)
+                                        trust_pins=pins, require_active_status=True, local_only=True)
     try:
         assert list(writer.records(LOG_ID)) == bundle.records
     finally:
@@ -60,7 +60,7 @@ def test_restore_rejects_untrusted_status_before_creating_store(tmp_path, change
     (path / "status.jsonl").write_text("".join(json.dumps(s) + "\n" for s in statements))
     dest = tmp_path / "restored.db"
     with pytest.raises(TrustError):
-        Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True)
+        Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True, local_only=True)
     assert not dest.exists()
 
 
@@ -71,5 +71,5 @@ def test_status_policy_does_not_accept_corrupt_records(tmp_path):
     (path / "records.jsonl").write_text("".join(json.dumps(r) + "\n" for r in bundle.records))
     dest = tmp_path / "restored.db"
     with pytest.raises(CasfError):
-        Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True)
+        Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True, local_only=True)
     assert not dest.exists()

@@ -20,7 +20,7 @@ The protocol specification remains a design review document. The project has not
 ## Capabilities
 
 - **Signed records:** Bind each record to its log, sequence, predecessor, and signing key using Ed25519 and SHA-256.
-- **Durable writer:** Store records and append state transactionally in SQLite, with idempotent retries.
+- **Durable writer:** Verify trust, retained authority status and fresh witness history before signing; store records transactionally with idempotent retries.
 - **Independent witness:** Accept validated chain extensions and retain signed checkpoint receipts in separate state.
 - **Evidence export:** Export verifiable evidence bundles for examination without the writer's private key.
 - **Verification results:** Report `PASS`, `FAIL`, or `INCONCLUSIVE` with separate integrity, anchored, and online modes.

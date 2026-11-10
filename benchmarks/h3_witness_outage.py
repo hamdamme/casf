@@ -300,7 +300,7 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
     run_root.chmod(0o700)
     writer_db = run_root / "writer.sqlite"
     witness_db = run_root / "witness.sqlite"
-    writer = Writer(writer_db, log_key)
+    writer = Writer(writer_db, log_key, local_only=True)
     writer.create_log(manifest)
     service = WitnessService(
         witness_db, witness_key, token=TOKEN,

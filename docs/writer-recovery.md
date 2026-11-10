@@ -15,36 +15,69 @@ Obtain these pins through an authenticated channel independent of the database
 or bundle. Do not build a trust policy from the evidence being checked.
 
 ```python
-from casf.writer import Writer
+from casf.writer import StartupPolicy, Writer
 
-# provisioned_pins is a separately loaded mapping of log IDs to TrustPins.
-writer = Writer("writer.db", log_private_key, trust_pins=provisioned_pins)
+# Obtain these pins and signed status through independent provisioning.
+# Keep retained state in an owner-only directory outside the database backup.
+startup = StartupPolicy(
+    state_path="/protected/casf/state.json",
+    status_envelopes=(signed_status,),
+    witness_url="https://witness.example",
+    token=witness_token,
+)
+writer = Writer.open_verified(
+    "writer.db", log_private_key, trust_pins=provisioned_pins, startup=startup,
+)
 try:
-    writer.create_log(manifest)
+    writer.append(log_id, event_id=event_id, actor="example",
+                  event_type="demonstration", payload={"message": "synthetic event"},
+                  attributes={})
 finally:
     writer.close()
-
-restored = Writer.restore_from_bundle(
-    "restored.db", log_private_key, "bundle", trust_pins=provisioned_pins,
-)
-restored.close()
 ```
 
-The writer checks the authority signature and exact pinned identities at
-creation, startup and restore, and rechecks the manifest before appending or
-creating a checkpoint. A supplied policy never falls back for an unprovisioned
-log; an empty mapping authorizes no logs. The mapping and key dictionaries are
-copied at open so later caller changes cannot alter an active writer's policy.
-Pins can also be supplied to a keyless reader.
+For a new log, use `Writer.initialize_verified(path, key, manifest,
+trust_pins=..., startup=...)`. Provision and register the manifest with the
+witness first. Set `initialize_state=True` only for an explicitly unobserved
+manifest; existing state cannot be reset. Initialization submits an empty
+checkpoint and checks a fresh witness response before authorizing records.
+If interrupted, reopen with the same policy and retry the exact pending
+bootstrap checkpoint. Omit initialization once the state entry exists.
 
-For compatibility, omitting `trust_pins` retains local-only validation and does
-not authenticate the manifest authority. CLI writer commands accept `--trust
-trust.json`; see [administration](administration.md#use-pins-with-writer-commands).
-Supply it on every invocation. Pins are not persisted as trust inside the log
-database. Writer pin checks do not evaluate authority status or
-`minimum_status_serial`, apply the verifier's mode policy, or query fresh
-witness state. Use the verifier for status and evidence evaluation. Full
-startup and recovery conformance remains incomplete.
+Both entry points verify independent authority, manifest, log and witness pins,
+all local history, supplied active status at the retained serial minimum, and
+fresh witness continuity. They save the checkpoint externally before clearing
+the database hold. Failed state persistence leaves writing blocked; retry can
+reconcile an external checkpoint that persisted before a database failure.
+
+Authenticated revocation is retained permanently, including when its serial
+is below the retained minimum. A later active statement cannot clear it.
+Newly authenticated status serials persist even if witness recovery fails.
+Each later accepted receipt updates the external checkpoint before submission
+returns success. A failed save preserves the pending checkpoint, retains a
+write hold and requires verified reopening.
+An already open verified writer rechecks retained status under the state lock
+before append, checkpoint creation or submission. A newly observed higher
+serial requires reopening with appropriate signed status. Use the same
+protected state file consistently for a manifest's writer and verification
+observations; retain it outside the database's rollback domain.
+
+Pins and status inputs are copied at open. Supplied signed active status does
+not prove that no newer revocation was withheld. This is the existing
+administrative status-distribution assumption, not automatic revocation
+lookup. Writer startup always reconciles fresh witness state; the trust file's
+verification mode and unwitnessed-tail policy still apply separately to bundle
+verification. Locally committed records may remain unwitnessed after append.
+
+`Writer(path)` opens a keyless reader for inspection. `Writer(path, key)` now
+fails closed; explicit `local_only=True` selects the compatibility writer.
+That mode still checks local integrity and any supplied manifest pins, but
+bypasses verified startup and retained authority status. Research harnesses and
+component tests select it explicitly to preserve their original experimental
+procedures. CLI writing commands use verified startup by default and expose
+`--local-only` as an explicit alternative. Their JSON output includes
+`startup_verified`. See [administration](administration.md#use-pins-with-writer-commands)
+and [ADR-008](adr/ADR-008-verified-writer-startup.md).
 
 ## Local startup checks
 
@@ -68,7 +101,9 @@ still complete the pending submission.
 
 ## Bundle restore
 
-`Writer.restore_from_bundle` requires a new destination. It validates records
+`Writer.restore_from_bundle` requires a new destination and returns a keyless
+reader by default. Reopen through `Writer.open_verified` before signing. An
+explicit `local_only=True` retains the compatibility return behavior. It validates records
 and supplied checkpoint/receipt chains before committing restored history.
 Accepted receipts retain their original signed contents and checkpoint
 indices. Subsequent checkpoints continue the chain rather than restarting at
@@ -117,8 +152,8 @@ This option is false for compatibility with the local-only restore API.
 It checks supplied evidence, does not discover newer revocations, and does not
 persist or update external status high-water state. Writer startup and append
 do not inherit continuous status enforcement from a successful restore.
-Full default startup policy remains open. The explicit reconciliation API
-below checks fresh witness evidence, independently of the status policy.
+Verified startup applies retained status and fresh witness checks before the
+restored database can sign. Offline restore does not perform promotion.
 
 ## Recover a pending receipt
 
@@ -188,17 +223,18 @@ documented discontinuous epoch; receipt history cannot replace lost records.
 `NO_CHECKPOINT` is not permission to resume a restored store.
 
 Network requests share one monotonic timeout and missing checkpoint retrieval
-has a step budget. The operation holds a SQLite write lock during network work
-to serialize recovery with competing writes; readers can continue under WAL.
+has a step budget. A bounded advisory lock serializes recoveries. Network requests run outside
+SQLite transactions while the committed hold blocks new writes. Local history
+and concurrent receipt changes are rechecked in the final write transaction.
 Local history validation and lock acquisition add to elapsed time. Configuration
 and pin errors are rejected before starting the hold. See
 [ADR-007](adr/ADR-007-witness-reconciliation.md) for storage compatibility and
 transaction behavior.
 
-This operation does not persist external high-water state or evaluate authority
-status. The caller remains responsible for both. Default startup integration,
-continuous status enforcement, a reconciliation CLI and automatic scheduling
-remain open. Bundle export does not carry the database's operational hold;
+The low-level reconciliation operation does not itself persist external state
+or evaluate authority status. Verified startup combines these operations and
+authorizes writing only after all succeed. Automatic checkpoint scheduling
+remains separate work. Bundle export does not carry the database's operational hold;
 promoting a new restore still requires independent recovery checks.
 
 ## Pending final seals and backups
@@ -219,9 +255,9 @@ Broader pending export/report behavior remains a separate interface task.
 
 Even with manifest pins, local checks cannot distinguish an internally valid
 old snapshot from current history without independently retained or fresh
-witness evidence. They do not query the witness at startup, establish current
-revocation knowledge, or implement the planned automatic checkpoint/retry
-worker. Authority keys inside a bundle never establish independent trust.
+witness evidence. The explicit local-only path does not query the witness at startup. Verified
+startup does query it, but cannot establish undistributed revocation knowledge
+or provide an automatic checkpoint/retry worker. Authority keys inside a bundle never establish independent trust.
 Reconcile external state before promoting
 a restored or suspected-corrupt database. Full specification conformance is
 not claimed by these fixes.
@@ -252,3 +288,8 @@ retained-state conflicts, missing records, pending and final checkpoints,
 shared deadlines, competing writes and a real process exit after journal
 insertion. The restart verifies that only the hold survived the interrupted
 transaction, then recovers against the same HTTP witness.
+
+`tests/unit/test_verified_startup.py` and
+`tests/unit/test_cli_verified_startup.py` cover default write authorization,
+terminal revocation across runs, old open writers, failed external persistence,
+keyless restore, bootstrap retries and the real CLI/witness workflow.

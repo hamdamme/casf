@@ -6,8 +6,8 @@ import pytest
 from cryptography.hazmat.primitives import serialization
 
 from casf import crypto
-from casf.cli import main
 from casf.writer import SealedError, Writer
+from tests.local_mode import local_cli as main
 from tests.unit.test_cli import PASS, _trust
 from tests.unit.test_restore_anchors import evidence
 from tests.unit.test_restore_status import status
@@ -41,7 +41,7 @@ def test_cli_restore_reports_offline_scope(restore_args, tmp_path, capsys):
     report = json.loads(output.out)
     assert report["restored"] is True and report["freshness_checked"] is False
     assert not output.err and PASS.decode() not in output.out
-    writer = Writer(tmp_path / "restored.db", LOG)
+    writer = Writer(tmp_path / "restored.db", LOG, local_only=True)
     try:
         assert len(list(writer.records(LOG_ID))) == 2
         assert _append(writer, 3)["body"]["seq"] == 3
@@ -107,7 +107,7 @@ def test_cli_restore_behind_anchor_reports_sealed_result(restore_args, tmp_path,
     report = json.loads(capsys.readouterr().out)
     assert report["restored"] is True and report["sealed"] is True
     assert report["diagnostic_codes"] == ["RESTORE_BEHIND_WITNESS"]
-    reopened = Writer(tmp_path / "restored.db", LOG)
+    reopened = Writer(tmp_path / "restored.db", LOG, local_only=True)
     try:
         with pytest.raises(SealedError):
             _append(reopened, 1)

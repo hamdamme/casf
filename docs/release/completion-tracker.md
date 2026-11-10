@@ -2,9 +2,9 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 37 integrated the reviewed PRs 31–36 into main at `853ecef90adb4c286905d1ac3b9f2866d93a644b`. All six main CI jobs passed 560 tests at that revision. The fresh reconciliation work starts from that merged baseline and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 38 is merged into main at `175a3692a2cf31934c1df72c8a239b2be4b810a9`. The verified-startup batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phase 1 complete. Phase 2, Session 3 in progress; explicit witness recovery also advances Session 4.
+**Current position:** Phase 1 complete. Phase 2, Session 3 awaiting review; verified restore promotion also advances Session 4.
 
 **Progress:** 5/28 tasks complete; 23 remaining. 2/14 sessions complete; 12 remaining. 1/6 phases complete; 5 remaining, including the current phase.
 
@@ -18,9 +18,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Complete |
 | 1 | 2 — Final requirements | F03 | Define exact experimental release version, platform and support scope | Complete |
 | 1 | 2 — Final requirements | F04 | Map each gap to a fix/design decision and acceptance check | Complete |
-| 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | In progress |
+| 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Awaiting review |
 | 2 | 3 — Startup and trust | F06 | Add corruption, wrong-key and inconsistent-state regressions | Complete |
-| 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | In progress |
+| 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | Awaiting review |
 | 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | In progress |
 | 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Pending |
 | 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | In progress |
@@ -51,16 +51,16 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- F06 remains complete. PRs 31–37 are integrated into main; the fresh reconciliation branch targets main directly. Partial requirements remain in the remaining totals.
-- F05: independent manifest pins and strict trust configuration are merged. Full default startup trust and retained authority-status enforcement remain open.
-- F07/F08: signed restore anchors, active-status checks and journal preservation are merged. The new explicit reconciliation API authenticates a fresh witness view, recovers missing journal pairs and checks retained checkpoint evidence. Missing records retain a terminal seal; failed or interrupted recovery retains a durable write hold. The broader recovery failure matrix remains open.
-- F10: historical pending receipt lookup is merged. Fresh recovery also preserves pending bytes and final seals, bounds network work and serializes competing writes. Automatic retry/checkpoint scheduling remains open.
-- F12: the restore and receipt-recovery CLIs are merged. ADR-007 records the new Python reconciliation API and local hold state. Default startup integration and a reconciliation CLI remain open.
-- Validation: fresh-view binding regressions and recovery tests include a real process exit during journal insertion followed by recovery against the original HTTP witness. A full-suite failure exposed masked TLS certificate errors; transport now preserves the authentication failure and closes the failed TLS socket. Exact local and hosted results are recorded with the draft PR.
-- Preservation: signed formats, frozen vectors, research and historical experiment results remain unchanged. No release was published. Review builds do not complete final candidate F21/F22.
-- Remaining: 23 tasks, 12 sessions, 5 phases. This batch advances partial tasks; it does not close the default startup or full recovery acceptance criteria.
-- User action: review the fresh reconciliation draft PR and its checks. No merge or release is performed by this work.
-- Next task: integrate fresh reconciliation with default startup trust, signed authority status and independently retained state. Full specification conformance is not yet claimed.
+- PR 38 is merged into main. The next batch requires verified startup by default for signing through the Python API and CLI; direct signing opens require an explicit local-only override.
+- F05 awaiting review: independent pins, full local checks, active status at the retained minimum, fresh witness reconciliation and durable external state precede write authorization. Revocation remains terminal across runs and already open verified writers recheck retained status.
+- F07 awaiting review: offline restore preserves authenticated journal/seal evidence and returns a keyless reader by default. Verified reopening checks fresh witness history and external state before promotion. Accepted receipts advance retained checkpoints before success.
+- F08 remains open: bootstrap retry, failed external persistence, concurrent receipt arrival and process interruption have regressions; the broader disk-full, lost-key, corrupt-backup and recovery drill matrix remains incomplete.
+- F10/F12: startup witnesses an empty checkpoint before the first record. The CLI requires trust, signed status and retained state and reports its startup mode. ADR-008 records the migration and corrects recovery locking so witness requests run outside SQLite transactions. Automatic checkpoint/retry scheduling and broader report/API contracts remain open.
+- Validation: exact local and hosted results belong to the draft PR. New tests cover default rejection, trusted startup, terminal revocation, old open writers, state-save failures, receipt high-water persistence, bootstrap retry and real CLI/witness flows.
+- Preservation: signed formats, frozen vectors and historical research outputs are unchanged. Research harnesses explicitly select local-only behavior to preserve their original experiment procedures. No release was published; review builds do not close final candidate F21/F22.
+- Remaining: 23 tasks, including 2 awaiting review; 12 sessions; 5 phases. After F05/F07 acceptance, 21 tasks remain and Session 3 can close. F08 keeps Session 4 open.
+- User action: review the verified-startup draft PR and its checks. Nothing is merged or released by this work.
+- Next task: complete the broader recovery failure matrix, then implement the agreed checkpoint/retry worker. Full specification conformance and release readiness remain separate acceptance gates.
 
 ## Evidence
 

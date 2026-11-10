@@ -91,7 +91,7 @@ def measure_minimum() -> int:
 
     log = seeded_key("log")
     with tempfile.TemporaryDirectory() as d:
-        writer = Writer(Path(d) / "minimum.db", log)
+        writer = Writer(Path(d) / "minimum.db", log, local_only=True)
         try:
             writer.create_log(manifest(LOG_ID))
             writer.append(LOG_ID, **generate(seed=0, count=1,

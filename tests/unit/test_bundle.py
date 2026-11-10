@@ -158,7 +158,7 @@ def test_anchored_bundle_verifies(tmp_path):
 
 def test_restore_continues_chain(tmp_path):
     _, dest = _exported(tmp_path, 3)
-    w2 = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+    w2 = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, local_only=True)
     env = _append(w2, 4)
     assert env["body"]["seq"] == 4
     from tests.unit.test_writer import _verify_db
@@ -169,22 +169,22 @@ def test_restore_refuses_existing_db(tmp_path):
     existing = tmp_path / "exists.db"
     _writer(existing)
     with pytest.raises(CasfError):
-        Writer.restore_from_bundle(existing, LOG, dest)
+        Writer.restore_from_bundle(existing, LOG, dest, local_only=True)
 
 def test_restore_behind_anchor_stops_writes(tmp_path):
     _, dest = _exported(tmp_path, 2)  # export covers seq 1-2
     anchor = {"count": 5, "head_hash": "ab" * 32}  # witness is ahead
     with pytest.raises(RestoreBehindWitnessError, match="RESTORE_BEHIND_WITNESS"):
-        Writer.restore_from_bundle(tmp_path / "r.db", LOG, dest, anchor=anchor)
+        Writer.restore_from_bundle(tmp_path / "r.db", LOG, dest, anchor=anchor, local_only=True)
 
 def test_restore_behind_anchor_refuses_append(tmp_path):
     _, dest = _exported(tmp_path, 2)
     anchor = {"count": 5, "head_hash": "ab" * 32}
     try:
-        Writer.restore_from_bundle(tmp_path / "r.db", LOG, dest, anchor=anchor)
+        Writer.restore_from_bundle(tmp_path / "r.db", LOG, dest, anchor=anchor, local_only=True)
     except RestoreBehindWitnessError:
         pass
-    w = Writer(tmp_path / "r.db", LOG)
+    w = Writer(tmp_path / "r.db", LOG, local_only=True)
     with pytest.raises(RestoreBehindWitnessError):
         _append(w, 9)
 
@@ -224,7 +224,7 @@ def test_t10_restored_old_db_reports_incomplete_against_newer_anchor(
     witness.close()
 
     # restore the old copy; compare against the newer external anchor
-    old = Writer(backup, LOG)
+    old = Writer(backup, LOG, local_only=True)
     old_records = list(old.records(LOG_ID))
     manifest = old.manifest_envelope(LOG_ID)
     old.close()

@@ -60,26 +60,6 @@ boolean, not a string or number. Mode must be `integrity`, `anchored` or
 integers. Manifest and witness pins must be lowercase SHA-256 digests.
 Malformed settings fail before accepted verifier state is saved.
 
-## Use pins with writer commands
-
-```sh
-casf init --manifest manifest.json --db writer.db --key log.pem --trust trust.json
-casf append --db writer.db --key log.pem --event event.json --trust trust.json
-casf checkpoint --db writer.db --key log.pem --trust trust.json
-casf witness submit --db writer.db --key log.pem --url https://witness.example \
-  --trust trust.json
-casf export --db writer.db --out bundle --trust trust.json
-```
-
-`seal` also accepts `--trust`. Supply the trust file on every invocation;
-omitting it retains local-only validation. Supplied pins reject an unprovisioned
-log, replaced manifest, mismatched witness or invalid authority signature.
-The writer uses the authority and identity pins only: it does not enforce the
-trust file's verification mode, status minimum or freshness policy. Continue
-to verify exported evidence with `casf verify` and separately retained state.
-See [writer recovery](writer-recovery.md) for the Python API and remaining
-startup and recovery requirements.
-
 ## Create a status statement
 
 ```sh
@@ -101,6 +81,54 @@ casf admin status install --status-file revoked.json --log-id LOG_UUID \
 An active statement does not establish that the authority has no newer
 revocation statement elsewhere.
 
+## Use pins with writer commands
+
+Create the active status statement above, register the manifest with the
+witness using the registration command below, and start the witness service
+before initialization. Keep the bearer token in `CASF_WITNESS_TOKEN`, not a
+command argument. Create an owner-only directory for retained state, separate
+from database backups:
+
+```sh
+mkdir -m 700 retained
+casf init --manifest manifest.json --db writer.db --key log.pem \
+  --trust trust.json --status-file status.json --state retained/writer.json \
+  --initialize-state
+casf append --db writer.db --key log.pem --event event.json \
+  --trust trust.json --status-file status.json --state retained/writer.json
+casf checkpoint --db writer.db --key log.pem \
+  --trust trust.json --status-file status.json --state retained/writer.json
+casf witness submit --db writer.db --key log.pem --url https://witness.example \
+  --trust trust.json --status-file status.json --state retained/writer.json
+casf export --db writer.db --out bundle --trust trust.json
+```
+
+`seal` requires the same trust, status and retained-state options. Writing
+commands verify local history, active signed status and a fresh witness view
+before signing. Initialization witnesses an empty checkpoint first. A failed
+bootstrap retains its exact pending bytes; retry with a normal writing command
+and the same trust/state after restoring service. Omit `--initialize-state`
+once an entry exists. A missing or damaged established state file requires
+recovery of that trusted state, not blind reinitialization.
+
+Revocation and status serials persist outside the database. Revocation cannot
+be undone by a later active statement, and an old open verified writer rejects
+newly retained revocation or a higher status serial. Missing status/trust fails
+with exit 3; unavailable witness evidence fails with exit 4. Signing remains
+blocked after failed promotion. `status` and keyless export remain available
+for inspection.
+
+Default writing commands no longer silently use local-only validation.
+`--local-only` explicitly selects compatibility operation; it cannot be mixed
+with startup status/state options. JSON output reports `startup_verified`;
+human output names the selected behavior. Supplied `--trust` pins still apply
+in local-only mode, but status and freshness authorization do not.
+
+Retain the highest checkpoint and serial independently of writer snapshots.
+Fresh startup does not mean the next appended record is witnessed: checkpoint
+submission remains explicit. See [writer recovery](writer-recovery.md) for the
+Python API and failure semantics.
+
 ## Restore an exported bundle
 
 Keep the expected trust pins and signed external checkpoint/receipt pair
@@ -121,7 +149,8 @@ reports `restored: true` and `freshness_checked: false`. Missing or rejected
 trust returns exit 3; malformed input returns 2 and invalid evidence returns 1.
 An existing destination is preserved and returns 5. A restore behind the
 anchor retains a sealed database, reports `RESTORE_BEHIND_WITNESS`, and returns
-4. Reconcile fresh external state before promoting the restored copy.
+4. A normal writing command with the trust, status and retained-state options
+performs verified startup before promoting the restored copy.
 
 ## Register and rotate
 

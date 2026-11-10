@@ -63,7 +63,7 @@ def test_backup_produces_verifiable_copy(tmp_path):
         _append(w, n)
     backup = tmp_path / "backup.db"
     w.backup(backup)
-    w2 = Writer(backup, LOG)
+    w2 = Writer(backup, LOG, local_only=True)
     assert _verify_db(w2).result == Result.PASS
     assert [r["body"]["seq"] for r in w2.records(LOG_ID)] == [1, 2, 3]
 
@@ -86,7 +86,7 @@ def test_startup_detects_head_tampering(tmp_path):
     # heads has no trigger (the writer updates it); corrupt it directly
     _tamper(db, "UPDATE heads SET count = 99")
     with pytest.raises(CasfError, match="head"):
-        Writer(db, LOG)
+        Writer(db, LOG, local_only=True)
 
 def test_startup_detects_missing_record(tmp_path):
     db = tmp_path / "s.db"
@@ -107,14 +107,14 @@ def test_startup_detects_missing_record(tmp_path):
     con.commit()
     con.close()
     with pytest.raises(CasfError, match="head"):
-        Writer(db, LOG)
+        Writer(db, LOG, local_only=True)
 
 def test_clean_startup_passes(tmp_path):
     db = tmp_path / "ok.db"
     w = _writer(db)
     _append(w)
     w.close()
-    Writer(db, LOG).close()  # no error
+    Writer(db, LOG, local_only=True).close()  # no error
 
 # ---------------- T07 remaining kill points ----------------
 
@@ -149,7 +149,7 @@ def test_crash_before_insert_leaves_nothing(tmp_path):
     p.start()
     p.join(60)
     assert p.exitcode == 1
-    w = Writer(db, LOG)
+    w = Writer(db, LOG, local_only=True)
     assert list(w.records(LOG_ID)) == []
     # the same event id is still free to use
     env = w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000b1",
@@ -165,7 +165,7 @@ def test_crash_after_commit_retry_returns_committed_record(tmp_path):
     assert p.exitcode == 1
     # the caller never got a response, but the append committed; a same
     # ID retry must return the original record, not append a new one
-    w = Writer(db, LOG)
+    w = Writer(db, LOG, local_only=True)
     env = w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000b2",
                    actor="a", event_type="t", payload={}, attributes={})
     assert env["body"]["seq"] == 1

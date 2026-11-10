@@ -210,7 +210,7 @@ def test_checkpoint_cycle_retries_transient_timeout(tmp_path):
     from casf.witness import Witness
     from casf.writer import Writer
 
-    writer = Writer(tmp_path / "w.db", workload.seeded_key("log"))
+    writer = Writer(tmp_path / "w.db", workload.seeded_key("log"), local_only=True)
     auth_pub = crypto.public_key_raw(workload.seeded_key("authority"))
     witness = Witness(tmp_path / "wit.db", workload.seeded_key("witness"),
                       authority_keys={crypto.key_id(auth_pub): auth_pub})

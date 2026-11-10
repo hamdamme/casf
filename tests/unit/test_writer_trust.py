@@ -67,7 +67,7 @@ def test_manifest_rejects_untrusted_pins(change):
 def test_writer_pins_apply_to_create_reopen_and_restore(tmp_path):
     db = tmp_path / "writer.db"
     pins = {LOG_ID: _pins()}
-    writer = Writer(db, LOG, trust_pins=pins)
+    writer = Writer(db, LOG, trust_pins=pins, local_only=True)
     try:
         writer.create_log(_manifest_envelope())
         record = _append(writer, 1)
@@ -80,7 +80,7 @@ def test_writer_pins_apply_to_create_reopen_and_restore(tmp_path):
     finally:
         reader.close()
     restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, bundle,
-                                          trust_pins=pins)
+                                          trust_pins=pins, local_only=True)
     try:
         assert list(restored.records(LOG_ID)) == [record]
         assert _append(restored, 2)["body"]["seq"] == 2
@@ -95,7 +95,7 @@ def test_writer_rejects_forged_authority_at_every_boundary(tmp_path, operation):
     db = tmp_path / "writer.db"
     pins = {LOG_ID: _pins()}
     if operation == "create":
-        writer = Writer(db, LOG, trust_pins=pins)
+        writer = Writer(db, LOG, trust_pins=pins, local_only=True)
         try:
             with pytest.raises(CasfError, match="authority signature"):
                 writer.create_log(manifest)
@@ -103,7 +103,7 @@ def test_writer_rejects_forged_authority_at_every_boundary(tmp_path, operation):
         finally:
             writer.close()
         return
-    writer = Writer(db, LOG)  # A legacy local-only store cannot authenticate the issuer.
+    writer = Writer(db, LOG, local_only=True)  # A legacy local-only store cannot authenticate the issuer.
     try:
         writer.create_log(manifest)
         bundle = writer.export_bundle(LOG_ID, tmp_path / "bundle")
@@ -111,17 +111,17 @@ def test_writer_rejects_forged_authority_at_every_boundary(tmp_path, operation):
         writer.close()
     if operation == "reopen":
         with pytest.raises(CasfError, match="authority signature"):
-            Writer(db, LOG, trust_pins=pins)
+            Writer(db, LOG, trust_pins=pins, local_only=True)
     else:
         restored = tmp_path / "restored.db"
         with pytest.raises(CasfError, match="authority signature"):
-            Writer.restore_from_bundle(restored, LOG, bundle, trust_pins=pins)
+            Writer.restore_from_bundle(restored, LOG, bundle, trust_pins=pins, local_only=True)
         assert not restored.exists()
 
 
 @pytest.mark.parametrize("configured", [False, True])
 def test_writer_never_falls_back_for_unprovisioned_log(tmp_path, configured):
-    writer = Writer(tmp_path / "writer.db", LOG, trust_pins={LOG_ID: _pins()} if configured else {})
+    writer = Writer(tmp_path / "writer.db", LOG, trust_pins={LOG_ID: _pins()} if configured else {}, local_only=True)
     manifest = _manifest_envelope()
     if configured:
         manifest["body"]["log_id"] = "223e4567-e89b-42d3-a456-426614174000"
@@ -137,7 +137,7 @@ def test_writer_never_falls_back_for_unprovisioned_log(tmp_path, configured):
 def test_writer_copies_supplied_trust_policy(tmp_path):
     pins = _pins()
     policy = {LOG_ID: pins}
-    writer = Writer(tmp_path / "writer.db", LOG, trust_pins=policy)
+    writer = Writer(tmp_path / "writer.db", LOG, trust_pins=policy, local_only=True)
     try:
         policy.clear()
         pins.authority_keys.clear()

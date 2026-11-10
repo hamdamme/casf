@@ -22,6 +22,7 @@ MAX_STATE_BYTES = 1024 * 1024
 class SavedState:
     status_serial: int
     checkpoint: tuple[int, str] | None = None
+    revoked: bool = False
 
 
 def _digest(value: object) -> bool:
@@ -46,8 +47,12 @@ def _decode(raw: bytes) -> dict[str, SavedState]:
         for digest, entry in manifests.items():
             if not _digest(digest) or not isinstance(entry, dict):
                 raise ValueError("manifest entry")
-            if set(entry) != {"status_serial", "checkpoint"}:
+            if set(entry) not in ({"status_serial", "checkpoint"},
+                                  {"status_serial", "checkpoint", "revoked"}):
                 raise ValueError("entry fields")
+            revoked = entry.get("revoked", False)
+            if type(revoked) is not bool:
+                raise ValueError("revocation flag")
             serial, cp = entry["status_serial"], entry["checkpoint"]
             if not _integer(serial, 1):
                 raise ValueError("status serial")
@@ -58,7 +63,7 @@ def _decode(raw: bytes) -> dict[str, SavedState]:
                 if not _integer(cp["index"], 0) or not _digest(cp["hash"]):
                     raise ValueError("checkpoint values")
                 checkpoint = (cast(int, cp["index"]), cast(str, cp["hash"]))
-            result[digest] = SavedState(cast(int, serial), checkpoint)
+            result[digest] = SavedState(cast(int, serial), checkpoint, revoked)
         return result
     except (CasfError, ValueError, TypeError, RecursionError) as e:
         raise CasfError("verifier state is malformed; restore trusted state") from e
@@ -84,9 +89,13 @@ class StateTransaction:
         self.entries = entries
         self.previous = entries.get(manifest_hash)
 
-    def save(self, status_serial: int, checkpoint: tuple[int, str] | None) -> None:
+    def save(self, status_serial: int, checkpoint: tuple[int, str] | None, *,
+             revoked: bool = False) -> None:
+        if type(revoked) is not bool:
+            raise CasfError("revocation flag must be boolean")
         previous = self.previous
         if previous is not None:
+            revoked |= previous.revoked
             if status_serial < previous.status_serial:
                 raise CasfError("verifier state cannot decrease the status serial")
             if previous.checkpoint is not None:
@@ -97,11 +106,12 @@ class StateTransaction:
                           and checkpoint[1] != previous.checkpoint[1])):
                     raise CasfError("verifier state cannot replace retained history")
         entries = dict(self.entries)
-        entries[self.manifest_hash] = SavedState(status_serial, checkpoint)
+        entries[self.manifest_hash] = SavedState(status_serial, checkpoint, revoked)
         payload = {"version": 1, "manifests": {
             digest: {"status_serial": entry.status_serial,
                      "checkpoint": None if entry.checkpoint is None else {
-                         "index": entry.checkpoint[0], "hash": entry.checkpoint[1]}}
+                         "index": entry.checkpoint[0], "hash": entry.checkpoint[1]},
+                     **({"revoked": True} if entry.revoked else {})}
             for digest, entry in entries.items()}}
         raw = json.dumps(payload, sort_keys=True, allow_nan=False).encode() + b"\n"
         if len(raw) > MAX_STATE_BYTES:

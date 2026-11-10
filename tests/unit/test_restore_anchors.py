@@ -25,7 +25,7 @@ def test_restore_accepts_signed_anchor_and_preserves_seal(tmp_path, index, final
     path, bundle, pins = evidence(tmp_path, final)
     writer = Writer.restore_from_bundle(
         tmp_path / "restored.db", LOG, path, trust_pins=pins,
-        anchor_checkpoint=bundle.checkpoints[index], anchor_receipt=bundle.receipts[index])
+        anchor_checkpoint=bundle.checkpoints[index], anchor_receipt=bundle.receipts[index], local_only=True)
     try:
         assert len(list(writer.records(LOG_ID))) == 2
         if final:
@@ -77,7 +77,7 @@ def test_restore_rejects_invalid_signed_anchor_before_creating_store(tmp_path, c
     dest = tmp_path / "restored.db"
     with pytest.raises(CasfError, match="journal" if change == "journal_conflict" else None):
         Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins,
-                                   anchor_checkpoint=checkpoint, anchor_receipt=receipt, **extra)
+                                   anchor_checkpoint=checkpoint, anchor_receipt=receipt, **extra, local_only=True)
     assert not dest.exists()
 
 
@@ -92,8 +92,8 @@ def test_restore_behind_signed_anchor_is_retained_sealed(tmp_path):
     with pytest.raises(RestoreBehindWitnessError):
         Writer.restore_from_bundle(dest, LOG, old_path, trust_pins=pins,
                                    anchor_checkpoint=bundle.checkpoints[-1],
-                                   anchor_receipt=bundle.receipts[-1])
-    reader = Writer(dest, LOG, trust_pins=pins)
+                                   anchor_receipt=bundle.receipts[-1], local_only=True)
+    reader = Writer(dest, LOG, trust_pins=pins, local_only=True)
     try:
         with pytest.raises(SealedError):
             _append(reader, 1)
@@ -109,7 +109,7 @@ def test_restore_refuses_missing_anchor_journal(tmp_path):
     with pytest.raises(CasfError, match="journal"):
         Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins,
                                    anchor_checkpoint=bundle.checkpoints[-1],
-                                   anchor_receipt=bundle.receipts[-1])
+                                   anchor_receipt=bundle.receipts[-1], local_only=True)
     assert not dest.exists()
 
 
@@ -118,7 +118,7 @@ def test_anchor_receipt_recovers_matching_pending_tail(tmp_path):
     (path / "receipts.jsonl").write_text(json.dumps(bundle.receipts[0]) + "\n")
     writer = Writer.restore_from_bundle(
         tmp_path / "restored.db", LOG, path, trust_pins=pins,
-        anchor_checkpoint=bundle.checkpoints[-1], anchor_receipt=bundle.receipts[-1])
+        anchor_checkpoint=bundle.checkpoints[-1], anchor_receipt=bundle.receipts[-1], local_only=True)
     try:
         assert writer.pending_checkpoint(LOG_ID) is None
         assert writer.create_checkpoint(LOG_ID)["body"]["index"] == 2

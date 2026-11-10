@@ -2,8 +2,12 @@
 
 import http.client
 import math
+import os
 import re
 import time
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 from casf.canonical.jcs import canonicalize, parse
@@ -12,6 +16,7 @@ from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
 from casf.online import LatestView, fetch_latest, verify_latest_response
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
+from casf.trust.state import _secure
 from casf.types import JsonObject
 from casf.writer.validation import CheckpointChain, ManifestContext
 
@@ -47,7 +52,7 @@ def _lookup(base_url: str, log_id: str, token: str, digest: str,
 
 
 def _recover(writer: "Writer", log_id: str, context: ManifestContext,
-             view: LatestView, base_url: str, token: str, deadline: float,
+             view: LatestView, missing: list[tuple[JsonObject, JsonObject]], deadline: float,
              max_chain_steps: int, retained: tuple[int, str] | None, count: int) -> int:
     """Validate the complete journal before applying changes in the caller's transaction."""
     con = writer._db.connection
@@ -72,21 +77,25 @@ def _recover(writer: "Writer", log_id: str, context: ManifestContext,
     if latest_index - chain.index > max_chain_steps:
         raise InconclusiveError("witness reconciliation chain budget exhausted")
 
-    missing: list[tuple[JsonObject, JsonObject]] = []
-    cp, rc = view.checkpoint, view.receipt
-    index = latest_index
-    while index > chain.index:
-        _remaining(deadline)
-        body = context.anchor(cp, rc)
-        if body["index"] != index:
-            raise CasfError("intervening checkpoint index is inconsistent")
-        missing.append((cp, rc))
-        index -= 1
-        if index > chain.index:
-            cp, rc = _lookup(base_url, log_id, token,
-                             cast(str, body["previous_checkpoint_hash"]), deadline)
-    if not missing and (cp != last_checkpoint or rc != last_receipt):
+    if latest_index == chain.index and (view.checkpoint != last_checkpoint
+                                       or view.receipt != last_receipt):
         raise CasfError("fresh witness evidence conflicts with the accepted local journal")
+    # A receipt may have arrived while the network query was in flight.
+    # Any now-accepted downloaded pair must match that committed evidence.
+    remaining = []
+    for cp, rc in missing:
+        body = cast(JsonObject, cp["body"])
+        if cast(int, body["index"]) <= chain.index:
+            local = con.execute(
+                "SELECT c.envelope, r.envelope FROM checkpoints c JOIN receipts r "
+                "ON c.checkpoint_hash=r.checkpoint_hash WHERE c.log_id=? AND c.idx=?",
+                (log_id, body["index"])).fetchone()
+            if local is None or writer._stored_object(local[0]) != cp \
+                    or writer._stored_object(local[1]) != rc:
+                raise CasfError("concurrent receipt conflicts with downloaded evidence")
+        else:
+            remaining.append((cp, rc))
+    missing = remaining
 
     for cp, rc in reversed(missing):
         body = chain.checkpoint(cp)
@@ -121,10 +130,57 @@ def _recover(writer: "Writer", log_id: str, context: ManifestContext,
     return sealed
 
 
+@contextmanager
+def recovery_lock(writer: "Writer", timeout: float) -> Iterator[None]:
+    """Serialize recoveries across processes without a SQLite transaction."""
+    import fcntl
+
+    from casf.writer import BusyError
+
+    path = str(Path(writer._db.path).resolve()) + ".recovery.lock"
+    fd = os.open(path, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+    try:
+        _secure(fd)
+        deadline = time.monotonic() + timeout
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise BusyError("recovery lock time budget exhausted") from None
+                time.sleep(max(0, min(0.05, deadline - time.monotonic())))
+        yield
+    finally:
+        os.close(fd)
+
+
+def hold_writer(writer: "Writer", log_id: str) -> None:
+    """Commit the hold without losing a terminal record-loss seal."""
+    from casf.writer import RestoreBehindWitnessError
+
+    con = writer._db.connection
+    con.execute("BEGIN IMMEDIATE")
+    try:
+        writer._check_heads()
+        row = con.execute("SELECT sealed FROM heads WHERE log_id=?", (log_id,)).fetchone()
+        if row is None:
+            raise CasfError("unknown log")
+        if row[0] == 1:
+            raise RestoreBehindWitnessError(
+                "RESTORE_BEHIND_WITNESS: recover missing records into a new verified store")
+        con.execute("UPDATE heads SET sealed=3 WHERE log_id=?", (log_id,))
+        con.commit()
+    except BaseException:
+        con.rollback()
+        raise
+
+
 def reconcile_witness(writer: "Writer", log_id: str, base_url: str, token: str, *,
                       timeout: float, max_chain_steps: int,
-                      retained_checkpoint: tuple[int, str] | None) -> LatestView:
-    from casf.writer import BusyError, RestoreBehindWitnessError
+                      retained_checkpoint: tuple[int, str] | None,
+                      before_resume: Callable[[LatestView], None] | None = None) -> LatestView:
+    from casf.writer import RestoreBehindWitnessError
 
     if writer._trust_pins is None:
         raise TrustError("witness reconciliation requires independent trust pins")
@@ -142,45 +198,52 @@ def reconcile_witness(writer: "Writer", log_id: str, base_url: str, token: str, 
             raise SchemaError("retained checkpoint index or digest is invalid")
     context = writer._manifest_context(writer.manifest_envelope(log_id))
     con = writer._db.connection
-    # A competing reconciliation can finish between committing the hold and
-    # reacquiring the write lock. Rearm it before any network work in that case.
-    # Never normalize a corrupt preexisting seal before local validation.
-    for _ in range(4):
-        con.execute("BEGIN IMMEDIATE")
-        try:
-            writer._check_heads()
-            row = con.execute("SELECT sealed FROM heads WHERE log_id=?", (log_id,)).fetchone()
-            if row is None:
-                raise CasfError("unknown log")
-            if row[0] == 1:
-                raise RestoreBehindWitnessError(
-                    "RESTORE_BEHIND_WITNESS: recover missing records into a new verified store")
-            if row[0] == 3:
-                break
-            con.execute("UPDATE heads SET sealed=3 WHERE log_id=?", (log_id,))
-            con.commit()
-        except BaseException:
-            con.rollback()
-            raise
-    else:
-        raise BusyError("competing reconciliations exhausted the lock retry budget")
-    try:
+    with recovery_lock(writer, timeout):
+        hold_writer(writer, log_id)
         count = con.execute("SELECT count FROM heads WHERE log_id=?", (log_id,)).fetchone()[0]
+        row = con.execute("SELECT MAX(idx) FROM checkpoints WHERE log_id=? AND state='accepted'",
+                          (log_id,)).fetchone()
+        accepted_index = -1 if row[0] is None else row[0]
         deadline = time.monotonic() + timeout
         response, nonce = fetch_latest(base_url, log_id, token, timeout=_remaining(deadline))
         view = verify_latest_response(response, nonce, context.witness_key, log_id)
         body = context.anchor(view.checkpoint, view.receipt)
         _remaining(deadline)
-        if cast(int, body["count"]) > count:
-            con.execute("UPDATE heads SET sealed=1 WHERE log_id=?", (log_id,))
+        missing: list[tuple[JsonObject, JsonObject]] = []
+        if cast(int, body["count"]) <= count:
+            index = cast(int, body["index"])
+            if index - accepted_index > max_chain_steps:
+                raise InconclusiveError("witness reconciliation chain budget exhausted")
+            cp, rc = view.checkpoint, view.receipt
+            while index > accepted_index:
+                _remaining(deadline)
+                current = context.anchor(cp, rc)
+                if current["index"] != index:
+                    raise CasfError("intervening checkpoint index is inconsistent")
+                missing.append((cp, rc))
+                index -= 1
+                if index > accepted_index:
+                    cp, rc = _lookup(base_url, log_id, token,
+                                     cast(str, current["previous_checkpoint_hash"]), deadline)
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            writer._check_heads()
+            current_count, current_seal = con.execute(
+                "SELECT count, sealed FROM heads WHERE log_id=?", (log_id,)).fetchone()
+            if current_count != count or current_seal != 3:
+                raise CasfError("local state changed during witness reconciliation")
+            if cast(int, body["count"]) > count:
+                con.execute("UPDATE heads SET sealed=1 WHERE log_id=?", (log_id,))
+                con.commit()
+                raise RestoreBehindWitnessError(
+                    "RESTORE_BEHIND_WITNESS: fresh witness evidence exceeds the local record count")
+            sealed = _recover(writer, log_id, context, view, missing, deadline,
+                              max_chain_steps, retained_checkpoint, count)
+            if before_resume is not None:
+                before_resume(view)
+            con.execute("UPDATE heads SET sealed=? WHERE log_id=?", (sealed, log_id))
             con.commit()
-            raise RestoreBehindWitnessError(
-                "RESTORE_BEHIND_WITNESS: fresh witness evidence exceeds the local record count")
-        sealed = _recover(writer, log_id, context, view, base_url, token, deadline,
-                          max_chain_steps, retained_checkpoint, count)
-        con.execute("UPDATE heads SET sealed=? WHERE log_id=?", (sealed, log_id))
-        con.commit()
-        return view
-    except BaseException:
-        con.rollback()
-        raise
+            return view
+        except BaseException:
+            con.rollback()
+            raise

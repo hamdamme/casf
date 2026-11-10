@@ -8,10 +8,10 @@ import threading
 import pytest
 
 from casf.canonical.jcs import canonicalize
-from casf.cli import main
 from casf.lifecycle import sign_status
 from casf.witness.http import make_server
 from casf.writer import Writer
+from tests.local_mode import local_cli as main
 from tests.status import active_status
 from tests.unit.test_cli import _trust
 from tests.unit.test_verify_online import TOKEN, _service
@@ -92,7 +92,7 @@ def test_cli_detects_restored_witness_and_fork(environment, tmp_path, capsys, fo
     server = make_server(restored, "127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    fork = Writer(tmp_path / "fork.db", LOG)
+    fork = Writer(tmp_path / "fork.db", LOG, local_only=True)
     try:
         for n in range(fork_length):
             fork.append(LOG_ID, event_id=f"123e4567-e89b-42d3-a456-4266000000{90+n}",
@@ -132,14 +132,16 @@ def test_status_serial_cannot_go_backward(environment, tmp_path, capsys, mode):
     assert state.read_bytes() == saved
 
 
-def test_inconclusive_query_cannot_advance_state(environment, tmp_path, capsys, monkeypatch):
+def test_inconclusive_query_retains_status_without_advancing_checkpoint(
+        environment, tmp_path, capsys, monkeypatch):
     writer, svc, trust, state = environment
     _append(writer, 1)
     anchor(writer, svc)
     export(writer, tmp_path / "first")
     assert command(tmp_path / "first", trust, state, initialize=True) == 0
     capsys.readouterr()
-    saved = state.read_bytes()
+    manifest_hash = _manifest_envelope()["manifest_hash"]
+    saved = json.loads(state.read_text())["manifests"][manifest_hash]
     _append(writer, 2)
     anchor(writer, svc)
     export(writer, tmp_path / "new", serial=2)
@@ -151,7 +153,8 @@ def test_inconclusive_query_cannot_advance_state(environment, tmp_path, capsys, 
     monkeypatch.setattr("casf.cli.query_latest", unavailable)
     assert command(tmp_path / "new", trust, state) == 4
     assert json.loads(capsys.readouterr().out)["result"] == "INCONCLUSIVE"
-    assert state.read_bytes() == saved
+    retained = json.loads(state.read_text())["manifests"][manifest_hash]
+    assert retained == {**saved, "status_serial": 2}
 
 
 def test_save_failure_cannot_report_pass(environment, tmp_path, capsys, monkeypatch):

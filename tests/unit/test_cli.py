@@ -18,10 +18,10 @@ from cryptography.hazmat.primitives import serialization
 
 from casf import crypto
 from casf.canonical.jcs import canonicalize
-from casf.cli import main
 from casf.keys import load_key
 from casf.storage import Database
 from casf.witness.http import WitnessService, make_server
+from tests.local_mode import local_cli as main
 from tests.status import active_status, register_active
 from tests.unit.test_writer import (
     AUTH,

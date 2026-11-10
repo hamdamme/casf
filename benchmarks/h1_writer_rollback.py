@@ -130,7 +130,7 @@ def _build_arm(root: Path, manifest: dict, events_old: list[dict],
     """
     manifest_hash = str(manifest["manifest_hash"])
     checkpoints_path = root / f"{prefix}-local-checkpoints.json"
-    writer = Writer(root / f"{prefix}.db", workload.seeded_key("log"))
+    writer = Writer(root / f"{prefix}.db", workload.seeded_key("log"), local_only=True)
     witness = None
     if with_witness:
         witness = Witness(root / "witness.db", workload.seeded_key("witness"),
@@ -257,7 +257,7 @@ def _serve(db_path: Path):
 
 
 def _export(db_path: Path, dest: Path) -> Path:
-    writer = Writer(db_path, workload.seeded_key("log"))
+    writer = Writer(db_path, workload.seeded_key("log"), local_only=True)
     try:
         return writer.export_bundle(LOG_ID, dest)
     finally:
@@ -265,7 +265,7 @@ def _export(db_path: Path, dest: Path) -> Path:
 
 
 def _record_count(db_path: Path) -> int:
-    writer = Writer(db_path, workload.seeded_key("log"))
+    writer = Writer(db_path, workload.seeded_key("log"), local_only=True)
     try:
         return sum(1 for _ in writer.records(LOG_ID))
     finally:

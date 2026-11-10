@@ -58,7 +58,7 @@ def _manifest_envelope():
 
 
 def _writer(db_path, **kw):
-    w = Writer(db_path, LOG, **kw)
+    w = Writer(db_path, LOG, **kw, local_only=True)
     w.create_log(_manifest_envelope())
     return w
 
@@ -88,7 +88,7 @@ class _ConcurrentCommitWriter(Writer):
 
     def _debug_hook(self, stage):
         if stage == "after_heads_read":
-            other = Writer(self._db.path, LOG)
+            other = Writer(self._db.path, LOG, local_only=True)
             _append(other, 2)
             other.close()
 
@@ -100,7 +100,7 @@ def test_startup_check_reads_one_snapshot(tmp_path):
     w.close()
     # a second connection commits record 2 between the two startup
     # check reads; the snapshot must still show a consistent state
-    opened = _ConcurrentCommitWriter(db, LOG)
+    opened = _ConcurrentCommitWriter(db, LOG, local_only=True)
     opened.close()
 
 def test_create_log_and_first_append(tmp_path):
@@ -139,7 +139,7 @@ def test_conflicting_event_id_fails_without_consuming_seq(tmp_path):
     assert nxt["body"]["seq"] == 2
 
 def test_writer_key_must_match_manifest(tmp_path):
-    w = Writer(tmp_path / "a.db", WIT)  # wrong key for this manifest
+    w = Writer(tmp_path / "a.db", WIT, local_only=True)  # wrong key for this manifest
     with pytest.raises(CasfError):
         w.create_log(_manifest_envelope())
 
@@ -167,7 +167,7 @@ def test_lock_contention_returns_busy(tmp_path):
 # ---------------- T06: concurrent writers ----------------
 
 def _mp_worker(db_path, worker_id, count):
-    w = Writer(db_path, LOG)
+    w = Writer(db_path, LOG, local_only=True)
     for n in range(count):
         w.append(LOG_ID,
                  event_id=f"123e4567-e89b-42d3-a456-{worker_id:04d}{n:08d}",
@@ -185,14 +185,14 @@ def test_concurrent_writers_contiguous_sequence(tmp_path):
     for p in procs:
         p.join(60)
         assert p.exitcode == 0
-    w = Writer(db, LOG)
+    w = Writer(db, LOG, local_only=True)
     bodies = [r["body"] for r in w.records(LOG_ID)]
     assert sorted(b["seq"] for b in bodies) == list(range(1, workers * per + 1))
     assert len({b["event_id"] for b in bodies}) == workers * per
     assert _verify_db(w).result == Result.PASS
 
 def _mp_same_event(db_path):
-    w = Writer(db_path, LOG)
+    w = Writer(db_path, LOG, local_only=True)
     try:
         w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000aa",
                  actor="alice", event_type="login", payload={}, attributes={})
@@ -208,7 +208,7 @@ def test_concurrent_same_event_id_one_record(tmp_path):
         p.start()
     for p in procs:
         p.join(60)
-    w = Writer(db, LOG)
+    w = Writer(db, LOG, local_only=True)
     matches = [r for r in w.records(LOG_ID)
                if r["body"]["event_id"] == "123e4567-e89b-42d3-a456-4266000000aa"]
     assert len(matches) == 1
@@ -222,7 +222,7 @@ class CrashWriter(Writer):
 
 
 def _mp_crash(db_path):
-    w = CrashWriter(db_path, LOG)
+    w = CrashWriter(db_path, LOG, local_only=True)
     w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000cc",
              actor="alice", event_type="login", payload={}, attributes={})
 
@@ -235,7 +235,7 @@ def test_crash_before_commit_is_all_or_none(tmp_path):
     p.start()
     p.join(60)
     assert p.exitcode == 1
-    w2 = Writer(db, LOG)
+    w2 = Writer(db, LOG, local_only=True)
     bodies = [r["body"] for r in w2.records(LOG_ID)]
     assert [b["seq"] for b in bodies] == [1]  # no partial state
     # retry with the same event id resolves the uncertain outcome
@@ -249,7 +249,7 @@ def test_committed_record_survives_restart(tmp_path):
     w = _writer(db)
     first = _append(w)
     del w
-    w2 = Writer(db, LOG)
+    w2 = Writer(db, LOG, local_only=True)
     again = w2.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-426600000001",
                       actor="alice", event_type="login",
                       payload={"n": 1}, attributes={})

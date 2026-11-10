@@ -7,10 +7,10 @@ import threading
 import pytest
 
 from casf.canonical.jcs import canonicalize
-from casf.cli import main
 from casf.errors import NoCheckpointError
 from casf.online import query_latest
 from casf.verifier import FreshnessStatus, Mode, Result, verify
+from tests.local_mode import local_cli as main
 from tests.status import active_status
 from tests.unit.test_cli import _trust
 from tests.unit.test_verify_online import TOKEN, _evidence, _pins, _service

@@ -166,7 +166,7 @@ def test_record_failure_precedes_checkpoint_schema_failure():
 
 
 @pytest.mark.parametrize('failure', ['schema', 'io', 'tail_after_crypto_failure'])
-def test_cli_late_error_never_saves_or_prints_pass(tmp_path, capsys, monkeypatch, failure):
+def test_cli_late_error_never_accepts_checkpoint_or_prints_pass(tmp_path, capsys, monkeypatch, failure):
     from casf import cli
     from tests.unit.test_cli import _exported, _trust
     from tests.unit.test_writer import _manifest_envelope
@@ -200,7 +200,11 @@ def test_cli_late_error_never_saves_or_prints_pass(tmp_path, capsys, monkeypatch
     output = capsys.readouterr()
     assert not output.out
     assert output.err
-    assert not state.exists()
+    if failure == 'tail_after_crypto_failure':
+        retained = json.loads(state.read_text())['manifests'][_manifest_envelope()['manifest_hash']]
+        assert retained == {'status_serial': 1, 'checkpoint': None}
+    else:
+        assert not state.exists()
 
 
 def test_record_memory_does_not_scale_with_file(tmp_path):
