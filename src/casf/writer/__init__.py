@@ -27,9 +27,10 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
-from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
-from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
+from casf.canonical.limits import MAX_CANONICAL_BODY_BYTES, MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
+from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.filesystem import rename_directory_exclusive, sync_directory
+from casf.model.api import AppendResult, EventRequest, WitnessState
 from casf.model.schema import validate_protocol_body
 from casf.online import LatestView
 from casf.storage import Database
@@ -41,9 +42,9 @@ from casf.verifier import Result, TrustPins, TrustStatus, verify
 from casf.writer.startup import StartupPolicy, authorize, authorized, reserve_database
 from casf.writer.validation import CheckpointChain, ManifestContext
 
-__all__ = ["BusyError", "EventIdConflictError",
+__all__ = ["AppendResult", "BusyError", "EventIdConflictError", "EventRequest",
            "ReconciliationRequiredError", "RestoreBehindWitnessError", "SealedError",
-           "StartupPolicy", "Writer"]
+           "StartupPolicy", "WitnessState", "Writer"]
 
 ZERO_HASH = "00" * 32  # hex(Z), the null previous checkpoint digest
 
@@ -368,14 +369,22 @@ class Writer:
     def append(self, log_id: str, *, event_id: str, actor: str,
                event_type: str, payload: JsonObject,
                attributes: JsonObject) -> JsonObject:
-        """Append one record; idempotent by event ID (SPEC §11, §17)."""
+        """Compatibility API returning an owned record envelope dictionary."""
         _ = self._signing_key()
-        if not isinstance(payload, dict) or not isinstance(attributes, dict):
-            raise SchemaError("payload and attributes must be objects")
-        request: JsonObject = {
-            "event_id": event_id, "actor": actor, "event_type": event_type,
-            "payload": payload, "attributes": attributes,
-        }
+        request = EventRequest(event_id=event_id, actor=actor, event_type=event_type,
+                               payload=payload, attributes=attributes)
+        return self._append_request(log_id, request).record
+
+    @authorized
+    def append_event(self, log_id: str, request: EventRequest) -> AppendResult:
+        """Append an immutable request and report its committed witness state."""
+        _ = self._signing_key()
+        if not isinstance(request, EventRequest):
+            raise SchemaError("append_event requires an EventRequest")
+        return self._append_request(log_id, request)
+
+    def _append_request(self, log_id: str, event: EventRequest) -> AppendResult:
+        request = event.to_dict()
         request_digest = crypto.request_digest(request)
         attempts = max(1, self._max_retries)
         for attempt in range(attempts):
@@ -393,7 +402,7 @@ class Writer:
         raise BusyError("unreachable")  # pragma: no cover
 
     def _append_once(self, log_id: str, request: JsonObject,
-                     request_digest: str) -> JsonObject:
+                     request_digest: str) -> AppendResult:
         log_priv, _log_pub, log_key_id = self._signing_key()
         if self._manifest_context(self.manifest_envelope(log_id)).body["log_key_id"] != log_key_id:
             raise CasfError("writer key does not match the manifest log key")
@@ -410,10 +419,11 @@ class Writer:
                 if stored_digest != request_digest:
                     raise EventIdConflictError(
                         "event ID already used with a different request")
-                con.commit()
                 if not isinstance(env, dict):
                     raise CasfError("stored record is corrupt")
-                return env
+                result = self._append_result(log_id, env)
+                con.commit()
+                return result
             head = con.execute(
                 "SELECT count, head_hash, sealed FROM heads WHERE log_id = ?",
                 (log_id,)).fetchone()
@@ -445,6 +455,8 @@ class Writer:
                 "prev_hash": head_hash, "key_id": log_key_id,
             }
             validate_protocol_body("record", body)
+            if len(canonicalize(body)) > MAX_CANONICAL_BODY_BYTES:
+                raise LimitError("record body exceeds the canonical byte budget")
             record_hash = crypto.digest_record(body)
             envelope: JsonObject = {
                 "body": body, "record_hash": record_hash,
@@ -459,12 +471,30 @@ class Writer:
                 "UPDATE heads SET count = ?, head_hash = ? WHERE log_id = ?",
                 (seq, record_hash, log_id))
             self._debug_hook("after_insert")
+            result = self._append_result(log_id, envelope)
             con.commit()
             self._debug_hook("after_commit")
-            return envelope
+            return result
         except BaseException:
             con.rollback()
             raise
+
+    def _append_result(self, log_id: str, record: JsonObject) -> AppendResult:
+        """Observe coverage while the append/idempotency transaction is held."""
+        body = cast(JsonObject, record["body"])
+        seq = cast(int, body["seq"])
+        con = self._db.connection
+        accepted = con.execute(
+            "SELECT MAX(count) FROM checkpoints WHERE log_id=? AND state='accepted'",
+            (log_id,)).fetchone()[0]
+        pending = con.execute(
+            "SELECT c.count FROM outbox o JOIN checkpoints c "
+            "ON c.log_id=o.log_id AND c.checkpoint_hash=o.checkpoint_hash "
+            "WHERE o.log_id=? AND c.state='pending'", (log_id,)).fetchone()
+        state = (WitnessState.WITNESSED if accepted is not None and seq <= accepted else
+                 WitnessState.PENDING_WITNESS if pending is not None and seq <= pending[0] else
+                 WitnessState.COMMITTED_LOCAL)
+        return AppendResult(record, state)
 
     def _manifest_hash(self, log_id: str) -> str:
         row = self._db.connection.execute(
