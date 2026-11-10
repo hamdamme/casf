@@ -61,6 +61,11 @@ CREATE TABLE IF NOT EXISTS outbox(
     attempts INTEGER NOT NULL DEFAULT 0,
     next_attempt_at REAL NOT NULL DEFAULT 0
 );
+CREATE TABLE IF NOT EXISTS checkpoint_schedule(
+    log_id TEXT PRIMARY KEY,
+    checkpoint_hash TEXT NOT NULL,
+    next_checkpoint_at REAL NOT NULL
+);
 -- Append-only guards (SPEC §17). These deter accidental modification;
 -- they are not protection against a file administrator.
 CREATE TRIGGER IF NOT EXISTS records_no_update BEFORE UPDATE ON records
