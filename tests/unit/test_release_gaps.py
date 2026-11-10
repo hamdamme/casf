@@ -12,7 +12,7 @@ def test_missing_status_is_unknown():
     env = _manifest_env()
     report = verify(env, _chain(1), _pins(env['manifest_hash']))
     assert report.trust_status is TrustStatus.UNKNOWN
-    assert report.result is Result.FAIL
+    assert report.result is Result.INCONCLUSIVE
     assert 'STATUS_MISSING' in report.diagnostic_codes
 
 
@@ -21,7 +21,7 @@ def test_unrelated_status_cannot_supply_trust():
     report = verify(env, _chain(1), _pins(env['manifest_hash']),
                     status_envelopes=[_status_env('ab' * 32)])
     assert report.trust_status is TrustStatus.UNKNOWN
-    assert report.result is Result.FAIL
+    assert report.result is Result.INCONCLUSIVE
 
 
 def test_checkpoint_budget_boundary():
@@ -107,7 +107,7 @@ def test_status_rejection_cases(kind, code):
         status['body']['issuer_id'] = 'ab' * 32
         status['signature'] = crypto.sign_status(AUTH, status['body'])
     report = verify(env, _chain(1), pins, status_envelopes=[status])
-    assert report.result is Result.FAIL
+    assert report.result is (Result.INCONCLUSIVE if kind == 'stale' else Result.FAIL)
     assert report.trust_status is not TrustStatus.OK
     assert code in report.diagnostic_codes
 

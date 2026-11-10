@@ -37,7 +37,7 @@ from casf.online import query_latest
 from casf.storage import Database, migrate_database
 from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
-from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
+from casf.verifier import Mode, ProtocolStatus, Report, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
 from casf.writer import RestoreBehindWitnessError, Writer
 from casf.writer.startup import StartupPolicy
@@ -806,13 +806,20 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
               f"unwitnessed: {report.unwitnessed_count}")
         if report.diagnostic_codes:
             print("diagnostics: " + ", ".join(report.diagnostic_codes))
+    return _verification_exit_code(report)
+
+
+def _verification_exit_code(report: Report) -> int:
+    """Keep specific schema and trust categories ahead of inconclusive evidence."""
     if report.result is Result.PASS:
         return 0
+    if any(code.endswith("_SCHEMA") for code in report.diagnostic_codes):
+        return 2
+    if report.protocol_status is ProtocolStatus.UNSUPPORTED or report.trust_status in (
+            TrustStatus.REVOKED, TrustStatus.CONFLICT, TrustStatus.UNKNOWN):
+        return 3
     if report.result is Result.INCONCLUSIVE:
         return 4
-    if report.trust_status in (TrustStatus.REVOKED, TrustStatus.UNTRUSTED,
-                               TrustStatus.UNKNOWN):
-        return 3
     return 1
 
 

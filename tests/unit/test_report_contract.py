@@ -35,7 +35,7 @@ def test_report_keeps_exact_failure_and_verified_range(failure_seq):
                     status_envelopes=[_status_env(manifest["manifest_hash"])])
     output = report.to_dict()
     assert output["result"] == "FAIL"
-    assert output["signature_status"] == "FAIL"
+    assert output["signature_status"] == "INVALID"
     assert output["first_failure_seq"] == failure_seq
     assert output["verified_from"] == (0 if failure_seq == 1 else 1)
     assert output["verified_through"] == failure_seq - 1
@@ -110,7 +110,7 @@ def cli_bundle(tmp_path):
 
 @pytest.mark.parametrize("case, exit_code, result", [
     ("pass", 0, "PASS"), ("signature", 1, "FAIL"),
-    ("missing_status", 3, "FAIL"), ("timeout", 4, "INCONCLUSIVE"),
+    ("missing_status", 3, "INCONCLUSIVE"), ("timeout", 4, "INCONCLUSIVE"),
 ])
 def test_cli_preserves_complete_reports_for_every_verdict(
         cli_bundle, tmp_path, monkeypatch, capsys, case, exit_code, result):
@@ -145,19 +145,19 @@ def test_cli_preserves_complete_reports_for_every_verdict(
     assert report["result"] == result
     assert report["mode"] == mode
     assert set(report) == {
-        "report_version", "mode", "result", "protocol_status", "signature_status", "chain_status",
+        "report_version", "mode", "overall", "result", "protocol_status", "signature_status", "chain_status",
         "trust_status", "anchor_status", "freshness_status", "verified_from", "verified_through",
         "witnessed_through", "unwitnessed_count", "first_failure_seq", "diagnostic_codes",
         "observed_status_serial", "checkpoint_index", "checkpoint_hash", "assumptions",
     }
-    assert report["report_version"] == 1
+    assert report["report_version"] == 2
     assert report["assumptions"]["witness_honesty_required"] is True
     assert "synthetic-secret-not-for-report" not in output.out
     assert "actor" not in report and "payload" not in report
     if case == "signature":
         assert report["first_failure_seq"] == 2
         assert report["verified_from"] == report["verified_through"] == 1
-        assert report["signature_status"] == "FAIL"
+        assert report["signature_status"] == "INVALID"
     if case == "pass":
         assert report["checkpoint_hash"] == checkpoint["checkpoint_hash"]
         assert report["checkpoint_index"] == 0
