@@ -34,7 +34,7 @@ from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
 from casf.types import JsonObject
-from casf.verifier import TrustPins
+from casf.verifier import Result, TrustPins, TrustStatus, verify
 from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
@@ -511,19 +511,42 @@ class Writer:
                             anchor: JsonObject | None = None,
                             anchor_checkpoint: JsonObject | None = None,
                             anchor_receipt: JsonObject | None = None,
+                            require_active_status: bool = False,
                             trust_pins: Mapping[str, TrustPins] | None = None) -> "Writer":
         """Restore verified records and their checkpoint/receipt journal.
 
         A final checkpoint keeps the log sealed. A supplied pending tail
         keeps its original signed bytes for retry. The caller must establish
-        independent manifest trust and authenticate any external anchor;
-        this local operation cannot establish that an older export is current.
+        independent manifest trust and authenticate a bare external anchor.
+        Signed anchor pairs are authenticated with supplied pins. Optional
+        active-status policy checks the bundled statements and provisioned
+        serial minimum; it does not establish globally current status.
+        This local operation cannot establish that an older export is current.
         A history behind the supplied anchor is retained sealed for inspection.
         """
         if os.path.lexists(db_path):
             raise CasfError("restore destination already exists")
         bundle = read_bundle(bundle_dir)
         context = ManifestContext.read(bundle.manifest)
+        if type(require_active_status) is not bool:
+            raise SchemaError("require_active_status must be a boolean")
+        if require_active_status:
+            pins = (trust_pins.get(cast(str, context.body["log_id"]))
+                    if trust_pins is not None else None)
+            if pins is None:
+                raise TrustError("restore status policy requires independent trust pins")
+            context = ManifestContext.read(bundle.manifest, pins=pins)
+            if type(pins.minimum_status_serial) is not int \
+                    or not 1 <= pins.minimum_status_serial <= SAFE_INT_MAX:
+                raise SchemaError("minimum_status_serial must be a positive safe integer")
+            report = verify(bundle.manifest, bundle.records, pins,
+                            status_envelopes=bundle.statuses)
+            if report.trust_status is not TrustStatus.OK:
+                raise TrustError("restore authority status rejected: "
+                                 + ", ".join(report.diagnostic_codes))
+            if report.result is not Result.PASS:
+                raise CasfError("restore evidence verification failed: "
+                                + ", ".join(report.diagnostic_codes))
         if anchor_checkpoint is not None or anchor_receipt is not None:
             if anchor_checkpoint is None or anchor_receipt is None or anchor is not None:
                 raise SchemaError("supply both anchor envelopes without a bare anchor")

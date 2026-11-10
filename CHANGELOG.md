@@ -6,6 +6,9 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Add explicit active-status policy to restore. Verify supplied authority
+  statements and the provisioned serial minimum before creating a database;
+  missing or revoked status cannot authorize the import.
 - Authenticate signed checkpoint/receipt anchors during restore with supplied
   trust pins. Reject journal conflicts and preserve sealed recovery behind
   the anchor; recover a matching pending tail from its authentic receipt.

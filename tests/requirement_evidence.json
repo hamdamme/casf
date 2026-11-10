@@ -183,7 +183,9 @@
         "tests/unit/test_release_gaps.py::test_status_rejection_cases",
         "tests/unit/test_release_gaps.py::test_old_signed_active_status_does_not_claim_current_revocation_knowledge",
         "tests/unit/test_release_gaps.py::test_revocation_cannot_be_overridden_by_active_or_invalid_status",
-        "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown"
+        "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown",
+        "tests/unit/test_restore_status.py::test_restore_accepts_active_status_at_provisioned_minimum",
+        "tests/unit/test_restore_status.py::test_restore_rejects_untrusted_status_before_creating_store"
       ],
       "remaining_review": ""
     },
@@ -219,6 +221,7 @@
         "tests/unit/test_writer_integrity_recovery.py::test_process_exit_during_restore_never_commits_partial_history",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_accepts_a_matching_older_anchor",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_or_conflicting_anchor",
+        "tests/unit/test_restore_status.py::test_status_policy_does_not_accept_corrupt_records",
         "tests/unit/test_restore_anchors.py::test_restore_accepts_signed_anchor_and_preserves_seal",
         "tests/unit/test_restore_anchors.py::test_restore_rejects_invalid_signed_anchor_before_creating_store",
         "tests/unit/test_restore_anchors.py::test_restore_refuses_missing_anchor_journal",
