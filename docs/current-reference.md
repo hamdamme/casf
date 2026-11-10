@@ -84,11 +84,12 @@ Other conceptual interfaces and result types in SPEC section 19 remain open. See
 and the [recovery guide](writer-recovery.md) for current signatures and migration.
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
-`FAIL` and `INCONCLUSIVE`; verification dimensions use `OK`, `FAIL` and
-`NOT_CHECKED`. Trust and anchor fields have their own enums. `Report.to_dict()` and CLI JSON expose every diagnostic field, including the
+`FAIL` and `INCONCLUSIVE`. Diagnostic JSON version 2 uses SPEC section 15 enum
+labels, explicit NOT_CHECKED dimensions and inconclusive missing-trust verdicts.
+`Report.to_dict()` and CLI JSON expose every diagnostic field, including the
 verified range, failure position, checkpoint identity and requested policy.
-See [export and report contracts](export-and-reports.md). Enum labels and
-missing-trust verdicts still require alignment with SPEC section 15.
+`overall` is the canonical verdict; `result` remains a compatibility field.
+See [export and report contracts](export-and-reports.md) for migration details.
 
 Verification starts from record 1. Retained checkpoints support continuity
 checks, but the public API does not implement a general incremental verifier

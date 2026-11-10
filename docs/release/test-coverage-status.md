@@ -38,6 +38,9 @@ its checks.
   results, pending/accepted coverage, same-event retries, failed commits,
   uncertain responses, concurrent processes, body limits and verified
   retained-state authorization. Existing dictionary callers remain covered.
+- [Verification report](../verification.md) regressions cover canonical enums,
+  missing-evidence verdicts, version and schema failures, unchecked dimensions,
+  strict status/pin validation, CLI exit categories and checkpoint non-advancement.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest
