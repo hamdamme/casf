@@ -22,6 +22,7 @@ The protocol specification remains a design review document. The project has not
 - **Signed records:** Bind each record to its log, sequence, predecessor, and signing key using Ed25519 and SHA-256.
 - **Durable writer:** Verify trust, retained authority status and fresh witness history before signing; store records transactionally with idempotent retries.
 - **Independent witness:** Accept validated chain extensions and retain signed checkpoint receipts in separate state.
+- **Checkpoint worker:** Schedule bounded checkpoints and durable retries through a [verified foreground worker](docs/checkpoint-worker.md).
 - **Evidence export:** Export verifiable evidence bundles for examination without the writer's private key.
 - **Verification results:** Report `PASS`, `FAIL`, or `INCONCLUSIVE` with separate integrity, anchored, and online modes.
 - **Key lifecycle:** Support sealed logs, linked rotation epochs, and revocation status checks.

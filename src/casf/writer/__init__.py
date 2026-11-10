@@ -964,29 +964,42 @@ class Writer:
             records.append(env)
         request = json.dumps(
             {"checkpoint": envelope, "records": records}).encode()
+        con = self._db.connection
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            changed = con.execute(
+                "UPDATE outbox SET attempts=MIN(attempts + 1, ?) "
+                "WHERE log_id=? AND checkpoint_hash=?",
+                (SAFE_INT_MAX, log_id, envelope["checkpoint_hash"])).rowcount
+            if changed != 1:
+                raise CasfError("pending checkpoint changed before submission")
+            con.commit()
+        except BaseException:
+            con.rollback()
+            raise
         try:
             status, payload = http_request(
                 base_url, "POST", f"/v1/logs/{log_id}/checkpoints", token,
                 request, timeout=timeout)
         except (OSError, http.client.HTTPException, ResponseLimitError) as e:
-            self._db.connection.execute(
-                "UPDATE outbox SET attempts = attempts + 1 "
-                "WHERE log_id = ?", (log_id,))
-            self._db.connection.commit()
             raise InconclusiveError(
                 "witness unreachable; the pending checkpoint keeps its "
                 "bytes for retry") from e
         except ValueError as e:
-            raise CasfError(str(e)) from e
+            if str(e) == "HTTP requires a literal loopback address; use HTTPS":
+                raise CasfError("HTTP requires a literal loopback address; use HTTPS") from e
+            raise CasfError("invalid witness request configuration") from e
+        if status in (429, 503):
+            raise InconclusiveError("witness temporarily unavailable; pending bytes are retained")
+        if status not in (200, 201):
+            raise CasfError(f"witness rejected the submission (HTTP {status})")
         try:
             data = parse(payload)
         except CasfError as e:
             raise CasfError("witness answer was not valid JSON") from e
-        if status not in (200, 201) or not isinstance(data, dict) \
+        if not isinstance(data, dict) \
                 or not isinstance(data.get("receipt"), dict):
-            code = data.get("code") if isinstance(data, dict) else None
-            raise CasfError(f"witness rejected the submission: "
-                            f"{code or status}")
+            raise CasfError("witness answer carried no receipt object")
         receipt = data["receipt"]
         if not isinstance(receipt, dict):
             raise CasfError("witness answer carried no receipt object")

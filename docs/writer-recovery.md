@@ -233,8 +233,9 @@ transaction behavior.
 
 The low-level reconciliation operation does not itself persist external state
 or evaluate authority status. Verified startup combines these operations and
-authorizes writing only after all succeed. Automatic checkpoint scheduling
-remains separate work. Bundle export does not carry the database's operational hold;
+authorizes writing only after all succeed. The [checkpoint worker](checkpoint-worker.md)
+provides automatic scheduling and durable retries after verified startup.
+Bundle export does not carry the database's operational hold;
 promoting a new restore still requires independent recovery checks.
 
 ## Pending final seals and backups
@@ -263,8 +264,9 @@ Broader pending export/report behavior remains a separate interface task.
 Even with manifest pins, local checks cannot distinguish an internally valid
 old snapshot from current history without independently retained or fresh
 witness evidence. The explicit local-only path does not query the witness at startup. Verified
-startup does query it, but cannot establish undistributed revocation knowledge
-or provide an automatic checkpoint/retry worker. Authority keys inside a bundle never establish independent trust.
+startup does query it, but cannot establish undistributed revocation knowledge.
+Automatic scheduling requires running the checkpoint worker separately.
+Authority keys inside a bundle never establish independent trust.
 Reconcile external state before promoting
 a restored or suspected-corrupt database. Full specification conformance is
 not claimed by these fixes.
