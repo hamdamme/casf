@@ -8,7 +8,7 @@ import pytest
 from casf import crypto
 from casf.canonical.jcs import canonicalize, parse
 from casf.errors import CasfError, InconclusiveError, TrustError
-from casf.writer import BusyError, RestoreBehindWitnessError, SealedError, Writer
+from casf.writer import RestoreBehindWitnessError, SealedError, Writer
 from tests.unit.test_witness import _witness
 from tests.unit.test_writer import LOG, LOG_ID, WIT, _append, _manifest_envelope
 from tests.unit.test_writer_trust import _pins
@@ -308,8 +308,9 @@ def test_competing_writer_cannot_append_during_reconciliation(history, monkeypat
     other = _open(backup, busy_timeout_ms=0, max_retries=0)
 
     def concurrent(*args, **kwargs):
+        assert not writer._db.connection.in_transaction
         assert len(list(other.records(LOG_ID))) == 3
-        with pytest.raises(BusyError):
+        with pytest.raises(SealedError):
             _append(other, 4)
         return transport(*args, **kwargs)
 
@@ -317,6 +318,31 @@ def test_competing_writer_cannot_append_during_reconciliation(history, monkeypat
     try:
         _reconcile(writer)
         _append(other, 4)
+    finally:
+        writer.close()
+        other.close()
+
+
+def test_concurrent_receipt_is_rechecked_before_journal_promotion(history, monkeypatch):
+    original, _, backup, pairs, _, transport = history
+    cp, rc = pairs[1]
+    with sqlite3.connect(backup) as con:
+        con.execute("INSERT INTO checkpoints VALUES (?, 1, 3, ?, ?, 'pending')",
+                    (LOG_ID, cp["checkpoint_hash"], canonicalize(cp)))
+        con.execute("INSERT INTO outbox VALUES (?, ?, 4, 3, 0, 0)",
+                    (LOG_ID, cp["checkpoint_hash"]))
+    writer, other = _open(backup), _open(backup)
+
+    def concurrent(*args, **kwargs):
+        assert not writer._db.connection.in_transaction
+        response = transport(*args, **kwargs)
+        other.record_receipt(LOG_ID, rc)
+        return response
+
+    monkeypatch.setattr("casf.online.http_request", concurrent)
+    try:
+        _reconcile(writer)
+        assert _journal(writer) == _journal(original)
     finally:
         writer.close()
         other.close()
