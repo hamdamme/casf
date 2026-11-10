@@ -13,6 +13,7 @@ import argparse
 import json
 import math
 import os
+import re
 import sqlite3
 import sys
 import uuid
@@ -26,6 +27,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from casf import crypto
 from casf.bundle import BundleReadError, StreamingBundle, open_bundle
 from casf.canonical.jcs import parse, parse_config
+from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
@@ -530,6 +532,13 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
         raise SchemaError("trust file field types are wrong")
     if set(policy) != _TRUST_POLICY_FIELDS:
         raise SchemaError("trust policy fields are wrong")
+    if policy["mode"] not in ("integrity", "anchored", "online"):
+        raise SchemaError("unknown trust policy mode")
+    if type(policy["allow_unwitnessed"]) is not bool:
+        raise SchemaError("allow_unwitnessed must be a boolean")
+    steps = policy["max_chain_steps"]
+    if type(steps) is not int or not 1 <= steps <= SAFE_INT_MAX:
+        raise SchemaError("max_chain_steps must be a positive safe integer")
     timeout = policy["query_timeout_seconds"]
     if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
             or not math.isfinite(timeout) or timeout <= 0):
@@ -545,6 +554,15 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
                          "provision this log")
     if not isinstance(entry, dict) or set(entry) != _TRUST_LOG_FIELDS:
         raise SchemaError("trust log entry fields are wrong")
+    for field in ("manifest_hash", "witness_id"):
+        value = entry[field]
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise SchemaError(f"trust {field} must be a lowercase SHA-256 digest")
+    if not isinstance(entry["witness_url"], str):
+        raise SchemaError("witness_url must be a string")
+    minimum = entry["minimum_status_serial"]
+    if type(minimum) is not int or not 1 <= minimum <= SAFE_INT_MAX:
+        raise SchemaError("minimum_status_serial must be a positive safe integer")
     return keys, entry, policy
 
 
