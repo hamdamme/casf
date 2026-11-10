@@ -47,6 +47,21 @@ records, with 0 through 0 for an empty range. Unknown witness coverage and
 unwitnessed counts are null. An absent or unchecked anchor is never MATCHED,
 and an online check that has not obtained a view remains INCONCLUSIVE.
 
+## Public verification API
+
+`casf.verifier.verify_bundle(path, pins, mode=Mode.ANCHORED)` verifies a
+bounded bundle and consumes records through EOF before returning a report.
+An early verification verdict cannot conceal a malformed tail. All files close
+before return or exception. `CasfError` and `OSError` mean no complete report
+is available. Durable state remains the caller's responsibility.
+
+An explicit `VerificationAnchor` enables suffix verification with authenticated
+checkpoint/receipt evidence and an independently retained checkpoint hash.
+The report distinguishes the trusted prefix from the suffix bodies actually
+checked. Omitting the anchor retains full verification. See the
+[API contract and examples](verifier-api.md) for limits, continuity and trust.
+The CLI continues to use full verification and its existing retained-state path.
+
 ## Remembered verifier state
 
 Every CLI verification requires `--state PATH`. Use a private directory owned
@@ -166,7 +181,7 @@ protocol envelope, 1000000 records, 100000 objects per evidence file, and
 Invalid input returns CLI code 2. Each oversized item is rejected before
 its cryptographic verification; earlier valid records may already have been checked.
 
-Use `open_bundle` arguments `max_records`, `max_evidence_objects`, and
+Use `verify_bundle` or `open_bundle` arguments `max_records`, `max_evidence_objects`, and
 `max_total_bytes` to select smaller or larger budgets. The CLI exposes
 `--max-records`, `--max-evidence-objects`, and `--max-bundle-bytes`.
 The CLI streams records once and retains digests only at bounded checkpoint

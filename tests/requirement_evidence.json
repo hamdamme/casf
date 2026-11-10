@@ -99,7 +99,10 @@
         "tests/unit/test_export_contract.py::test_prefix_limits_journal_and_preserves_exact_blobs",
         "tests/unit/test_report_contract.py::test_report_serialization_covers_all_diagnostic_fields",
         "tests/unit/test_report_models.py::test_report_enums_match_spec",
-        "tests/unit/test_report_semantics.py::test_completed_reports_use_spec_labels_and_versioned_serialization"
+        "tests/unit/test_report_semantics.py::test_completed_reports_use_spec_labels_and_versioned_serialization",
+        "tests/unit/test_incremental_verification.py::test_suffix_matches_full_verification_without_checking_prefix_bodies",
+        "tests/unit/test_incremental_verification.py::test_empty_suffix_does_not_claim_prior_bodies_were_checked",
+        "tests/unit/test_verify_bundle.py::test_complete_bundle_api_matches_stream_verifier"
       ],
       "remaining_review": ""
     },
@@ -212,7 +215,11 @@
         "tests/unit/test_verified_startup.py::test_caller_policy_mutation_does_not_change_authorized_serial",
         "tests/unit/test_report_semantics.py::test_versions_have_explicit_protocol_status",
         "tests/unit/test_report_semantics.py::test_conflicting_pin_identity_is_not_missing_trust",
-        "tests/unit/test_report_semantics.py::test_relabeling_an_authority_key_cannot_authorize_its_signatures"
+        "tests/unit/test_report_semantics.py::test_relabeling_an_authority_key_cannot_authorize_its_signatures",
+        "tests/unit/test_incremental_verification.py::test_anchor_signatures_are_checked_before_consuming_suffix",
+        "tests/unit/test_incremental_verification.py::test_anchor_cannot_change_manifest_bindings",
+        "tests/unit/test_incremental_verification.py::test_explicit_anchor_pin_is_required_and_cannot_be_replaced",
+        "tests/unit/test_verify_bundle.py::test_bundle_cannot_replace_explicit_anchor_evidence"
       ],
       "remaining_review": ""
     },
@@ -245,7 +252,8 @@
         "tests/unit/test_report_semantics.py::test_unknown_signed_status_cannot_authorize_trust",
         "tests/unit/test_cli_report_semantics.py::test_cli_reports_verdict_and_preserves_checkpoint_on_nonpass",
         "tests/unit/test_report_semantics.py::test_retained_revocation_survives_missing_trust",
-        "tests/unit/test_log_handle_authorization.py::test_handle_rechecks_authorization_before_every_mutation"
+        "tests/unit/test_log_handle_authorization.py::test_handle_rechecks_authorization_before_every_mutation",
+        "tests/unit/test_incremental_verification.py::test_incremental_never_bypasses_status_trust"
       ],
       "remaining_review": ""
     },
@@ -260,7 +268,9 @@
         "tests/unit/test_writer_reconciliation.py::test_recovers_exact_pending_receipt",
         "tests/unit/test_writer_reconciliation.py::test_preserves_unaccepted_pending_tail",
         "tests/unit/test_checkpoint_worker.py::test_pending_final_checkpoint_retries_and_stops",
-        "tests/unit/test_storage_migrations.py::test_migrated_pair_replays_pending_final_receipt_without_resigning"
+        "tests/unit/test_storage_migrations.py::test_migrated_pair_replays_pending_final_receipt_without_resigning",
+        "tests/unit/test_incremental_verification.py::test_final_start_rejects_any_extension",
+        "tests/unit/test_incremental_verification.py::test_full_verification_rejects_extensions_after_final"
       ],
       "remaining_review": ""
     },
@@ -378,7 +388,13 @@
         "tests/unit/test_report_semantics.py::test_unknown_coverage_and_unchecked_dimensions_are_explicit",
         "tests/unit/test_operation_models.py::test_envelope_models_reject_invalid_evidence",
         "tests/unit/test_operation_models.py::test_protocol_strings_reject_trailing_newlines",
-        "tests/unit/test_operation_snapshots.py::test_checkpoint_rejects_nonboolean_final_before_a_transaction"
+        "tests/unit/test_operation_snapshots.py::test_checkpoint_rejects_nonboolean_final_before_a_transaction",
+        "tests/unit/test_incremental_verification.py::test_extension_budget_is_bounded_and_does_not_count_start",
+        "tests/unit/test_verify_bundle.py::test_limits_include_drained_input",
+        "tests/unit/test_verify_bundle.py::test_early_verdict_cannot_hide_malformed_tail",
+        "tests/unit/test_verify_bundle.py::test_early_verdict_cannot_hide_missing_records",
+        "tests/unit/test_verify_bundle.py::test_files_closed_before_return_or_error",
+        "tests/unit/test_bundle.py::test_export_metadata_uses_strict_protocol_types"
       ],
       "remaining_review": ""
     },
@@ -403,7 +419,12 @@
         "tests/unit/test_attack.py::test_tail_loss_integrity_passes_and_is_documented",
         "tests/unit/test_verify_online.py::test_unwitnessed_suffix_visible_when_allowed",
         "tests/unit/test_cli_checkpoint_worker.py::test_cli_worker_once_reports_pending_then_witnessed",
-        "tests/unit/test_cli_checkpoint_worker.py::test_cli_worker_retry_wait_survives_restart"
+        "tests/unit/test_cli_checkpoint_worker.py::test_cli_worker_retry_wait_survives_restart",
+        "tests/unit/test_incremental_verification.py::test_unwitnessed_suffix_still_requires_explicit_policy",
+        "tests/unit/test_incremental_verification.py::test_retained_checkpoint_remains_binding",
+        "tests/unit/test_incremental_verification.py::test_retained_state_before_start_requires_history",
+        "tests/unit/test_incremental_verification.py::test_incremental_online_view_keeps_freshness_rules",
+        "tests/unit/test_verify_bundle.py::test_incremental_bundle_checks_only_suffix_signatures"
       ],
       "remaining_review": ""
     },

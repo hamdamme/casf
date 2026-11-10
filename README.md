@@ -71,6 +71,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | [Development guide](DEVELOPMENT.md) | Working rules for implementation and review |
 | [Implementation reference](docs/current-reference.md) | Current behavior, API boundaries and differences from the specification |
 | [Verification guide](docs/verification.md) | Trust, retained state, diagnostic outcomes and resource budgets |
+| [Verifier API](docs/verifier-api.md) | Complete bundle reads and incremental checks from trusted checkpoints |
 | [Install and use CASF](docs/installation.md) | Candidate installation, verification modes, and retained verifier state |
 | [Research guide](research/README.md) | Canonical questions, evidence, outcomes and historical label crosswalk |
 | [Research limitations](research/limitations.md) | Detection boundaries and limits of the experiments |
