@@ -73,7 +73,8 @@
         "tests/unit/test_verifier.py::test_first_failure_seq_and_verified_range",
         "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_records_and_indexes",
         "tests/unit/test_writer_integrity_recovery.py::test_wrong_signing_key_cannot_extend_existing_log",
-        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
+        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary",
+        "tests/unit/test_writer_reconciliation.py::test_valid_signatures_cannot_reconcile_different_records"
       ],
       "remaining_review": ""
     },
@@ -122,7 +123,9 @@
         "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict",
         "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit",
         "tests/unit/test_receipt_recovery.py::test_failed_receipt_recovery_preserves_pending_bytes",
-        "tests/unit/test_receipt_recovery.py::test_receipt_lookup_is_bound_to_requested_log"
+        "tests/unit/test_receipt_recovery.py::test_receipt_lookup_is_bound_to_requested_log",
+        "tests/unit/test_writer_reconciliation.py::test_failed_recovery_preserves_journal_and_blocks_restart",
+        "tests/unit/test_writer_reconciliation.py::test_rejects_valid_but_different_local_pending_checkpoint"
       ],
       "remaining_review": ""
     },
@@ -138,7 +141,10 @@
       "nodeids": [
         "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor",
         "tests/unit/test_streaming.py::test_truncation_checked_at_eof",
-        "tests/unit/test_restore_anchors.py::test_restore_behind_signed_anchor_is_retained_sealed"
+        "tests/unit/test_restore_anchors.py::test_restore_behind_signed_anchor_is_retained_sealed",
+        "tests/unit/test_writer_reconciliation.py::test_record_loss_is_terminal_even_after_witness_rollback",
+        "tests/unit/test_writer_reconciliation.py::test_rejects_retained_checkpoint_rollback_or_fork",
+        "tests/unit/test_writer_reconciliation.py::test_rejects_fresh_witness_behind_local_journal"
       ],
       "remaining_review": ""
     },
@@ -148,7 +154,9 @@
         "tests/unit/test_online.py::test_replay_never_passes_freshness",
         "tests/unit/test_online.py::test_wrong_nonce_rejected",
         "tests/unit/test_online.py::test_timeout_is_inconclusive",
-        "tests/unit/test_streaming.py::test_online_stream_matches_eager_with_retained_checkpoint"
+        "tests/unit/test_streaming.py::test_online_stream_matches_eager_with_retained_checkpoint",
+        "tests/unit/test_writer_reconciliation.py::test_requests_share_one_deadline",
+        "tests/unit/test_latest_bindings.py::test_latest_rejects_signed_schema_and_binding_conflicts"
       ],
       "remaining_review": ""
     },
@@ -198,12 +206,14 @@
         "tests/unit/test_lifecycle.py::test_seal_log_final_checkpoint",
         "tests/unit/test_lifecycle.py::test_emergency_epoch_marks_discontinuity",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_preserves_final_seal_and_evidence",
-        "tests/unit/test_writer_integrity_recovery.py::test_export_cannot_silently_drop_a_pending_final_seal"
+        "tests/unit/test_writer_integrity_recovery.py::test_export_cannot_silently_drop_a_pending_final_seal",
+        "tests/unit/test_writer_reconciliation.py::test_recovers_exact_pending_receipt",
+        "tests/unit/test_writer_reconciliation.py::test_preserves_unaccepted_pending_tail"
       ],
       "remaining_review": ""
     },
     "T15": {
-      "assertion_scope": "Export and restore verify; malformed bundles fail.",
+      "assertion_scope": "Export and restore verify; malformed bundles fail. Explicit fresh reconciliation recovers missing journals and retains write holds after failed or interrupted recovery.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_export_verifies_under_verifier",
         "tests/unit/test_bundle.py::test_restore_continues_chain",
@@ -234,9 +244,13 @@
         "tests/unit/test_restore_anchors.py::test_restore_refuses_missing_anchor_journal",
         "tests/unit/test_restore_anchors.py::test_anchor_receipt_recovers_matching_pending_tail",
         "tests/unit/test_writer_trust.py::test_writer_pins_apply_to_create_reopen_and_restore",
-        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
+        "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary",
+        "tests/unit/test_writer_reconciliation.py::test_recovers_missing_journal_and_continues_original_chain",
+        "tests/unit/test_writer_reconciliation.py::test_recovers_from_empty_checkpoint_journal",
+        "tests/unit/test_writer_reconciliation.py::test_http_recovery_survives_process_exit_after_journal_insert",
+        "tests/unit/test_writer_reconciliation.py::test_late_journal_failure_rolls_back_all_recovered_pairs"
       ],
-      "remaining_review": ""
+      "remaining_review": "Default startup integration, retained authority status enforcement and the broader recovery failure matrix remain open."
     },
     "T16": {
       "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",
@@ -260,7 +274,9 @@
         "tests/unit/test_streaming.py::test_stream_limits",
         "tests/unit/test_streaming.py::test_record_memory_does_not_scale_with_file",
         "tests/unit/test_streaming.py::test_open_descriptor_does_not_follow_replaced_record_path",
-        "tests/unit/test_streaming.py::test_late_malformed_line"
+        "tests/unit/test_streaming.py::test_late_malformed_line",
+        "tests/unit/test_writer_reconciliation.py::test_chain_budget_preserves_hold",
+        "tests/unit/test_writer_reconciliation.py::test_invalid_configuration_never_queries_witness"
       ],
       "remaining_review": ""
     },

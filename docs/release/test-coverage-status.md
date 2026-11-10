@@ -9,6 +9,10 @@ its checks.
 - Protocol schemas and canonical bytes have focused unit and vector tests.
 - Writer, checkpoint, witness state, and verifier behavior have unit tests.
 - HTTP witness and online paths are exercised through local server tests.
+- Fresh writer reconciliation covers missing journal retrieval, retained-state
+  conflicts, pending/final preservation, record loss, shared deadlines, write
+  serialization and a process exit during journal insertion. Startup does not
+  yet invoke this operation by default or enforce retained authority status.
 - Rollback H1 and outage H3 have separate experiment harnesses and recorded
   outputs; those records are not an exhaustive test suite.
 - Several malformed, adversarial and integration cases are covered under
