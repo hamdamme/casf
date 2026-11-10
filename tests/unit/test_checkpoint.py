@@ -111,7 +111,7 @@ def test_outbox_survives_restart(tmp_path):
     _append(w, 1)
     cp = w.create_checkpoint(LOG_ID)
     w.close()
-    reopened = Writer(db, LOG)
+    reopened = Writer(db, LOG, local_only=True)
     pending = reopened.pending_checkpoint(LOG_ID)
     assert pending is not None
     assert pending[0] == cp  # identical bytes after recovery

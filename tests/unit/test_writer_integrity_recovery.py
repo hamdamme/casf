@@ -37,7 +37,7 @@ def _crash_during_restore(db, bundle):
         return original(self, value, seq, previous)
 
     ManifestContext.record = interrupted
-    Writer.restore_from_bundle(db, LOG, bundle)
+    Writer.restore_from_bundle(db, LOG, bundle, local_only=True)
 
 
 def _witnessed(tmp_path, *, final=False):
@@ -87,7 +87,7 @@ def test_startup_rejects_corrupt_records_and_indexes(tmp_path, change):
             con.execute("DELETE FROM heads")
         con.execute("UPDATE records SET envelope = ? WHERE seq = 1", (canonicalize(env),))
     with pytest.raises(CasfError):
-        Writer(db, LOG)
+        Writer(db, LOG, local_only=True)
 
 
 def test_startup_checks_records_without_a_private_key(tmp_path):
@@ -126,12 +126,12 @@ def test_receipt_rejects_wrong_binding_before_commit(tmp_path, accepted_count, f
             writer.record_receipt(LOG_ID, invalid)
         assert writer.pending_checkpoint(LOG_ID) == pending
         writer.close()
-        writer = Writer(db, LOG)
+        writer = Writer(db, LOG, local_only=True)
         assert writer.pending_checkpoint(LOG_ID) == pending
         writer.record_receipt(LOG_ID, valid)
         assert writer.pending_checkpoint(LOG_ID) is None
         writer.close()
-        writer = Writer(db, LOG)
+        writer = Writer(db, LOG, local_only=True)
         assert len(list(writer.records(LOG_ID))) == accepted_count + 1
     finally:
         writer.close()
@@ -171,7 +171,7 @@ def test_startup_rejects_corrupt_checkpoint_journal(tmp_path, change):
             con.execute("INSERT INTO outbox VALUES (?, ?, 1, 2, 0, 0)",
                         (LOG_ID, "ab" * 32))
     with pytest.raises(CasfError):
-        Writer(db, LOG)
+        Writer(db, LOG, local_only=True)
 
 
 def test_startup_rejects_pending_outbox_range_change(tmp_path):
@@ -183,7 +183,7 @@ def test_startup_rejects_pending_outbox_range_change(tmp_path):
     with sqlite3.connect(db) as con:
         con.execute("UPDATE outbox SET from_seq = 0")
     with pytest.raises(CasfError, match="outbox"):
-        Writer(db, LOG)
+        Writer(db, LOG, local_only=True)
 
 
 def test_restore_preserves_empty_final_history(tmp_path):
@@ -196,7 +196,7 @@ def test_restore_preserves_empty_final_history(tmp_path):
         writer.record_receipt(LOG_ID, witness.submit(LOG_ID, cp, []))
         dest = writer.export_bundle(LOG_ID, tmp_path / "bundle")
         restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest,
-                                              anchor=cp["body"])
+                                              anchor=cp["body"], local_only=True)
         try:
             assert list(restored.records(LOG_ID)) == []
             with pytest.raises(SealedError):
@@ -213,7 +213,7 @@ def test_restore_accepts_a_matching_older_anchor(tmp_path):
     witness.close()
     bundle = read_bundle(dest)
     restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest,
-                                          anchor=bundle.checkpoints[0]["body"])
+                                          anchor=bundle.checkpoints[0]["body"], local_only=True)
     try:
         assert _append(restored, 3)["body"]["seq"] == 3
     finally:
@@ -231,7 +231,7 @@ def test_process_exit_during_restore_never_commits_partial_history(tmp_path):
     with sqlite3.connect(db) as con:
         for table in ("manifests", "heads", "records", "checkpoints", "receipts", "outbox"):
             assert con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] == 0
-    reopened = Writer(db, LOG)
+    reopened = Writer(db, LOG, local_only=True)
     try:
         with pytest.raises(CasfError, match="unknown log"):
             _append(reopened, 3)
@@ -243,7 +243,7 @@ def test_restore_preserves_final_seal_and_evidence(tmp_path):
     witness, dest = _witnessed(tmp_path, final=True)
     try:
         original = read_bundle(dest)
-        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, local_only=True)
         try:
             with pytest.raises(SealedError):
                 _append(restored, 3)
@@ -254,7 +254,7 @@ def test_restore_preserves_final_seal_and_evidence(tmp_path):
             assert exported.receipts == original.receipts
         finally:
             restored.close()
-        reopened = Writer(tmp_path / "restored.db", LOG)
+        reopened = Writer(tmp_path / "restored.db", LOG, local_only=True)
         try:
             with pytest.raises(SealedError):
                 _append(reopened, 3)
@@ -268,7 +268,7 @@ def test_restore_continues_checkpoint_and_receipt_chains(tmp_path):
     witness, dest = _witnessed(tmp_path)
     try:
         original = read_bundle(dest)
-        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, local_only=True)
         try:
             record = _append(restored, 3)
             cp = restored.create_checkpoint(LOG_ID)
@@ -324,20 +324,20 @@ def test_restore_rejects_invalid_checkpoint_evidence(tmp_path, change):
     (dest / "receipts.jsonl").write_bytes(b"".join(canonicalize(x) + b"\n" for x in receipts))
     restored_path = tmp_path / "restored.db"
     with pytest.raises(CasfError):
-        Writer.restore_from_bundle(restored_path, LOG, dest)
+        Writer.restore_from_bundle(restored_path, LOG, dest, local_only=True)
     assert not restored_path.exists(), "failed restore must not leave a usable partial database"
 
 
 def test_restore_replays_a_supplied_pending_final_checkpoint(tmp_path):
     witness, dest = _witnessed(tmp_path)
     try:
-        writer = Writer(tmp_path / "writer.db", LOG)
+        writer = Writer(tmp_path / "writer.db", LOG, local_only=True)
         pending = writer.seal_log(LOG_ID)
         writer.close()
         # Bundles may carry a signed pending checkpoint without inventing a receipt.
         with (dest / "checkpoints.jsonl").open("ab") as stream:
             stream.write(canonicalize(pending) + b"\n")
-        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, local_only=True)
         try:
             assert restored.pending_checkpoint(LOG_ID) == (pending, 3, 2)
             with pytest.raises(SealedError):
@@ -353,7 +353,7 @@ def test_restore_replays_a_supplied_pending_final_checkpoint(tmp_path):
 
 def test_restore_pending_nonfinal_with_unwitnessed_suffix(tmp_path):
     witness, _dest = _witnessed(tmp_path)
-    writer = Writer(tmp_path / "writer.db", LOG)
+    writer = Writer(tmp_path / "writer.db", LOG, local_only=True)
     try:
         _append(writer, 3)
         pending = writer.create_checkpoint(LOG_ID)
@@ -361,7 +361,7 @@ def test_restore_pending_nonfinal_with_unwitnessed_suffix(tmp_path):
         dest = writer.export_bundle(LOG_ID, tmp_path / "pending-bundle")
         with (dest / "checkpoints.jsonl").open("ab") as stream:
             stream.write(canonicalize(pending) + b"\n")
-        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, local_only=True)
         try:
             assert restored.pending_checkpoint(LOG_ID) == (pending, 3, 3)
             _append(restored, 5)
@@ -373,7 +373,7 @@ def test_restore_pending_nonfinal_with_unwitnessed_suffix(tmp_path):
             restored.record_receipt(LOG_ID, witness.submit(LOG_ID, next_cp, records[3:]))
         finally:
             restored.close()
-        reopened = Writer(tmp_path / "restored.db", LOG)
+        reopened = Writer(tmp_path / "restored.db", LOG, local_only=True)
         try:
             assert len(list(reopened.records(LOG_ID))) == 5
             assert reopened.pending_checkpoint(LOG_ID) is None
@@ -393,7 +393,7 @@ def test_export_cannot_silently_drop_a_pending_final_seal(tmp_path):
             writer.export_bundle(LOG_ID, tmp_path / "bundle")
         assert not (tmp_path / "bundle").exists()
         writer.backup(tmp_path / "backup.db")
-        backup = Writer(tmp_path / "backup.db", LOG)
+        backup = Writer(tmp_path / "backup.db", LOG, local_only=True)
         try:
             assert backup.pending_checkpoint(LOG_ID)[0] == pending
             with pytest.raises(SealedError):
@@ -414,14 +414,14 @@ def test_restore_rejects_invalid_or_conflicting_anchor(tmp_path, anchor):
     witness, dest = _witnessed(tmp_path)
     witness.close()
     with pytest.raises(CasfError):
-        Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, anchor=anchor)
+        Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest, anchor=anchor, local_only=True)
 
 
 @pytest.mark.parametrize("operation", ["append", "checkpoint"])
 def test_wrong_signing_key_cannot_extend_existing_log(tmp_path, operation):
     writer = _writer(tmp_path / "writer.db")
     writer.close()
-    wrong = Writer(tmp_path / "writer.db", WIT)
+    wrong = Writer(tmp_path / "writer.db", WIT, local_only=True)
     try:
         with pytest.raises(CasfError, match="key"):
             if operation == "append":

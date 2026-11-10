@@ -254,7 +254,7 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
               else workload.LOG_ID)
     with tempfile.TemporaryDirectory() as d:
         root = Path(d)
-        writer = Writer(root / "bench.db", workload.seeded_key("log"))
+        writer = Writer(root / "bench.db", workload.seeded_key("log"), local_only=True)
         try:
             with _witness_stack(root, cfg, log_id) as (
                     submit, register, witness_db):

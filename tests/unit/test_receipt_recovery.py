@@ -5,10 +5,10 @@ import json
 import pytest
 
 from casf import crypto
-from casf.cli import main
 from casf.errors import CasfError
 from casf.transport import request
 from casf.writer import SealedError, Writer
+from tests.local_mode import local_cli as main
 from tests.status import register_active
 from tests.unit.test_checkpoint import _witness
 from tests.unit.test_cli import _trust
@@ -44,7 +44,7 @@ def test_recover_receipt_after_restart_over_http(tmp_path, final):
         server.shutdown()
         server.server_close()
         svc.close()
-    reopened = Writer(tmp_path / "writer.db", LOG, trust_pins={LOG_ID: _pins()})
+    reopened = Writer(tmp_path / "writer.db", LOG, trust_pins={LOG_ID: _pins()}, local_only=True)
     try:
         if final:
             with pytest.raises(SealedError):

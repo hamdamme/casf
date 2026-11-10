@@ -52,7 +52,7 @@ def test_invalid_policy_cannot_initialize_verifier_state(tmp_path, capsys):
     from tests.unit.test_writer import AUTH, LOG
 
     manifest = _manifest_envelope()
-    writer = Writer(tmp_path / "writer.db", LOG)
+    writer = Writer(tmp_path / "writer.db", LOG, local_only=True)
     try:
         writer.create_log(manifest)
         bundle = writer.export_bundle(LOG_ID, tmp_path / "bundle")

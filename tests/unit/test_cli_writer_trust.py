@@ -5,7 +5,7 @@ import json
 import pytest
 
 from casf import crypto
-from casf.cli import main
+from tests.local_mode import local_cli as main
 from tests.unit.test_cli import PASS, TOKEN, _event, _key, _manifest_for, _trust
 
 

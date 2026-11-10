@@ -15,7 +15,7 @@ from tests.unit.test_writer_trust import _pins
 
 
 def _open(path, **kwargs):
-    return Writer(path, LOG, trust_pins={LOG_ID: _pins()}, **kwargs)
+    return Writer(path, LOG, trust_pins={LOG_ID: _pins()}, **kwargs, local_only=True)
 
 
 def _accept(writer, witness, *, final=False):
@@ -251,7 +251,7 @@ def test_chain_budget_preserves_hold(history):
 
 def test_reconciliation_requires_independent_pins(history):
     _, _, backup, _, calls, _ = history
-    writer = Writer(backup, LOG)
+    writer = Writer(backup, LOG, local_only=True)
     try:
         with pytest.raises(TrustError):
             _reconcile(writer)

@@ -8,10 +8,10 @@ import threading
 import pytest
 
 from casf.canonical.jcs import canonicalize
-from casf.cli import main
 from casf.lifecycle import sign_status
 from casf.witness.http import make_server
 from casf.writer import Writer
+from tests.local_mode import local_cli as main
 from tests.status import active_status
 from tests.unit.test_cli import _trust
 from tests.unit.test_verify_online import TOKEN, _service
@@ -92,7 +92,7 @@ def test_cli_detects_restored_witness_and_fork(environment, tmp_path, capsys, fo
     server = make_server(restored, "127.0.0.1", 0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    fork = Writer(tmp_path / "fork.db", LOG)
+    fork = Writer(tmp_path / "fork.db", LOG, local_only=True)
     try:
         for n in range(fork_length):
             fork.append(LOG_ID, event_id=f"123e4567-e89b-42d3-a456-4266000000{90+n}",

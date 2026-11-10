@@ -34,12 +34,15 @@ from casf.online import LatestView
 from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
+from casf.trust.state import StateTransaction
 from casf.types import JsonObject
 from casf.verifier import Result, TrustPins, TrustStatus, verify
+from casf.writer.startup import StartupPolicy, authorize, authorized, reserve_database
 from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
-           "ReconciliationRequiredError", "RestoreBehindWitnessError", "SealedError", "Writer"]
+           "ReconciliationRequiredError", "RestoreBehindWitnessError", "SealedError",
+           "StartupPolicy", "Writer"]
 
 ZERO_HASH = "00" * 32  # hex(Z), the null previous checkpoint digest
 
@@ -75,7 +78,18 @@ class Writer:
                  log_priv: Ed25519PrivateKey | None = None, *,
                  busy_timeout_ms: int = 5000, max_retries: int = 3,
                  retry_jitter: float = 0.05,
+                 local_only: bool = False,
                  trust_pins: Mapping[str, TrustPins] | None = None) -> None:
+        if type(local_only) is not bool:
+            raise SchemaError("local_only must be boolean")
+        if log_priv is not None and not local_only:
+            raise TrustError("use Writer.open_verified for signing; local_only=True is explicit")
+        self._startup_policy: StartupPolicy | None = None
+        self._startup_log_id: str | None = None
+        self._startup_serial = 0
+        self._startup_failed = False
+        self._active_state: StateTransaction | None = None
+        self._bootstrapping = False
         self._trust_pins: dict[str, TrustPins] | None = None
         if trust_pins is not None:
             self._trust_pins = {}
@@ -103,6 +117,42 @@ class Writer:
 
     def close(self) -> None:
         self._db.close()
+
+    @classmethod
+    def open_verified(cls, db_path: str | Path, log_priv: Ed25519PrivateKey, *,
+                       trust_pins: Mapping[str, TrustPins], startup: StartupPolicy) -> "Writer":
+        """Verify status, fresh witness history and retained state before signing."""
+        if not Path(db_path).is_file():
+            raise CasfError("verified startup requires an existing database")
+        writer = cls(db_path, log_priv, trust_pins=trust_pins, local_only=True)
+        try:
+            authorize(writer, startup)
+            return writer
+        except BaseException:
+            writer.close()
+            raise
+
+    @classmethod
+    def initialize_verified(cls, db_path: str | Path, log_priv: Ed25519PrivateKey,
+                             manifest: JsonObject, *, trust_pins: Mapping[str, TrustPins],
+                             startup: StartupPolicy) -> "Writer":
+        """Establish a witnessed empty checkpoint before authorizing the first record."""
+        body = manifest.get("body")
+        if not isinstance(body, dict) or not isinstance(body.get("log_id"), str):
+            raise SchemaError("manifest log identity is invalid")
+        pins = trust_pins.get(cast(str, body["log_id"]))
+        if pins is None:
+            raise TrustError("initialization requires independent manifest pins")
+        ManifestContext.read(manifest, pins=pins)
+        reserve_database(db_path)
+        writer = cls(db_path, log_priv, trust_pins=trust_pins, local_only=True)
+        try:
+            writer.create_log(manifest)
+            authorize(writer, startup)
+            return writer
+        except BaseException:
+            writer.close()
+            raise
 
     def _manifest_context(self, value: JsonObject) -> ManifestContext:
         pins = None
@@ -256,6 +306,8 @@ class Writer:
 
     def create_log(self, manifest_envelope: JsonObject) -> str:
         """Store the manifest and genesis transactionally (SPEC §10)."""
+        if self._startup_policy is not None:
+            raise TrustError("initialize a separate verified writer for a new log")
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -318,6 +370,7 @@ class Writer:
 
     # ------------------------------------------------------------- append
 
+    @authorized
     def append(self, log_id: str, *, event_id: str, actor: str,
                event_type: str, payload: JsonObject,
                attributes: JsonObject) -> JsonObject:
@@ -524,6 +577,7 @@ class Writer:
                             anchor_checkpoint: JsonObject | None = None,
                             anchor_receipt: JsonObject | None = None,
                             require_active_status: bool = False,
+                            local_only: bool = False,
                             trust_pins: Mapping[str, TrustPins] | None = None) -> "Writer":
         """Restore verified records and their checkpoint/receipt journal.
 
@@ -539,6 +593,8 @@ class Writer:
         if os.path.lexists(db_path):
             raise CasfError("restore destination already exists")
         bundle = read_bundle(bundle_dir)
+        if type(local_only) is not bool:
+            raise SchemaError("local_only must be boolean")
         context = ManifestContext.read(bundle.manifest)
         if type(require_active_status) is not bool:
             raise SchemaError("require_active_status must be a boolean")
@@ -606,7 +662,7 @@ class Writer:
         writer: Writer | None = None
         behind = anchor_count > len(bundle.records)
         try:
-            writer = cls(db_path, log_priv, trust_pins=trust_pins)
+            writer = cls(db_path, log_priv, trust_pins=trust_pins, local_only=True)
             con = writer._db.connection
             con.execute("BEGIN IMMEDIATE")
             try:
@@ -648,6 +704,8 @@ class Writer:
                 f"RESTORE_BEHIND_WITNESS: anchor count {anchor_count} "
                 f"exceeds the restored {len(bundle.records)} records; "
                 "the log is sealed")
+        if not local_only:
+            writer._log_priv = writer._log_pub = writer._log_key_id = None
         return writer
 
     def _restore_journal(self, log_id: str, context: ManifestContext,
@@ -678,6 +736,7 @@ class Writer:
 
     # -------------------------------------------------------- checkpoints
 
+    @authorized
     def create_checkpoint(self, log_id: str, *,
                           final: bool = False) -> JsonObject:
         """Create a pending checkpoint with its extension range in the
@@ -701,7 +760,9 @@ class Writer:
             if head is None:
                 raise CasfError("unknown log")
             count, head_hash, sealed = head
-            if sealed == 3:
+            bootstrap = self._bootstrapping and count == 0 and not con.execute(
+                "SELECT 1 FROM checkpoints WHERE log_id=?", (log_id,)).fetchone()
+            if sealed == 3 and not bootstrap:
                 raise ReconciliationRequiredError(
                     "RECONCILIATION_REQUIRED: reconcile fresh witness state before checkpointing")
             pending = con.execute(
@@ -711,7 +772,7 @@ class Writer:
                 raise CasfError(
                     "a checkpoint is pending; retry the identical bytes "
                     "or store its receipt first")
-            if sealed:
+            if sealed and not bootstrap:
                 raise SealedError("log is sealed; no further checkpoint")
             last = con.execute(
                 "SELECT idx, count, checkpoint_hash FROM checkpoints "
@@ -790,6 +851,7 @@ class Writer:
             raise CasfError("stored checkpoint is corrupt")
         return env, row[0], row[1]
 
+    @authorized
     def record_receipt(self, log_id: str, receipt: JsonObject) -> None:
         """Validate and store the receipt for the pending checkpoint.
 
@@ -871,11 +933,20 @@ class Writer:
                 "UPDATE checkpoints SET state = 'accepted' "
                 "WHERE checkpoint_hash = ?", (pending[0],))
             con.execute("DELETE FROM outbox WHERE log_id = ?", (log_id,))
+            if self._active_state is not None:
+                self._startup_failed = True
+                self._active_state.save(self._startup_serial, (index, pending[0]))
             con.commit()
+            self._startup_failed = False
         except BaseException:
             con.rollback()
+            if self._startup_failed:
+                from casf.writer.recovery import hold_writer
+
+                hold_writer(self, log_id)
             raise
 
+    @authorized
     def submit_pending(self, log_id: str, base_url: str, token: str, *,
                        timeout: float = 10.0) -> JsonObject:
         """Submit the pending checkpoint to the witness and store the
@@ -906,7 +977,7 @@ class Writer:
                 "UPDATE outbox SET attempts = attempts + 1 "
                 "WHERE log_id = ?", (log_id,))
             self._db.connection.commit()
-            raise CasfError(
+            raise InconclusiveError(
                 "witness unreachable; the pending checkpoint keeps its "
                 "bytes for retry") from e
         except ValueError as e:
