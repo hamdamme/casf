@@ -1,7 +1,8 @@
 """SQLite adapter: transactions, constraints, settings (SPEC §17).
 
-C05 scope: manifests, records and heads tables. Checkpoint, receipt
-and outbox tables arrive with the witness tasks (C07/C08).
+Stores manifests, records, heads, checkpoints, receipts and the pending
+submission outbox. Relationship constraints remain an explicit conformance
+task; enabling foreign_keys does not create relationships in this schema.
 
 Envelopes are stored as canonical UTF-8 BLOBs; table indexes are
 derived lookup data, never authenticated facts.

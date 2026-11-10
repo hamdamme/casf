@@ -11,9 +11,10 @@ its checks.
 - HTTP witness and online paths are exercised through local server tests.
 - Rollback H1 and outage H3 have separate experiment harnesses and recorded
   outputs; those records are not an exhaustive test suite.
-- Several malformed and adversarial cases are covered by tests under
-  `tests/unit`, including release gap regressions. The directory names
-  `tests/adversarial` and `tests/integration` alone contain no test cases.
+- Several malformed, adversarial and integration cases are covered under
+  `tests/unit`, including release gap regressions. Empty `adversarial`,
+  `integration` and `property` directory scaffolds and the obsolete pytest
+  shim runner were removed. New test categories must contain actual coverage.
 - The review candidate adds duplicate JSON, negative zero, bounded network
   response and total deadline cases, plus administration and wheel checks.
 
