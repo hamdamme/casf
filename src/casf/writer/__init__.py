@@ -1,9 +1,8 @@
 """Sequencing and idempotent append (SPEC §11, §17).
 
-C05 scope: manifest storage with genesis, transactional record append,
-event ID idempotency, contention bounds. C06 adds bundle export and
-restore (SPEC §18, §20). C08 adds checkpoint production with a durable
-outbox and receipt acquisition (SPEC §12).
+Manifest storage, transactional record append, verified local startup,
+bundle export/restore, and explicit checkpoint and receipt operations.
+Scheduling and fresh external-state reconciliation are separate work.
 
 Writers serialize through the database (BEGIN IMMEDIATE), never
 through a process mutex alone. Return success only after COMMIT; a
@@ -14,6 +13,7 @@ import http.client
 import json
 import os
 import random
+import re
 import shutil
 import sqlite3
 import time
@@ -33,6 +33,7 @@ from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
 from casf.types import JsonObject
+from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
            "RestoreBehindWitnessError", "SealedError", "Writer"]
@@ -75,7 +76,11 @@ class Writer:
                             if self._log_pub is not None else None)
         self._max_retries = max_retries
         self._retry_jitter = retry_jitter
-        self._check_heads()
+        try:
+            self._check_heads()
+        except BaseException:
+            self._db.close()
+            raise
 
     def close(self) -> None:
         self._db.close()
@@ -103,43 +108,111 @@ class Writer:
             target.close()
 
     def _check_heads(self) -> None:
-        """Startup check: stored heads must match the records table
-        (SPEC §17). Full chain verification uses casf.verifier.
+        """Verify local records, indexes and journal in one snapshot.
 
-        The reads run inside one snapshot transaction; otherwise a
-        concurrent commit between the heads read and the records read
-        reports a false mismatch (caught by CI under process load).
+        Manifest keys are local consistency inputs, not independently
+        trusted authority pins. A newer external witness must still be
+        reconciled before promoting a restored or suspect store.
         """
         con = self._db.connection
         con.execute("BEGIN")
         try:
-            for log_id, count, head_hash in con.execute(
-                    "SELECT log_id, count, head_hash FROM heads"):
-                self._debug_hook("after_heads_read")
-                actual = con.execute(
-                    "SELECT COUNT(*), MAX(seq) FROM records WHERE log_id = ?",
+            for table in ("heads", "records", "checkpoints", "outbox"):
+                if con.execute(
+                        f"SELECT 1 FROM {table} t LEFT JOIN manifests m "
+                        "ON m.log_id = t.log_id WHERE m.log_id IS NULL LIMIT 1"
+                        ).fetchone():
+                    raise CasfError("stored data has no matching manifest")
+            if con.execute(
+                    "SELECT 1 FROM receipts r LEFT JOIN checkpoints c "
+                    "ON c.checkpoint_hash = r.checkpoint_hash "
+                    "WHERE c.checkpoint_hash IS NULL LIMIT 1").fetchone():
+                raise CasfError("stored receipt has no matching checkpoint")
+            for log_id, stored_manifest_hash, blob in con.execute(
+                    "SELECT log_id, manifest_hash, envelope FROM manifests"):
+                context = ManifestContext.read(self._stored_object(blob))
+                if context.body["log_id"] != log_id \
+                        or context.digest != stored_manifest_hash:
+                    raise CasfError("stored manifest index is inconsistent")
+                head = con.execute(
+                    "SELECT count, head_hash, sealed FROM heads WHERE log_id = ?",
                     (log_id,)).fetchone()
-                if actual[0] != count:
-                    raise CasfError(
-                        f"head count {count} disagrees with {actual[0]} "
-                        "stored records; restore or recovery required")
-                if count == 0:
-                    expected = crypto.genesis_hash(self._manifest_hash(log_id))
-                else:
-                    row = con.execute(
-                        "SELECT record_hash FROM records WHERE log_id = ? "
-                        "AND seq = ?", (log_id, count)).fetchone()
-                    if row is None:
-                        raise CasfError(
-                            "head record missing; restore or recovery "
-                            "required")
-                    expected = row[0]
-                if head_hash != expected:
-                    raise CasfError(
-                        "head hash disagrees with stored records; "
-                        "restore or recovery required")
+                if head is None:
+                    raise CasfError("stored manifest has no head")
+                count, head_hash, sealed = head
+                self._debug_hook("after_heads_read")
+                expected = crypto.genesis_hash(context.digest)
+                verified_count = 0
+                for index, row in enumerate(con.execute(
+                        "SELECT seq, event_id, request_digest, record_hash, envelope "
+                        "FROM records WHERE log_id = ? ORDER BY seq", (log_id,)), 1):
+                    seq, event_id, request_digest, digest, raw = row
+                    verified_hash, request = context.record(
+                        self._stored_object(raw), index, expected)
+                    if seq != index or event_id != request["event_id"] \
+                            or request_digest != crypto.request_digest(request) \
+                            or digest != verified_hash:
+                        raise CasfError("stored record index is inconsistent")
+                    expected, verified_count = verified_hash, index
+                if count != verified_count or head_hash != expected:
+                    raise CasfError("stored head disagrees with verified records")
+                self._check_journal(log_id, context, verified_count, sealed)
         finally:
             con.rollback()
+
+    @staticmethod
+    def _stored_object(blob: object) -> JsonObject:
+        if not isinstance(blob, bytes):
+            raise CasfError("stored envelope is not a byte string")
+        value = parse(blob)
+        if not isinstance(value, dict):
+            raise CasfError("stored envelope is not an object")
+        return value
+
+    def _record_head(self, log_id: str, context: ManifestContext, count: int) -> str:
+        if count == 0:
+            return crypto.genesis_hash(context.digest)
+        row = self._db.connection.execute(
+            "SELECT record_hash FROM records WHERE log_id = ? AND seq = ?",
+            (log_id, count)).fetchone()
+        if row is None or not isinstance(row[0], str):
+            raise CasfError("checkpoint has no matching local record")
+        return row[0]
+
+    def _check_journal(self, log_id: str, context: ManifestContext,
+                       count: int, sealed: int) -> None:
+        con = self._db.connection
+        chain = CheckpointChain(context, lambda n: self._record_head(log_id, context, n),
+                                count)
+        pending = False
+        for index, cp_count, digest, blob, state in con.execute(
+                "SELECT idx, count, checkpoint_hash, envelope, state "
+                "FROM checkpoints WHERE log_id = ? ORDER BY idx", (log_id,)):
+            if pending:
+                raise CasfError("checkpoint follows a pending checkpoint")
+            base_count = chain.count
+            body = chain.checkpoint(self._stored_object(blob))
+            if (index, cp_count, digest) != (chain.index, chain.count, chain.digest):
+                raise CasfError("stored checkpoint index is inconsistent")
+            receipt = con.execute(
+                "SELECT envelope FROM receipts WHERE checkpoint_hash = ?",
+                (digest,)).fetchone()
+            if state == "accepted" and receipt is not None:
+                chain.receipt(self._stored_object(receipt[0]), body)
+            elif state == "pending" and receipt is None:
+                pending = True
+                outbox = con.execute(
+                    "SELECT checkpoint_hash, from_seq, to_seq FROM outbox "
+                    "WHERE log_id = ?", (log_id,)).fetchone()
+                if outbox != (digest, base_count + 1, chain.count):
+                    raise CasfError("pending checkpoint disagrees with the outbox")
+            else:
+                raise CasfError("checkpoint state disagrees with its receipt")
+        if not pending and con.execute(
+                "SELECT 1 FROM outbox WHERE log_id = ?", (log_id,)).fetchone():
+            raise CasfError("outbox has no pending checkpoint")
+        if sealed not in (0, 1, 2) or (sealed != 1 and (sealed == 2) != chain.final):
+            raise CasfError("stored seal disagrees with the checkpoint journal")
 
     def _debug_hook(self, stage: str) -> None:
         """Test hook; no-op in production."""
@@ -148,6 +221,21 @@ class Writer:
 
     def create_log(self, manifest_envelope: JsonObject) -> str:
         """Store the manifest and genesis transactionally (SPEC §10)."""
+        con = self._db.connection
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            manifest_hash = self._insert_log(manifest_envelope)
+            con.commit()
+            return manifest_hash
+        except sqlite3.IntegrityError as exc:
+            con.rollback()
+            raise CasfError("log already exists") from exc
+        except BaseException:
+            con.rollback()
+            raise
+
+    def _insert_log(self, manifest_envelope: JsonObject) -> str:
+        """Insert inside the caller's transaction, including during restore."""
         _log_priv, _log_pub, log_key_id = self._signing_key()
         if set(manifest_envelope) != {"body", "manifest_hash", "signature"}:
             raise SchemaError("manifest envelope must be exactly "
@@ -157,6 +245,7 @@ class Writer:
         if not isinstance(body, dict) or not isinstance(manifest_hash, str):
             raise SchemaError("manifest envelope field types are wrong")
         validate_protocol_body("manifest", body)
+        ManifestContext.read(manifest_envelope)
         if crypto.digest_manifest(body) != manifest_hash:
             raise SchemaError("manifest_hash does not match the body")
         if body["log_key_id"] != log_key_id:
@@ -167,18 +256,9 @@ class Writer:
         genesis = crypto.genesis_hash(manifest_hash)
         blob = canonicalize(manifest_envelope)
         con = self._db.connection
-        try:
-            con.execute("BEGIN IMMEDIATE")
-            con.execute(
-                "INSERT INTO manifests VALUES (?, ?, ?)",
-                (log_id, manifest_hash, blob))
-            con.execute(
-                "INSERT INTO heads VALUES (?, 0, ?, 0)",
-                (log_id, genesis))
-            con.commit()
-        except sqlite3.IntegrityError as e:
-            con.rollback()
-            raise CasfError("log already exists") from e
+        con.execute("INSERT INTO manifests VALUES (?, ?, ?)",
+                    (log_id, manifest_hash, blob))
+        con.execute("INSERT INTO heads VALUES (?, 0, ?, 0)", (log_id, genesis))
         return manifest_hash
 
     def manifest_envelope(self, log_id: str) -> JsonObject:
@@ -230,6 +310,8 @@ class Writer:
     def _append_once(self, log_id: str, request: JsonObject,
                      request_digest: str) -> JsonObject:
         log_priv, _log_pub, log_key_id = self._signing_key()
+        if ManifestContext.read(self.manifest_envelope(log_id)).body["log_key_id"] != log_key_id:
+            raise CasfError("writer key does not match the manifest log key")
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -329,6 +411,15 @@ class Writer:
         con = self._db.connection
         con.execute("BEGIN")
         try:
+            # Accepted-only exports cannot preserve a final seal whose receipt
+            # is still pending. Refuse rather than produce a restorable open log.
+            pending = self.pending_checkpoint(log_id)
+            if pending is not None:
+                pending_body = pending[0].get("body")
+                if isinstance(pending_body, dict) and pending_body.get("final") is True:
+                    raise CasfError(
+                        "final checkpoint receipt is pending; obtain its receipt "
+                        "before bundle export, or use backup to preserve pending state")
             manifest = self.manifest_envelope(log_id)
             records = list(self.records(log_id))
             checkpoints: list[JsonObject] = []
@@ -392,60 +483,77 @@ class Writer:
                             log_priv: Ed25519PrivateKey,
                             bundle_dir: str | Path, *,
                             anchor: JsonObject | None = None) -> "Writer":
-        """Build a fresh store from a bundle (SPEC §18, §20).
+        """Restore verified records and their checkpoint/receipt journal.
 
-        Every record hash and signature is verified against the
-        manifest key before anything is written. When an external
-        anchor reports a count beyond the restored history, the data
-        is still stored but the log is sealed and every later append
-        reports RESTORE_BEHIND_WITNESS (T15).
+        A final checkpoint keeps the log sealed. A supplied pending tail
+        keeps its original signed bytes for retry. The caller must establish
+        independent manifest trust and authenticate any external anchor;
+        this local operation cannot establish that an older export is current.
+        A history behind the supplied anchor is retained sealed for inspection.
         """
-        if os.path.exists(db_path):
+        if os.path.lexists(db_path):
             raise CasfError("restore destination already exists")
         bundle = read_bundle(bundle_dir)
-        sealed = 0
+        context = ManifestContext.read(bundle.manifest)
         anchor_count = 0
-        writer = cls(db_path, log_priv)
+        if anchor is not None:
+            value, digest = anchor.get("count"), anchor.get("head_hash")
+            if type(value) is not int or not 0 <= value <= SAFE_INT_MAX \
+                    or not isinstance(digest, str) \
+                    or re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+                raise SchemaError("anchor requires a safe count and a head digest")
+            if anchor.get("log_id", context.body["log_id"]) != context.body["log_id"] \
+                    or anchor.get("manifest_hash", context.digest) != context.digest:
+                raise CasfError("anchor belongs to a different manifest")
+            anchor_count = value
+        # Reserve a new destination atomically, including refusal of symlinks.
+        if any(os.path.lexists(str(db_path) + suffix) for suffix in ("-wal", "-shm")):
+            raise CasfError("restore destination has existing SQLite sidecars")
         try:
-            writer.create_log(bundle.manifest)
+            fd = os.open(db_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        except FileExistsError as exc:
+            raise CasfError("restore destination already exists") from exc
+        os.close(fd)
+        writer: Writer | None = None
+        behind = anchor_count > len(bundle.records)
+        try:
+            writer = cls(db_path, log_priv)
             con = writer._db.connection
             con.execute("BEGIN IMMEDIATE")
             try:
-                manifest_body = bundle.manifest["body"]
-                if not isinstance(manifest_body, dict):
-                    raise CasfError("manifest envelope field types are wrong")
-                log_id_value = manifest_body["log_id"]
+                writer._insert_log(bundle.manifest)
+                log_id_value = context.body["log_id"]
                 if not isinstance(log_id_value, str):
-                    raise CasfError("manifest envelope field types are wrong")
+                    raise SchemaError("manifest log_id is not a string")
                 log_id = log_id_value
-                prev_hash = crypto.genesis_hash(bundle.manifest_hash)
-                for index, envelope in enumerate(bundle.records, start=1):
-                    prev_hash = writer._restore_record(
-                        con, log_id, index, envelope, prev_hash)
-                if anchor is not None:
-                    count_value = anchor.get("count")
-                    if isinstance(count_value, int):
-                        anchor_count = count_value
-                        restored = len(bundle.records)
-                        if anchor_count > restored:
-                            sealed = 1
-                        elif (anchor_count == restored
-                              and anchor.get("head_hash") is not None
-                              and anchor["head_hash"] != prev_hash):
-                            raise CasfError(
-                                "restored history disagrees with the anchor")
+                prev_hash = crypto.genesis_hash(context.digest)
+                for index, value in enumerate(bundle.records, start=1):
+                    prev_hash, request = context.record(value, index, prev_hash)
+                    con.execute(
+                        "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
+                        (log_id, index, request["event_id"], crypto.request_digest(request),
+                         prev_hash, canonicalize(value)))
+                sealed = writer._restore_journal(log_id, context, bundle.checkpoints,
+                                                  bundle.receipts, len(bundle.records))
+                if anchor is not None and not behind \
+                        and anchor["head_hash"] != writer._record_head(
+                            log_id, context, anchor_count):
+                    raise CasfError("restored history disagrees with the anchor")
                 con.execute(
                     "UPDATE heads SET count = ?, head_hash = ?, sealed = ? "
                     "WHERE log_id = ?",
-                    (len(bundle.records), prev_hash, sealed, log_id))
+                    (len(bundle.records), prev_hash, 1 if behind else sealed, log_id))
                 con.commit()
             except BaseException:
                 con.rollback()
                 raise
         except BaseException:
-            writer.close()
+            if writer is not None:
+                writer.close()
+            for suffix in ("", "-wal", "-shm"):
+                Path(str(db_path) + suffix).unlink(missing_ok=True)
             raise
-        if sealed:
+        if behind:
             writer.close()
             raise RestoreBehindWitnessError(
                 f"RESTORE_BEHIND_WITNESS: anchor count {anchor_count} "
@@ -453,42 +561,31 @@ class Writer:
                 "the log is sealed")
         return writer
 
-    def _restore_record(self, con: sqlite3.Connection, log_id: str,
-                        index: int, envelope: JsonObject,
-                        prev_hash: str) -> str:
-        """Verify one restored record and insert it; return its hash."""
-        _log_priv, log_pub, _log_key_id = self._signing_key()
-        if set(envelope) != {"body", "record_hash", "signature"}:
-            raise SchemaError("record envelope must be exactly "
-                              "body, record_hash, signature")
-        body = envelope["body"]
-        record_hash = envelope["record_hash"]
-        signature = envelope["signature"]
-        if (not isinstance(body, dict) or not isinstance(record_hash, str)
-                or not isinstance(signature, str)):
-            raise SchemaError("record envelope field types are wrong")
-        validate_protocol_body("record", body)
-        if body["log_id"] != log_id:
-            raise CasfError("record log_id disagrees with the bundle")
-        if body["manifest_hash"] != self._manifest_hash(log_id):
-            raise CasfError("record manifest_hash disagrees with the bundle")
-        if body["seq"] != index:
-            raise CasfError("records are not ordered by sequence")
-        if body["prev_hash"] != prev_hash:
-            raise CasfError("record chain is broken at the restore input")
-        if crypto.digest_record(body) != record_hash:
-            raise CasfError("record_hash does not match the body")
-        crypto.verify_record(log_pub, body, signature)
-        request: JsonObject = {
-            "event_id": body["event_id"], "actor": body["actor"],
-            "event_type": body["event_type"], "payload": body["payload"],
-            "attributes": body["attributes"],
-        }
-        con.execute(
-            "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
-            (log_id, index, body["event_id"], crypto.request_digest(request),
-             record_hash, canonicalize(envelope)))
-        return record_hash
+    def _restore_journal(self, log_id: str, context: ManifestContext,
+                         checkpoints: list[JsonObject], receipts: list[JsonObject],
+                         count: int) -> int:
+        """Restore a complete accepted prefix and at most one pending tail."""
+        if len(receipts) > len(checkpoints) or len(checkpoints) - len(receipts) > 1:
+            raise CasfError("restore requires a complete checkpoint and receipt prefix")
+        con = self._db.connection
+        chain = CheckpointChain(context, lambda n: self._record_head(log_id, context, n),
+                                count)
+        for index, checkpoint in enumerate(checkpoints):
+            base_count = chain.count
+            body = chain.checkpoint(checkpoint)
+            accepted = index < len(receipts)
+            if accepted:
+                chain.receipt(receipts[index], body)
+            con.execute("INSERT INTO checkpoints VALUES (?, ?, ?, ?, ?, ?)",
+                        (log_id, index, chain.count, chain.digest, canonicalize(checkpoint),
+                         "accepted" if accepted else "pending"))
+            if accepted:
+                con.execute("INSERT INTO receipts VALUES (?, ?)",
+                            (chain.digest, canonicalize(receipts[index])))
+            else:
+                con.execute("INSERT INTO outbox VALUES (?, ?, ?, ?, 0, 0)",
+                            (log_id, chain.digest, base_count + 1, chain.count))
+        return 2 if chain.final else 0
 
     # -------------------------------------------------------- checkpoints
 
@@ -503,6 +600,9 @@ class Writer:
         and seals appends in the same transaction.
         """
         log_priv, _log_pub, log_key_id = self._signing_key()
+        context = ManifestContext.read(self.manifest_envelope(log_id))
+        if context.body["log_key_id"] != log_key_id:
+            raise CasfError("writer key does not match the manifest log key")
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -622,6 +722,8 @@ class Writer:
         if body["log_id"] != log_id \
                 or body["witness_id"] != manifest["witness_id"]:
             raise CasfError("receipt does not belong to this log")
+        if body["manifest_hash"] != self._manifest_hash(log_id):
+            raise CasfError("receipt manifest binding is invalid")
         witness_key = manifest["witness_public_key"]
         if not isinstance(witness_key, str):
             raise CasfError("stored manifest is corrupt")
@@ -653,6 +755,24 @@ class Writer:
                     or body["checkpoint_index"] != cp_body["index"]:
                 raise CasfError("receipt view disagrees with the pending "
                                 "checkpoint")
+            previous_digest = ZERO_HASH
+            index = cp_body["index"]
+            if type(index) is not int:
+                raise CasfError("stored checkpoint index is invalid")
+            if index != 0:
+                previous = con.execute(
+                    "SELECT r.envelope FROM receipts r JOIN checkpoints c "
+                    "ON c.checkpoint_hash = r.checkpoint_hash "
+                    "WHERE c.log_id = ? AND c.idx = ? AND c.state = 'accepted'",
+                    (log_id, index - 1)).fetchone()
+                if previous is None:
+                    raise CasfError("previous checkpoint receipt is missing")
+                digest = self._stored_object(previous[0]).get("receipt_hash")
+                if not isinstance(digest, str):
+                    raise CasfError("stored previous receipt hash is invalid")
+                previous_digest = digest
+            if body["previous_receipt_hash"] != previous_digest:
+                raise CasfError("receipt chain disagrees with the previous receipt")
             con.execute("INSERT INTO receipts VALUES (?, ?)",
                         (pending[0], canonicalize(receipt)))
             con.execute(

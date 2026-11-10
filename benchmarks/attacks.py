@@ -212,25 +212,66 @@ def _mutate_truncate(db_path: Path, keep: int) -> None:
 
 
 def _mutate_rewrite(db_path: Path, keep: int, total: int) -> None:
+    """An attacker with the key signs outside the guarded Writer API."""
     con = _attacker_connection(db_path)
     try:
         _reset_head(con, keep)
+        manifest_hash = con.execute(
+            "SELECT manifest_hash FROM manifests WHERE log_id = ?", (LOG_ID,)
+        ).fetchone()[0]
+        head = con.execute("SELECT head_hash FROM heads WHERE log_id = ?",
+                           (LOG_ID,)).fetchone()[0]
+        key = workload.seeded_key("log")  # deterministic synthetic stolen key
+        for seq, event in enumerate(workload.generate(1041, total - keep, TARGET), keep + 1):
+            body = dict(event, version=1, type="record", log_id=LOG_ID,
+                        manifest_hash=manifest_hash, seq=seq, recorded_at=workload.TS,
+                        prev_hash=head, key_id=crypto.key_id(crypto.public_key_raw(key)))
+            head = crypto.digest_record(body)
+            env = {"body": body, "record_hash": head,
+                   "signature": crypto.sign_record(key, body)}
+            con.execute("INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
+                        (LOG_ID, seq, event["event_id"], crypto.request_digest(event),
+                         head, canonicalize(env)))
+        con.execute("UPDATE heads SET count = ?, head_hash = ? WHERE log_id = ?",
+                    (total, head, LOG_ID))
+        con.commit()
     finally:
         con.close()
-    writer = Writer(db_path, workload.seeded_key("log"))  # stolen key
-    try:
-        for event in workload.generate(1041, total - keep, TARGET):
-            writer.append(LOG_ID, **event)
-    finally:
-        writer.close()
 
 
 def _export(db_path: Path, dest: Path) -> Path:
-    writer = Writer(db_path, workload.seeded_key("log"))
+    """Capture attacker-controlled evidence without trusting Writer startup.
+
+    This research adapter intentionally preserves corrupted bytes for the
+    independent verifier. It is not a supported application export path.
+    """
+    con = sqlite3.connect(db_path)
+    con.execute("BEGIN")
     try:
-        return writer.export_bundle(LOG_ID, dest)
+        manifest_hash, manifest = con.execute(
+            "SELECT manifest_hash, envelope FROM manifests WHERE log_id = ?",
+            (LOG_ID,)).fetchone()
+        records = [row[0] for row in con.execute(
+            "SELECT envelope FROM records WHERE log_id = ? ORDER BY seq", (LOG_ID,))]
+        checkpoints = con.execute(
+            "SELECT checkpoint_hash, envelope FROM checkpoints WHERE log_id = ? "
+            "AND state = 'accepted' ORDER BY idx", (LOG_ID,)).fetchall()
+        receipts = [con.execute("SELECT envelope FROM receipts WHERE checkpoint_hash = ?",
+                                (digest,)).fetchone()[0] for digest, _ in checkpoints]
     finally:
-        writer.close()
+        con.rollback()
+        con.close()
+    dest.mkdir()
+    (dest / "manifest.json").write_bytes(manifest + b"\n")
+    for name, values in (("records", records),
+                         ("checkpoints", [blob for _, blob in checkpoints]),
+                         ("receipts", receipts)):
+        (dest / f"{name}.jsonl").write_bytes(b"".join(blob + b"\n" for blob in values))
+    metadata = {"version": 1, "type": "export", "log_id": LOG_ID,
+                "manifest_hash": manifest_hash, "through": len(records),
+                "record_count": len(records), "generated_at": workload.TS}
+    (dest / "export.json").write_bytes(canonicalize(metadata) + b"\n")
+    return dest
 
 
 def _verify_bundle(bundle_dir: Path, manifest_hash: str, case: dict,

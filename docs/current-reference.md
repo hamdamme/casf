@@ -1,9 +1,11 @@
 # Current CASF implementation reference
 
-This guide describes the implementation at source revision
-`93ba4325675c948b108a0281c2b0d97c713decdc` after PR 28. Package metadata is
+This guide includes the startup and restore fixes on top of the PR 29
+documentation baseline, `0f2df3de8dbee0da92c45d66167aac2813327a69`.
+The [completion tracker](release/completion-tracker.md) distinguishes completed
+work from remaining trust and recovery requirements. Package metadata is
 `0.1.0rc1`; the proposed wire profile is `casf-v1`. These identify different
-things. A package version alone does not identify the source or artifact bytes.
+things. Validation records must name the exact source or artifact bytes.
 
 ## Which document to use
 
@@ -15,6 +17,8 @@ things. A package version alone does not identify the source or artifact bytes.
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](specification/CASF_SPEC_001.md) |
 | Research questions, outcomes and source records | [Research guide](../research/README.md) |
 | Candidate state and validation | [Release checklist](release/checklist-v0.1.md) |
+| Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
+| Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
 
 The specification states intended requirements, not proof of complete
@@ -37,7 +41,9 @@ Dated release records describe only their recorded revisions and artifacts.
    does not wait for a receipt or automatically schedule submission.
 4. Export a bundle. Export includes records and accepted checkpoint and
    receipt evidence; add authentic authority status separately as
-   `status.jsonl`. Export needs no private key.
+   `status.jsonl`. Export needs no private key. A pending final checkpoint
+   must obtain its receipt before export; use a database backup when pending
+   state must be preserved.
 5. Verify with provisioned trust and separately retained verifier state.
    Every CLI verification requires `--state`; initialize each manifest's
    first observation explicitly and retain that state for subsequent checks.
@@ -83,11 +89,11 @@ of constant memory for every operation.
 
 | Area | Implemented behavior and consequence | Source or evidence |
 | --- | --- | --- |
-| Startup | `_check_heads` compares local counts and stored head hashes in one snapshot. It does not perform the full cryptographic and external evidence startup verification intended by SPEC section 17. Do not treat opening a database as verification after restore or suspected corruption. | [Writer](../src/casf/writer/__init__.py) |
-| Restore | Records are verified and rebuilt. A supplied anchor count ahead of the restored history seals the store. The caller must authenticate that anchor; restore does not query the witness or rebuild the accepted checkpoint and receipt journal. | [Writer](../src/casf/writer/__init__.py), [restore tests](../tests/unit/test_bundle.py) |
+| Startup | Local record signatures, chains, indexes, heads and checkpoint/receipt journals are verified in one snapshot. These checks use manifest keys; independent authority trust and fresh external-state reconciliation remain open requirements. Startup work grows with history size. | [Recovery guide](writer-recovery.md), [integrity tests](../tests/unit/test_writer_integrity_recovery.py) |
+| Restore | Verified records, checkpoints, receipts and final seals are rebuilt in one transaction. A supplied pending tail retains its signed bytes. A supplied anchor count ahead of the restored history seals the store. The caller must authenticate the anchor; restore does not query the witness or establish currentness. | [Recovery guide](writer-recovery.md), [restore tests](../tests/unit/test_writer_integrity_recovery.py) |
 | Scheduling and recovery | Checkpoint creation, submission and recovery are explicit calls. There is no automatic background checkpoint or retry worker. A checkpoint batch limit is not a hard bound on the pending backlog during an outage. | [Checkpoint code](../src/casf/writer/__init__.py), [H3 method](../research/h3-witness-outage.md) |
 | SQLite | WAL, FULL synchronization and foreign key enforcement are configured. The current DDL does not declare foreign key relationships. Enabling the pragma is not evidence that the proposed relationships in SPEC section 17 exist. | [Storage](../src/casf/storage/__init__.py) |
-| Export and status | Export excludes pending checkpoints and does not create authority status. Keep status provisioning and verifier trust separate from writer output. | [Writer](../src/casf/writer/__init__.py), [verification](verification.md) |
+| Export and status | Export includes accepted checkpoints and refuses export while a final checkpoint receipt is pending. Nonfinal pending checkpoints remain excluded; use a complete database backup to preserve pending state. Export does not create authority status. | [Recovery guide](writer-recovery.md), [verification](verification.md) |
 | Network | The client bounds total request time, response bytes, individual status and header lines, and header count. The reference service still needs operational TLS and access controls. | [Transport](../src/casf/transport.py), [server guide](witness-server.md) |
 | Validation | Deterministic regressions and selected integration and crash scenarios exist. A maintained fuzzing job, exercised property generators and a complete process crash matrix are not established. | [Coverage status](release/test-coverage-status.md) |
 

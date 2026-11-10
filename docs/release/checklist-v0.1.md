@@ -1,15 +1,17 @@
 # Current experimental candidate checklist
 
-Updated 8 November 2026 against source
-`93ba4325675c948b108a0281c2b0d97c713decdc` after PR 28. Package metadata
-remains `0.1.0rc1`. This page is the active status reference; dated session
-records describe the evidence available at their own revisions.
+Updated 9 November 2026 for the startup/restore fix branch, based on merged
+PR 29 at `0f2df3de8dbee0da92c45d66167aac2813327a69`. Package metadata
+remains `0.1.0rc1`. This page records release gates; the
+[completion tracker](completion-tracker.md) records phases, sessions and tasks.
+Dated session records describe evidence available at their own revisions.
 
 ## Current disposition
 
 | Area | Status | Evidence and completion boundary |
 | --- | --- | --- |
-| Merged source validation | PASS for the PR 28 source | [Actions run 118](https://github.com/hamdamme/casf/actions/runs/41265472713) passed all six locked and minimum dependency jobs for Python 3.12, 3.13 and 3.14 at `a3bfa110810e88e5736b451f8e25b3f968c609dd`, merged into the source above. Jobs include tests and package checks. This is not evidence of a retained distributable built from the later documentation revision. |
+| Historical merged source validation | PASS for the PR 28 source | [Actions run 118](https://github.com/hamdamme/casf/actions/runs/41265472713) passed all six locked and minimum dependency jobs for Python 3.12, 3.13 and 3.14 at `a3bfa110810e88e5736b451f8e25b3f968c609dd`, merged as `93ba4325675c948b108a0281c2b0d97c713decdc`. These checks do not validate later source changes. |
+| Startup/restore fix batch | Local evidence recorded; hosted checks tracked on the fix PR | The reviewed local batch passed 455 tests, including 47 new cases, plus lint and typing. The previous PR head passed all six hosted jobs and build/install checks. Follow [PR #30](https://github.com/hamdamme/casf/pull/30) for exact-head hosted results and review status. [Recovery guide](../writer-recovery.md) states the implemented checks and remaining trust boundaries. This is not final artifact approval. |
 | Requirements traceability | Mapped with explicit limits | [Evidence map](../../tests/requirement_evidence.json), [traceability checks](../../tests/unit/test_traceability.py), and [current evidence guide](requirement-evidence.md). A mapped assertion is not proof of full specification conformance. |
 | Specification conformance | Not fully established | [Current implementation reference](../current-reference.md#operational-limits-and-specification-differences) records startup, restore, API and storage differences. These require implementation evidence or an explicit specification decision before claiming full conformance. |
 | Assessed security findings | Corrected or documented within assessed scope | [Phase 3 dispositions](phase3-closeout-2026-10-28.md#reviewer-findings-and-disposition), [October 31 source changes](notes-review-candidate-2026-10-31.md), and PR 28 header regressions. This does not assert that no unknown defects exist. |

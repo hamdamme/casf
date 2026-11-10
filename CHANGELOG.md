@@ -6,6 +6,14 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Verify local writer history and checkpoint/receipt state at startup; reject
+  wrong signing keys before extending an existing log.
+- Reject incoming receipts with a mismatching manifest or previous-receipt
+  link before committing them, preserving the pending checkpoint for recovery.
+- Preserve verified checkpoint/receipt journals and final seals during bundle
+  restore. Reject invalid recovery evidence and clean up failed destinations.
+  Refuse accepted-only bundle export while a final receipt is pending; use the
+  database backup API to preserve pending state. See `docs/writer-recovery.md`.
 - Reject duplicate JSON fields in external CASF input and apply bounded,
   total timeouts to online queries and witness submissions. Require signed
   witness status before checkpoint acceptance and stop new acceptance after
