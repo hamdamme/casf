@@ -37,6 +37,19 @@ def main():
             for n in (1, 2):
                 writer.append(log_id, event_id=f'123e4567-e89b-42d3-a456-4266{n:08d}',
                               actor='synthetic', event_type='check', payload={'n': n}, attributes={})
+                if n == 1:
+                    checkpoint = writer.create_checkpoint(log_id)
+                    receipt_body = {
+                        'version': 1, 'type': 'receipt', 'witness_id': crypto.key_id(witness_pub),
+                        'log_id': log_id, 'manifest_hash': manifest_hash,
+                        'checkpoint_hash': checkpoint['checkpoint_hash'], 'checkpoint_index': 0,
+                        'count': 1, 'head_hash': checkpoint['body']['head_hash'],
+                        'previous_receipt_hash': '0' * 64, 'accepted_at': timestamp,
+                    }
+                    writer.record_receipt(log_id, {
+                        'body': receipt_body, 'receipt_hash': crypto.digest_receipt(receipt_body),
+                        'signature': crypto.sign_receipt(witness, receipt_body),
+                    })
             writer.export_bundle(log_id, destination)
         finally:
             writer.close()
@@ -47,6 +60,7 @@ def main():
         'authority': crypto.b64url_encode(authority_pub),
         'witness': crypto.b64url_encode(witness_pub),
         'log_id': log_id, 'manifest_hash': manifest_hash,
+        'checkpoint_hash': checkpoint['checkpoint_hash'],
     }
     destination.with_name(destination.name + '-trust.json').write_text(json.dumps(trust))
     print('Synthetic public bundle created; no private key files exported.')
