@@ -119,6 +119,26 @@ persist or update external status high-water state. Writer startup and append
 do not inherit continuous status enforcement from a successful restore.
 Full default startup policy and fresh witness reconciliation remain open.
 
+## Recover a pending receipt
+
+After a restart, `Writer.recover_pending_receipt(log_id, base_url, token)`
+looks up the existing pending checkpoint digest. It requires independently
+supplied trust pins and can use a keyless writer. The returned checkpoint must
+match the pending bytes; both signatures, identity bindings and the preceding
+receipt link are checked before the outbox clears atomically.
+
+```sh
+casf witness recover --db writer.db --trust trust.json \
+  --url https://witness.example --json
+```
+
+No checkpoint is resubmitted or regenerated. Missing receipts, transport
+failures and rejected evidence leave the pending checkpoint intact. The CLI
+returns 4 when the receipt is unavailable, and 1 for invalid signed evidence.
+Success reports `recovered: true`, its count and `freshness_checked: false`.
+This retrieves historical acceptance; it does not query a fresh witness view,
+recover a longer missing journal, or run an automatic retry worker.
+
 ## Pending final seals and backups
 
 The current bundle exporter includes accepted checkpoints and receipts.

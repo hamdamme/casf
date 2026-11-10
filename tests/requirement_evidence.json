@@ -120,7 +120,9 @@
       "nodeids": [
         "tests/unit/test_witness.py::test_bad_extension_rejected_state_unchanged",
         "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict",
-        "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit"
+        "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit",
+        "tests/unit/test_receipt_recovery.py::test_failed_receipt_recovery_preserves_pending_bytes",
+        "tests/unit/test_receipt_recovery.py::test_receipt_lookup_is_bound_to_requested_log"
       ],
       "remaining_review": ""
     },
@@ -268,7 +270,8 @@
         "tests/unit/test_cli.py::test_wrong_passphrase_never_printed",
         "tests/unit/test_cli.py::test_token_never_printed",
         "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized",
-        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store"
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
+        "tests/unit/test_receipt_recovery.py::test_cli_recovers_receipt_without_signing_key"
       ],
       "remaining_review": ""
     },
@@ -308,7 +311,8 @@
       "assertion_scope": "Retry after witness commit and process exit returns the same receipt.",
       "nodeids": [
         "tests/unit/test_witness.py::test_identical_retry_replays_same_receipt",
-        "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt"
+        "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt",
+        "tests/unit/test_receipt_recovery.py::test_recover_receipt_after_restart_over_http"
       ],
       "remaining_review": ""
     }

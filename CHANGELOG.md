@@ -6,6 +6,7 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Bind witness receipt lookups to the log named in the request URL.
 - Add explicit active-status policy to restore. Verify supplied authority
   statements and the provisioned serial minimum before creating a database;
   missing or revoked status cannot authorize the import.
@@ -40,6 +41,9 @@ stabilization (SPEC §26).
   registration, and epoch provisioning. See `docs/administration.md`.
 
 ### Added
+- Recover an accepted pending receipt through `Writer.recover_pending_receipt`
+  or `casf witness recover`, without a private key or checkpoint resubmission.
+  Validate signed bindings before clearing the outbox; failures preserve it.
 - Add `casf restore` with required independent trust, signed authority status
   and checkpoint/receipt anchors. Report offline scope and sealed recovery
   explicitly; refuse to overwrite an existing destination.
