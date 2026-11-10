@@ -25,6 +25,7 @@ from casf.errors import (
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject
 from casf.verifier.anchor import VerificationAnchor
+from casf.verifier.bundle import verify_bundle
 from casf.verifier.report import (
     AnchorStatus,
     Dimension,
@@ -49,6 +50,7 @@ __all__ = [
     "TrustStatus",
     "VerificationAnchor",
     "verify",
+    "verify_bundle",
 ]
 
 ZERO = "0" * 64
