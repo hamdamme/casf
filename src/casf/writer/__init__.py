@@ -14,10 +14,10 @@ import json
 import os
 import random
 import re
-import shutil
 import sqlite3
+import tempfile
 import time
-from collections.abc import Iterator, Mapping
+from collections.abc import Iterable, Iterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import cast
@@ -29,6 +29,7 @@ from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
+from casf.filesystem import rename_directory_exclusive, sync_directory
 from casf.model.schema import validate_protocol_body
 from casf.online import LatestView
 from casf.storage import Database
@@ -478,92 +479,97 @@ class Writer:
 
     # ------------------------------------------------------------- bundle
 
-    def export_bundle(self, log_id: str, dest_dir: str | Path) -> Path:
-        """Export one log as a bundle directory (SPEC §20).
+    def export_bundle(self, log_id: str, dest_dir: str | Path, *,
+                      through: int | None = None) -> Path:
+        """Stream a prefix from one snapshot and publish without replacement.
 
-        The read runs inside one snapshot transaction. Files are
-        written to a sibling temporary directory, flushed, then moved
-        into place with a single rename; an existing destination is
-        never overwritten.
+        ``through=None`` selects the snapshot's head. Accepted evidence is
+        limited to that prefix. A pending final seal still blocks export.
         """
+        if through is not None and (type(through) is not int or not 0 <= through <= SAFE_INT_MAX):
+            raise SchemaError("through must be a nonnegative safe integer")
         dest = Path(dest_dir)
-        if dest.exists():
+        if os.path.lexists(dest):
             raise CasfError("export destination already exists")
         if not dest.parent.is_dir():
             raise CasfError("export destination parent does not exist")
-        tmp = dest.with_name(f"{dest.name}.tmp-{os.getpid()}")
-        if tmp.exists():
-            raise CasfError("stale export temporary directory in the way")
-
-        con = self._db.connection
-        con.execute("BEGIN")
-        try:
-            # Accepted-only exports cannot preserve a final seal whose receipt
-            # is still pending. Refuse rather than produce a restorable open log.
-            pending = self.pending_checkpoint(log_id)
-            if pending is not None:
-                pending_body = pending[0].get("body")
-                if isinstance(pending_body, dict) and pending_body.get("final") is True:
-                    raise CasfError(
-                        "final checkpoint receipt is pending; obtain its receipt "
-                        "before bundle export, or use backup to preserve pending state")
-            manifest = self.manifest_envelope(log_id)
-            records = list(self.records(log_id))
-            checkpoints: list[JsonObject] = []
-            for (blob,) in con.execute(
-                    "SELECT envelope FROM checkpoints WHERE log_id = ? "
-                    "AND state = 'accepted' ORDER BY idx", (log_id,)):
-                env = parse(bytes(blob))
-                if not isinstance(env, dict):
-                    raise CasfError("stored checkpoint is corrupt")
-                checkpoints.append(env)
-            receipts: list[JsonObject] = []
-            for cp in checkpoints:
+        with tempfile.TemporaryDirectory(prefix=".casf-export-", dir=dest.parent) as staging:
+            temporary = Path(staging) / "bundle"
+            temporary.mkdir(mode=0o700)
+            con = self._db.connection
+            con.execute("BEGIN")
+            try:
                 row = con.execute(
-                    "SELECT envelope FROM receipts WHERE checkpoint_hash = ?",
-                    (cp["checkpoint_hash"],)).fetchone()
-                if row is not None:
-                    env = parse(bytes(row[0]))
-                    if not isinstance(env, dict):
-                        raise CasfError("stored receipt is corrupt")
-                    receipts.append(env)
-        finally:
-            con.rollback()
-        manifest_hash = self._manifest_hash(log_id)
-
-        metadata: JsonObject = {
-            "version": 1, "type": "export", "log_id": log_id,
-            "manifest_hash": manifest_hash,
-            "through": len(records), "record_count": len(records),
-            "generated_at": datetime.now(UTC).strftime(
-                "%Y-%m-%dT%H:%M:%S.%fZ"),
-        }
-        try:
-            tmp.mkdir()
-            self._write_member(tmp / "manifest.json",
-                               canonicalize(manifest) + b"\n")
-            self._write_member(tmp / "records.jsonl", b"".join(
-                canonicalize(env) + b"\n" for env in records))
-            # accepted checkpoints with their receipts; a pending
-            # checkpoint is never exported as if witnessed (SPEC §20)
-            self._write_member(tmp / "checkpoints.jsonl", b"".join(
-                canonicalize(env) + b"\n" for env in checkpoints))
-            self._write_member(tmp / "receipts.jsonl", b"".join(
-                canonicalize(env) + b"\n" for env in receipts))
-            self._write_member(tmp / "export.json",
-                               canonicalize(metadata) + b"\n")
-            os.rename(tmp, dest)
-        except BaseException:
-            shutil.rmtree(tmp, ignore_errors=True)
-            raise
+                    "SELECT m.manifest_hash, m.envelope, h.count FROM manifests m "
+                    "JOIN heads h ON h.log_id=m.log_id WHERE m.log_id=?", (log_id,)).fetchone()
+                if row is None:
+                    raise CasfError("unknown log")
+                manifest_hash, manifest, count = row
+                limit = count if through is None else through
+                if limit > count:
+                    raise SchemaError("through exceeds the snapshot head")
+                pending = self.pending_checkpoint(log_id)
+                if pending is not None:
+                    pending_body = pending[0].get("body")
+                    if isinstance(pending_body, dict) and pending_body.get("final") is True:
+                        raise CasfError(
+                            "final checkpoint receipt is pending; obtain its receipt "
+                            "before bundle export, or use backup to preserve pending state")
+                metadata: JsonObject = {
+                    "version": 1, "type": "export", "log_id": log_id,
+                    "manifest_hash": manifest_hash, "through": limit, "record_count": limit,
+                    "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+                }
+                self._write_member(temporary / "manifest.json", manifest + b"\n")
+                self._write_member(temporary / "records.jsonl", self._export_records(log_id, limit))
+                self._write_member(temporary / "checkpoints.jsonl",
+                                   self._export_journal(log_id, limit, receipts=False))
+                self._write_member(temporary / "receipts.jsonl",
+                                   self._export_journal(log_id, limit, receipts=True))
+                self._write_member(temporary / "export.json", canonicalize(metadata) + b"\n")
+            finally:
+                con.rollback()
+            sync_directory(temporary)
+            try:
+                rename_directory_exclusive(temporary.absolute(), dest.absolute())
+            except FileExistsError as exc:
+                raise CasfError("export destination already exists") from exc
+            sync_directory(dest.absolute().parent)
         return dest
 
+    def _export_records(self, log_id: str, through: int) -> Iterator[bytes]:
+        seen = 0
+        for seq, blob in self._db.connection.execute(
+                "SELECT seq, envelope FROM records WHERE log_id=? AND seq<=? ORDER BY seq",
+                (log_id, through)):
+            if seq != seen + 1 or not isinstance(blob, bytes):
+                raise CasfError("stored export record range is inconsistent")
+            seen = seq
+            yield blob + b"\n"
+        if seen != through:
+            raise CasfError("stored export record range is incomplete")
+
+    def _export_journal(self, log_id: str, through: int, *, receipts: bool) -> Iterator[bytes]:
+        for checkpoint, receipt in self._db.connection.execute(
+                "SELECT c.envelope, r.envelope FROM checkpoints c "
+                "LEFT JOIN receipts r ON r.checkpoint_hash=c.checkpoint_hash "
+                "WHERE c.log_id=? AND c.count<=? AND c.state='accepted' ORDER BY c.idx",
+                (log_id, through)):
+            if not isinstance(checkpoint, bytes) or not isinstance(receipt, bytes):
+                raise CasfError("accepted checkpoint is missing its receipt")
+            yield (receipt if receipts else checkpoint) + b"\n"
+
     @staticmethod
-    def _write_member(path: Path, data: bytes) -> None:
-        with open(path, "wb") as f:
-            f.write(data)
-            f.flush()
-            os.fsync(f.fileno())
+    def _write_member(path: Path, data: bytes | Iterable[bytes]) -> None:
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, "wb") as stream:
+            if isinstance(data, bytes):
+                stream.write(data)
+            else:
+                for chunk in data:
+                    stream.write(chunk)
+            stream.flush()
+            os.fsync(stream.fileno())
 
     @classmethod
     def restore_from_bundle(cls, db_path: str | Path,

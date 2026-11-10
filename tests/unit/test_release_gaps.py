@@ -190,14 +190,16 @@ def test_export_snapshot_during_concurrent_append(tmp_path, monkeypatch):
     writer = _writer(db)
     _append(writer, 1)
     original = writer.records
-    def records(log_id):
-        other = Writer(db, LOG, local_only=True)
-        try:
-            _append(other, 2)
-        finally:
-            other.close()
-        yield from original(log_id)
-    monkeypatch.setattr(writer, 'records', records)
+    write_member = writer._write_member
+    def write(path, data):
+        if path.name == 'records.jsonl':
+            other = Writer(db, LOG, local_only=True)
+            try:
+                _append(other, 2)
+            finally:
+                other.close()
+        write_member(path, data)
+    monkeypatch.setattr(writer, '_write_member', write)
     try:
         dest = writer.export_bundle(LOG_ID, tmp_path / 'snapshot')
         bundle = read_bundle(dest)
