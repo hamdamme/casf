@@ -6,7 +6,7 @@ import os
 import pytest
 
 from casf import crypto
-from casf.bundle import read_bundle
+from casf.bundle import BundleReadError, read_bundle
 from casf.errors import CasfError
 from casf.verifier import AnchorStatus, Mode, Result, TrustPins, verify
 from casf.writer import RestoreBehindWitnessError, Writer
@@ -243,3 +243,15 @@ def test_t10_restored_old_db_reports_incomplete_against_newer_anchor(
                      checkpoint_envelopes=[cp1], receipt_envelopes=[r1],
                     status_envelopes=[active_status(AUTH, manifest["manifest_hash"]) ])
     assert current.result == Result.PASS
+
+
+@pytest.mark.parametrize('field,value', [('version', True), ('through', True),
+                                       ('record_count', True), ('generated_at', 'yesterday')])
+def test_export_metadata_uses_strict_protocol_types(tmp_path, field, value):
+    writer, path = _exported(tmp_path, 1)
+    writer.close()
+    metadata = json.loads((path / 'export.json').read_text())
+    metadata[field] = value
+    (path / 'export.json').write_text(json.dumps(metadata))
+    with pytest.raises(BundleReadError):
+        read_bundle(path)
