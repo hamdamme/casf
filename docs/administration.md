@@ -101,6 +101,28 @@ casf admin status install --status-file revoked.json --log-id LOG_UUID \
 An active statement does not establish that the authority has no newer
 revocation statement elsewhere.
 
+## Restore an exported bundle
+
+Keep the expected trust pins and signed external checkpoint/receipt pair
+separate from the backup. Include authentic authority statements in the
+bundle's `status.jsonl`, and retain the highest known status serial in the
+trust file's `minimum_status_serial` before restoring:
+
+```sh
+casf restore bundle --db restored.db --key log.pem --trust trust.json \
+  --anchor-checkpoint retained-checkpoint.json \
+  --anchor-receipt retained-receipt.json --json
+```
+
+The command requires an unused destination, independent pins, active signed
+status and a signed anchor pair. It performs offline authentication regardless
+of the trust file's verifier mode; it does not query the witness. Success
+reports `restored: true` and `freshness_checked: false`. Missing or rejected
+trust returns exit 3; malformed input returns 2 and invalid evidence returns 1.
+An existing destination is preserved and returns 5. A restore behind the
+anchor retains a sealed database, reports `RESTORE_BEHIND_WITNESS`, and returns
+4. Reconcile fresh external state before promoting the restored copy.
+
 ## Register and rotate
 
 Register a manifest directly in the local witness database:

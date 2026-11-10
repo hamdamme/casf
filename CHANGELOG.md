@@ -40,6 +40,9 @@ stabilization (SPEC §26).
   registration, and epoch provisioning. See `docs/administration.md`.
 
 ### Added
+- Add `casf restore` with required independent trust, signed authority status
+  and checkpoint/receipt anchors. Report offline scope and sealed recovery
+  explicitly; refuse to overwrite an existing destination.
 - Wide area benchmark execution (RQ2, RQ3, H2): 20 runs with the
   writer on a Dell Linux machine and the witness on an AWS Lightsail
   instance, zero failures, raw rows and a verified report in
