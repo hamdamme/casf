@@ -11,8 +11,10 @@ its checks.
 - HTTP witness and online paths are exercised through local server tests.
 - Fresh writer reconciliation covers missing journal retrieval, retained-state
   conflicts, pending/final preservation, record loss, shared deadlines, write
-  serialization and a process exit during journal insertion. Startup does not
-  yet invoke this operation by default or enforce retained authority status.
+  serialization and a process exit during journal insertion. Verified startup
+  now invokes reconciliation by default and enforces retained authority status.
+  Tests cover terminal revocation, state persistence failures, bootstrap retry
+  and the public CLI workflow. Explicit local-only mode remains available.
 - Rollback H1 and outage H3 have separate experiment harnesses and recorded
   outputs; those records are not an exhaustive test suite.
 - Several malformed, adversarial and integration cases are covered under

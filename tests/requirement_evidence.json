@@ -177,7 +177,10 @@
         "tests/unit/test_cli_writer_trust.py::test_cli_requires_provisioned_log",
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version",
         "tests/unit/test_trust_config.py::test_trust_loader_rejects_invalid_policy_values",
-        "tests/unit/test_trust_config.py::test_invalid_policy_cannot_initialize_verifier_state"
+        "tests/unit/test_trust_config.py::test_invalid_policy_cannot_initialize_verifier_state",
+        "tests/unit/test_verified_startup.py::test_signing_constructor_requires_explicit_startup_or_local_mode",
+        "tests/unit/test_verified_startup.py::test_wrong_signing_key_fails_before_network",
+        "tests/unit/test_verified_startup.py::test_caller_policy_mutation_does_not_change_authorized_serial"
       ],
       "remaining_review": ""
     },
@@ -195,7 +198,13 @@
         "tests/unit/test_release_gaps.py::test_revocation_cannot_be_overridden_by_active_or_invalid_status",
         "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown",
         "tests/unit/test_restore_status.py::test_restore_accepts_active_status_at_provisioned_minimum",
-        "tests/unit/test_restore_status.py::test_restore_rejects_untrusted_status_before_creating_store"
+        "tests/unit/test_restore_status.py::test_restore_rejects_untrusted_status_before_creating_store",
+        "tests/unit/test_verified_startup.py::test_missing_or_invalid_status_does_not_resume",
+        "tests/unit/test_verified_startup.py::test_revocation_is_terminal_across_restart_and_open_writers",
+        "tests/unit/test_verified_startup.py::test_unauthenticated_status_cannot_poison_retained_state",
+        "tests/unit/test_verified_startup.py::test_newer_status_survives_witness_failure_and_blocks_old_writer",
+        "tests/unit/test_verifier_state.py::test_retained_revocation_survives_later_active_save",
+        "tests/unit/test_cli_verified_startup.py::test_cli_verifier_remembers_revocation_independently"
       ],
       "remaining_review": ""
     },
@@ -248,9 +257,16 @@
         "tests/unit/test_writer_reconciliation.py::test_recovers_missing_journal_and_continues_original_chain",
         "tests/unit/test_writer_reconciliation.py::test_recovers_from_empty_checkpoint_journal",
         "tests/unit/test_writer_reconciliation.py::test_http_recovery_survives_process_exit_after_journal_insert",
-        "tests/unit/test_writer_reconciliation.py::test_late_journal_failure_rolls_back_all_recovered_pairs"
+        "tests/unit/test_writer_reconciliation.py::test_late_journal_failure_rolls_back_all_recovered_pairs",
+        "tests/unit/test_verified_startup.py::test_verified_startup_recovers_journal_and_retains_checkpoint",
+        "tests/unit/test_verified_startup.py::test_state_save_failure_keeps_journal_held_until_retry",
+        "tests/unit/test_verified_startup.py::test_default_offline_restore_is_keyless",
+        "tests/unit/test_verified_startup.py::test_verified_receipt_updates_retained_checkpoint_before_success",
+        "tests/unit/test_cli_verified_startup.py::test_cli_defaults_to_verified_init_append_checkpoint_submit",
+        "tests/unit/test_cli_verified_startup.py::test_interrupted_bootstrap_retries_identical_checkpoint",
+        "tests/unit/test_writer_reconciliation.py::test_concurrent_receipt_is_rechecked_before_journal_promotion"
       ],
-      "remaining_review": "Default startup integration, retained authority status enforcement and the broader recovery failure matrix remain open."
+      "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
     },
     "T16": {
       "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",
