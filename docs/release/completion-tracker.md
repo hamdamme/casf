@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 30 merged as `65a0252ace032e5a5dae0a85d3d959b4c1b1e399`. The Desktop main checkout was fast-forwarded to that commit. PR 31 remains a draft. Five follow-up batches build on it in order; the original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 31 reached main as `b2fc820c9a30adf8f1b94de012422a3809683620`; the clean Desktop main checkout matches that commit. PRs 32–36 were merged into their feature-branch bases. The integration branch `fix/integrate-reviewed-recovery` brings their reviewed changes into main without changing source or tests. The original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 complete. Phase 2, Session 3 in progress; the first implementation batch also addresses part of Session 4.
 
@@ -51,15 +51,15 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- F06 remains complete after PR 30 merged. The five follow-up batches are awaiting review; partial work remains in the remaining totals.
-- F05: writer manifest pins are in draft PR 31. The next batch rejects malformed trust settings, including string values that could enable unwitnessed verification. Full default startup trust and status policy remain open.
+- F06 remains complete after PR 30 merged. PRs 31–36 are marked merged; only PR 31 is in main before integration. The five follow-up batches preserve their original commits and tests in the integration branch. Partial requirements remain in the remaining totals.
+- F05: writer manifest pins are merged in PR 31. PR 32 rejects malformed trust settings, including string values that could enable unwitnessed verification. Full default startup trust and status policy remain open.
 - F07/F08: signed external checkpoint/receipt anchors are authenticated before restore; missing or conflicting journal evidence is rejected. Matching pending tails can recover their receipt. Optional active-status policy checks bundled authority statements and the provisioned serial minimum before creating the destination. Fresh witness reconciliation and the broader recovery failure matrix remain open.
 - F10: receipt lookup can recover an accepted pending checkpoint after restart without regenerating or resubmitting it. Failures retain the pending bytes; witness lookups enforce the requested log. This is an explicit recovery operation, not an automatic worker.
 - F12: the new restore CLI requires trust pins, active signed status and signed external anchors. Receipt recovery requires trust pins but no signing key. Both commands report that freshness was not checked. Broader API/report requirements remain open.
 - Validation: each follow-up PR records its exact tested head and local/hosted results. The new regressions cover malformed configuration, signed anchors, status, CLI restore, receipt recovery and log-bound lookups. Review builds do not complete final candidate F21/F22.
 - Preservation: specification bytes, frozen vectors, research and historical experiment results remain unchanged from merged PR 30. No release or experiment publication was performed.
 - Remaining: 23 tasks, 12 sessions, 5 phases.
-- User action: review the draft stack in dependency order, starting with PR 31.
+- User action: review and merge the integration PR targeting main. A merged feature-branch PR does not by itself place its changes in main.
 - Next task: complete default startup status/trust policy and fresh witness reconciliation. Full specification conformance is not yet claimed.
 
 ## Evidence
