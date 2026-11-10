@@ -156,7 +156,6 @@ def test_lock_contention_returns_busy(tmp_path):
     w = _writer(db, busy_timeout_ms=100, max_retries=1, retry_jitter=0)
     blocker = sqlite3.connect(db)
     blocker.execute("BEGIN IMMEDIATE")
-    blocker.execute("INSERT INTO heads VALUES ('x', 0, 'ab', 0)")
     try:
         with pytest.raises(BusyError):
             _append(w)

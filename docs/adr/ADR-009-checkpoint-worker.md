@@ -17,8 +17,9 @@ An additive `checkpoint_schedule` table stores the accepted checkpoint hash and
 the next local deadline. Existing `outbox.attempts` and `next_attempt_at` store
 submission attempts and retry deadlines. Scheduling metadata is operational,
 not authenticated evidence; it never authorizes a record or changes signed
-formats. Existing stores acquire the table through normal initialization.
-Schema-wide integrity and migration review remains separate work.
+formats. Unversioned stores originally acquired the table through normal initialization.
+[ADR-010](ADR-010-storage-migrations.md) supersedes that behavior with explicit
+copy migration and versioned schemas.
 
 Transport failures and HTTP 429/503 are retryable. Retry delays double from one
 second to a maximum of 60 seconds by default. The deadline is committed before

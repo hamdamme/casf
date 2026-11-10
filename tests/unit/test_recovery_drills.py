@@ -68,10 +68,13 @@ def test_corrupt_backup_cannot_replace_independent_state(history, tmp_path, dama
             stream.write(b"corrupt backup!!")
     else:
         with sqlite3.connect(backup) as con:
+            trigger = con.execute(
+                "SELECT sql FROM sqlite_master WHERE name='records_no_update'").fetchone()[0]
             con.execute("DROP TRIGGER records_no_update")
             record = next(original.records(LOG_ID))
             record["signature"] = "A" * 86
             con.execute("UPDATE records SET envelope=? WHERE seq=1", (canonicalize(record),))
+            con.execute(trigger)
     with pytest.raises((CasfError, sqlite3.DatabaseError)):
         verified(backup, replace(startup, initialize_state=False))
     assert not calls
