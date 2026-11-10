@@ -38,7 +38,7 @@ from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, Result, TrustPins, TrustStatus, verify
 from casf.witness import Witness
-from casf.writer import Writer
+from casf.writer import RestoreBehindWitnessError, Writer
 
 __all__ = ["main"]
 
@@ -98,7 +98,8 @@ def _writer_trust_pins(args: argparse.Namespace,
     return {log_id: TrustPins(
         authority_keys=authorities,
         witness_keys={witness_id: crypto.b64url_decode(witness_key)},
-        log_id=log_id, manifest_hash=manifest_hash)}
+        log_id=log_id, manifest_hash=manifest_hash,
+        minimum_status_serial=cast(int, entry["minimum_status_serial"]))}
 
 
 def _writer(args: argparse.Namespace, manifest: JsonObject | None = None) -> Writer:
@@ -479,6 +480,42 @@ def _cmd_seal(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_restore(args: argparse.Namespace) -> int:
+    if os.path.lexists(args.db):
+        raise CasfError("restore destination already exists")
+    key = load_key(args.key, passphrase=_secret(args.passphrase_env))
+    summary: JsonObject = {"database": str(args.db), "freshness_checked": False}
+    try:
+        with open_bundle(args.path) as bundle:
+            pins = _writer_trust_pins(args, bundle.manifest)
+        checkpoint = _read_json_file(args.anchor_checkpoint)
+        receipt = _read_json_file(args.anchor_receipt)
+        writer = Writer.restore_from_bundle(
+            args.db, key, args.path, trust_pins=pins, require_active_status=True,
+            anchor_checkpoint=checkpoint, anchor_receipt=receipt)
+    except RestoreBehindWitnessError:
+        summary.update({"restored": True, "sealed": True,
+                        "diagnostic_codes": ["RESTORE_BEHIND_WITNESS"]})
+        _print(args, summary, "RESTORE_BEHIND_WITNESS: restored database retained sealed; "
+               "fresh witness state was not checked")
+        return 4
+    except (SchemaError, TrustError):
+        raise
+    except (BundleReadError, LimitError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except CasfError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    try:
+        summary["restored"] = True
+        _print(args, summary, f"restored database to {args.db}; "
+               "fresh witness state was not checked")
+    finally:
+        writer.close()
+    return 0
+
+
 def _cmd_status(args: argparse.Namespace) -> int:
     db = Database(args.db)
     try:
@@ -830,6 +867,17 @@ def _parser() -> argparse.ArgumentParser:
     export.add_argument("--out", required=True)
     export.add_argument("--trust", help="independent manifest trust pins")
     export.set_defaults(func=_cmd_export)
+
+    restore = sub.add_parser("restore", parents=[common],
+                             help="offline restore with signed trust and anchor evidence")
+    restore.add_argument("path")
+    restore.add_argument("--db", required=True)
+    restore.add_argument("--key", required=True)
+    restore.add_argument("--trust", required=True)
+    restore.add_argument("--anchor-checkpoint", required=True)
+    restore.add_argument("--anchor-receipt", required=True)
+    restore.add_argument("--passphrase-env", default=PASS_ENV)
+    restore.set_defaults(func=_cmd_restore)
 
     ver = sub.add_parser("verify", parents=[common])
     ver.add_argument("path")
