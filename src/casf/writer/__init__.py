@@ -179,14 +179,7 @@ class Writer:
         procedure; this includes the required WAL state. Never
         overwrites an existing file.
         """
-        dest = str(dest_path)
-        if os.path.exists(dest):
-            raise CasfError("backup destination already exists")
-        target = sqlite3.connect(dest)
-        try:
-            self._db.connection.backup(target)
-        finally:
-            target.close()
+        self._db.backup(dest_path)
 
     def _check_heads(self) -> None:
         """Verify local records, indexes and journal in one snapshot.

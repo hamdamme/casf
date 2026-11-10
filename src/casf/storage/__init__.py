@@ -8,7 +8,9 @@ Envelopes are stored as canonical UTF-8 BLOBs; table indexes are
 derived lookup data, never authenticated facts.
 """
 
+import os
 import sqlite3
+import tempfile
 from pathlib import Path
 
 from casf.errors import CasfError
@@ -102,3 +104,32 @@ class Database:
 
     def close(self) -> None:
         self.connection.close()
+
+    def backup(self, destination: str | Path) -> None:
+        """Publish a complete, flushed backup without replacing an existing path."""
+        dest = Path(destination).absolute()
+        if os.path.lexists(dest):
+            raise CasfError("backup destination already exists")
+        directory = os.open(dest.parent, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            with tempfile.TemporaryDirectory(prefix=".casf-backup-", dir=dest.parent) as staging:
+                temporary = Path(staging) / "backup.db"
+                fd = os.open(temporary, os.O_CREAT | os.O_EXCL | os.O_RDWR, 0o600)
+                try:
+                    target = sqlite3.connect(temporary)
+                    try:
+                        self.connection.backup(target)
+                    finally:
+                        target.close()
+                    os.fsync(fd)
+                finally:
+                    os.close(fd)
+                try:
+                    # A hard link publishes atomically and refuses every existing
+                    # destination, including one created while the copy was running.
+                    os.link(temporary, dest)
+                except FileExistsError as exc:
+                    raise CasfError("backup destination already exists") from exc
+            os.fsync(directory)
+        finally:
+            os.close(directory)
