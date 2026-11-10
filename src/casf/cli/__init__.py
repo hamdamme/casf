@@ -1018,6 +1018,9 @@ def main(argv: list[str] | None = None) -> int:
     except CasfError as e:
         print(f"error: {e}", file=sys.stderr)
         return 5
+    except sqlite3.Error:
+        print("error: local database failure", file=sys.stderr)
+        return 5
     except OSError as e:
         print(f"error: local I/O failure: {e.strerror or e}",
               file=sys.stderr)

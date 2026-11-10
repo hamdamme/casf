@@ -82,19 +82,23 @@ class Database:
             self.path, timeout=busy_timeout_ms / 1000,
             check_same_thread=check_same_thread)
         con = self.connection
-        con.execute(f"PRAGMA busy_timeout={int(busy_timeout_ms)}")
-        con.execute("PRAGMA journal_mode=WAL")
-        con.execute("PRAGMA synchronous=FULL")
-        con.execute("PRAGMA foreign_keys=ON")
-        # verify the effective settings, not just the requests (SPEC §17)
-        if con.execute("PRAGMA journal_mode").fetchone()[0] != "wal":
-            raise CasfError("WAL mode is required and was not applied")
-        if con.execute("PRAGMA synchronous").fetchone()[0] != 2:
-            raise CasfError("synchronous=FULL is required and was not applied")
-        if con.execute("PRAGMA foreign_keys").fetchone()[0] != 1:
-            raise CasfError("foreign_keys=ON is required and was not applied")
-        con.executescript(schema)
-        con.commit()
+        try:
+            con.execute(f"PRAGMA busy_timeout={int(busy_timeout_ms)}")
+            con.execute("PRAGMA journal_mode=WAL")
+            con.execute("PRAGMA synchronous=FULL")
+            con.execute("PRAGMA foreign_keys=ON")
+            # Verify the effective settings, not just the requests (SPEC §17).
+            if con.execute("PRAGMA journal_mode").fetchone()[0] != "wal":
+                raise CasfError("WAL mode is required and was not applied")
+            if con.execute("PRAGMA synchronous").fetchone()[0] != 2:
+                raise CasfError("synchronous=FULL is required and was not applied")
+            if con.execute("PRAGMA foreign_keys").fetchone()[0] != 1:
+                raise CasfError("foreign_keys=ON is required and was not applied")
+            con.executescript(schema)
+            con.commit()
+        except BaseException:
+            con.close()
+            raise
 
     def close(self) -> None:
         self.connection.close()
