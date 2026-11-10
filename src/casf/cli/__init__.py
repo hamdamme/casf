@@ -502,7 +502,7 @@ def _cmd_export(args: argparse.Namespace) -> int:
     writer = Writer(args.db, trust_pins=_writer_trust_pins(args))
     try:
         log_id = _sole_log_id(args.db)
-        dest = writer.export_bundle(log_id, args.out)
+        dest = writer.export_bundle(log_id, args.out, through=args.through)
     finally:
         writer.close()
     _print(args, {"bundle": str(dest)}, f"exported bundle to {dest}")
@@ -832,6 +832,13 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
 
 # -------------------------------------------------------------- parser
 
+def _prefix_count(value: str) -> int:
+    number = int(value)
+    if not 0 <= number <= SAFE_INT_MAX:
+        raise argparse.ArgumentTypeError("through must be a nonnegative safe integer")
+    return number
+
+
 def _positive_int(value: str) -> int:
     number = int(value)
     if number < 1:
@@ -1001,6 +1008,7 @@ def _parser() -> argparse.ArgumentParser:
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
     export.add_argument("--out", required=True)
+    export.add_argument("--through", type=_prefix_count, help="last record in the exported prefix")
     export.add_argument("--trust", help="independent manifest trust pins")
     export.set_defaults(func=_cmd_export)
 
