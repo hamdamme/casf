@@ -20,6 +20,7 @@ import time
 from collections.abc import Iterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -508,6 +509,8 @@ class Writer:
                             log_priv: Ed25519PrivateKey,
                             bundle_dir: str | Path, *,
                             anchor: JsonObject | None = None,
+                            anchor_checkpoint: JsonObject | None = None,
+                            anchor_receipt: JsonObject | None = None,
                             trust_pins: Mapping[str, TrustPins] | None = None) -> "Writer":
         """Restore verified records and their checkpoint/receipt journal.
 
@@ -521,6 +524,31 @@ class Writer:
             raise CasfError("restore destination already exists")
         bundle = read_bundle(bundle_dir)
         context = ManifestContext.read(bundle.manifest)
+        if anchor_checkpoint is not None or anchor_receipt is not None:
+            if anchor_checkpoint is None or anchor_receipt is None or anchor is not None:
+                raise SchemaError("supply both anchor envelopes without a bare anchor")
+            log_id = cast(str, context.body["log_id"])
+            pins = trust_pins.get(log_id) if trust_pins is not None else None
+            if pins is None:
+                raise TrustError("signed restore anchors require independent trust pins")
+            context = ManifestContext.read(bundle.manifest, pins=pins)
+            checkpoint = context.anchor(anchor_checkpoint, anchor_receipt)
+            index = cast(int, checkpoint["index"])
+            if index < len(bundle.checkpoints) and bundle.checkpoints[index].get(
+                    "checkpoint_hash") != anchor_checkpoint["checkpoint_hash"]:
+                raise CasfError("anchor conflicts with the restored checkpoint journal")
+            if cast(int, checkpoint["count"]) <= len(bundle.records):
+                if index >= len(bundle.checkpoints):
+                    raise CasfError("anchor is missing from the restored checkpoint journal")
+                if index < len(bundle.receipts):
+                    if bundle.receipts[index].get("receipt_hash") != anchor_receipt["receipt_hash"]:
+                        raise CasfError("anchor conflicts with the restored receipt journal")
+                elif index == len(bundle.receipts) == len(bundle.checkpoints) - 1:
+                    bundle.receipts.append(anchor_receipt)
+                else:
+                    raise CasfError("anchor receipt chain is missing from the restored journal")
+            anchor = {"log_id": log_id, "manifest_hash": context.digest,
+                      "count": checkpoint["count"], "head_hash": checkpoint["head_hash"]}
         anchor_count = 0
         if anchor is not None:
             value, digest = anchor.get("count"), anchor.get("head_hash")

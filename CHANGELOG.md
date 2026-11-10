@@ -6,6 +6,9 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Authenticate signed checkpoint/receipt anchors during restore with supplied
+  trust pins. Reject journal conflicts and preserve sealed recovery behind
+  the anchor; recover a matching pending tail from its authentic receipt.
 - Reject malformed trust policy booleans, modes, budgets, serials and identity
   pins before use; string values cannot enable unwitnessed verification.
 - Authenticate manifest authority signatures and expected log, manifest and

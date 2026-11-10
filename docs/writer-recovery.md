@@ -91,6 +91,19 @@ match that exact prefix, even when it is older than the export. If log or
 manifest identity fields are supplied, they must match. The caller remains
 responsible for authenticating this anchor before passing it in.
 
+For signed external evidence, supply both `anchor_checkpoint` and
+`anchor_receipt` with independent `trust_pins`, and omit the bare `anchor`.
+Restore authenticates the manifest, both signatures and all pair bindings
+before creating the destination. An anchor within the restored record range
+must match its checkpoint journal; missing or conflicting journal evidence
+is rejected. A matching pending tail can obtain its original receipt from the
+anchor pair. A newer anchor beyond the restored record count retains the
+database sealed and raises `RESTORE_BEHIND_WITNESS`.
+
+Signed anchors are historical evidence. Their authenticity does not prove
+that the witness has no newer checkpoint. Fresh witness reconciliation and
+authority status evaluation remain separate requirements.
+
 ## Pending final seals and backups
 
 The current bundle exporter includes accepted checkpoints and receipts.

@@ -135,7 +135,8 @@
       "assertion_scope": "An old restored database is incomplete against a newer anchor.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor",
-        "tests/unit/test_streaming.py::test_truncation_checked_at_eof"
+        "tests/unit/test_streaming.py::test_truncation_checked_at_eof",
+        "tests/unit/test_restore_anchors.py::test_restore_behind_signed_anchor_is_retained_sealed"
       ],
       "remaining_review": ""
     },
@@ -218,6 +219,10 @@
         "tests/unit/test_writer_integrity_recovery.py::test_process_exit_during_restore_never_commits_partial_history",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_accepts_a_matching_older_anchor",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_or_conflicting_anchor",
+        "tests/unit/test_restore_anchors.py::test_restore_accepts_signed_anchor_and_preserves_seal",
+        "tests/unit/test_restore_anchors.py::test_restore_rejects_invalid_signed_anchor_before_creating_store",
+        "tests/unit/test_restore_anchors.py::test_restore_refuses_missing_anchor_journal",
+        "tests/unit/test_restore_anchors.py::test_anchor_receipt_recovers_matching_pending_tail",
         "tests/unit/test_writer_trust.py::test_writer_pins_apply_to_create_reopen_and_restore",
         "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
       ],
