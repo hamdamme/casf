@@ -16,7 +16,7 @@ from casf.errors import CasfError
 from casf.storage.schema import WRITER as SCHEMA
 from casf.storage.versioning import initialize, validate_schema
 
-__all__ = ["Database"]
+__all__ = ["Database", "migrate_database"]
 
 
 class Database:
@@ -84,3 +84,48 @@ class Database:
             os.fsync(directory)
         finally:
             os.close(directory)
+
+
+def migrate_database(source: str | Path, destination: str | Path, *, kind: str) -> None:
+    """Copy a recognized legacy store to version 1 without rewriting envelopes.
+
+    Stop writers before migration and validate the result before service cutover.
+    The source is retained; this operation does not establish evidence freshness.
+    """
+    from casf.storage.schema import WITNESS, WRITER
+    from casf.storage.versioning import check_integrity, legacy_tables
+
+    if kind not in ("writer", "witness"):
+        raise CasfError("storage kind must be writer or witness")
+    schema = WRITER if kind == "writer" else WITNESS
+    dest = Path(destination).absolute()
+    if os.path.lexists(dest):
+        raise CasfError("migration destination already exists")
+    with tempfile.TemporaryDirectory(prefix=".casf-migrate-", dir=dest.parent) as staging:
+        snapshot = sqlite3.connect(Path(staging) / "snapshot.db")
+        try:
+            original = sqlite3.connect(Path(source).resolve().as_uri() + "?mode=ro", uri=True)
+            try:
+                original.backup(snapshot)
+            finally:
+                original.close()
+            tables = legacy_tables(snapshot, schema)
+            candidate = Database(Path(staging) / "candidate.db", schema=schema)
+            try:
+                target = candidate.connection
+                target.execute("BEGIN IMMEDIATE")
+                try:
+                    for table in tables:
+                        cursor = snapshot.execute(f'SELECT * FROM "{table}" ORDER BY rowid')
+                        placeholders = ",".join("?" for _ in cursor.description)
+                        target.executemany(f'INSERT INTO "{table}" VALUES ({placeholders})', cursor)
+                    check_integrity(target)
+                    target.commit()
+                except BaseException:
+                    target.rollback()
+                    raise
+                candidate.backup(dest)
+            finally:
+                candidate.close()
+        finally:
+            snapshot.close()
