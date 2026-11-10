@@ -2,7 +2,7 @@
 
 Updated 9 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 29 remains a separate open documentation change and is not part of this baseline. Implementation branch: `fix/startup-restore-integrity`.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. The implementation branch, `fix/startup-restore-integrity`, was rebased onto `0f2df3de8dbee0da92c45d66167aac2813327a69` after PR 29 merged. The original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 complete. Phase 2, Session 3 in progress; the first implementation batch also addresses part of Session 4.
 
@@ -55,9 +55,9 @@ After every completed task, report: task ID and changes; checks actually run and
 - Completed F04: mapped all eight audit findings to completion tasks and acceptance evidence.
 - F05/F06: added full local record/index/journal verification on startup and wrong-signing-key protection. Independent authority trust and fresh external-state reconciliation remain open under F05; the local regression set under F06 is ready for review.
 - F07/F08: restore now preserves verified checkpoint/receipt chains, checkpoint indices, final seals and supplied pending tails. Added malformed-evidence, anchor, backup, continuation and process-interruption checks. Restore commits manifest, records and journal atomically. External anchor authentication/currentness and broader failure coverage remain open.
-- F19: removed the unused alternate test runner and three empty test-directory marker files. Updated coverage and recovery guidance. Executable documentation and reconciliation with PR 29 remain open.
+- F19: removed the unused alternate test runner and three empty test-directory marker files. Updated coverage and recovery guidance. Incorporated merged PR 29 and reconciled the current reference with the startup/restore changes. Broader executable-documentation validation remains open.
 - Verification: 450 tests passed, including 42 new cases; the six traceability checks passed after the final evidence-map update. Ruff and mypy passed. A wheel and source archive built successfully; a fresh installed wheel passed witness request/shutdown and public-evidence verification. These are review-build checks, not completion of final-candidate F21/F22.
-- Preservation: 194 tracked files under frozen vectors, historical experiment results, research, and the specification were byte-identical to the baseline. The attack harness was adapted to generate corrupt evidence without using the newly guarded writer; expected outcomes were not changed.
+- Preservation: the original local fix batch left 194 tracked files under frozen vectors, historical experiment results, research, and the specification byte-identical to the audit baseline. This branch preserves those areas relative to the merged PR 29 baseline, including its documentation corrections. The attack harness was adapted to generate corrupt evidence without using the newly guarded writer; expected outcomes were not changed.
 - Remaining: 24 tasks, 12 sessions, 5 phases.
 - User action: review this first batch before it is merged. No credentials, production data or environment setup are needed from the user for the next implementation task.
 - Next task: complete F05's authority and fresh-witness requirements and F07's external-anchor authentication contract, then extend the corresponding tests. Any conflict with normative trust or durability rules needs a recorded design decision before its dependent implementation.

@@ -58,8 +58,9 @@ review, final artifact hashes, or publication approval.
 ## Delivery and review
 
 Use isolated changes for review and retain the clean Desktop main checkout.
-PR 29 is a separate open documentation change based on the audited source;
-reconcile its current-reference statements with subsequent code changes before
-combining them. The maintainer reviews changes before merge. Prepare the exact
+PR 29 was merged as `0f2df3de8dbee0da92c45d66167aac2813327a69` before
+this fix branch was uploaded. The branch incorporates that baseline and updates
+the current reference to describe the startup and restore fixes. The maintainer
+reviews changes before merge. Prepare the exact
 release packages, notes and hashes before requesting separate publication
 approval. No release or deployment is authorized by "start fixing" alone.
