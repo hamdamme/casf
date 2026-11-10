@@ -257,7 +257,9 @@ exhaustion, corrupt backup, key loss, rollback and witness outage handling.
 
 Nonfinal pending checkpoints remain outside the default accepted-only bundle
 export. Use the complete database backup when pending state must be recovered.
-Broader pending export/report behavior remains a separate interface task.
+[Prefix export and complete diagnostic output](export-and-reports.md) are
+available. Typed public results and remaining report-semantics differences
+are separate interface work.
 
 ## Remaining trust and recovery boundaries
 

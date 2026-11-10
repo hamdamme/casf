@@ -12,6 +12,7 @@ Python types) still raise.
 """
 
 from collections.abc import Callable, Iterable
+from copy import deepcopy
 from dataclasses import dataclass, field
 from enum import Enum
 from itertools import islice
@@ -110,6 +111,25 @@ class Report:
     freshness_status: FreshnessStatus = FreshnessStatus.NOT_REQUESTED
     observed_status_serial: int = 0
     checkpoint: tuple[int, str] | None = None
+    assumptions: JsonObject = field(default_factory=dict)
+
+    def to_dict(self) -> JsonObject:
+        """Return a detached JSON-compatible view of every diagnostic field."""
+        return {
+            "report_version": 1, "mode": self.mode.value, "result": self.result.value,
+            "protocol_status": self.protocol_status.value,
+            "signature_status": self.signature_status.value,
+            "chain_status": self.chain_status.value, "trust_status": self.trust_status.value,
+            "anchor_status": self.anchor_status.value, "freshness_status": self.freshness_status.value,
+            "verified_from": self.verified_from, "verified_through": self.verified_through,
+            "witnessed_through": self.witnessed_through, "unwitnessed_count": self.unwitnessed_count,
+            "first_failure_seq": self.first_failure_seq,
+            "diagnostic_codes": [code for code in self.diagnostic_codes],
+            "observed_status_serial": self.observed_status_serial,
+            "checkpoint_index": self.checkpoint[0] if self.checkpoint is not None else None,
+            "checkpoint_hash": self.checkpoint[1] if self.checkpoint is not None else None,
+            "assumptions": deepcopy(self.assumptions),
+        }
 
 
 def _expect_envelope(env: JsonObject, hash_field: str) -> tuple[JsonObject, str, str]:
@@ -174,9 +194,19 @@ def verify(manifest_envelope: JsonObject,
         chain_status=Dimension.OK, trust_status=TrustStatus.OK,
         anchor_status=AnchorStatus.NOT_REQUESTED if mode is Mode.INTEGRITY
         else AnchorStatus.OK,
-        verified_from=1, verified_through=0, unwitnessed_count=0,
+        verified_from=0, verified_through=0, unwitnessed_count=0,
         witnessed_through=None, first_failure_seq=None,
-        diagnostic_codes=codes)
+        diagnostic_codes=codes,
+        assumptions={
+            "authority_trust": "caller_provisioned",
+            "status_currentness": "supplied_statements_only",
+            "witness_honesty_required": mode is not Mode.INTEGRITY,
+            "allow_unwitnessed": allow_unwitnessed,
+            "minimum_status_serial": pins.minimum_status_serial,
+            "retained_checkpoint_supplied": retained_checkpoint is not None,
+            "retained_revoked": retained_revoked,
+            "max_records": max_records, "max_chain_steps": max_chain_steps,
+        })
 
     def fail(code: str, seq: int | None = None) -> None:
         report.result = Result.FAIL
@@ -357,6 +387,7 @@ def verify(manifest_envelope: JsonObject,
             report.signature_status = Dimension.FAIL
             break
         verified_count = seq
+        report.verified_from = 1
         if seq in head_targets:
             verified_heads[seq] = record_hash
         expected_prev = record_hash

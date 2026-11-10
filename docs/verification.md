@@ -21,6 +21,14 @@ An online witness response does not establish current authority status.
 Previously accepted bundles without status evidence must obtain an authentic
 statement; do not disable trust checks to recover an overall PASS.
 
+## Machine-readable reports
+
+`casf verify --json` now uses `Report.to_dict()` and includes all diagnostic
+fields, exact verified/failure positions, checkpoint identity and policy
+assumptions. Existing enum values and exit categories are preserved. See the
+[field contract](export-and-reports.md#complete-machine-diagnostics), including
+remaining differences from SPEC section 15 and late-input error handling.
+
 ## Remembered verifier state
 
 Every CLI verification requires `--state PATH`. Use a private directory owned

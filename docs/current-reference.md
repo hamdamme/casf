@@ -20,6 +20,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |
+| Prefix exports and machine diagnostics | [Export and reports](export-and-reports.md) |
 | SQLite schema checks and upgrades | [Storage migration](storage-migrations.md) |
 | Automatic checkpoint scheduling and retries | [Checkpoint worker](checkpoint-worker.md) |
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
@@ -80,10 +81,10 @@ and the [recovery guide](writer-recovery.md) for current signatures and migratio
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
 `FAIL` and `INCONCLUSIVE`; verification dimensions use `OK`, `FAIL` and
-`NOT_CHECKED`. Trust and anchor fields have their own enums. The CLI exposes
-a subset of these fields, not the entire Python report. See the definitions
-in [`verifier/__init__.py`](../src/casf/verifier/__init__.py) and the output
-construction in [`cli/__init__.py`](../src/casf/cli/__init__.py).
+`NOT_CHECKED`. Trust and anchor fields have their own enums. `Report.to_dict()` and CLI JSON expose every diagnostic field, including the
+verified range, failure position, checkpoint identity and requested policy.
+See [export and report contracts](export-and-reports.md). Enum labels and
+missing-trust verdicts still require alignment with SPEC section 15.
 
 Verification starts from record 1. Retained checkpoints support continuity
 checks, but the public API does not implement a general incremental verifier
@@ -93,9 +94,9 @@ intervening evidence is unavailable; a conflicting authenticated retained
 checkpoint produces `WITNESS_STATE_CONFLICT`. The H1 research guide records
 that distinction rather than treating both as the same observed outcome.
 
-`open_bundle` and the CLI stream records. The verifier retains record digests
+`open_bundle`, writer export and the CLI stream records. The verifier retains record digests
 only at checkpoint boundaries, subject to bounded protocol evidence and input
-budgets. `read_bundle`, writer export and restore remain eager and can use
+budgets. `read_bundle` and restore remain eager and can use
 memory proportional to record count. Streaming verification is not a claim
 of constant memory for every operation.
 
@@ -107,7 +108,7 @@ of constant memory for every operation.
 | Restore | Verified records, checkpoints, receipts and seals are rebuilt atomically. Signed anchors require independent pins; bare anchors remain caller-authenticated. An anchor ahead of restored records seals the store. Offline restore returns a keyless reader; verified startup is required before signing. | [Recovery guide](writer-recovery.md), [anchor tests](../tests/unit/test_restore_anchors.py) |
 | Scheduling and recovery | Verified startup reconciles fresh witness history. The foreground checkpoint worker schedules 128-record/60-second checkpoints and durable bounded retries, preserving pending bytes and final seals. A checkpoint batch limit is not a hard bound on the backlog during an outage. | [Worker guide](checkpoint-worker.md), [historical H3 method](../research/h3-witness-outage.md) |
 | SQLite | Version 1 writer and witness schemas enforce relationships, exact lengths, types and ranges with WAL/FULL settings. Existing unversioned stores require explicit migration to a new path; envelope bytes and pending state are preserved. Structural checks do not establish freshness. | [Migration guide](storage-migrations.md), [storage tests](../tests/unit/test_storage_migrations.py) |
-| Export and status | Export includes accepted checkpoints and refuses export while a final checkpoint receipt is pending. Nonfinal pending checkpoints remain excluded; use a complete database backup to preserve pending state. Export does not create authority status. | [Recovery guide](writer-recovery.md), [verification](verification.md) |
+| Export and status | Export streams a selected prefix from one snapshot and publishes without replacing any destination. Accepted checkpoint evidence is limited to that prefix. A pending final seal blocks export; database backup preserves pending state. Export does not create authority status. | [Export guide](export-and-reports.md), [verification](verification.md) |
 | Network | The client bounds total request time, response bytes, individual status and header lines, and header count. The reference service still needs operational TLS and access controls. | [Transport](../src/casf/transport.py), [server guide](witness-server.md) |
 | Validation | Deterministic regressions and selected integration and crash scenarios exist. A maintained fuzzing job, exercised property generators and a complete process crash matrix are not established. | [Coverage status](release/test-coverage-status.md) |
 
