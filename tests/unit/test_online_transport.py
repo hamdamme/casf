@@ -157,6 +157,20 @@ def test_https_rejects_hostname_mismatch(certificate, monkeypatch):
         assert received == []
 
 
+def test_https_certificate_error_stops_address_fallback(certificate, monkeypatch):
+    trust_certificate(monkeypatch, certificate)
+    with server(certificate) as (port, received):
+        addresses = [
+            (socket.AF_INET, socket.SOCK_STREAM, 0, "", ("127.0.0.1", port)),
+            (socket.AF_INET, socket.SOCK_STREAM, 0, "", ("127.0.0.1", 0)),
+        ]
+        monkeypatch.setattr(transport, "_addresses", lambda *args: addresses)
+        with pytest.raises(InconclusiveError) as exc:
+            online.fetch_latest(f"https://localhost:{port}", LOG_ID, TOKEN)
+        assert isinstance(exc.value.__cause__, ssl.SSLCertVerificationError)
+        assert received == []
+
+
 def test_https_never_sends_token_to_plain_http():
     with server() as (port, received):
         with pytest.raises(InconclusiveError):

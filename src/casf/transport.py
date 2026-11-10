@@ -122,6 +122,7 @@ def _connected_socket(host: str, port: int, *, https: bool,
     last_error: OSError | None = None
     for family, socktype, proto, _canonname, address in _addresses(host, port, deadline):
         sock = socket.socket(family, socktype, proto)
+        wrapped: ssl.SSLSocket | None = None
         try:
             sock.settimeout(_remaining(deadline))
             sock.connect(address)
@@ -141,8 +142,14 @@ def _connected_socket(host: str, port: int, *, https: bool,
             finally:
                 timer.cancel()
         except OSError as exc:
-            last_error = exc
+            if wrapped is not None:
+                wrapped.close()
             sock.close()
+            if isinstance(exc, ssl.SSLCertVerificationError):
+                # A reachable peer failed authentication. Do not hide that
+                # result behind a later address's unrelated connection error.
+                raise
+            last_error = exc
     if last_error is not None:
         raise last_error
     raise OSError("witness host resolved to no stream addresses")

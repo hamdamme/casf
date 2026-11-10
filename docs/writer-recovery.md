@@ -101,8 +101,8 @@ anchor pair. A newer anchor beyond the restored record count retains the
 database sealed and raises `RESTORE_BEHIND_WITNESS`.
 
 Signed anchors are historical evidence. Their authenticity does not prove
-that the witness has no newer checkpoint. Fresh witness reconciliation
-remains a separate requirement.
+that the witness has no newer checkpoint. Use explicit fresh reconciliation
+before promoting a restored store; restore does not invoke it automatically.
 
 ### Authority status during restore
 
@@ -117,7 +117,8 @@ This option is false for compatibility with the local-only restore API.
 It checks supplied evidence, does not discover newer revocations, and does not
 persist or update external status high-water state. Writer startup and append
 do not inherit continuous status enforcement from a successful restore.
-Full default startup policy and fresh witness reconciliation remain open.
+Full default startup policy remains open. The explicit reconciliation API
+below checks fresh witness evidence, independently of the status policy.
 
 ## Recover a pending receipt
 
@@ -138,6 +139,67 @@ returns 4 when the receipt is unavailable, and 1 for invalid signed evidence.
 Success reports `recovered: true`, its count and `freshness_checked: false`.
 This retrieves historical acceptance; it does not query a fresh witness view,
 recover a longer missing journal, or run an automatic retry worker.
+
+## Reconcile a fresh witness journal
+
+`Writer.reconcile_witness` queries a fresh nonce-bound witness view, authenticates
+the checkpoint and receipt under independent pins, and retrieves any missing
+accepted journal. It verifies every recovered pair and its record head before
+committing the journal. This API needs no signing key and is separate from the
+historical `casf witness recover` command.
+
+```python
+from casf.writer import Writer
+
+# Evaluate signed authority status and its retained serial before promotion.
+# Load provisioned_pins, witness_url, token and retained_checkpoint independently.
+writer = Writer("restored.db", trust_pins=provisioned_pins)
+try:
+    view = writer.reconcile_witness(
+        log_id, witness_url, token,
+        retained_checkpoint=retained_checkpoint,  # (index, digest), or None initially
+        timeout=10.0, max_chain_steps=10_000,
+    )
+    # Persist the validated checkpoint in independently retained state.
+    accepted = (view.body["checkpoint_index"], view.body["checkpoint_hash"])
+finally:
+    writer.close()
+```
+
+The optional retained checkpoint must occur in the verified journal. Missing,
+lower or conflicting evidence fails without advancing accepted local state.
+The method returns a `LatestView`; its count is the witnessed prefix, which can
+be shorter than the locally committed history. Freshness means the witness
+signed that view during this query under its honesty assumption. It does not
+establish current authority status or discover withheld records.
+
+Reconciliation commits a durable write hold before contacting the witness.
+Timeouts, replay, invalid evidence, missing chain links and process interruption
+leave the previous journal readable and block new appends and checkpoints,
+including after restart. A successful retry atomically installs the recovered
+journal and clears the hold. Exact pending bytes are preserved unless the
+witness supplies their matching receipt. Accepted and pending final seals remain
+sealed. Already committed duplicate appends may return their existing result.
+
+A fresh authenticated checkpoint beyond the local record count raises
+`RESTORE_BEHIND_WITNESS` and retains a terminal seal. A later lower witness view
+cannot clear it. Recover missing records into a new verified store or create a
+documented discontinuous epoch; receipt history cannot replace lost records.
+`NO_CHECKPOINT` is not permission to resume a restored store.
+
+Network requests share one monotonic timeout and missing checkpoint retrieval
+has a step budget. The operation holds a SQLite write lock during network work
+to serialize recovery with competing writes; readers can continue under WAL.
+Local history validation and lock acquisition add to elapsed time. Configuration
+and pin errors are rejected before starting the hold. See
+[ADR-007](adr/ADR-007-witness-reconciliation.md) for storage compatibility and
+transaction behavior.
+
+This operation does not persist external high-water state or evaluate authority
+status. The caller remains responsible for both. Default startup integration,
+continuous status enforcement, a reconciliation CLI and automatic scheduling
+remain open. Bundle export does not carry the database's operational hold;
+promoting a new restore still requires independent recovery checks.
 
 ## Pending final seals and backups
 
@@ -183,3 +245,10 @@ covers trusted command flows, rejection before writer operations, trust-file
 versions and safe diagnostics. These checks support R02, R07, R09 and R10
 through T03, T12, T15 and T17. They do not establish status or fresh witness
 reconciliation coverage.
+
+`tests/unit/test_latest_bindings.py` rejects conflicting signed latest fields.
+`tests/unit/test_writer_reconciliation.py` covers fresh journal recovery,
+retained-state conflicts, missing records, pending and final checkpoints,
+shared deadlines, competing writes and a real process exit after journal
+insertion. The restart verifies that only the hold survived the interrupted
+transaction, then recovers against the same HTTP witness.

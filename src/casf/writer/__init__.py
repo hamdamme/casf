@@ -2,7 +2,7 @@
 
 Manifest storage, transactional record append, verified local startup,
 bundle export/restore, and explicit checkpoint and receipt operations.
-Scheduling and fresh external-state reconciliation are separate work.
+Explicit fresh witness reconciliation is available; scheduling is separate work.
 
 Writers serialize through the database (BEGIN IMMEDIATE), never
 through a process mutex alone. Return success only after COMMIT; a
@@ -30,6 +30,7 @@ from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
 from casf.model.schema import validate_protocol_body
+from casf.online import LatestView
 from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
@@ -38,7 +39,7 @@ from casf.verifier import Result, TrustPins, TrustStatus, verify
 from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
-           "RestoreBehindWitnessError", "SealedError", "Writer"]
+           "ReconciliationRequiredError", "RestoreBehindWitnessError", "SealedError", "Writer"]
 
 ZERO_HASH = "00" * 32  # hex(Z), the null previous checkpoint digest
 
@@ -53,6 +54,10 @@ class EventIdConflictError(CasfError):
 
 class SealedError(CasfError):
     """No append follows sealing (SPEC §12, §16)."""
+
+
+class ReconciliationRequiredError(SealedError):
+    """Fresh witness reconciliation must succeed before new writes resume."""
 
 
 class RestoreBehindWitnessError(SealedError):
@@ -141,7 +146,9 @@ class Writer:
         reconciled before promoting a restored or suspect store.
         """
         con = self._db.connection
-        con.execute("BEGIN")
+        owns_snapshot = not con.in_transaction
+        if owns_snapshot:
+            con.execute("BEGIN")
         try:
             for table in ("heads", "records", "checkpoints", "outbox"):
                 if con.execute(
@@ -184,7 +191,8 @@ class Writer:
                     raise CasfError("stored head disagrees with verified records")
                 self._check_journal(log_id, context, verified_count, sealed)
         finally:
-            con.rollback()
+            if owns_snapshot:
+                con.rollback()
 
     @staticmethod
     def _stored_object(blob: object) -> JsonObject:
@@ -237,7 +245,8 @@ class Writer:
         if not pending and con.execute(
                 "SELECT 1 FROM outbox WHERE log_id = ?", (log_id,)).fetchone():
             raise CasfError("outbox has no pending checkpoint")
-        if sealed not in (0, 1, 2) or (sealed != 1 and (sealed == 2) != chain.final):
+        if sealed not in (0, 1, 2, 3) \
+                or (sealed not in (1, 3) and (sealed == 2) != chain.final):
             raise CasfError("stored seal disagrees with the checkpoint journal")
 
     def _debug_hook(self, stage: str) -> None:
@@ -361,6 +370,9 @@ class Writer:
             if head is None:
                 raise CasfError("unknown log")
             count, head_hash, sealed = head
+            if sealed == 3:
+                raise ReconciliationRequiredError(
+                    "RECONCILIATION_REQUIRED: reconcile fresh witness state before writing")
             if sealed == 1:
                 raise RestoreBehindWitnessError(
                     "RESTORE_BEHIND_WITNESS: this log was restored behind "
@@ -683,6 +695,15 @@ class Writer:
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
+            head = con.execute(
+                "SELECT count, head_hash, sealed FROM heads WHERE log_id = ?",
+                (log_id,)).fetchone()
+            if head is None:
+                raise CasfError("unknown log")
+            count, head_hash, sealed = head
+            if sealed == 3:
+                raise ReconciliationRequiredError(
+                    "RECONCILIATION_REQUIRED: reconcile fresh witness state before checkpointing")
             pending = con.execute(
                 "SELECT checkpoint_hash FROM outbox WHERE log_id = ?",
                 (log_id,)).fetchone()
@@ -690,12 +711,6 @@ class Writer:
                 raise CasfError(
                     "a checkpoint is pending; retry the identical bytes "
                     "or store its receipt first")
-            head = con.execute(
-                "SELECT count, head_hash, sealed FROM heads WHERE log_id = ?",
-                (log_id,)).fetchone()
-            if head is None:
-                raise CasfError("unknown log")
-            count, head_hash, sealed = head
             if sealed:
                 raise SealedError("log is sealed; no further checkpoint")
             last = con.execute(
@@ -910,6 +925,21 @@ class Writer:
             raise CasfError("witness answer carried no receipt object")
         self.record_receipt(log_id, receipt)
         return receipt
+
+    def reconcile_witness(self, log_id: str, base_url: str, token: str, *,
+                          timeout: float = 10.0, max_chain_steps: int = 10_000,
+                          retained_checkpoint: tuple[int, str] | None = None) -> LatestView:
+        """Reconcile a fresh witness journal against verified local records.
+
+        Independent pins are required. Failure retains a durable write hold;
+        success preserves pending bytes and final seals. Authority status and
+        external high-water persistence remain the caller's responsibility.
+        """
+        from casf.writer.recovery import reconcile_witness
+
+        return reconcile_witness(self, log_id, base_url, token, timeout=timeout,
+                                 max_chain_steps=max_chain_steps,
+                                 retained_checkpoint=retained_checkpoint)
 
     def recover_pending_receipt(self, log_id: str, base_url: str, token: str, *,
                                 timeout: float = 10.0) -> JsonObject:
