@@ -986,6 +986,8 @@ class Writer:
                 "witness unreachable; the pending checkpoint keeps its "
                 "bytes for retry") from e
         except ValueError as e:
+            if str(e) == "HTTP requires a literal loopback address; use HTTPS":
+                raise CasfError("HTTP requires a literal loopback address; use HTTPS") from e
             raise CasfError("invalid witness request configuration") from e
         if status in (429, 503):
             raise InconclusiveError("witness temporarily unavailable; pending bytes are retained")

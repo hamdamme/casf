@@ -39,3 +39,20 @@ def test_plain_service_unavailable_is_retryable(tmp_path, monkeypatch):
             writer.submit_pending(LOG_ID, "http://127.0.0.1:1", "test-token")
     finally:
         writer.close()
+
+
+def test_transport_value_error_cannot_expose_credentials(tmp_path, monkeypatch):
+    writer = _writer(tmp_path / "writer.db")
+    try:
+        writer.create_checkpoint(LOG_ID)
+
+        def invalid(*args, **kwargs):
+            raise ValueError("invalid header containing synthetic-secret-token")
+
+        monkeypatch.setattr("casf.writer.http_request", invalid)
+        with pytest.raises(CasfError, match="invalid witness request configuration") as error:
+            writer.submit_pending(LOG_ID, "http://127.0.0.1:1", "synthetic-secret-token")
+        assert "synthetic-secret-token" not in str(error.value)
+        assert writer.pending_checkpoint(LOG_ID) is not None
+    finally:
+        writer.close()
