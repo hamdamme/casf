@@ -183,7 +183,6 @@ def test_retry_succeeds_after_brief_contention(tmp_path):
         # sqlite3 connections are bound to their creating thread
         blocker = sqlite3.connect(db)
         blocker.execute("BEGIN IMMEDIATE")
-        blocker.execute("INSERT INTO heads VALUES ('tmp', 0, 'ab', 0)")
         time_mod.sleep(0.3)
         blocker.rollback()
         blocker.close()

@@ -1,8 +1,7 @@
 """SQLite adapter: transactions, constraints, settings (SPEC §17).
 
 Stores manifests, records, heads, checkpoints, receipts and the pending
-submission outbox. Relationship constraints remain an explicit conformance
-task; enabling foreign_keys does not create relationships in this schema.
+submission outbox, with versioned schemas and relationship constraints.
 
 Envelopes are stored as canonical UTF-8 BLOBs; table indexes are
 derived lookup data, never authenticated facts.
@@ -14,69 +13,10 @@ import tempfile
 from pathlib import Path
 
 from casf.errors import CasfError
+from casf.storage.schema import WRITER as SCHEMA
+from casf.storage.versioning import initialize, validate_schema
 
 __all__ = ["Database"]
-
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS manifests(
-    log_id TEXT PRIMARY KEY,
-    manifest_hash TEXT NOT NULL UNIQUE,
-    envelope BLOB NOT NULL
-);
-CREATE TABLE IF NOT EXISTS records(
-    log_id TEXT NOT NULL,
-    seq INTEGER NOT NULL,
-    event_id TEXT NOT NULL,
-    request_digest TEXT NOT NULL,
-    record_hash TEXT NOT NULL,
-    envelope BLOB NOT NULL,
-    UNIQUE(log_id, seq),
-    UNIQUE(log_id, event_id)
-);
-CREATE TABLE IF NOT EXISTS heads(
-    log_id TEXT PRIMARY KEY,
-    count INTEGER NOT NULL,
-    head_hash TEXT NOT NULL,
-    sealed INTEGER NOT NULL DEFAULT 0
-);
-CREATE TABLE IF NOT EXISTS checkpoints(
-    log_id TEXT NOT NULL,
-    idx INTEGER NOT NULL,
-    count INTEGER NOT NULL,
-    checkpoint_hash TEXT NOT NULL,
-    envelope BLOB NOT NULL,
-    state TEXT NOT NULL,
-    UNIQUE(log_id, idx),
-    UNIQUE(log_id, checkpoint_hash)
-);
-CREATE TABLE IF NOT EXISTS receipts(
-    checkpoint_hash TEXT PRIMARY KEY,
-    envelope BLOB NOT NULL
-);
-CREATE TABLE IF NOT EXISTS outbox(
-    log_id TEXT PRIMARY KEY,
-    checkpoint_hash TEXT NOT NULL,
-    from_seq INTEGER NOT NULL,
-    to_seq INTEGER NOT NULL,
-    attempts INTEGER NOT NULL DEFAULT 0,
-    next_attempt_at REAL NOT NULL DEFAULT 0
-);
-CREATE TABLE IF NOT EXISTS checkpoint_schedule(
-    log_id TEXT PRIMARY KEY,
-    checkpoint_hash TEXT NOT NULL,
-    next_checkpoint_at REAL NOT NULL
-);
--- Append-only guards (SPEC §17). These deter accidental modification;
--- they are not protection against a file administrator.
-CREATE TRIGGER IF NOT EXISTS records_no_update BEFORE UPDATE ON records
-BEGIN SELECT RAISE(ABORT, 'records are append only'); END;
-CREATE TRIGGER IF NOT EXISTS records_no_delete BEFORE DELETE ON records
-BEGIN SELECT RAISE(ABORT, 'records are append only'); END;
-CREATE TRIGGER IF NOT EXISTS manifests_no_update BEFORE UPDATE ON manifests
-BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
-CREATE TRIGGER IF NOT EXISTS manifests_no_delete BEFORE DELETE ON manifests
-BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
-"""
 
 
 class Database:
@@ -91,6 +31,12 @@ class Database:
         con = self.connection
         try:
             con.execute(f"PRAGMA busy_timeout={int(busy_timeout_ms)}")
+            # Refuse unsupported stores before changing their journal settings.
+            con.execute("BEGIN")
+            try:
+                empty = validate_schema(con, schema, allow_empty=True)
+            finally:
+                con.rollback()
             con.execute("PRAGMA journal_mode=WAL")
             con.execute("PRAGMA synchronous=FULL")
             con.execute("PRAGMA foreign_keys=ON")
@@ -101,8 +47,8 @@ class Database:
                 raise CasfError("synchronous=FULL is required and was not applied")
             if con.execute("PRAGMA foreign_keys").fetchone()[0] != 1:
                 raise CasfError("foreign_keys=ON is required and was not applied")
-            con.executescript(schema)
-            con.commit()
+            if empty:
+                initialize(con, schema)
         except BaseException:
             con.close()
             raise

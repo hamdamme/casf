@@ -30,76 +30,12 @@ from casf.canonical.limits import SAFE_INT_MAX, WITNESS_MAX_RECORDS
 from casf.errors import CasfError, NoCheckpointError, SchemaError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
+from casf.storage.schema import WITNESS as SCHEMA
 from casf.types import JsonObject
 
 __all__ = ["ConflictError", "NoCheckpointError", "UnknownLogError", "Witness"]
 
 ZERO_HASH = "00" * 32  # hex(Z), the null previous digest (SPEC §13)
-
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS manifests(
-    log_id TEXT PRIMARY KEY,
-    manifest_hash TEXT NOT NULL UNIQUE,
-    envelope BLOB NOT NULL
-);
-CREATE TABLE IF NOT EXISTS w_state(
-    log_id TEXT PRIMARY KEY,
-    count INTEGER NOT NULL,
-    head_hash TEXT NOT NULL,
-    checkpoint_index INTEGER NOT NULL,
-    checkpoint_hash TEXT NOT NULL,
-    receipt_hash TEXT NOT NULL,
-    sealed INTEGER NOT NULL DEFAULT 0
-);
-CREATE TABLE IF NOT EXISTS w_status(
-    manifest_hash TEXT PRIMARY KEY,
-    serial INTEGER NOT NULL CHECK(serial >= 1),
-    status TEXT NOT NULL CHECK(status IN ('active', 'revoked'))
-);
-CREATE TABLE IF NOT EXISTS w_checkpoints(
-    log_id TEXT NOT NULL,
-    idx INTEGER NOT NULL,
-    checkpoint_hash TEXT NOT NULL,
-    envelope BLOB NOT NULL,
-    UNIQUE(log_id, idx),
-    UNIQUE(log_id, checkpoint_hash)
-);
-CREATE TABLE IF NOT EXISTS w_receipts(
-    checkpoint_hash TEXT PRIMARY KEY,
-    envelope BLOB NOT NULL
-);
-CREATE TABLE IF NOT EXISTS w_record_digests(
-    log_id TEXT NOT NULL,
-    seq INTEGER NOT NULL,
-    record_hash TEXT NOT NULL,
-    UNIQUE(log_id, seq)
-);
--- Append-only guards (SPEC §17), same intent as the writer store.
-CREATE TRIGGER IF NOT EXISTS w_checkpoints_no_update
-BEFORE UPDATE ON w_checkpoints
-BEGIN SELECT RAISE(ABORT, 'checkpoints are append only'); END;
-CREATE TRIGGER IF NOT EXISTS w_checkpoints_no_delete
-BEFORE DELETE ON w_checkpoints
-BEGIN SELECT RAISE(ABORT, 'checkpoints are append only'); END;
-CREATE TRIGGER IF NOT EXISTS w_receipts_no_update
-BEFORE UPDATE ON w_receipts
-BEGIN SELECT RAISE(ABORT, 'receipts are immutable'); END;
-CREATE TRIGGER IF NOT EXISTS w_receipts_no_delete
-BEFORE DELETE ON w_receipts
-BEGIN SELECT RAISE(ABORT, 'receipts are immutable'); END;
-CREATE TRIGGER IF NOT EXISTS w_digests_no_update
-BEFORE UPDATE ON w_record_digests
-BEGIN SELECT RAISE(ABORT, 'record digests are append only'); END;
-CREATE TRIGGER IF NOT EXISTS w_digests_no_delete
-BEFORE DELETE ON w_record_digests
-BEGIN SELECT RAISE(ABORT, 'record digests are append only'); END;
-CREATE TRIGGER IF NOT EXISTS w_manifests_no_update
-BEFORE UPDATE ON manifests
-BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
-CREATE TRIGGER IF NOT EXISTS w_manifests_no_delete
-BEFORE DELETE ON manifests
-BEGIN SELECT RAISE(ABORT, 'manifests are immutable'); END;
-"""
 
 
 class ConflictError(CasfError):

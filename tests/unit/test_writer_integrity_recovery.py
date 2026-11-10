@@ -66,6 +66,8 @@ def test_startup_rejects_corrupt_records_and_indexes(tmp_path, change):
     _append(writer, 2)
     writer.close()
     with sqlite3.connect(db) as con:
+        trigger = con.execute(
+                "SELECT sql FROM sqlite_master WHERE name='records_no_update'").fetchone()[0]
         con.execute("DROP TRIGGER records_no_update")
         blob = con.execute("SELECT envelope FROM records WHERE seq = 1").fetchone()[0]
         env = json.loads(blob)
@@ -79,13 +81,17 @@ def test_startup_rejects_corrupt_records_and_indexes(tmp_path, change):
             env["signature"] = crypto.sign_record(LOG, env["body"])
         elif change == "sequence":
             env["body"]["seq"] = 9
-        elif change in {"request_digest", "event_id", "record_hash"}:
+        elif change == "event_id":
+            con.execute("UPDATE records SET event_id=? WHERE seq=1",
+                        ("123e4567-e89b-42d3-a456-426600000099",))
+        elif change in {"request_digest", "record_hash"}:
             con.execute(f"UPDATE records SET {change} = ? WHERE seq = 1", ("ab" * 32,))
         elif change == "orphan":
-            con.execute("UPDATE records SET log_id = 'orphan' WHERE seq = 1")
+            con.execute("UPDATE records SET log_id = '123e4567-e89b-42d3-a456-426600000099' WHERE seq = 1")
         else:
             con.execute("DELETE FROM heads")
         con.execute("UPDATE records SET envelope = ? WHERE seq = 1", (canonicalize(env),))
+        con.execute(trigger)
     with pytest.raises(CasfError):
         Writer(db, LOG, local_only=True)
 
@@ -181,7 +187,7 @@ def test_startup_rejects_pending_outbox_range_change(tmp_path):
     writer.create_checkpoint(LOG_ID)
     writer.close()
     with sqlite3.connect(db) as con:
-        con.execute("UPDATE outbox SET from_seq = 0")
+        con.execute("UPDATE outbox SET from_seq = 2")
     with pytest.raises(CasfError, match="outbox"):
         Writer(db, LOG, local_only=True)
 
