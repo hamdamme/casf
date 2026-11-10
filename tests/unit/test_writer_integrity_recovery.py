@@ -1,4 +1,4 @@
-"""R02/R04/R08/R09: verified startup and preservation of restore evidence."""
+"""R02/R04/R05/R08/R09: verified startup and preservation of restore evidence."""
 
 import json
 import os
@@ -100,6 +100,42 @@ def test_startup_checks_records_without_a_private_key(tmp_path):
         assert list(reader.records(LOG_ID)) == [original]
     finally:
         reader.close()
+
+
+@pytest.mark.parametrize("accepted_count", [0, 2])
+@pytest.mark.parametrize("field", ["manifest_hash", "previous_receipt_hash"])
+def test_receipt_rejects_wrong_binding_before_commit(tmp_path, accepted_count, field):
+    db = tmp_path / "writer.db"
+    writer = _writer(db)
+    witness = Witness(tmp_path / "witness.db", WIT,
+                      authority_keys={crypto.key_id(AUTH_PUB): AUTH_PUB})
+    register_active(witness, _manifest_envelope(), AUTH)
+    try:
+        for n in range(1, accepted_count + 1):
+            record = _append(writer, n)
+            cp = writer.create_checkpoint(LOG_ID)
+            writer.record_receipt(LOG_ID, witness.submit(LOG_ID, cp, [record]))
+        record = _append(writer, accepted_count + 1)
+        cp = writer.create_checkpoint(LOG_ID)
+        valid = witness.submit(LOG_ID, cp, [record])
+        body = dict(valid["body"], **{field: "ab" * 32})
+        invalid = {"body": body, "receipt_hash": crypto.digest_receipt(body),
+                   "signature": crypto.sign_receipt(WIT, body)}
+        pending = writer.pending_checkpoint(LOG_ID)
+        with pytest.raises(CasfError):
+            writer.record_receipt(LOG_ID, invalid)
+        assert writer.pending_checkpoint(LOG_ID) == pending
+        writer.close()
+        writer = Writer(db, LOG)
+        assert writer.pending_checkpoint(LOG_ID) == pending
+        writer.record_receipt(LOG_ID, valid)
+        assert writer.pending_checkpoint(LOG_ID) is None
+        writer.close()
+        writer = Writer(db, LOG)
+        assert len(list(writer.records(LOG_ID))) == accepted_count + 1
+    finally:
+        writer.close()
+        witness.close()
 
 
 @pytest.mark.parametrize("change", [
@@ -312,6 +348,39 @@ def test_restore_replays_a_supplied_pending_final_checkpoint(tmp_path):
         finally:
             restored.close()
     finally:
+        witness.close()
+
+
+def test_restore_pending_nonfinal_with_unwitnessed_suffix(tmp_path):
+    witness, _dest = _witnessed(tmp_path)
+    writer = Writer(tmp_path / "writer.db", LOG)
+    try:
+        _append(writer, 3)
+        pending = writer.create_checkpoint(LOG_ID)
+        _append(writer, 4)
+        dest = writer.export_bundle(LOG_ID, tmp_path / "pending-bundle")
+        with (dest / "checkpoints.jsonl").open("ab") as stream:
+            stream.write(canonicalize(pending) + b"\n")
+        restored = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, dest)
+        try:
+            assert restored.pending_checkpoint(LOG_ID) == (pending, 3, 3)
+            _append(restored, 5)
+            records = list(restored.records(LOG_ID))
+            restored.record_receipt(LOG_ID, witness.submit(LOG_ID, pending, records[2:3]))
+            next_cp = restored.create_checkpoint(LOG_ID)
+            assert next_cp["body"]["index"] == 3
+            assert next_cp["body"]["previous_checkpoint_hash"] == pending["checkpoint_hash"]
+            restored.record_receipt(LOG_ID, witness.submit(LOG_ID, next_cp, records[3:]))
+        finally:
+            restored.close()
+        reopened = Writer(tmp_path / "restored.db", LOG)
+        try:
+            assert len(list(reopened.records(LOG_ID))) == 5
+            assert reopened.pending_checkpoint(LOG_ID) is None
+        finally:
+            reopened.close()
+    finally:
+        writer.close()
         witness.close()
 
 

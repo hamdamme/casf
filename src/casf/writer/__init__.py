@@ -722,6 +722,8 @@ class Writer:
         if body["log_id"] != log_id \
                 or body["witness_id"] != manifest["witness_id"]:
             raise CasfError("receipt does not belong to this log")
+        if body["manifest_hash"] != self._manifest_hash(log_id):
+            raise CasfError("receipt manifest binding is invalid")
         witness_key = manifest["witness_public_key"]
         if not isinstance(witness_key, str):
             raise CasfError("stored manifest is corrupt")
@@ -753,6 +755,24 @@ class Writer:
                     or body["checkpoint_index"] != cp_body["index"]:
                 raise CasfError("receipt view disagrees with the pending "
                                 "checkpoint")
+            previous_digest = ZERO_HASH
+            index = cp_body["index"]
+            if type(index) is not int:
+                raise CasfError("stored checkpoint index is invalid")
+            if index != 0:
+                previous = con.execute(
+                    "SELECT r.envelope FROM receipts r JOIN checkpoints c "
+                    "ON c.checkpoint_hash = r.checkpoint_hash "
+                    "WHERE c.log_id = ? AND c.idx = ? AND c.state = 'accepted'",
+                    (log_id, index - 1)).fetchone()
+                if previous is None:
+                    raise CasfError("previous checkpoint receipt is missing")
+                digest = self._stored_object(previous[0]).get("receipt_hash")
+                if not isinstance(digest, str):
+                    raise CasfError("stored previous receipt hash is invalid")
+                previous_digest = digest
+            if body["previous_receipt_hash"] != previous_digest:
+                raise CasfError("receipt chain disagrees with the previous receipt")
             con.execute("INSERT INTO receipts VALUES (?, ?)",
                         (pending[0], canonicalize(receipt)))
             con.execute(

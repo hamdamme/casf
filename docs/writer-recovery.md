@@ -21,6 +21,11 @@ failed startup. Supplying the wrong signing key cannot append a record or
 create a checkpoint for an existing log. A keyless writer can still read and
 export a locally valid store.
 
+Incoming receipts must match the manifest and immediately preceding accepted
+receipt before the writer clears the pending checkpoint. A rejected receipt
+leaves the outbox unchanged, including across restart, so a valid receipt can
+still complete the pending submission.
+
 ## Bundle restore
 
 `Writer.restore_from_bundle` requires a new destination. It validates records
@@ -76,7 +81,8 @@ not claimed by these fixes.
 signatures and indexes; malformed checkpoint/receipt chains; lost seals;
 pending outbox mismatch; accepted and pending final restore; continuation
 against the original witness; bad external anchor inputs; failed restore
-cleanup; an interrupted restore process; and wrong signing keys. Requirement
-links include R02, R04, R08 and
-R09 with T03, T04, T14 and T15. Existing concurrency and process-crash tests
-continue to exercise snapshot behavior and transaction boundaries.
+cleanup; an interrupted restore process; and wrong signing keys. Additional
+coverage includes incoming receipt bindings and recovery of a nonfinal
+pending checkpoint with an unwitnessed suffix. Requirement links include R02,
+R04, R05, R08 and R09 with T03, T04, T08, T14 and T15. Existing concurrency and
+process-crash tests continue to exercise snapshot behavior and transaction boundaries.

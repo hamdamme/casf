@@ -115,10 +115,11 @@
       "remaining_review": ""
     },
     "T08": {
-      "assertion_scope": "Reject invalid extensions and conflicting checkpoint reuse without advancing state.",
+      "assertion_scope": "Reject invalid extensions, conflicting checkpoint reuse and mismatching receipt bindings without advancing state.",
       "nodeids": [
         "tests/unit/test_witness.py::test_bad_extension_rejected_state_unchanged",
-        "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict"
+        "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict",
+        "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit"
       ],
       "remaining_review": ""
     },
@@ -200,6 +201,7 @@
         "tests/unit/test_writer_integrity_recovery.py::test_restore_continues_checkpoint_and_receipt_chains",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_checkpoint_evidence",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_replays_a_supplied_pending_final_checkpoint",
+        "tests/unit/test_writer_integrity_recovery.py::test_restore_pending_nonfinal_with_unwitnessed_suffix",
         "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_checkpoint_journal",
         "tests/unit/test_writer_integrity_recovery.py::test_process_exit_during_restore_never_commits_partial_history",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_accepts_a_matching_older_anchor",
