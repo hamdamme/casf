@@ -164,7 +164,9 @@
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_forged_authority_during_init",
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
         "tests/unit/test_cli_writer_trust.py::test_cli_requires_provisioned_log",
-        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version"
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version",
+        "tests/unit/test_trust_config.py::test_trust_loader_rejects_invalid_policy_values",
+        "tests/unit/test_trust_config.py::test_invalid_policy_cannot_initialize_verifier_state"
       ],
       "remaining_review": ""
     },

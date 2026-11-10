@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 ### Security
+- Reject malformed trust policy booleans, modes, budgets, serials and identity
+  pins before use; string values cannot enable unwitnessed verification.
 - Authenticate manifest authority signatures and expected log, manifest and
   witness identities when independent `trust_pins` are supplied to the writer
   or restore API. Writer CLI commands accept `--trust`; omitted pins retain

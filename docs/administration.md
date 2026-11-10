@@ -54,6 +54,12 @@ the generated trust pins. The trust command checks the manifest signature;
 it does not establish that the key belongs to the person or service you
 intended.
 
+Trust settings are checked before use. `allow_unwitnessed` must be a JSON
+boolean, not a string or number. Mode must be `integrity`, `anchored` or
+`online`; chain budgets and minimum status serials must be positive safe
+integers. Manifest and witness pins must be lowercase SHA-256 digests.
+Malformed settings fail before accepted verifier state is saved.
+
 ## Use pins with writer commands
 
 ```sh
