@@ -219,6 +219,10 @@ def _receipt(service: WitnessService, handler: _Request,
             _error(handler, 404, "LOG_NOT_FOUND", "log is not registered")
             return
         checkpoint, receipt = service.witness.receipt(checkpoint_hash)
+        for envelope in (checkpoint, receipt):
+            body = envelope.get("body")
+            if not isinstance(body, dict) or body.get("log_id") != log_id:
+                raise CasfError("receipt does not belong to the requested log")
     except CasfError:
         _error(handler, 404, "RECEIPT_NOT_FOUND",
                "no stored receipt for this checkpoint digest")

@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 30 merged as `65a0252ace032e5a5dae0a85d3d959b4c1b1e399`. The Desktop main checkout was fast-forwarded to that commit. The next implementation branch is `fix/writer-trust-pins`; the original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 30 merged as `65a0252ace032e5a5dae0a85d3d959b4c1b1e399`. The Desktop main checkout was fast-forwarded to that commit. PR 31 remains a draft. Five follow-up batches build on it in order; the original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 complete. Phase 2, Session 3 in progress; the first implementation batch also addresses part of Session 4.
 
@@ -23,9 +23,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 2 | 4 — Restore and recovery | F07 | Authenticate restore evidence and preserve final seal, checkpoints and receipts; address A01 | In progress |
 | 2 | 4 — Restore and recovery | F08 | Verify old backup, missing evidence and interrupted recovery behavior | In progress |
 | 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Pending |
-| 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | Pending |
+| 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | In progress |
 | 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Pending |
-| 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | Pending |
+| 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | In progress |
 | 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Pending |
 | 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Pending |
 | 3 | 8 — Crashes and full validation | F15 | Exercise process crashes, concurrency, interrupted submissions and recovery | Pending |
@@ -51,17 +51,16 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- Completed F03: recorded the experimental release boundary, planned next review candidate 0.1.0rc2, supported validation targets, support limits and final release gates. The package version stays unchanged until final candidate preparation.
-- Completed F04: mapped all eight audit findings to completion tasks and acceptance evidence.
-- F05/F06: full local record/index/journal verification and wrong-signing-key protection merged in PR 30; F06 is complete. The next batch adds explicitly supplied authority, log, manifest and witness pins during creation, startup and restore, plus CLI `--trust` support. These changes await review. Compatibility calls without pins remain local-only; status, default-policy completion and fresh external-state reconciliation remain open under F05.
-- F07/F08: restore now preserves verified checkpoint/receipt chains, checkpoint indices, final seals and supplied pending tails. Added malformed-evidence, anchor, backup, continuation and process-interruption checks. Restore commits manifest, records and journal atomically. External anchor authentication/currentness and broader failure coverage remain open.
-- F19: removed the unused alternate test runner and three empty test-directory marker files. Updated coverage and recovery guidance. Incorporated merged PR 29 and reconciled the current reference with the startup/restore changes. Broader executable-documentation validation remains open.
-- Review follow-up: rejected incoming receipts that name the wrong manifest or previous receipt before committing them. Four regressions first reproduced the mismatch between receipt acceptance and startup verification; they now pass, including restart and recovery with the valid receipt. Added coverage for a restored nonfinal pending checkpoint with later unwitnessed records.
-- Verification: PR 30 passed 455 tests locally and in all six hosted jobs before merge. The trust-pin batch adds 28 cases; all 483 tests pass locally, and Ruff and mypy pass. Hosted results must identify the final PR head; prior results do not certify later changes. These are review-build checks, not completion of final-candidate F21/F22.
-- Preservation: the trust-pin batch leaves specification bytes, frozen vectors, research and historical experiment results unchanged from merged PR 30. No experiments were rerun or releases published.
+- F06 remains complete after PR 30 merged. The five follow-up batches are awaiting review; partial work remains in the remaining totals.
+- F05: writer manifest pins are in draft PR 31. The next batch rejects malformed trust settings, including string values that could enable unwitnessed verification. Full default startup trust and status policy remain open.
+- F07/F08: signed external checkpoint/receipt anchors are authenticated before restore; missing or conflicting journal evidence is rejected. Matching pending tails can recover their receipt. Optional active-status policy checks bundled authority statements and the provisioned serial minimum before creating the destination. Fresh witness reconciliation and the broader recovery failure matrix remain open.
+- F10: receipt lookup can recover an accepted pending checkpoint after restart without regenerating or resubmitting it. Failures retain the pending bytes; witness lookups enforce the requested log. This is an explicit recovery operation, not an automatic worker.
+- F12: the new restore CLI requires trust pins, active signed status and signed external anchors. Receipt recovery requires trust pins but no signing key. Both commands report that freshness was not checked. Broader API/report requirements remain open.
+- Validation: each follow-up PR records its exact tested head and local/hosted results. The new regressions cover malformed configuration, signed anchors, status, CLI restore, receipt recovery and log-bound lookups. Review builds do not complete final candidate F21/F22.
+- Preservation: specification bytes, frozen vectors, research and historical experiment results remain unchanged from merged PR 30. No release or experiment publication was performed.
 - Remaining: 23 tasks, 12 sessions, 5 phases.
-- User action: review the trust-pin changes and their checks before merge.
-- Next task: complete status and default trust policy, fresh witness reconciliation and authenticated external anchors under F05/F07. Full specification conformance is not yet claimed.
+- User action: review the draft stack in dependency order, starting with PR 31.
+- Next task: complete default startup status/trust policy and fresh witness reconciliation. Full specification conformance is not yet claimed.
 
 ## Evidence
 

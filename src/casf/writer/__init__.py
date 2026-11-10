@@ -28,7 +28,7 @@ from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
-from casf.errors import CasfError, SchemaError, TrustError
+from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.transport import ResponseLimitError
@@ -908,6 +908,41 @@ class Writer:
         receipt = data["receipt"]
         if not isinstance(receipt, dict):
             raise CasfError("witness answer carried no receipt object")
+        self.record_receipt(log_id, receipt)
+        return receipt
+
+    def recover_pending_receipt(self, log_id: str, base_url: str, token: str, *,
+                                timeout: float = 10.0) -> JsonObject:
+        """Recover an already accepted receipt using the pending digest.
+
+        Requires independent manifest pins, but no private signing key.
+        Failure preserves the outbox; lookup does not establish freshness.
+        """
+        if self._trust_pins is None:
+            raise TrustError("receipt recovery requires independent trust pins")
+        context = self._manifest_context(self.manifest_envelope(log_id))
+        pending = self.pending_checkpoint(log_id)
+        if pending is None:
+            raise InconclusiveError("no pending checkpoint for receipt recovery")
+        checkpoint = pending[0]
+        try:
+            status, payload = http_request(
+                base_url, "GET", f"/v1/logs/{log_id}/receipts/{checkpoint['checkpoint_hash']}",
+                token, b"", timeout=timeout)
+        except (OSError, http.client.HTTPException, ResponseLimitError) as exc:
+            raise InconclusiveError("receipt lookup unavailable; pending checkpoint unchanged") from exc
+        except ValueError as exc:
+            raise SchemaError("invalid witness request configuration") from exc
+        if status != 200:
+            raise InconclusiveError("receipt unavailable; pending checkpoint unchanged")
+        data = parse(payload)
+        if not isinstance(data, dict) or set(data) != {"checkpoint", "receipt"} \
+                or not isinstance(data["receipt"], dict):
+            raise SchemaError("receipt lookup must return checkpoint and receipt objects")
+        if data["checkpoint"] != checkpoint:
+            raise CasfError("receipt lookup returned a different pending checkpoint")
+        receipt = data["receipt"]
+        context.anchor(checkpoint, receipt)
         self.record_receipt(log_id, receipt)
         return receipt
 

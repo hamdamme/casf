@@ -463,6 +463,25 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_witness_recover(args: argparse.Namespace) -> int:
+    writer = Writer(args.db, trust_pins=_writer_trust_pins(args))
+    try:
+        log_id = _sole_log_id(args.db)
+        receipt = writer.recover_pending_receipt(log_id, args.url,
+                                                  _secret(args.token_env).decode())
+        count = _count_of(receipt)
+        _print(args, {"recovered": True, "count": count, "freshness_checked": False},
+               f"recovered receipt through count {count}; fresh witness state was not checked")
+    except (SchemaError, TrustError, InconclusiveError):
+        raise
+    except CasfError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        writer.close()
+    return 0
+
+
 def _cmd_seal(args: argparse.Namespace) -> int:
     writer = _writer(args)
     log_id = _sole_log_id(args.db)
@@ -861,6 +880,14 @@ def _parser() -> argparse.ArgumentParser:
     submit.add_argument("--token-env", default=TOKEN_ENV)
     submit.add_argument("--passphrase-env", default=PASS_ENV)
     submit.set_defaults(func=_cmd_witness_submit)
+
+    recover = wit_sub.add_parser("recover", parents=[common],
+                                 help="retrieve an accepted receipt for the pending checkpoint")
+    recover.add_argument("--db", required=True)
+    recover.add_argument("--trust", required=True)
+    recover.add_argument("--url", required=True)
+    recover.add_argument("--token-env", default=TOKEN_ENV)
+    recover.set_defaults(func=_cmd_witness_recover)
 
     export = sub.add_parser("export", parents=[common])
     export.add_argument("--db", required=True)
