@@ -41,6 +41,9 @@ its checks.
 - [Verification report](../verification.md) regressions cover canonical enums,
   missing-evidence verdicts, version and schema failures, unchecked dimensions,
   strict status/pin validation, CLI exit categories and checkpoint non-advancement.
+- [Typed log operations](../log-api.md) cover immutable protocol values,
+  manifest/receipt mutation after validation, strict checkpoint flags, failed
+  commits, exact retry bytes, export snapshot metadata and authorization checks.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest

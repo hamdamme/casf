@@ -87,10 +87,10 @@ def validate_body(body: JsonValue, fields: dict[str, Field], where: str) -> None
                 raise SchemaError(f"{where}.{name}: expected timestamp string")
             _check_timestamp(value, f"{where}.{name}")
         elif f.kind == "digest":
-            if not isinstance(value, str) or not DIGEST_RE.match(value):
+            if not isinstance(value, str) or not DIGEST_RE.fullmatch(value):
                 raise SchemaError(f"{where}.{name}: expected 64 lowercase hex digits")
         elif f.kind == "b64url":
-            if not isinstance(value, str) or not B64URL_RE.match(value):
+            if not isinstance(value, str) or not B64URL_RE.fullmatch(value):
                 raise SchemaError(f"{where}.{name}: expected unpadded base64url")
         elif f.kind == "uuid":
             if not isinstance(value, str) or not UUID_RE.fullmatch(value):

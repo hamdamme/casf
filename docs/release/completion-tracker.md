@@ -2,7 +2,7 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 44 is merged into main at `625666bd804d99e68f0abad6dc7cbd09245d7e3a`. The verification-report batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 45 is merged into main at `d09a628e91d856d3c60ecf6856c4cfb1ec9572d0`. The typed-operation batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
 **Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration is complete, and public interface conformance is in progress.
 
@@ -51,22 +51,23 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 44 is merged. Immutable append requests, commit/witness observations and CLI append reporting have been accepted. F12 remains in progress.
-- This review batch aligns verification dimensions and missing-evidence verdicts with SPEC section 15. Diagnostic JSON advances to version 2; `overall` and the compatibility `result` field carry the same verdict.
-- Missing trust, status or anchor evidence is inconclusive. Invalid signatures, schemas, identity conflicts, revocation and proven anchor mismatches remain failures. Unchecked dimensions and unknown witness coverage are explicit.
-- Trust checks reject unrecognized signed status values and keys configured under mismatching identifiers. CLI reports preserve specific error categories, and non-PASS reports cannot advance accepted checkpoints or authorize writer startup/restore.
-- Validation: exact local and hosted results belong to the draft PR. Tests cover version and enum migration, absent evidence, failure precedence, strict trust validation, CLI exits and retained-state behavior.
+- PR 45 is merged. Report JSON version 2, verdict semantics and strict status/key validation have been accepted. F12 remains in progress.
+- This review batch adds a bound LogHandle and immutable Manifest, Checkpoint, WitnessResult and ExportResult values. Existing Writer dictionary, manifest-hash and Path results remain compatible.
+- Manifest creation and receipt recording now own caller input before validation/storage. Regression tests reproduce and fix mutation of already-validated signatures. Checkpoint final flags and fixed protocol encodings reject invalid input.
+- Typed operations preserve commit, retry and authorization boundaries. Export results carry metadata from the published snapshot, even when another writer appends concurrently. Non-success outcomes never return stored/published success observations.
+- Validation: exact local and hosted results belong to the draft PR. Tests cover ownership, invalid inputs, commit failures, retry identity, final seals, export publication failures and retained-state authorization.
 - Preservation: authenticated formats, frozen vectors, storage schema version 1 and historical research outputs are unchanged. No release was published.
-- Remaining F12 acceptance: other public operation result/interface contracts and incremental verification. The report batch awaits review; Session 6 and Phase 2 stay open.
+- Remaining F12 acceptance: the public verify-bundle convenience interface and incremental verification. The typed operation batch awaits review; Session 6 and Phase 2 stay open.
 - Remaining: 17 tasks, 9 sessions and 5 phases. F12 stays in the remaining total after this batch is accepted.
-- User action: review the verification-report draft PR and its checks. Nothing is merged or released by this work.
-- Next task: continue the remaining F12 public operation results, followed by incremental verification and the later validation gates.
+- User action: review the typed-operation draft PR and its checks. Nothing is merged or released by this work.
+- Next task: complete the remaining verifier interface and incremental verification, followed by the later validation gates.
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
+- [Typed log operations and result boundaries](../log-api.md)
 - [Typed append requests and results](../append-api.md)
 - [Prefix export and complete diagnostics](../export-and-reports.md)
 - [Storage integrity and migration](../storage-migrations.md)

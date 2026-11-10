@@ -31,6 +31,7 @@ from casf.canonical.limits import MAX_CANONICAL_BODY_BYTES, MAX_CHECKPOINT_BATCH
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.filesystem import rename_directory_exclusive, sync_directory
 from casf.model.api import AppendResult, EventRequest, WitnessState
+from casf.model.operations import ExportResult, Manifest, WitnessResult
 from casf.model.schema import validate_protocol_body
 from casf.online import LatestView
 from casf.storage import Database
@@ -303,6 +304,7 @@ class Writer:
         """Store the manifest and genesis transactionally (SPEC §10)."""
         if self._startup_policy is not None:
             raise TrustError("initialize a separate verified writer for a new log")
+        manifest_envelope = Manifest(manifest_envelope).to_dict()
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -516,6 +518,11 @@ class Writer:
         ``through=None`` selects the snapshot's head. Accepted evidence is
         limited to that prefix. A pending final seal still blocks export.
         """
+        return self.export_bundle_result(log_id, dest_dir, through=through).destination
+
+    def export_bundle_result(self, log_id: str, dest_dir: str | Path, *,
+                             through: int | None = None) -> ExportResult:
+        """Return metadata from the published snapshot without rereading the store."""
         if through is not None and (type(through) is not int or not 0 <= through <= SAFE_INT_MAX):
             raise SchemaError("through must be a nonnegative safe integer")
         dest = Path(dest_dir)
@@ -550,6 +557,7 @@ class Writer:
                     "manifest_hash": manifest_hash, "through": limit, "record_count": limit,
                     "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
                 }
+                result = ExportResult(dest, metadata)
                 self._write_member(temporary / "manifest.json", manifest + b"\n")
                 self._write_member(temporary / "records.jsonl", self._export_records(log_id, limit))
                 self._write_member(temporary / "checkpoints.jsonl",
@@ -565,7 +573,7 @@ class Writer:
             except FileExistsError as exc:
                 raise CasfError("export destination already exists") from exc
             sync_directory(dest.absolute().parent)
-        return dest
+        return result
 
     def _export_records(self, log_id: str, through: int) -> Iterator[bytes]:
         seen = 0
@@ -779,6 +787,8 @@ class Writer:
         stored. A final checkpoint covers the whole committed head
         and seals appends in the same transaction.
         """
+        if type(final) is not bool:
+            raise SchemaError("final must be boolean")
         log_priv, _log_pub, log_key_id = self._signing_key()
         context = self._manifest_context(self.manifest_envelope(log_id))
         if context.body["log_key_id"] != log_key_id:
@@ -838,7 +848,7 @@ class Writer:
                 "key_id": log_key_id,
                 "issued_at": datetime.now(UTC).strftime(
                     "%Y-%m-%dT%H:%M:%S.%fZ"),
-                "final": bool(final),
+                "final": final,
             }
             validate_protocol_body("checkpoint", body)
             envelope: JsonObject = {
@@ -890,6 +900,7 @@ class Writer:
         The outbox entry clears and the checkpoint becomes accepted in
         the same transaction (SPEC §12).
         """
+        receipt = WitnessResult(receipt).receipt
         if set(receipt) != {"body", "receipt_hash", "signature"}:
             raise SchemaError("receipt envelope must be exactly "
                               "body, receipt_hash, signature")

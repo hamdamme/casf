@@ -1,6 +1,8 @@
 # Prefix exports and verification reports
 
 `Writer.export_bundle` exports one log and returns the destination `Path`.
+`Writer.export_bundle_result` and the [typed log handle](log-api.md) return an
+immutable `ExportResult` with metadata from that same published snapshot.
 The optional `through` argument selects a contiguous prefix beginning at
 record 1. Omitting it exports the snapshot's entire committed head. Zero
 exports an empty history; negative values, booleans, fractions and values
@@ -90,8 +92,8 @@ to the new values, and old string values are not accepted as canonical enums.
 `Report.overall` reads the existing `result` field.
 
 [ADR-013](adr/ADR-013-verification-report-semantics.md) records the decision and
-failure precedence. The immutable append API is implemented; other public
-operation results and incremental verification remain open interface work.
+failure precedence. Typed writer operation results are implemented; the verify-bundle convenience
+interface and incremental verification remain open interface work.
 Historical reports retain their original labels and source revisions.
 
 See [ADR-011](adr/ADR-011-export-and-report-interfaces.md),
