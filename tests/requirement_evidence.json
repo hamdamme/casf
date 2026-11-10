@@ -120,7 +120,9 @@
       "nodeids": [
         "tests/unit/test_witness.py::test_bad_extension_rejected_state_unchanged",
         "tests/unit/test_witness.py::test_reused_index_new_digest_is_conflict",
-        "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit"
+        "tests/unit/test_writer_integrity_recovery.py::test_receipt_rejects_wrong_binding_before_commit",
+        "tests/unit/test_receipt_recovery.py::test_failed_receipt_recovery_preserves_pending_bytes",
+        "tests/unit/test_receipt_recovery.py::test_receipt_lookup_is_bound_to_requested_log"
       ],
       "remaining_review": ""
     },
@@ -135,7 +137,8 @@
       "assertion_scope": "An old restored database is incomplete against a newer anchor.",
       "nodeids": [
         "tests/unit/test_bundle.py::test_t10_restored_old_db_reports_incomplete_against_newer_anchor",
-        "tests/unit/test_streaming.py::test_truncation_checked_at_eof"
+        "tests/unit/test_streaming.py::test_truncation_checked_at_eof",
+        "tests/unit/test_restore_anchors.py::test_restore_behind_signed_anchor_is_retained_sealed"
       ],
       "remaining_review": ""
     },
@@ -164,7 +167,9 @@
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_forged_authority_during_init",
         "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
         "tests/unit/test_cli_writer_trust.py::test_cli_requires_provisioned_log",
-        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version"
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_invalid_trust_version",
+        "tests/unit/test_trust_config.py::test_trust_loader_rejects_invalid_policy_values",
+        "tests/unit/test_trust_config.py::test_invalid_policy_cannot_initialize_verifier_state"
       ],
       "remaining_review": ""
     },
@@ -180,7 +185,9 @@
         "tests/unit/test_release_gaps.py::test_status_rejection_cases",
         "tests/unit/test_release_gaps.py::test_old_signed_active_status_does_not_claim_current_revocation_knowledge",
         "tests/unit/test_release_gaps.py::test_revocation_cannot_be_overridden_by_active_or_invalid_status",
-        "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown"
+        "tests/unit/test_release_gaps.py::test_cli_missing_status_reports_unknown",
+        "tests/unit/test_restore_status.py::test_restore_accepts_active_status_at_provisioned_minimum",
+        "tests/unit/test_restore_status.py::test_restore_rejects_untrusted_status_before_creating_store"
       ],
       "remaining_review": ""
     },
@@ -216,6 +223,16 @@
         "tests/unit/test_writer_integrity_recovery.py::test_process_exit_during_restore_never_commits_partial_history",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_accepts_a_matching_older_anchor",
         "tests/unit/test_writer_integrity_recovery.py::test_restore_rejects_invalid_or_conflicting_anchor",
+        "tests/unit/test_cli_restore.py::test_cli_restore_reports_offline_scope",
+        "tests/unit/test_cli_restore.py::test_cli_restore_rejects_bad_evidence",
+        "tests/unit/test_cli_restore.py::test_cli_restore_requires_trust_and_anchor",
+        "tests/unit/test_cli_restore.py::test_cli_restore_never_overwrites_destination",
+        "tests/unit/test_cli_restore.py::test_cli_restore_behind_anchor_reports_sealed_result",
+        "tests/unit/test_restore_status.py::test_status_policy_does_not_accept_corrupt_records",
+        "tests/unit/test_restore_anchors.py::test_restore_accepts_signed_anchor_and_preserves_seal",
+        "tests/unit/test_restore_anchors.py::test_restore_rejects_invalid_signed_anchor_before_creating_store",
+        "tests/unit/test_restore_anchors.py::test_restore_refuses_missing_anchor_journal",
+        "tests/unit/test_restore_anchors.py::test_anchor_receipt_recovers_matching_pending_tail",
         "tests/unit/test_writer_trust.py::test_writer_pins_apply_to_create_reopen_and_restore",
         "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary"
       ],
@@ -253,7 +270,8 @@
         "tests/unit/test_cli.py::test_wrong_passphrase_never_printed",
         "tests/unit/test_cli.py::test_token_never_printed",
         "tests/unit/test_witness_server.py::test_internal_exception_is_sanitized",
-        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store"
+        "tests/unit/test_cli_writer_trust.py::test_cli_rejects_untrusted_existing_store",
+        "tests/unit/test_receipt_recovery.py::test_cli_recovers_receipt_without_signing_key"
       ],
       "remaining_review": ""
     },
@@ -293,7 +311,8 @@
       "assertion_scope": "Retry after witness commit and process exit returns the same receipt.",
       "nodeids": [
         "tests/unit/test_witness.py::test_identical_retry_replays_same_receipt",
-        "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt"
+        "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt",
+        "tests/unit/test_receipt_recovery.py::test_recover_receipt_after_restart_over_http"
       ],
       "remaining_review": ""
     }

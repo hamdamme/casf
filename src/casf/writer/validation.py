@@ -70,6 +70,31 @@ class ManifestContext:
                 raise TrustError("manifest authority signature is invalid") from exc
         return cls(body, digest, log_key, witness_key)
 
+    def anchor(self, checkpoint: JsonObject, receipt: JsonObject) -> JsonObject:
+        """Authenticate one checkpoint/receipt pair under this manifest.
+
+        The caller must authenticate the manifest with independent pins.
+        A signed pair is historical evidence, not proof of currentness.
+        """
+        cp, cp_hash, cp_sig = envelope(checkpoint, "checkpoint")
+        rc, rc_hash, rc_sig = envelope(receipt, "receipt")
+        if cp["log_id"] != self.body["log_id"] \
+                or cp["manifest_hash"] != self.digest \
+                or cp["key_id"] != self.body["log_key_id"]:
+            raise TrustError("anchor checkpoint belongs to a different manifest")
+        if rc["log_id"] != self.body["log_id"] \
+                or rc["manifest_hash"] != self.digest \
+                or rc["witness_id"] != self.body["witness_id"]:
+            raise TrustError("anchor receipt belongs to a different manifest or witness")
+        if crypto.digest_checkpoint(cp) != cp_hash or crypto.digest_receipt(rc) != rc_hash:
+            raise CasfError("anchor digest disagrees with its body")
+        crypto.verify_checkpoint(self.log_key, cp, cp_sig)
+        crypto.verify_receipt(self.witness_key, rc, rc_sig)
+        if rc["checkpoint_hash"] != cp_hash or rc["checkpoint_index"] != cp["index"] \
+                or rc["count"] != cp["count"] or rc["head_hash"] != cp["head_hash"]:
+            raise CasfError("anchor receipt disagrees with its checkpoint")
+        return cp
+
     def record(self, value: JsonObject, seq: int,
                previous: str) -> tuple[str, JsonObject]:
         body, digest, signature = envelope(value, "record")

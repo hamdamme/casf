@@ -20,6 +20,7 @@ import time
 from collections.abc import Iterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import cast
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -27,13 +28,13 @@ from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
-from casf.errors import CasfError, SchemaError, TrustError
+from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
 from casf.types import JsonObject
-from casf.verifier import TrustPins
+from casf.verifier import Result, TrustPins, TrustStatus, verify
 from casf.writer.validation import CheckpointChain, ManifestContext
 
 __all__ = ["BusyError", "EventIdConflictError",
@@ -508,19 +509,69 @@ class Writer:
                             log_priv: Ed25519PrivateKey,
                             bundle_dir: str | Path, *,
                             anchor: JsonObject | None = None,
+                            anchor_checkpoint: JsonObject | None = None,
+                            anchor_receipt: JsonObject | None = None,
+                            require_active_status: bool = False,
                             trust_pins: Mapping[str, TrustPins] | None = None) -> "Writer":
         """Restore verified records and their checkpoint/receipt journal.
 
         A final checkpoint keeps the log sealed. A supplied pending tail
         keeps its original signed bytes for retry. The caller must establish
-        independent manifest trust and authenticate any external anchor;
-        this local operation cannot establish that an older export is current.
+        independent manifest trust and authenticate a bare external anchor.
+        Signed anchor pairs are authenticated with supplied pins. Optional
+        active-status policy checks the bundled statements and provisioned
+        serial minimum; it does not establish globally current status.
+        This local operation cannot establish that an older export is current.
         A history behind the supplied anchor is retained sealed for inspection.
         """
         if os.path.lexists(db_path):
             raise CasfError("restore destination already exists")
         bundle = read_bundle(bundle_dir)
         context = ManifestContext.read(bundle.manifest)
+        if type(require_active_status) is not bool:
+            raise SchemaError("require_active_status must be a boolean")
+        if require_active_status:
+            pins = (trust_pins.get(cast(str, context.body["log_id"]))
+                    if trust_pins is not None else None)
+            if pins is None:
+                raise TrustError("restore status policy requires independent trust pins")
+            context = ManifestContext.read(bundle.manifest, pins=pins)
+            if type(pins.minimum_status_serial) is not int \
+                    or not 1 <= pins.minimum_status_serial <= SAFE_INT_MAX:
+                raise SchemaError("minimum_status_serial must be a positive safe integer")
+            report = verify(bundle.manifest, bundle.records, pins,
+                            status_envelopes=bundle.statuses)
+            if report.trust_status is not TrustStatus.OK:
+                raise TrustError("restore authority status rejected: "
+                                 + ", ".join(report.diagnostic_codes))
+            if report.result is not Result.PASS:
+                raise CasfError("restore evidence verification failed: "
+                                + ", ".join(report.diagnostic_codes))
+        if anchor_checkpoint is not None or anchor_receipt is not None:
+            if anchor_checkpoint is None or anchor_receipt is None or anchor is not None:
+                raise SchemaError("supply both anchor envelopes without a bare anchor")
+            log_id = cast(str, context.body["log_id"])
+            pins = trust_pins.get(log_id) if trust_pins is not None else None
+            if pins is None:
+                raise TrustError("signed restore anchors require independent trust pins")
+            context = ManifestContext.read(bundle.manifest, pins=pins)
+            checkpoint = context.anchor(anchor_checkpoint, anchor_receipt)
+            index = cast(int, checkpoint["index"])
+            if index < len(bundle.checkpoints) and bundle.checkpoints[index].get(
+                    "checkpoint_hash") != anchor_checkpoint["checkpoint_hash"]:
+                raise CasfError("anchor conflicts with the restored checkpoint journal")
+            if cast(int, checkpoint["count"]) <= len(bundle.records):
+                if index >= len(bundle.checkpoints):
+                    raise CasfError("anchor is missing from the restored checkpoint journal")
+                if index < len(bundle.receipts):
+                    if bundle.receipts[index].get("receipt_hash") != anchor_receipt["receipt_hash"]:
+                        raise CasfError("anchor conflicts with the restored receipt journal")
+                elif index == len(bundle.receipts) == len(bundle.checkpoints) - 1:
+                    bundle.receipts.append(anchor_receipt)
+                else:
+                    raise CasfError("anchor receipt chain is missing from the restored journal")
+            anchor = {"log_id": log_id, "manifest_hash": context.digest,
+                      "count": checkpoint["count"], "head_hash": checkpoint["head_hash"]}
         anchor_count = 0
         if anchor is not None:
             value, digest = anchor.get("count"), anchor.get("head_hash")
@@ -857,6 +908,41 @@ class Writer:
         receipt = data["receipt"]
         if not isinstance(receipt, dict):
             raise CasfError("witness answer carried no receipt object")
+        self.record_receipt(log_id, receipt)
+        return receipt
+
+    def recover_pending_receipt(self, log_id: str, base_url: str, token: str, *,
+                                timeout: float = 10.0) -> JsonObject:
+        """Recover an already accepted receipt using the pending digest.
+
+        Requires independent manifest pins, but no private signing key.
+        Failure preserves the outbox; lookup does not establish freshness.
+        """
+        if self._trust_pins is None:
+            raise TrustError("receipt recovery requires independent trust pins")
+        context = self._manifest_context(self.manifest_envelope(log_id))
+        pending = self.pending_checkpoint(log_id)
+        if pending is None:
+            raise InconclusiveError("no pending checkpoint for receipt recovery")
+        checkpoint = pending[0]
+        try:
+            status, payload = http_request(
+                base_url, "GET", f"/v1/logs/{log_id}/receipts/{checkpoint['checkpoint_hash']}",
+                token, b"", timeout=timeout)
+        except (OSError, http.client.HTTPException, ResponseLimitError) as exc:
+            raise InconclusiveError("receipt lookup unavailable; pending checkpoint unchanged") from exc
+        except ValueError as exc:
+            raise SchemaError("invalid witness request configuration") from exc
+        if status != 200:
+            raise InconclusiveError("receipt unavailable; pending checkpoint unchanged")
+        data = parse(payload)
+        if not isinstance(data, dict) or set(data) != {"checkpoint", "receipt"} \
+                or not isinstance(data["receipt"], dict):
+            raise SchemaError("receipt lookup must return checkpoint and receipt objects")
+        if data["checkpoint"] != checkpoint:
+            raise CasfError("receipt lookup returned a different pending checkpoint")
+        receipt = data["receipt"]
+        context.anchor(checkpoint, receipt)
         self.record_receipt(log_id, receipt)
         return receipt
 

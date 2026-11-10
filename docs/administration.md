@@ -54,6 +54,12 @@ the generated trust pins. The trust command checks the manifest signature;
 it does not establish that the key belongs to the person or service you
 intended.
 
+Trust settings are checked before use. `allow_unwitnessed` must be a JSON
+boolean, not a string or number. Mode must be `integrity`, `anchored` or
+`online`; chain budgets and minimum status serials must be positive safe
+integers. Manifest and witness pins must be lowercase SHA-256 digests.
+Malformed settings fail before accepted verifier state is saved.
+
 ## Use pins with writer commands
 
 ```sh
@@ -94,6 +100,28 @@ casf admin status install --status-file revoked.json --log-id LOG_UUID \
 
 An active statement does not establish that the authority has no newer
 revocation statement elsewhere.
+
+## Restore an exported bundle
+
+Keep the expected trust pins and signed external checkpoint/receipt pair
+separate from the backup. Include authentic authority statements in the
+bundle's `status.jsonl`, and retain the highest known status serial in the
+trust file's `minimum_status_serial` before restoring:
+
+```sh
+casf restore bundle --db restored.db --key log.pem --trust trust.json \
+  --anchor-checkpoint retained-checkpoint.json \
+  --anchor-receipt retained-receipt.json --json
+```
+
+The command requires an unused destination, independent pins, active signed
+status and a signed anchor pair. It performs offline authentication regardless
+of the trust file's verifier mode; it does not query the witness. Success
+reports `restored: true` and `freshness_checked: false`. Missing or rejected
+trust returns exit 3; malformed input returns 2 and invalid evidence returns 1.
+An existing destination is preserved and returns 5. A restore behind the
+anchor retains a sealed database, reports `RESTORE_BEHIND_WITNESS`, and returns
+4. Reconcile fresh external state before promoting the restored copy.
 
 ## Register and rotate
 
