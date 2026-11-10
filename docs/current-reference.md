@@ -20,6 +20,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |
+| Typed log, checkpoint, witness and export operations | [Log API](log-api.md) |
 | Immutable append requests and results | [Append API](append-api.md) |
 | Prefix exports and machine diagnostics | [Export and reports](export-and-reports.md) |
 | SQLite schema checks and upgrades | [Storage migration](storage-migrations.md) |
@@ -80,8 +81,11 @@ active statement does not prove there is no undistributed revocation.
 with the committed record and its transaction's witness observation. The
 existing `Writer.append` keeps its dictionary return and now snapshots nested
 input before calculating the request digest. See the [typed append guide](append-api.md).
-Other conceptual interfaces and result types in SPEC section 19 remain open. See [ADR-008](adr/ADR-008-verified-writer-startup.md)
-and the [recovery guide](writer-recovery.md) for current signatures and migration.
+`casf.api.open_log` binds an existing writer and exposes typed checkpoint,
+witness-submission, export and seal operations. The existing Writer return
+values remain available. See the [log API guide](log-api.md) for ownership,
+commit boundaries and creation behavior. The verify-bundle convenience API
+and incremental verification remain open interface work.
 
 The verifier is `casf.verifier.verify`. Its `Report` uses overall `PASS`,
 `FAIL` and `INCONCLUSIVE`. Diagnostic JSON version 2 uses SPEC section 15 enum

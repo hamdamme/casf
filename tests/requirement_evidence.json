@@ -125,7 +125,12 @@
         "tests/unit/test_storage_migrations.py::test_process_exit_keeps_legacy_source_and_allows_retry",
         "tests/unit/test_append_contract.py::test_append_copies_nested_input_before_digest_and_lock",
         "tests/unit/test_append_contract.py::test_failed_commit_returns_no_success_and_can_retry",
-        "tests/unit/test_append_contract.py::test_exception_after_commit_resolves_by_same_event_retry"
+        "tests/unit/test_append_contract.py::test_exception_after_commit_resolves_by_same_event_retry",
+        "tests/unit/test_operation_snapshots.py::test_create_log_snapshots_manifest_before_validation_and_storage",
+        "tests/unit/test_operation_snapshots.py::test_receipt_snapshots_validated_signature_before_storage",
+        "tests/unit/test_log_operations.py::test_create_commit_failure_returns_no_handle",
+        "tests/unit/test_log_operations.py::test_checkpoint_commit_failure_returns_no_result",
+        "tests/unit/test_log_operations.py::test_receipt_commit_failure_cannot_return_witnessed"
       ],
       "remaining_review": ""
     },
@@ -144,7 +149,9 @@
         "tests/unit/test_checkpoint_worker.py::test_permanent_errors_stop_without_reporting_witnessed",
         "tests/unit/test_checkpoint_worker.py::test_competing_verified_workers_submit_only_one_checkpoint",
         "tests/unit/test_append_contract.py::test_idempotent_retry_refreshes_witness_observation_without_changing_record",
-        "tests/unit/test_append_contract.py::test_pending_checkpoint_does_not_cover_later_appends"
+        "tests/unit/test_append_contract.py::test_pending_checkpoint_does_not_cover_later_appends",
+        "tests/unit/test_log_operations.py::test_timeout_keeps_pending_bytes_for_typed_retry",
+        "tests/unit/test_log_operations.py::test_typed_operation_lifecycle_and_legacy_returns"
       ],
       "remaining_review": ""
     },
@@ -237,7 +244,8 @@
         "tests/unit/test_report_semantics.py::test_failure_dominates_missing_status_and_budgets",
         "tests/unit/test_report_semantics.py::test_unknown_signed_status_cannot_authorize_trust",
         "tests/unit/test_cli_report_semantics.py::test_cli_reports_verdict_and_preserves_checkpoint_on_nonpass",
-        "tests/unit/test_report_semantics.py::test_retained_revocation_survives_missing_trust"
+        "tests/unit/test_report_semantics.py::test_retained_revocation_survives_missing_trust",
+        "tests/unit/test_log_handle_authorization.py::test_handle_rechecks_authorization_before_every_mutation"
       ],
       "remaining_review": ""
     },
@@ -330,7 +338,9 @@
         "tests/unit/test_export_contract.py::test_export_failure_never_leaves_a_partial_destination",
         "tests/unit/test_export_contract.py::test_process_exit_preserves_source_and_never_publishes_partial_bundle",
         "tests/unit/test_export_contract.py::test_pending_final_seal_blocks_every_export_prefix",
-        "tests/unit/test_cli_export.py::test_cli_prefix_export_reports_and_validates_the_requested_range"
+        "tests/unit/test_cli_export.py::test_cli_prefix_export_reports_and_validates_the_requested_range",
+        "tests/unit/test_export_results.py::test_result_is_exact_metadata_from_one_snapshot",
+        "tests/unit/test_export_results.py::test_parent_sync_error_leaves_complete_bundle_without_success_result"
       ],
       "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
     },
@@ -365,7 +375,10 @@
         "tests/unit/test_append_contract.py::test_invalid_requests_fail_before_a_write_transaction",
         "tests/unit/test_append_contract.py::test_body_budget_includes_generated_record_fields_before_signing",
         "tests/unit/test_cli_append_contract.py::test_cli_body_limit_is_usage_error_without_commit",
-        "tests/unit/test_report_semantics.py::test_unknown_coverage_and_unchecked_dimensions_are_explicit"
+        "tests/unit/test_report_semantics.py::test_unknown_coverage_and_unchecked_dimensions_are_explicit",
+        "tests/unit/test_operation_models.py::test_envelope_models_reject_invalid_evidence",
+        "tests/unit/test_operation_models.py::test_protocol_strings_reject_trailing_newlines",
+        "tests/unit/test_operation_snapshots.py::test_checkpoint_rejects_nonboolean_final_before_a_transaction"
       ],
       "remaining_review": ""
     },

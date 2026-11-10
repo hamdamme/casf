@@ -79,6 +79,7 @@ attributes. Input/profile limits return usage exit code 2; no failure prints a
 committed result. The startup flag remains separate from journal coverage.
 
 [ADR-012](adr/ADR-012-typed-append-results.md) records this method-based API
-decision. Other operation result types and incremental verification remain open interface
-work. The [verification guide](verification.md) describes the current report contract. These examples do not claim the
+decision. The [log API guide](log-api.md) covers typed checkpoint, witness and export
+results. The verify-bundle convenience API and incremental verification remain
+open. The [verification guide](verification.md) describes the current report contract. These examples do not claim the
 whole experimental release is complete.
