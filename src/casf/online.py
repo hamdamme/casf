@@ -21,6 +21,7 @@ from urllib.parse import urlsplit
 from casf import crypto
 from casf.canonical.jcs import parse
 from casf.errors import CasfError, InconclusiveError, NoCheckpointError, SchemaError
+from casf.model.schema import validate_protocol_body
 from casf.transport import ResponseLimitError
 from casf.transport import request as http_request
 from casf.types import JsonObject
@@ -32,12 +33,6 @@ __all__ = [
     "query_latest",
     "verify_latest_response",
 ]
-
-_LATEST_FIELDS = {"version", "type", "nonce", "witness_id", "log_id",
-                  "manifest_hash", "checkpoint_hash", "receipt_hash",
-                  "checkpoint_index", "count", "head_hash", "final",
-                  "responded_at"}
-
 
 @dataclass
 class LatestView:
@@ -125,10 +120,7 @@ def verify_latest_response(response: JsonObject, nonce: bytes,
     signature = response["signature"]
     if not isinstance(body, dict) or not isinstance(signature, str):
         raise SchemaError("response field types are wrong")
-    if set(body) != _LATEST_FIELDS:
-        raise SchemaError("latest body fields are wrong")
-    if body["version"] != 1 or body["type"] != "latest":
-        raise SchemaError("unsupported latest response")
+    validate_protocol_body("latest", body)
     if body["nonce"] != crypto.b64url_encode(nonce):
         raise CasfError("nonce mismatch; a replayed response never "
                         "passes freshness")
@@ -142,6 +134,14 @@ def verify_latest_response(response: JsonObject, nonce: bytes,
         _as_object(response["checkpoint"]), "checkpoint_hash")
     rc_body, rc_hash, rc_sig = _expect_envelope(
         _as_object(response["receipt"]), "receipt_hash")
+    validate_protocol_body("checkpoint", cp_body)
+    validate_protocol_body("receipt", rc_body)
+    if any(cp_body[field] != body[field] or rc_body[field] != body[field]
+           for field in ("log_id", "manifest_hash", "count", "head_hash")) \
+            or cp_body["index"] != body["checkpoint_index"] \
+            or cp_body["final"] != body["final"] \
+            or rc_body["witness_id"] != body["witness_id"]:
+        raise CasfError("latest view disagrees with checkpoint or receipt bindings")
     if crypto.digest_checkpoint(cp_body) != cp_hash:
         raise CasfError("checkpoint_hash does not match the body")
     if crypto.digest_receipt(rc_body) != rc_hash:
