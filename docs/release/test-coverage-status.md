@@ -17,6 +17,11 @@ its checks.
   and the public CLI workflow. Explicit local-only mode remains available.
 - Rollback H1 and outage H3 have separate experiment harnesses and recorded
   outputs; those records are not an exhaustive test suite.
+- [Recovery drills](../recovery-drills.md) cover SQLite exhaustion, backup
+  publication failures, corrupt backups, lost signing keys, writer/witness
+  rollback and pending receipt recovery after an outage. Selected process
+  exits and injected filesystem errors do not establish physical disk or
+  power-loss durability.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest
