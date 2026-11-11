@@ -3,7 +3,7 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.x (pre-1.0) | No published release is currently supported; the 0.1.0rc2 candidate is unpublished and has no support guarantee |
+| 0.x (pre-1.0) | 0.1.0rc2 is a published experimental GitHub prerelease; reports are accepted on a best-effort basis with no long-term support guarantee |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 
 ## Reporting a vulnerability
