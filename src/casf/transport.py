@@ -181,14 +181,16 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
     port = port if port is not None else (443 if https else 80)
     deadline = time.monotonic() + timeout
     sock = _connected_socket(host, port, https=https, deadline=deadline)
-    conn_type = http.client.HTTPSConnection if https else http.client.HTTPConnection
-    conn = conn_type(host, port, timeout=_remaining(deadline))
-    conn.response_class = _BoundedResponse
-    conn.sock = sock
-    timer = threading.Timer(_remaining(deadline), _interrupt, args=(sock,))
-    timer.daemon = True
-    timer.start()
+    conn: http.client.HTTPConnection | None = None
+    timer: threading.Timer | None = None
     try:
+        conn_type = http.client.HTTPSConnection if https else http.client.HTTPConnection
+        conn = conn_type(host, port, timeout=_remaining(deadline))
+        conn.response_class = _BoundedResponse
+        conn.sock = sock
+        timer = threading.Timer(_remaining(deadline), _interrupt, args=(sock,))
+        timer.daemon = True
+        timer.start()
         conn.request(method, path, body=body,
                      headers={"Content-Type": "application/json",
                               "Authorization": f"Bearer {token}",
@@ -209,5 +211,9 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
         _remaining(deadline)
         return response.status, payload
     finally:
-        timer.cancel()
-        conn.close()
+        if timer is not None:
+            timer.cancel()
+        if conn is not None:
+            conn.close()
+        else:
+            sock.close()
