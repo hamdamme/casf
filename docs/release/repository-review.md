@@ -2,8 +2,10 @@
 
 Reviewed 11 November 2026 against handoff head
 `981c107d5abc63459b336a5f7631e8f421673892`, building on accepted main
-`ecc47630c1340ac118dc50f2989cc51c37171080`. This closes remaining work from the
-original request to check every repository file. It does not replace the release
+`ecc47630c1340ac118dc50f2989cc51c37171080`. This records inventory and targeted
+checks from the original request, rather than an exhaustive line-by-line review.
+The [continuation](line-review-2026-11-11.md) records newly reproduced defects and
+the still-unfinished manual coverage. It does not replace the release
 or its exact-byte evidence. The maintainer accepted the corrections and final
 handoff by merging [PR 55](https://github.com/hamdamme/casf/pull/55) as
 `710fbe346598c05ab4989a3656c907eb0aa2c853`. The review findings below preserve
@@ -98,6 +100,7 @@ No remaining unexplained tracked artifact, public function stub, broken local
 Markdown target or unresolved original audit finding was identified after these
 corrections. This is a bounded repository engineering review, not proof of every
 possible program behavior or independent cryptographic/security certification.
-PR 55's merge completes acceptance of this review. Production operation,
+PR 55's merge accepted that bounded review; it did not establish exhaustive
+correctness. The subsequent line review remains open. Production operation,
 independent witness administration, physical power-loss tests, broader research
 and manuscript licensing/deposit remain explicitly separate decisions.

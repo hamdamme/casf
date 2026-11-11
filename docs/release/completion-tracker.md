@@ -7,14 +7,21 @@ Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted a
 [0.1.0rc2 is published](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
 The original audit and release-preparation records remain historical.
 
-**Current position:** The maintainer merged [PR 55](https://github.com/hamdamme/casf/pull/55)
+**Current position:** The original repository review remains in progress.
+The [line review](line-review-2026-11-11.md) found additional implementation defects
+and distinguishes manually reviewed files from structural checks. F19, F20 and
+F28 are reopened; earlier release and research evidence remains credited.
+
+Previously, the maintainer merged [PR 55](https://github.com/hamdamme/casf/pull/55)
 as `710fbe346598c05ab4989a3656c907eb0aa2c853`, accepting the repository
 reconciliation and final handoff. The [file-by-file review](repository-review.md)
 records the original findings, their corrections and verification limits.
 
-**Progress:** 28/28 tasks accepted; 14/14 sessions and 6/6 phases accepted.
-Zero tasks remain in the agreed experimental v0.1 completion plan. This records
-acceptance of the verified scope, not exhaustive correctness or production readiness.
+**Progress:** 25/28 tasks remain accepted; 12/14 sessions and 4/6 phases remain
+closed. Three tasks are reopened: finish the file review, validate/review the
+corrections, and reconcile the final handoff. Current work is Phase 4, Session 10;
+Phase 6, Session 14 cannot close before that work is verified. The earlier 28/28
+acceptance is historical and must not be read as a current all-files guarantee.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -40,8 +47,8 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Complete |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
-| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Complete |
-| 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
+| 4 | 10 — Documentation and review | F19 | Finish manual file review; preserve workflow and historical-document corrections already verified | In progress |
+| 4 | 10 — Documentation and review | F20 | Validate and review newly reproduced runtime defects and regression fixes | In progress |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
 | 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
 | 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Complete |
@@ -49,7 +56,7 @@ These counts describe this completion plan, not the proportion of all historical
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Complete |
 | 6 | 13 — Publication | F26 | Verify public downloads and installation | Complete |
 | 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Complete |
-| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Complete |
+| 6 | 14 — Final handoff | F28 | Reconcile source/release distinctions and close only the verified scope | Reopened |
 
 ## Acceptance and reporting
 
