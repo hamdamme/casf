@@ -132,11 +132,11 @@ def _build_arm(root: Path, manifest: dict, events_old: list[dict],
     checkpoints_path = root / f"{prefix}-local-checkpoints.json"
     writer = Writer(root / f"{prefix}.db", workload.seeded_key("log"), local_only=True)
     witness = None
-    if with_witness:
-        witness = Witness(root / "witness.db", workload.seeded_key("witness"),
-                          authority_keys=_authority_keys())
     local_checkpoints: list[dict] = []
     try:
+        if with_witness:
+            witness = Witness(root / "witness.db", workload.seeded_key("witness"),
+                              authority_keys=_authority_keys())
         writer.create_log(manifest)
         if witness is not None:
             witness.register_log(
@@ -243,17 +243,17 @@ def local_checkpoint_check(bundle_dir: Path, checkpoints_path: Path,
 
 @contextlib.contextmanager
 def _serve(db_path: Path):
-    service = WitnessService(db_path, workload.seeded_key("witness"),
-                             token=TOKEN, authority_keys=_authority_keys())
-    server = make_server(service, "127.0.0.1", 0)
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
-    try:
+    with contextlib.ExitStack() as cleanup:
+        service = WitnessService(db_path, workload.seeded_key("witness"),
+                                 token=TOKEN, authority_keys=_authority_keys())
+        cleanup.callback(service.close)
+        server = make_server(service, "127.0.0.1", 0)
+        cleanup.callback(server.server_close)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        cleanup.callback(server.shutdown)
         yield f"http://127.0.0.1:{server.server_address[1]}"
-    finally:
-        server.shutdown()
-        server.server_close()
-        service.close()
+
 
 
 def _export(db_path: Path, dest: Path) -> Path:

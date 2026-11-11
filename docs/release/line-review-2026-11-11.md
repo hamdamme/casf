@@ -27,7 +27,8 @@ Additional corrections from the remaining-file review:
   are counted at one layer. Invalid batch sizes fail before creating stores.
 - H1 retains each trial as it finishes, records setup failures as invalid trials,
   returns failure for invalid experiments, and only retains a pin after a passing
-  healthy control. The original unmet primary hypothesis is unchanged.
+  healthy control. Failed witness construction and listener startup close their
+  owned resources. The original unmet primary hypothesis is unchanged.
 - H3 closes resources on setup failure, restores the caller's environment, and
   reports incomplete pilots without claiming feasibility.
 - Streaming fixture generation preserves existing trust files; benchmark server
@@ -81,9 +82,9 @@ independently establish how an old experiment was conducted.
 
 On macOS arm64 with Python 3.12.14 and locked dependencies:
 
-- Full current-source suite: **1,256 passed** in 97.11 seconds. PR 57 adds 53
-  cases relative to the 1,203-test base; the continuation adds 16.
-- The final assertion-map/import-order edits passed 17 focused checks.
+- Full current-source suite: **1,258 passed** in 94.60 seconds. PR 57 adds 55
+  cases relative to the 1,203-test base; the continuation adds 18.
+- Assertion-map/import-order edits passed 17 focused checks before the final full run.
 - Ruff, strict mypy, lock validation and package inspection passed.
 - Repository consistency checks cover every tracked file and local Markdown link.
 - The prior 6,075-case parser campaigns and fresh-wheel 21-check demo cover

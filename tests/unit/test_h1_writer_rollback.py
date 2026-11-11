@@ -169,3 +169,47 @@ def test_setup_failure_preserves_each_invalid_run(tmp_path, monkeypatch):
     for index, row in enumerate(artifact['runs']):
         assert json.loads((output / f'run-{index:02d}.json').read_text()) == row
         assert all(case['classification'] == 'invalid_trial' for case in row['cases'].values())
+
+
+def test_server_setup_failure_closes_service(tmp_path, monkeypatch):
+    import pytest
+
+    closed = []
+
+    class Service:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def close(self):
+            closed.append(True)
+
+    def fail(*args):
+        raise OSError("listener failed")
+
+    monkeypatch.setattr(h1, "WitnessService", Service)
+    monkeypatch.setattr(h1, "make_server", fail)
+    with pytest.raises(OSError, match="listener failed"), h1._serve(tmp_path / "w.db"):
+        pytest.fail("failed setup cannot yield a server")
+    assert closed == [True]
+
+
+def test_arm_setup_failure_closes_writer(tmp_path, monkeypatch):
+    import pytest
+
+    closed = []
+
+    class Writer:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def close(self):
+            closed.append(True)
+
+    def fail(*args, **kwargs):
+        raise OSError("witness failed")
+
+    monkeypatch.setattr(h1, "Writer", Writer)
+    monkeypatch.setattr(h1, "Witness", fail)
+    with pytest.raises(OSError, match="witness failed"):
+        h1._build_arm(tmp_path, {"manifest_hash": "ab" * 32}, [], [], 8, True, "c")
+    assert closed == [True]
