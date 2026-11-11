@@ -293,3 +293,63 @@ def test_checkpoint_cycle_retries_transient_timeout(tmp_path):
     assert len(lat) == 1     # only the successful attempt is measured
     writer.close()
     witness.close()
+
+
+def test_large_warmup_is_fully_witnessed_before_measurement(tmp_path):
+    cfg = {"name": "warmup", "seeds": [7], "runs": 1, "warmup": 257,
+           "records": 3, "target_bytes": 256, "checkpoint_batch": 2}
+    summary = runner.run_config(cfg, tmp_path / "out")
+    row = json.loads((tmp_path / "out/warmup-run-0.json").read_text())
+    assert summary["witnessed_through"] == 260
+    assert summary["checkpoints_accepted"] == 5
+    assert len(row["witness_latency_ns"]) == 2
+
+
+def test_http_submit_does_not_hide_retries(monkeypatch):
+    calls = []
+
+    class FailedConnection:
+        def __init__(self, *args, **kwargs):
+            calls.append(self)
+
+        def request(self, *args, **kwargs):
+            raise TimeoutError("synthetic timeout")
+
+        def close(self):
+            self.closed = True
+
+    monkeypatch.setattr(runner.http.client, "HTTPConnection", FailedConnection)
+    monkeypatch.setattr(runner.time, "sleep", lambda _: None)
+    with pytest.raises(TimeoutError):
+        runner._http_submit("127.0.0.1", 1, "synthetic", workload.LOG_ID)({}, [])
+    assert len(calls) == 1  # the checkpoint cycle owns and counts all retries
+    assert calls[0].closed
+
+
+@pytest.mark.parametrize('batch', [0, 129, True, 1.5])
+def test_runner_rejects_batches_outside_protocol_bounds(tmp_path, batch):
+    cfg = {'name': 'invalid', 'seeds': [7], 'runs': 1, 'records': 129,
+           'target_bytes': 256, 'checkpoint_batch': batch}
+    with pytest.raises(ValueError):
+        runner.run_config(cfg, tmp_path / 'out')
+    assert not list((tmp_path / 'out').glob('*.json'))
+
+
+def test_benchmark_server_closes_service_when_listener_fails(tmp_path, monkeypatch):
+    from benchmarks import witness_server
+    closed = []
+    original = witness_server.WitnessService.close
+
+    def close(self):
+        closed.append(self)
+        original(self)
+
+    def fail(*args):
+        raise OSError('synthetic bind failure')
+
+    monkeypatch.setattr(witness_server.WitnessService, 'close', close)
+    monkeypatch.setattr(witness_server, 'make_server', fail)
+    with pytest.raises(OSError, match='bind failure'):
+        witness_server.build_server('127.0.0.1', 0, token='synthetic',
+                                    seeds=[7], runs=1, db_path=tmp_path / 'w.db')
+    assert len(closed) == 1

@@ -1,8 +1,8 @@
 """Benchmark analysis (SPEC §22).
 
 Summaries are computed over run level values, never by pooling
-individual records, and every metric carries a bootstrap interval so
-single fast or slow runs cannot dominate the claim.
+individual records. Bootstrap intervals describe uncertainty across runs;
+they do not remove outliers or protect estimates from influential runs.
 """
 
 import random

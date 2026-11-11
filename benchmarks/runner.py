@@ -115,21 +115,7 @@ def _http_submit(host: str, port: int, token: str, log_id: str):
                 or not isinstance(data.get("receipt"), dict):
             raise RuntimeError(f"witness rejected the submission: {status}")
         return data["receipt"]
-    def submit(envelope: dict, records: list) -> dict:
-        for attempt in range(3):
-            try:
-                return submit_once(envelope, records)
-            except (OSError, http.client.HTTPException) as exc:
-                if attempt == 2:
-                    raise
-                print(
-                    f"Witness network error ({type(exc).__name__}); "
-                    f"retrying {attempt + 1}/2",
-                    flush=True
-                )
-                time.sleep(2 ** attempt)
-
-    return submit
+    return submit_once
 
 
 class _DelayProxy:
@@ -249,6 +235,13 @@ def _witness_stack(root: Path, cfg: dict, log_id: str):
 
 
 def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
+    for key, minimum in (("records", 1), ("checkpoint_batch", 1),
+                         ("target_bytes", 1), ("warmup", 0)):
+        value = cfg.get(key, 0) if key == "warmup" else cfg[key]
+        if type(value) is not int or value < minimum:
+            raise ValueError(f"{key} must be an integer >= {minimum}")
+    if cfg["checkpoint_batch"] > 128:
+        raise ValueError("checkpoint_batch cannot exceed 128 records")
     records = int(cfg["records"])
     batch = int(cfg["checkpoint_batch"])
     target = int(cfg["target_bytes"])
@@ -277,10 +270,11 @@ def _run_once(cfg: dict, seed: int, run_index: int) -> dict:
                                                    target):
                         writer.append(log_id, **event)
                     # Drain the warmup so measured checkpoints start clean.
-                    witnessed_through = _checkpoint_cycle(
-                        writer, submit, log_id, witness_lat,
-                        witness_retries)
-                    checkpoints += 1
+                    while witnessed_through < warmup:
+                        witnessed_through = _checkpoint_cycle(
+                            writer, submit, log_id, witness_lat,
+                            witness_retries)
+                        checkpoints += 1
                     witness_lat.clear()  # warmup round trip is unmeasured
                     witness_retries.clear()
 
@@ -366,6 +360,12 @@ def _metrics(row: dict) -> dict:
 
 def run_config(cfg: dict, out_dir: Path) -> dict:
     """Run one configuration for its seeds and write raw JSON rows."""
+    if not cfg["seeds"] or any(type(seed) is not int for seed in cfg["seeds"]):
+        raise ValueError("seeds must contain integers")
+    if type(cfg["runs"]) is not int or cfg["runs"] < 1:
+        raise ValueError("runs must be a positive integer")
+    if not cfg["name"] or Path(cfg["name"]).name != cfg["name"] or cfg["name"] in (".", ".."):
+        raise ValueError("name must be a single filename component")
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     seeds = [int(s) for s in cfg["seeds"]]
