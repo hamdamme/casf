@@ -14,6 +14,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Purpose | Current reference |
 | --- | --- |
 | Install and verify | [Installation](installation.md) and [verification](verification.md) |
+| Run a complete synthetic example | [Verified workflow demo](demo.md) |
 | Provision keys, manifests, trust and status | [Administration](administration.md) |
 | Operate the reference service | [Witness server](witness-server.md) |
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](specification/CASF_SPEC_001.md) |
