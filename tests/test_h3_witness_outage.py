@@ -1,6 +1,7 @@
 """Focused tests for the real-transport canonical H3 experiment harness."""
 
 import json
+import os
 import shlex
 import threading
 import time
@@ -84,7 +85,14 @@ def test_one_real_run_exercises_verification_recovery_and_receipts(
         "outage_seconds": 0.2,
         "recovery_observation_deadline_seconds": 10.0,
     }
+    from casf.cli import TOKEN_ENV
+    if condition == "healthy":
+        monkeypatch.delenv(TOKEN_ENV, raising=False)
+    else:
+        monkeypatch.setenv(TOKEN_ENV, "preexisting-synthetic-token")
+    before = os.environ.get(TOKEN_ENV)
     row = run_condition(tmp_path, 71234, condition, config, 0)
+    assert os.environ.get(TOKEN_ENV) == before
     assert row["status"] == "complete", row.get("traceback")
     assert len(delayed) == 1
     assert row["final_writer_count"] == 32
@@ -139,3 +147,33 @@ def test_incomplete_experiment_preserves_evidence_and_returns_failure(tmp_path, 
     command = shlex.split(environment["exact_command"])
     assert command[-4:] == ["--manifest", str(manifest), "--output", str(output)]
     assert environment["exact_command"] in (output / "report.md").read_text()
+
+
+def test_incomplete_pilot_report_does_not_claim_feasibility(tmp_path):
+    from benchmarks.h3_witness_outage import _write_report
+    output = tmp_path / 'report.md'
+    rows = [{'configuration': condition, 'status': 'incomplete', 'outage': None}
+            for condition in ('healthy', 'outage')]
+    _write_report(output, {'experiment': 'test-pilot'}, rows, {}, {})
+    assert 'feasibility has not been established' in output.read_text()
+
+
+def test_setup_failure_is_retained_and_closes_writer(tmp_path, monkeypatch):
+    from benchmarks import h3_witness_outage as h3
+    config = json.loads((h3.ROOT / 'benchmarks/h3-witness-outage.v1.json').read_text())['configuration']
+    closed = []
+    original = h3.Writer.close
+
+    def close(self):
+        closed.append(self)
+        original(self)
+
+    def fail(*args, **kwargs):
+        raise OSError('synthetic setup failure')
+
+    monkeypatch.setattr(h3.Writer, 'close', close)
+    monkeypatch.setattr(h3, 'WitnessService', fail)
+    row = run_condition(tmp_path, 7, 'healthy', config, 0)
+    assert row['status'] == 'incomplete'
+    assert 'synthetic setup failure' in row['error']
+    assert len(closed) == 1
