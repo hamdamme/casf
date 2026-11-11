@@ -1,10 +1,9 @@
 # Install and use CASF
 
-CASF `0.1.0rc1` was an experimental candidate and has not been published to a
-package index. Its previously approved artifacts predate the current source
-changes and are no longer a candidate for these changes. A new wheel and
-source archive must be built, checked, and separately approved before any
-publication. Do not use `pip install casf` until a release is announced.
+CASF `0.1.0rc2` is an experimental candidate under review and has not been
+published to a package index. The earlier `0.1.0rc1` artifact approval does
+not cover this candidate. Exact files require separate publication approval.
+Do not use `pip install casf` until a release is announced.
 
 ## Install from a checked candidate wheel
 
@@ -22,14 +21,14 @@ downloaded file name.
 
 ```bash
 python3 -m venv .venv
-.venv/bin/python -m pip install ./casf-0.1.0rc1-py3-none-any.whl
+.venv/bin/python -m pip install ./casf-0.1.0rc2-py3-none-any.whl
 .venv/bin/casf --help
 source .venv/bin/activate
 ```
 
 The wheel includes the witness server code, but does not install its optional
 HTTP server dependencies unless the `witness` extra is selected. For a checked
-local wheel, install `"./casf-0.1.0rc1-py3-none-any.whl[witness]"` using the
+local wheel, install `"./casf-0.1.0rc2-py3-none-any.whl[witness]"` using the
 environment's pip. The filename is illustrative until new artifacts are
 approved. For
 development from a source checkout, the repository's locked setup installs

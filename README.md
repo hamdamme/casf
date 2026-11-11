@@ -11,7 +11,7 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Current version:** `0.1.0rc1` · **Protocol:** proposed `casf-v1` profile · **Stage:** experimental release candidate, not yet published
+**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** experimental release candidate, not yet published
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
@@ -44,7 +44,7 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/
 
 This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
 
-For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc1` candidate is not published to a package index. Do not install it with a package index command yet.
+For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc2` candidate is not published to a package index. Do not install it with a package index command yet.
 
 For a complete local walkthrough, run the [verified synthetic demo](docs/demo.md).
 It provisions temporary keys and a loopback witness, verifies exported evidence,

@@ -2,4 +2,6 @@ prune benchmarks
 prune docs
 prune research
 prune tests
+include uv.lock
+include examples/__init__.py examples/verified_workflow.py
 global-exclude *.pem *.key *.db *.sqlite *.sqlite3 *.sqlite-wal *.sqlite-shm

@@ -6,6 +6,7 @@ import importlib.util
 import json
 import tempfile
 import threading
+from importlib import metadata
 from pathlib import Path
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -19,6 +20,9 @@ def main() -> None:
     parser.add_argument("--witness", action="store_true")
     args = parser.parse_args()
     package_init = Path(__import__("casf").__file__).resolve()
+    assert metadata.version("casf") == __import__("casf").__version__
+    assert [(entry.name, entry.value) for entry in metadata.distribution("casf").entry_points
+            if entry.group == "console_scripts"] == [("casf", "casf.cli:main")]
     assert package_init.with_name("py.typed").is_file()
     with tempfile.TemporaryDirectory() as directory:
         service = WitnessService(Path(directory) / "smoke.db",

@@ -1,12 +1,12 @@
 # Current CASF implementation reference
 
-This guide follows the implementation, validation and research accepted through PR 51 at
-`6441e4569e8c420f5e8a71e55950af88ce46f336`. The separate
+This guide follows the implementation, validation and research accepted through PR 52 at
+`79fce315a3b0ec06f2293643f01ea66a62b79136`. The separate
 [research follow-up](../research/current-evidence-2026-11-10.md) identifies its
 measurement revision and preserves the historical results.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
 work from remaining validation, research and release gates. Package metadata is
-`0.1.0rc1`; the proposed wire profile is `casf-v1`. These identify different
+`0.1.0rc2`; the proposed wire profile is `casf-v1`. These identify different
 things. Validation records must name the exact source or artifact bytes.
 
 ## Which document to use
@@ -19,6 +19,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Operate the reference service | [Witness server](witness-server.md) |
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](specification/CASF_SPEC_001.md) |
 | Research questions, outcomes and source records | [Research guide](../research/README.md) |
+| Exact candidate files and installation checks | [Candidate record](release/candidate-0.1.0rc2.md) and [build procedure](release/candidate-build.md) |
 | Candidate state and validation | [Release checklist](release/checklist-v0.1.md) |
 | Current workflow and scoped code review | [Review record](release/workflow-review-2026-11-10.md) |
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |

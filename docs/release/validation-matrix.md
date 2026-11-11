@@ -31,6 +31,13 @@ pytest totals. The minimum jobs resolve the lowest compatible direct runtime
 and backend dependencies; transitive packages and development-tool minima are
 not a complete minimum-version matrix.
 
+Every configuration also checks wheel/source member inventories and metadata
+with the [package inspector](../../tests/package_artifacts.py), then runs the
+21-check synthetic workflow with isolated installed-package imports. Retained
+validation output includes `package-artifacts.json` and public-only
+`installed-demo` evidence. These CI packages are distinct from the exact local
+review files in the [candidate record](candidate-0.1.0rc2.md).
+
 ## Import and source evidence
 
 Locked jobs explicitly import `src/casf` through `PYTHONPATH`; a stale installed
