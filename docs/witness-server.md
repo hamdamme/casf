@@ -10,7 +10,7 @@ This change covers R05, R06, R10, and R12.
 For the locked development environment:
 
 ```bash
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
+.venv-tools/bin/uv sync --locked --no-editable --extra witness --extra dev --group build --python python3
 ```
 
 For a wheel built from this source, install its `witness` extra. The package

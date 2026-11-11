@@ -54,7 +54,7 @@ jobs:
       - name: Check lockfile
         run: uv lock --check
       - name: Lint
-        run: .venv/bin/ruff check src tests
+        run: .venv/bin/ruff check src tests benchmarks examples
       - name: Type check
         run: .venv/bin/mypy src
       - name: Test suite
