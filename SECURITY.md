@@ -3,13 +3,12 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.x (pre-1.0) | No published release is currently supported; the 0.1.0rc1 candidate is unpublished and has no support guarantee |
+| 0.x (pre-1.0) | No published release is currently supported; the 0.1.0rc2 candidate is unpublished and has no support guarantee |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 
 ## Reporting a vulnerability
-**Private channel (preferred):** GitHub private vulnerability reporting
-on this repository (enabled), or email the maintainer address listed
-in the repository profile. Private reporting was enabled and a real report
+**Private channel:** [GitHub private vulnerability reporting](https://github.com/hamdamme/casf/security/advisories/new).
+Private reporting was enabled and a real report
 was received through the channel during release preparation. This confirms
 delivery for that report; it is not an independent security audit and does
 not establish a response service level.
