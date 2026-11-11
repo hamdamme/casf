@@ -39,8 +39,9 @@ targets, not guarantees of maximum unwitnessed exposure.
 Deadlines and pending attempt counts survive restart in SQLite. A timer absent
 from an older store, or a receipt accepted outside the worker, triggers an
 immediate checkpoint to establish a local schedule. Remote timestamps are not
-used as scheduling authority. The new `checkpoint_schedule` table is created
-when an existing store is opened. This operational metadata is not part of
+used as scheduling authority. The `checkpoint_schedule` table is part of schema
+version 1. Unversioned stores require explicit copy [migration](storage-migrations.md);
+opening a versioned store does not repair a missing table. This metadata is not part of
 an evidence bundle or an authenticated trust anchor.
 
 Local Unix time makes deadlines portable across restarts. A backward clock
