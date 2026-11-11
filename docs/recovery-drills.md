@@ -22,7 +22,7 @@ Run the new drills in an environment with the locked development and witness
 dependencies installed:
 
 ```sh
-python -m pytest tests/unit/test_recovery_storage.py tests/unit/test_backup_failures.py tests/unit/test_recovery_drills.py -q
+PYTHONPATH=src .venv/bin/python -m pytest tests/unit/test_recovery_storage.py tests/unit/test_backup_failures.py tests/unit/test_recovery_drills.py -q
 ```
 
 The broader existing suite also covers missing WAL state, malformed bundles,

@@ -242,6 +242,24 @@ def test_witness_server_requires_token_env(tmp_path, monkeypatch):
                              "--runs", "1"])
 
 
+@pytest.mark.parametrize("url", ["https://witness.example", "ftp://witness.example",
+                                 "http://user:password@witness.example",
+                                 "http://witness.example/path", "http://witness.example?token=x",
+                                 "http://witness.example#fragment"])
+def test_remote_runner_rejects_unsupported_urls_before_submission(tmp_path, monkeypatch, url):
+    monkeypatch.setenv("CASF_BENCH_TOKEN", "synthetic-token")
+
+    def unexpected_submitter(*args, **kwargs):
+        pytest.fail("unsupported URL must not reach the plaintext HTTP submitter")
+
+    monkeypatch.setattr(runner, "_http_submit", unexpected_submitter)
+    config = {"witness": "remote", "witness_url": url,
+              "witness_token_env": "CASF_BENCH_TOKEN"}
+    with (pytest.raises(ValueError, match="remote witness URL"),
+          runner._witness_stack(tmp_path, config, workload.LOG_ID)):
+        pytest.fail("unsupported URL was accepted")
+
+
 def test_checkpoint_cycle_retries_transient_timeout(tmp_path):
     """A stalled network must not kill a long matrix run: the same
     pending bytes are retried, and the witness deduplicates them

@@ -6,10 +6,18 @@ overwrite output files and create those files with owner only permissions.
 The manifest and trust file contain public data, but their restricted file
 permissions make accidental disclosure less likely.
 
+Commands assume the environment described in [installation](installation.md).
+For a complete synthetic walkthrough, including service setup, see the
+[runnable demo](demo.md). The values below describe operator-provisioned files;
+they are not a copy-and-run deployment configuration.
+
 ## Create keys and public key files
 
-```sh
-export CASF_PASSPHRASE='use a private prompt or secret manager'
+```bash
+printf 'Key passphrase: '
+IFS= read -r -s CASF_PASSPHRASE
+printf '\n'
+export CASF_PASSPHRASE
 casf key generate --role authority --out authority.pem
 casf key generate --role log --out log.pem
 casf key generate --role witness --out witness.pem

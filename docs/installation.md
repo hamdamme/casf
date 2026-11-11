@@ -24,11 +24,14 @@ downloaded file name.
 python3 -m venv .venv
 .venv/bin/python -m pip install ./casf-0.1.0rc1-py3-none-any.whl
 .venv/bin/casf --help
+source .venv/bin/activate
 ```
 
 The wheel includes the witness server code, but does not install its optional
-HTTP server dependencies unless the `witness` extra is selected. After the
-package is published, install `casf[witness]` to add those dependencies. For
+HTTP server dependencies unless the `witness` extra is selected. For a checked
+local wheel, install `"./casf-0.1.0rc1-py3-none-any.whl[witness]"` using the
+environment's pip. The filename is illustrative until new artifacts are
+approved. For
 development from a source checkout, the repository's locked setup installs
 the witness and development tools:
 
@@ -37,9 +40,15 @@ git clone https://github.com/hamdamme/casf.git
 cd casf
 python3 -m venv .venv-tools
 .venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
-.venv/bin/casf --help
+.venv-tools/bin/uv sync --locked --no-editable --extra witness --extra dev --group build --python python3
+PYTHONPATH=src .venv/bin/casf --help
 ```
+
+The remaining examples use `casf` from the activated candidate environment.
+When checking development source instead, run them from the repository root
+with `PYTHONPATH=src .venv/bin/casf` in place of `casf`. This distinction avoids
+testing a stale installed package. The [synthetic demo](demo.md) supplies a
+complete temporary workflow without requiring existing keys or evidence.
 
 ## Existing SQLite stores
 

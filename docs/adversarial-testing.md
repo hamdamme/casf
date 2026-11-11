@@ -11,8 +11,8 @@ Use the locked development environment described in [installation](installation.
 From the repository root:
 
 ```bash
-uv run --locked python -m pytest tests/property tests/fuzz -v --hypothesis-show-statistics
-uv run --locked python -m tests.fuzz --seed 20261110 --cases 2000 --failures /tmp/casf-fuzz
+PYTHONPATH=src .venv/bin/python -m pytest tests/property tests/fuzz -v --hypothesis-show-statistics
+PYTHONPATH=src .venv/bin/python -m tests.fuzz --seed 20261110 --cases 2000 --failures /tmp/casf-fuzz
 ```
 
 All 12 Ubuntu/macOS CI jobs execute the properties and corpus replays. Each job
@@ -75,7 +75,7 @@ seed, iteration and reduction provenance. They are never silently overwritten.
 To replay a saved input:
 
 ```bash
-uv run --locked python -m tests.fuzz --replay /tmp/casf-fuzz/INPUT_HASH.json
+PYTHONPATH=src .venv/bin/python -m tests.fuzz --replay /tmp/casf-fuzz/INPUT_HASH.json
 ```
 
 Replay runs the saved bytes against current code. A normal parser acceptance or

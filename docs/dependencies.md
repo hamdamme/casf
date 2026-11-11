@@ -11,7 +11,7 @@ Use Python 3.12, 3.13, or 3.14. From the repository root:
 ```bash
 python3 -m venv .venv-tools
 .venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
+.venv-tools/bin/uv sync --locked --no-editable --extra witness --extra dev --group build --python python3
 ```
 
 The tool environment is separate from the project environment in `.venv`.
@@ -27,13 +27,20 @@ It does not silently select newer versions. Use the same uv version locally
 and in CI. A lockfile covering several Python versions does not replace
 executing the checks on each supported version.
 
+The explicit `PYTHONPATH=src` below selects the checked-out code even when an
+older wheel remains installed. The non-editable installation avoids relying
+on editable import hooks. After source changes, use the source commands for
+development; rebuild/reinstall before claiming an installed-wheel result.
+The [environment recorder](../tests/validation_environment.py) can verify the
+imported files and record their hashes in a new output file.
+
 ## Checks and builds
 
 ```bash
 .venv-tools/bin/uv lock --check
-.venv/bin/ruff check src tests
+.venv/bin/ruff check src tests benchmarks examples
 .venv/bin/mypy src
-.venv/bin/python -m pytest tests/
+PYTHONPATH=src .venv/bin/python -m pytest tests/
 .venv-tools/bin/uv build --python .venv/bin/python --no-build-isolation --out-dir dist
 ```
 
@@ -53,7 +60,7 @@ it does not promise the exact development environment recorded here.
 
 ```bash
 .venv-tools/bin/uv lock --upgrade
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
+.venv-tools/bin/uv sync --locked --no-editable --extra witness --extra dev --group build --python python3
 ```
 
 Review the resolved versions, licenses, dependency advisories, and lockfile

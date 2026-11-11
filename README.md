@@ -37,14 +37,19 @@ git clone https://github.com/hamdamme/casf.git
 cd casf
 python3 -m venv .venv-tools
 .venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --group build --python python3
-.venv/bin/casf --help
-.venv/bin/python -m pytest tests/
+.venv-tools/bin/uv sync --locked --no-editable --extra witness --extra dev --group build --python python3
+PYTHONPATH=src .venv/bin/casf --help
+PYTHONPATH=src .venv/bin/python -m pytest tests/
 ```
 
 This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
 
 For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc1` candidate is not published to a package index. Do not install it with a package index command yet.
+
+For a complete local walkthrough, run the [verified synthetic demo](docs/demo.md).
+It provisions temporary keys and a loopback witness, verifies exported evidence,
+rejects tampering, and exercises backup, restore and sealing. It needs no cloud
+server and keeps only public synthetic output.
 
 The committed `uv.lock` records exact dependency versions for development and
 new experiments. See the [dependency guide](docs/dependencies.md) for checks,
@@ -74,6 +79,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | [Verifier API](docs/verifier-api.md) | Complete bundle reads and incremental checks from trusted checkpoints |
 | [Adversarial testing](docs/adversarial-testing.md) | Generated properties, bounded parser fuzzing, and replaying failures |
 | [Install and use CASF](docs/installation.md) | Candidate installation, verification modes, and retained verifier state |
+| [Runnable demonstration](docs/demo.md) | Verified CLI workflow, synthetic file fingerprint and expected outcomes |
 | [Research guide](research/README.md) | Canonical questions, evidence, outcomes and historical label crosswalk |
 | [Research limitations](research/limitations.md) | Detection boundaries and limits of the experiments |
 | [Release checklist](docs/release/checklist-v0.1.md) | Current source checks, artifact status and historical decisions |
@@ -85,6 +91,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | Path | Purpose |
 | --- | --- |
 | `src/casf/` | Current package implementation |
+| `examples/` | Runnable synthetic workflows using the current public interfaces |
 | `tests/` | Unit and conformance tests and other validation |
 | `vectors/v1/` | Canonical encoding and cryptographic test vectors |
 | `benchmarks/` | Experiment runners, manifests, results, and reports |
@@ -97,7 +104,7 @@ The active implementation is under `src/casf/`. The earlier prototype remains ac
 
 ## Evaluation evidence
 
-The repository includes [an adversarial detection report](benchmarks/results/detection-v1/report.md), [local benchmark reports](benchmarks/results/local-subset-v1/report.md), [Linux benchmark results](benchmarks/results/linux-matrix-v2/report.md), and [wide area experiment results](benchmarks/results/wide-area-v3/report.md). Their recorded configurations, hardware, and assumptions matter; individual observations are not performance guarantees.
+The [current local follow-up](research/current-evidence-2026-11-10.md) identifies its measurement revision and limits. Earlier [detection](benchmarks/results/detection-v1/report.md), [local](benchmarks/results/local-subset-v1/report.md), [Linux](benchmarks/results/linux-matrix-v2/report.md), and [wide area](benchmarks/results/wide-area-v3/report.md) results remain historical. Their recorded configurations, hardware, and assumptions matter; individual observations are not performance guarantees.
 
 See [research limitations](research/limitations.md) for cases that verification cannot detect and for limits on generalizing the results.
 

@@ -1,7 +1,7 @@
 # Current experimental candidate checklist
 
-Updated 10 November 2026 after PR 50 merged at
-`b3cf12be89455f5515a8ad001295086c91527342`. Package metadata remains
+Updated 10 November 2026 after PR 51 merged at
+`6441e4569e8c420f5e8a71e55950af88ce46f336`. Package metadata remains
 `0.1.0rc1`; the next review candidate is planned as `0.1.0rc2` during final
 artifact preparation. No existing artifact approval covers these source changes.
 The [completion tracker](completion-tracker.md) records tasks and review status.
@@ -16,8 +16,9 @@ The [completion tracker](completion-tracker.md) records tasks and review status.
 | Supported validation matrix | Exact revision results required | [Twelve configurations](validation-matrix.md) cover Ubuntu x86_64 and macOS arm64, Python 3.12–3.14, locked/minimum direct dependencies, builds and installed-wheel checks. Review all jobs, runtime/import identities and retained results for the proposed revision. A badge alone does not close this gate. |
 | Requirements traceability | Mapped with explicit limits | [Evidence map](../../tests/requirement_evidence.json), structural [traceability checks](../../tests/unit/test_traceability.py), and [evidence guide](requirement-evidence.md). Named assertions are not proof of every specification rule. |
 | Specification and operational boundaries | Explicit; full conformance not claimed | [Current implementation limits](../current-reference.md#operational-limits-and-specification-differences) include administrative trust/status distribution, witness recovery assumptions, bounded generated coverage and hardware durability. |
-| Research evidence | Local refresh awaiting review | The [current follow-up](../../research/current-evidence-2026-11-10.md) records new detection, H1, local batching, H3 and RQ4 evidence. H1's primary expectation remains unmet; WAN/Linux performance and preprint values remain historical. [October 28 acceptance](phase3-closeout-2026-10-28.md#research-evidence-boundary) still applies to its original records. |
-| Documentation and critical-change review | Current workflow/release review remains | Validate the documented demo and operating flows, reconcile current versus historical instructions, and resolve release-blocking findings. Existing limited external review is preserved in [its scope record](phase3-closeout-2026-10-28.md#review-coverage). |
+| Research evidence | Local refresh accepted in PR 51 | The [current follow-up](../../research/current-evidence-2026-11-10.md) records new detection, H1, local batching, H3 and RQ4 evidence. H1's primary expectation remains unmet; WAN/Linux performance and preprint values remain historical. [October 28 acceptance](phase3-closeout-2026-10-28.md#research-evidence-boundary) still applies to its original records. |
+| Documentation and critical-change review | Workflow/review batch awaiting acceptance | The [21-check demo](../demo.md) and [scoped review](workflow-review-2026-11-10.md) record executed workflows, corrected guidance and the remote benchmark URL fix. Existing limited external review is preserved in [its scope record](phase3-closeout-2026-10-28.md#review-coverage). |
+| Separate Linux/cloud evaluation | Deferred by the maintainer | Ubuntu CI continues. Additional machine deployment, independently administered witness operation and new WAN measurements have not been performed. The [remote plan](../../benchmarks/wide-area.md) records prerequisites for that later work. |
 | Final candidate artifacts | Not prepared for final acceptance | Select the final source, update candidate metadata, build into a new directory, inspect wheel/source contents, clean-install exact files and record hashes. Ordinary PR builds are validation artifacts, not approved release files. |
 | Dependency advisories and licensing | Refresh at final artifact preparation | [Earlier reviews](dependency-review.md) are dated. Inspect exact resolved packages, native components, notices and final contents; old advisory results are not current clearance. |
 | Security reporting | Historical channel test retained | [October 28 record](phase3-closeout-2026-10-28.md) documents the tested private reporting channel and best-effort scope. No new report was sent during validation. |

@@ -38,8 +38,8 @@ to force progress.
 Install the locked development and witness dependencies, then run:
 
 ```bash
-uv run --locked python -m pytest tests/process -v
-uv run --locked python -m pytest tests -v --hypothesis-show-statistics
+PYTHONPATH=src .venv/bin/python -m pytest tests/process -v
+PYTHONPATH=src .venv/bin/python -m pytest tests -v --hypothesis-show-statistics
 ```
 
 The ordinary CI suite includes these cases in all 12 Ubuntu/macOS jobs: CPython
