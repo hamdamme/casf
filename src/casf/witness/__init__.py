@@ -393,7 +393,8 @@ class Witness:
         tip = base_head
         for offset, envelope in enumerate(records, start=1):
             seq = base_count + offset
-            if set(envelope) != {"body", "record_hash", "signature"}:
+            if not isinstance(envelope, dict) or set(envelope) != {
+                    "body", "record_hash", "signature"}:
                 raise SchemaError("record envelope must be exactly "
                                   "body, record_hash, signature")
             body = envelope["body"]

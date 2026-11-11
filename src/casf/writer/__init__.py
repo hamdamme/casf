@@ -28,7 +28,12 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from casf import crypto
 from casf.bundle import read_bundle
 from casf.canonical.jcs import canonicalize, parse
-from casf.canonical.limits import MAX_CANONICAL_BODY_BYTES, MAX_CHECKPOINT_BATCH, SAFE_INT_MAX
+from casf.canonical.limits import (
+    ENVELOPE_LIMITS,
+    MAX_CANONICAL_BODY_BYTES,
+    MAX_CHECKPOINT_BATCH,
+    SAFE_INT_MAX,
+)
 from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
 from casf.filesystem import rename_directory_exclusive, sync_directory
 from casf.model.api import AppendResult, EventRequest, WitnessState
@@ -469,7 +474,7 @@ class Writer:
             con.execute(
                 "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
                 (log_id, seq, request["event_id"], request_digest,
-                 record_hash, canonicalize(envelope)))
+                 record_hash, canonicalize(envelope, ENVELOPE_LIMITS)))
             con.execute(
                 "UPDATE heads SET count = ?, head_hash = ? WHERE log_id = ?",
                 (seq, record_hash, log_id))
@@ -718,7 +723,7 @@ class Writer:
                     con.execute(
                         "INSERT INTO records VALUES (?, ?, ?, ?, ?, ?)",
                         (log_id, index, request["event_id"], crypto.request_digest(request),
-                         prev_hash, canonicalize(value)))
+                         prev_hash, canonicalize(value, ENVELOPE_LIMITS)))
                 sealed = writer._restore_journal(log_id, context, bundle.checkpoints,
                                                   bundle.receipts, len(bundle.records))
                 if anchor is not None and not behind \
@@ -1011,7 +1016,8 @@ class Writer:
                 raise CasfError("stored record is corrupt")
             records.append(env)
         request = json.dumps(
-            {"checkpoint": envelope, "records": records}).encode()
+            {"checkpoint": envelope, "records": records},
+            ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:

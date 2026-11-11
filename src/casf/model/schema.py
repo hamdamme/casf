@@ -2,16 +2,22 @@
 (SPEC §10-§16).
 
 Every fixed body has an exact field set: missing fields, unknown fields,
-and parser-supplied defaults are all rejected. This module checks shape
-and scalar constraints only; semantic rules (chain linkage, signatures)
+and parser-supplied defaults are all rejected. This module checks the bounded
+body profile and scalar constraints; semantic rules (chain linkage, signatures)
 live in the verifier and witness (SPEC §8).
 """
 
 import re
 from dataclasses import dataclass
 
-from casf.canonical.limits import SAFE_INT_MAX, SAFE_INT_MIN
-from casf.errors import SchemaError
+from casf.canonical.jcs import canonicalize
+from casf.canonical.limits import (
+    MAX_CANONICAL_BODY_BYTES,
+    MAX_PROTOCOL_BODY_BYTES,
+    SAFE_INT_MAX,
+    SAFE_INT_MIN,
+)
+from casf.errors import LimitError, SchemaError
 from casf.types import JsonValue
 
 # ------------------------------------------------------------ field kinds
@@ -22,6 +28,7 @@ class Field:
     max_bytes: int | None = None        # for strings
     min_value: int | None = None
     max_value: int | None = None
+    nonempty: bool = False
 
 K = Field  # alias
 
@@ -80,6 +87,8 @@ def validate_body(body: JsonValue, fields: dict[str, Field], where: str) -> None
         elif f.kind == "str":
             if not isinstance(value, str):
                 raise SchemaError(f"{where}.{name}: expected string")
+            if f.nonempty and not value:
+                raise SchemaError(f"{where}.{name}: string must not be empty")
             if f.max_bytes is not None and len(value.encode("utf-8")) > f.max_bytes:
                 raise SchemaError(f"{where}.{name}: string too long")
         elif f.kind == "ts":
@@ -138,8 +147,8 @@ RECORD_FIELDS = {
     "seq": K("int", min_value=1),
     "event_id": K("uuid"),
     "recorded_at": K("ts"),
-    "actor": K("str", max_bytes=256),
-    "event_type": K("str", max_bytes=256),
+    "actor": K("str", max_bytes=256, nonempty=True),
+    "event_type": K("str", max_bytes=256, nonempty=True),
     "payload": K("object"),
     "attributes": K("object"),
     "prev_hash": K("digest"),
@@ -211,10 +220,14 @@ BODY_SPECS = {
 }
 
 def validate_protocol_body(kind: str, body: JsonValue) -> None:
-    """Validate one fixed protocol body by its type name."""
+    """Validate the complete body profile before hashing or signature work."""
     fields = BODY_SPECS[kind]
     if not isinstance(body, dict) or body.get("type") != kind:
         raise SchemaError(f"expected body of type {kind!r}")
     if body.get("version") != 1:
         raise SchemaError(f"{kind}: unsupported version (only version 1 accepted)")
+    encoded = canonicalize(body)
+    limit = MAX_CANONICAL_BODY_BYTES if kind == "record" else MAX_PROTOCOL_BODY_BYTES
+    if len(encoded) > limit:
+        raise LimitError(f"{kind} body exceeds the canonical byte budget")
     validate_body(body, fields, kind)

@@ -21,3 +21,7 @@ QUERY_TIMEOUT_SECONDS = 10                     # §14, §15
 class Limits:
     max_depth: int = MAX_NESTING_DEPTH
     max_string_bytes: int = MAX_STRING_BYTES
+
+
+# The protocol counts depth from the body, excluding its envelope container.
+ENVELOPE_LIMITS = Limits(max_depth=MAX_NESTING_DEPTH + 1)
