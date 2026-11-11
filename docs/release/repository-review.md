@@ -4,8 +4,10 @@ Reviewed 11 November 2026 against handoff head
 `981c107d5abc63459b336a5f7631e8f421673892`, building on accepted main
 `ecc47630c1340ac118dc50f2989cc51c37171080`. This closes remaining work from the
 original request to check every repository file. It does not replace the release
-or its exact-byte evidence. Corrections and final handoff await maintainer review
-in [PR 55](https://github.com/hamdamme/casf/pull/55); no merge is implied.
+or its exact-byte evidence. The maintainer accepted the corrections and final
+handoff by merging [PR 55](https://github.com/hamdamme/casf/pull/55) as
+`710fbe346598c05ab4989a3656c907eb0aa2c853`. The review findings below preserve
+their original scope; the acceptance update does not rerun the research.
 
 ## Coverage and reuse
 
@@ -51,8 +53,9 @@ proof, an external-link availability audit or a visual document-layout review.
 | A08 Presentation and handoff | Existing runnable demo and operating guide retained; added missing package repository/documentation/issues URLs and checks for those fields. Added this durable file register and CI consistency check. |
 
 The earlier tracker closed A06/A08 and final review too soon. F02/F19 and F27/F28
-are now marked Awaiting review, rather than counting unreviewed corrections as
-accepted work. This is unfinished original work, not a new release milestone.
+were marked Awaiting review until PR 55 merged. They are now accepted in the
+[tracker](completion-tracker.md). The corrections closed unfinished original work;
+they did not create a new release milestone.
 
 ## Kept intentionally
 
@@ -83,15 +86,18 @@ The runtime edits change docstrings only, verified by comparing ASTs with
 module/class/function docstrings removed. These edits still change source bytes;
 the published release hashes are not reused as hashes for this checkout.
 
-The final PR must pass the supported CI matrix at its actual head. Prior
-1199-test CI and Linux runs remain evidence for their recorded revisions, not
-1203-test claims for this change. CI runs the new repository check in all six
-locked environments and retains its file hashes alongside the existing reports.
+[CI run 43067257585](https://github.com/hamdamme/casf/actions/runs/43067257585)
+passed all twelve configurations at PR head `42909d756285cd8cfb13ef49671dfeea8783f290`:
+1203 tests and the 21-check demo per configuration. All six locked jobs passed
+the 506-file, 522-link repository check. Two macOS jobs needed a retry because
+hosted runners were unavailable, not because tests failed. The retry passed on
+the same source. Prior 1199-test CI and Linux evidence remains tied to its
+recorded revisions. Later acceptance-text edits do not inherit those exact-head runs.
 
 No remaining unexplained tracked artifact, public function stub, broken local
 Markdown target or unresolved original audit finding was identified after these
 corrections. This is a bounded repository engineering review, not proof of every
 possible program behavior or independent cryptographic/security certification.
-Remaining acceptance is maintainer review and merge. Production operation,
+PR 55's merge completes acceptance of this review. Production operation,
 independent witness administration, physical power-loss tests, broader research
 and manuscript licensing/deposit remain explicitly separate decisions.

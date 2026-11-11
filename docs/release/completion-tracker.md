@@ -7,16 +7,14 @@ Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted a
 [0.1.0rc2 is published](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
 The original audit and release-preparation records remain historical.
 
-**Current position:** The experimental release is published. Repository-wide
-reconciliation corrects the earlier premature closeout: the original A06 archive
-and A08 package-link findings were still unresolved, and the final handoff is
-awaiting review. See the [file-by-file review](repository-review.md).
+**Current position:** The maintainer merged [PR 55](https://github.com/hamdamme/casf/pull/55)
+as `710fbe346598c05ab4989a3656c907eb0aa2c853`, accepting the repository
+reconciliation and final handoff. The [file-by-file review](repository-review.md)
+records the original findings, their corrections and verification limits.
 
-**Progress:** 24/28 tasks accepted; F02 and F19 corrections and F27–F28 handoff
-are delivered but awaiting review. Four tasks, three affected sessions (1, 10,
-14) and three affected phases (1, 4, 6) remain open for acceptance. No additional
-implementation scope is invented by this correction; prior testing and release
-evidence remain credited. Review and merge have not been performed.
+**Progress:** 28/28 tasks accepted; 14/14 sessions and 6/6 phases accepted.
+Zero tasks remain in the agreed experimental v0.1 completion plan. This records
+acceptance of the verified scope, not exhaustive correctness or production readiness.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -25,7 +23,7 @@ These counts describe this completion plan, not the proportion of all historical
 | Phase | Session | Task | Work | Status |
 |---:|---:|---|---|---|
 | 1 | 1 — Current project review | F01 | Review current code, checks, and PR 29 | Complete |
-| 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Awaiting review |
+| 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Complete |
 | 1 | 2 — Final requirements | F03 | Define exact experimental release version, platform and support scope | Complete |
 | 1 | 2 — Final requirements | F04 | Map each gap to a fix/design decision and acceptance check | Complete |
 | 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Complete |
@@ -42,7 +40,7 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Complete |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
-| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Awaiting review |
+| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Complete |
 | 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
 | 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
@@ -50,8 +48,8 @@ These counts describe this completion plan, not the proportion of all historical
 | 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Complete |
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Complete |
 | 6 | 13 — Publication | F26 | Verify public downloads and installation | Complete |
-| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Awaiting review |
-| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Awaiting review |
+| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Complete |
+| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Complete |
 
 ## Acceptance and reporting
 
@@ -76,9 +74,14 @@ After every completed task, report: task ID and changes; checks actually run and
   6075 parser cases and three 21-check demonstrations. This is separate from historical research.
 - F02/F19 reconciliation: the tracked-file inventory, original audit dispositions,
   historical archive, status corrections and package links are delivered in the
-  [repository review](repository-review.md). F27/F28 are also awaiting review.
-  The earlier zero-remaining statement did not satisfy the acceptance rule below;
-  final acceptance must wait for review of these corrections and handoff.
+  [repository review](repository-review.md). PR 55's merge accepts these corrections
+  and F27/F28. The earlier premature closeout remains documented in that review.
+- PR 55 validation: [CI run 43067257585](https://github.com/hamdamme/casf/actions/runs/43067257585)
+  passed all twelve configurations at `42909d756285cd8cfb13ef49671dfeea8783f290`:
+  1203 tests and the 21-check demo per configuration. Six locked jobs also checked
+  all 506 tracked files and 522 local links. Two macOS jobs were retried after
+  runner-capacity cancellations; the successful retry used the same source.
+  These results belong to that reviewed head, not to later bookkeeping edits.
 - Ongoing work: maintain dependencies and reporting, protect retained state and backups,
   and scope any persistent witness/HTTPS/cloud deployment separately. Production 1.0,
   independent audit and new WAN measurements are not claimed. H1 remains unmet.
