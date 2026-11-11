@@ -18,7 +18,7 @@ env:
 
 jobs:
   test:
-    name: locked (${{ matrix.os }}, ${{ matrix.python-version }})
+    name: ${{ matrix.check-name }} (${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
@@ -26,6 +26,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
+        include:
+          - os: ubuntu-latest
+            check-name: test
+          - os: macos-15
+            check-name: test macos
     env:
       PYTHONPATH: ${{ github.workspace }}/src
     steps:
@@ -102,7 +107,7 @@ jobs:
           retention-days: 14
 
   minimum:
-    name: minimum (${{ matrix.os }}, ${{ matrix.python-version }})
+    name: ${{ matrix.check-name }} (${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
@@ -110,6 +115,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
+        include:
+          - os: ubuntu-latest
+            check-name: minimum
+          - os: macos-15
+            check-name: minimum macos
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
