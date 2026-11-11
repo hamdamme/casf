@@ -9,7 +9,10 @@ approval and publication remain separate gates in the [checklist](checklist-v0.1
 
 The [workflow](../../.github/workflows/ci.yml) runs 12 jobs on each pull request
 and main push. All configurations must pass; one failure does not cancel the
-others. Each job has a 20-minute limit.
+others. Each job has a 20-minute limit. Both matrices request the current
+patch release within the selected Python minor (`check-latest: true`); runtime
+inventories record the result. Passing compatibility tests does not establish
+that every native library is patched. See the [current advisory scope](dependency-review-0.1.0rc2.md).
 
 | Runner | Python | Locked dependencies | Minimum direct dependencies |
 | --- | --- | --- | --- |

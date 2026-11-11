@@ -1,7 +1,7 @@
 # Current experimental candidate checklist
 
-Updated 10 November 2026 after PR 52 merged at
-`79fce315a3b0ec06f2293643f01ea66a62b79136`. Package metadata is now
+Updated 10 November 2026 after PR 53 merged at
+`7af8d93e182868e96f76ab7cef72a23143e0f1d7`. Package metadata is now
 `0.1.0rc2`; exact local review files and their build revision are recorded in the
 [candidate record](candidate-0.1.0rc2.md). No existing artifact approval covers
 these source changes or authorizes publication.
@@ -20,10 +20,10 @@ The [completion tracker](completion-tracker.md) records tasks and review status.
 | Research evidence | Local refresh accepted in PR 51 | The [current follow-up](../../research/current-evidence-2026-11-10.md) records new detection, H1, local batching, H3 and RQ4 evidence. H1's primary expectation remains unmet; WAN/Linux performance and preprint values remain historical. [October 28 acceptance](phase3-closeout-2026-10-28.md#research-evidence-boundary) still applies to its original records. |
 | Documentation and critical-change review | Accepted in PR 52 | The [21-check demo](../demo.md) and [scoped review](workflow-review-2026-11-10.md) record executed workflows, corrected guidance and the remote benchmark URL fix. Existing limited external review is preserved in [its scope record](phase3-closeout-2026-10-28.md#review-coverage). |
 | Separate Linux/cloud evaluation | Deferred by the maintainer | Ubuntu CI continues. Additional machine deployment, independently administered witness operation and new WAN measurements have not been performed. The [remote plan](../../benchmarks/wide-area.md) records prerequisites for that later work. |
-| Candidate build and installation | Prepared; review pending | The [identified 0.1.0rc2 files](candidate-0.1.0rc2.md) passed content inspection and 32 fresh-install checks, including two complete synthetic workflows. Final content/license acceptance and publication approval remain open. CI builds are separate validation artifacts. |
-| Dependency advisories and licensing | Refresh at final artifact preparation | [Earlier reviews](dependency-review.md) are dated. Inspect exact resolved packages, native components, notices and final contents; old advisory results are not current clearance. |
-| Security reporting | Historical channel test retained | [October 28 record](phase3-closeout-2026-10-28.md) documents the tested private reporting channel and best-effort scope. No new report was sent during validation. |
-| Release notes and acceptance | Pending final files and explicit approval | Prepare support details, limitations, hashes and notes for the exact candidate. Previous approval does not transfer to a new build. |
+| Candidate build and installation | Accepted in PR 53 | The [identified 0.1.0rc2 files](candidate-0.1.0rc2.md) passed content inspection and 32 fresh-install checks, including two complete synthetic workflows. Final content/license acceptance and publication approval remain open. CI builds are separate validation artifacts. |
+| Dependency advisories and licensing | Refreshed; review pending | The [current review](dependency-review-0.1.0rc2.md) records 25 exact package/tool queries, license inventories and candidate contents. Native findings have separate scoped dispositions. Repeat preflight before publication; a clean package query is not host-library clearance. |
+| Security reporting | Setting confirmed enabled | The direct reporting route and best-effort policy are in [SECURITY.md](../../SECURITY.md). The [October 28 delivery record](phase3-closeout-2026-10-28.md) remains historical; no new report was sent. |
+| Release notes and acceptance | Prepared; review pending | [Notes](notes-0.1.0rc2.md), [checksums](SHA256SUMS-0.1.0rc2.txt) and the [exact GitHub prerelease proposal](approval-0.1.0rc2.md) are prepared. The target build commit and files are explicit. Approval remains separate and false. |
 | Publication and handoff | Not authorized or performed | Publish only after explicit approval of the prepared release, then verify public installation and complete the operating/maintenance handoff. |
 
 ## Historical records
