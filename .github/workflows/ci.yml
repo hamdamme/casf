@@ -17,10 +17,16 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: locked (${{ matrix.os }}, ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -67,7 +73,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: parser-fuzz-locked-${{ matrix.python-version }}
+          name: parser-fuzz-locked-${{ matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-fuzz/
           if-no-files-found: ignore
           retention-days: 14
@@ -89,10 +95,13 @@ jobs:
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py --witness
 
   minimum:
-    name: minimum (${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    name: minimum (${{ matrix.os }}, ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -150,7 +159,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: parser-fuzz-minimum-${{ matrix.python-version }}
+          name: parser-fuzz-minimum-${{ matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-fuzz/
           if-no-files-found: ignore
           retention-days: 14
