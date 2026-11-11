@@ -136,3 +136,36 @@ class HarnessTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_invalid_trials_return_failure_without_reclassifying_outcomes(monkeypatch, tmp_path):
+    def experiment(*args):
+        return {"runs": [{"cases": {"case": {"classification": "invalid_trial"}}}]}
+
+    monkeypatch.setattr(h1, "run_experiment", experiment)
+    assert h1.main(["manifest.json", str(tmp_path / "out")]) == 1
+    monkeypatch.setattr(h1, "run_experiment", lambda *args: {
+        "runs": [{"cases": {"case": {"classification": "outcome_mismatch"}}}]})
+    assert h1.main(["manifest.json", str(tmp_path / "other")]) == 0
+
+
+def test_setup_failure_preserves_each_invalid_run(tmp_path, monkeypatch):
+    import json
+    from pathlib import Path
+
+    from benchmarks import h1_writer_rollback as h1
+
+    def fail(*args):
+        raise OSError('synthetic setup failure')
+
+    monkeypatch.setattr(h1, 'run_one', fail)
+    manifest = json.loads(Path('benchmarks/h1-writer-rollback.v1.json').read_text())
+    manifest['configuration'].update(runs=2, seeds=[7, 8])
+    path = tmp_path / 'manifest.json'
+    path.write_text(json.dumps(manifest))
+    output = tmp_path / 'results'
+    artifact = h1.run_experiment(path, output)
+    assert len(artifact['runs']) == 2
+    for index, row in enumerate(artifact['runs']):
+        assert json.loads((output / f'run-{index:02d}.json').read_text()) == row
+        assert all(case['classification'] == 'invalid_trial' for case in row['cases'].values())
