@@ -88,7 +88,7 @@ def test_startup_detects_head_tampering(tmp_path):
     with pytest.raises(CasfError, match="head"):
         Writer(db, LOG, local_only=True)
 
-def test_startup_detects_missing_record(tmp_path):
+def test_startup_detects_changed_head_hash(tmp_path):
     db = tmp_path / "s.db"
     w = _writer(db)
     for n in range(1, 3):
@@ -121,23 +121,23 @@ def test_clean_startup_passes(tmp_path):
 class CrashBeforeInsert(Writer):
     def _debug_hook(self, stage):
         if stage == "before_insert":
-            os._exit(1)
+            os._exit(77)
 
 
 class CrashAfterCommit(Writer):
     def _debug_hook(self, stage):
         if stage == "after_commit":
-            os._exit(1)
+            os._exit(77)
 
 
 def _mp_crash_before(db_path):
-    CrashBeforeInsert(db_path, LOG).append(
+    CrashBeforeInsert(db_path, LOG, local_only=True).append(
         LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000b1",
         actor="a", event_type="t", payload={}, attributes={})
 
 
 def _mp_crash_after_commit(db_path):
-    CrashAfterCommit(db_path, LOG).append(
+    CrashAfterCommit(db_path, LOG, local_only=True).append(
         LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000b2",
         actor="a", event_type="t", payload={}, attributes={})
 
@@ -147,8 +147,12 @@ def test_crash_before_insert_leaves_nothing(tmp_path):
     _writer(db)
     p = MP.Process(target=_mp_crash_before, args=(db,))
     p.start()
-    p.join(60)
-    assert p.exitcode == 1
+    p.join(30)
+    if p.is_alive():
+        p.kill()
+        p.join(5)
+        pytest.fail("crash worker did not exit")
+    assert p.exitcode == 77
     w = Writer(db, LOG, local_only=True)
     assert list(w.records(LOG_ID)) == []
     # the same event id is still free to use
@@ -161,14 +165,22 @@ def test_crash_after_commit_retry_returns_committed_record(tmp_path):
     _writer(db)
     p = MP.Process(target=_mp_crash_after_commit, args=(db,))
     p.start()
-    p.join(60)
-    assert p.exitcode == 1
+    p.join(30)
+    if p.is_alive():
+        p.kill()
+        p.join(5)
+        pytest.fail("crash worker did not exit")
+    assert p.exitcode == 77
     # the caller never got a response, but the append committed; a same
     # ID retry must return the original record, not append a new one
     w = Writer(db, LOG, local_only=True)
+    committed = list(w.records(LOG_ID))
+    assert len(committed) == 1
+    assert committed[0]["body"]["event_id"] == "123e4567-e89b-42d3-a456-4266000000b2"
     env = w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000b2",
                    actor="a", event_type="t", payload={}, attributes={})
     assert env["body"]["seq"] == 1
+    assert env == committed[0]
     assert len(list(w.records(LOG_ID))) == 1
     assert _verify_db(w).result == Result.PASS
 

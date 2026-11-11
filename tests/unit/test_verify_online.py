@@ -124,7 +124,6 @@ def test_witness_behind_evidence_is_conflict(tmp_path):
     svc, server = _service(tmp_path)
     try:
         w, mh, cps, rcs = _evidence(tmp_path, svc, records=2, witnessed=2)
-        cps[0]
         behind = _fake_view(-1, "ab" * 32)  # witness lost the checkpoint
         report = verify(
             w.manifest_envelope(LOG_ID), list(w.records(LOG_ID)), _pins(mh),
