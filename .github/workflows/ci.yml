@@ -56,6 +56,8 @@ jobs:
         run: uv lock --check
       - name: Lint
         run: .venv/bin/ruff check src tests benchmarks examples
+      - name: Repository consistency
+        run: .venv/bin/python tests/repository_check.py --output "$RUNNER_TEMP/casf-validation/repository-check.json"
       - name: Type check
         run: .venv/bin/mypy src
       - name: Test suite
