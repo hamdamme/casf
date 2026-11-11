@@ -2082,7 +2082,7 @@
       "role": "specification or user guide",
       "disposition": "corrected in this review",
       "verification": "local links/headings; current/historical status and referenced evidence review",
-      "manual_line_review": "unchecked"
+      "manual_line_review": "complete"
     },
     {
       "path": "docs/process-crash-testing.md",
@@ -2096,7 +2096,7 @@
       "role": "specification or user guide",
       "disposition": "retain",
       "verification": "local links/headings; current/historical status and referenced evidence review",
-      "manual_line_review": "unchecked"
+      "manual_line_review": "complete"
     },
     {
       "path": "docs/release/SHA256SUMS-0.1.0rc2.txt",

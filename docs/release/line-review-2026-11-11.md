@@ -29,7 +29,8 @@ These labels do not imply a second independent review or absence of bugs.
 Prior per-file structural checks and dated release/research results remain
 credited only for their original bytes and scope.
 
-All 38 runtime Python files, the package typing marker, the governing
+The register covers 512 paths: 74 completely read, one partially read, and 437
+not yet manually read in full. All 38 runtime Python files, the package typing marker, the governing
 specification and selected guides, checks and tests have been read. Automated
 repository checks parse/read all tracked files, validate local links, restore
 SQL fixtures, inspect document containers and verify retained checksums. Those
@@ -37,7 +38,20 @@ checks do not constitute manual review of every line or every measurement.
 
 ## Validation
 
-Final local results are recorded after the checks complete. The published
+On macOS arm64 with Python 3.12.14 and locked dependencies:
+
+- Full suite: 1240 passed at runtime-fix commit `1d96638`; 37 added regression cases.
+  A later test-only fixture permission correction passed the 21 lifecycle/status cases.
+- Ruff and strict mypy passed; lockfile validation passed unchanged.
+- Repository check: 512 tracked files, 531 local links, no errors.
+- Three parser campaigns passed 6075 total cases.
+- All 237 JSON files were also traversed for duplicate keys and nonfinite values.
+- Wheel and source archive member/content/metadata inspection passed for all
+  39 runtime files. A fresh locked wheel install matched source hashes, passed
+  witness request/shutdown and the 21-check synthetic workflow.
+
+Hosted checks, if subsequently run, apply to their exact PR revision and are
+reported separately. The published
 `0.1.0rc2` files do not contain these fixes. Prior Linux and twelve-configuration
 CI results cannot be reused as validation of changed runtime bytes.
 

@@ -21,6 +21,10 @@ Start with the [operating and maintenance handoff](docs/operating-handoff.md). T
 [publication record](docs/release/publication-0.1.0rc2.md) identifies the exact release
 files and verified downloads. No PyPI release has been published.
 
+Development source contains [unreleased validation and state-handling fixes](docs/release/line-review-2026-11-11.md).
+The repository's full manual file review remains unfinished; published prerelease
+downloads do not include these later corrections.
+
 ## Capabilities
 
 - **Signed records:** Bind each record to its log, sequence, predecessor, and signing key using Ed25519 and SHA-256.

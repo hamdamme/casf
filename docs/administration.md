@@ -1,5 +1,10 @@
 # Local CASF administration
 
+This guide tracks development source. The [line-review corrections](release/line-review-2026-11-11.md),
+including strict key storage and predecessor registration options, are not in
+the published `0.1.0rc2` wheel. Use the development setup and explicit source
+commands in [installation](installation.md) when checking those changes.
+
 This guide covers the explicit file based provisioning commands. Keep
 authority and signing keys outside the repository. The commands refuse to
 overwrite output files and create those files with owner only permissions.
