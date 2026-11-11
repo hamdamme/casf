@@ -32,6 +32,17 @@
     "rendering": "Resolve relative links against the accepted release-evidence revision before publication; review the rendered body.",
     "sha256": "5167a91c4ebfd3839371229d80ed191ab78e4293c51f332e056b6f2c188d2847"
   },
+  "preparation_preflight": {
+    "checked_at": "2026-11-11T03:06:57.985069+00:00",
+    "existing_github_releases": [],
+    "existing_tag_refs": [],
+    "private_vulnerability_reporting": {
+      "enabled": true
+    },
+    "pypi_casf": {
+      "http_status": 404
+    }
+  },
   "publication_approved": false,
   "pypi_publication_included": false,
   "runtime_review": "docs/release/runtime-review-0.1.0rc2.json",
