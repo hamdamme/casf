@@ -124,11 +124,11 @@ histories, concurrency) remains unmeasured by this experiment.
 ```
 PYTHONPATH=src .venv/bin/python -m benchmarks.h1_writer_rollback \
   benchmarks/h1-writer-rollback.v1.json \
-  benchmarks/results/h1-writer-rollback-v1
+  /tmp/casf-h1-new-run
 ```
 
-The harness refuses to overwrite an existing results directory; remove
-or rename it before a rerun. Runs were executed with the working tree
+The harness refuses to overwrite an existing results directory. Choose a new,
+unused output path for each rerun and retain the original evidence. Runs were executed with the working tree
 source through PYTHONPATH=src because the development environment also
 holds an installed 0.1.0rc1 package copy; the recorded
 casf_module_path and casf_source_tree_sha256 in the raw results

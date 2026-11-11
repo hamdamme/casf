@@ -186,8 +186,8 @@ def test_late_malformed_bundle_does_not_publish_report_or_checkpoint(cli_bundle,
     assert not output.out
     assert "error:" in output.err
     if state.exists():
-        retained = json.loads(state.read_text())
-        assert retained["checkpoint_index"] is None
+        retained = json.loads(state.read_text())["manifests"][manifest["manifest_hash"]]
+        assert retained["checkpoint"] is None
 
 
 def test_manifest_failure_does_not_claim_a_verified_record_range():

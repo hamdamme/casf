@@ -3,7 +3,7 @@
 The witness is a stateful verifier with its own storage. It accepts
 only a valid extension of its retained state, replays a stored
 receipt on an identical retry, and rejects conflicts without moving
-its high water state. HTTP transport arrives in the next session.
+its high water state. HTTP transport is covered in test_witness_http.py.
 """
 
 import sqlite3
@@ -364,7 +364,11 @@ def test_concurrent_forks_single_winner(tmp_path):
     for p in procs:
         p.start()
     for p in procs:
-        p.join()
+        p.join(30)
+        if p.is_alive():
+            p.kill()
+            p.join(5)
+            pytest.fail("witness worker did not exit")
     codes = sorted(p.exitcode for p in procs)
     assert codes == [0, 3]  # at most one extension accepted
     assert _state(db)[2] == 0  # exactly one checkpoint index retained

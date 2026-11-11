@@ -30,6 +30,13 @@ def generate(destination, count, anchor_records=None):
         _record_env,
         _status_env,
     )
+    if type(count) is not int or count < 0:
+        raise ValueError("count must be a nonnegative integer")
+    if anchor_records is not None and (type(anchor_records) is not int or anchor_records < 0):
+        raise ValueError("anchor_records must be a nonnegative integer")
+    trust_path = destination.with_suffix('.trust.json')
+    if trust_path.exists() or trust_path.is_symlink():
+        raise FileExistsError(f"refusing to overwrite trust evidence: {trust_path}")
     destination.mkdir(parents=True)
     manifest = _manifest_env()
     mh = manifest['manifest_hash']
@@ -61,9 +68,10 @@ def generate(destination, count, anchor_records=None):
     (destination / 'export.json').write_bytes(canonicalize(
         {'version': 1, 'type': 'export', 'log_id': LOG_ID, 'manifest_hash': mh,
          'through': count, 'record_count': count, 'generated_at': TS}))
-    destination.with_suffix('.trust.json').write_text(json.dumps(
+    with trust_path.open('x') as stream:
+        stream.write(json.dumps(
         {'authority': crypto.b64url_encode(AUTH_PUB), 'witness': crypto.b64url_encode(WIT_PUB),
-         'manifest_hash': mh, 'log_id': LOG_ID}))
+             'manifest_hash': mh, 'log_id': LOG_ID}))
 
 
 def measure(directory, reader, mode, trace=True):

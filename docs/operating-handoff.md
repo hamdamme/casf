@@ -69,7 +69,10 @@ using synthetic reproduction data. [SECURITY.md](../SECURITY.md) states best-eff
 
 The experimental v0.1 release is published; the [tracker](release/completion-tracker.md)
 records the accepted experimental plan and its evidence. It does not establish a production
-service or stable 1.0 contract. Persistent Linux/HTTPS operation, independently administered
+service. The original repository review has [reopened work](release/line-review-2026-11-11.md)
+and unreleased fixes; earlier acceptance does not establish that every file has
+been manually reviewed. The published prerelease does not establish a stable 1.0
+contract. Persistent Linux/HTTPS operation, independently administered
 witnesses, cloud deployment, physical power-loss testing and broader external review need
 separate scope and acceptance. The research H1 primary expectation remains unmet.
 No AWS server is needed merely to install, demonstrate or evaluate the published package.

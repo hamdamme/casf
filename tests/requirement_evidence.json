@@ -54,7 +54,8 @@
         "tests/property/test_canonical_properties.py::test_escaped_duplicate_names_are_rejected",
         "tests/property/test_canonical_properties.py::test_integer_looking_noninteger_tokens_are_rejected",
         "tests/property/test_canonical_properties.py::test_lone_surrogates_fail_in_names_and_values",
-        "tests/fuzz/test_runner.py::test_parser_regression_corpus"
+        "tests/fuzz/test_runner.py::test_parser_regression_corpus",
+        "tests/unit/test_protocol_boundaries.py::test_invalid_payload_returns_report"
       ],
       "remaining_review": ""
     },
@@ -66,7 +67,10 @@
         "tests/unit/test_canonical.py::test_nested_arrays_and_safe_edges",
         "tests/unit/test_canonical.py::test_reject_unsafe_integer",
         "tests/property/test_canonical_properties.py::test_canonical_roundtrip_preserves_generated_values",
-        "tests/property/test_canonical_properties.py::test_object_permutation_preserves_canonical_bytes"
+        "tests/property/test_canonical_properties.py::test_object_permutation_preserves_canonical_bytes",
+        "tests/unit/test_protocol_boundaries.py::test_empty_required_event_string_rejected",
+        "tests/unit/test_protocol_boundaries.py::test_maximum_body_depth_survives_append_and_startup",
+        "tests/unit/test_submission_encoding.py::test_large_unicode_record_uses_bounded_utf8_wire_encoding"
       ],
       "remaining_review": ""
     },
@@ -167,7 +171,8 @@
         "tests/unit/test_append_contract.py::test_idempotent_retry_refreshes_witness_observation_without_changing_record",
         "tests/unit/test_append_contract.py::test_pending_checkpoint_does_not_cover_later_appends",
         "tests/unit/test_log_operations.py::test_timeout_keeps_pending_bytes_for_typed_retry",
-        "tests/unit/test_log_operations.py::test_typed_operation_lifecycle_and_legacy_returns"
+        "tests/unit/test_log_operations.py::test_typed_operation_lifecycle_and_legacy_returns",
+        "tests/unit/test_protocol_boundaries.py::test_witness_rejects_nonobject_record_without_internal_error"
       ],
       "remaining_review": ""
     },
@@ -270,7 +275,11 @@
         "tests/unit/test_log_handle_authorization.py::test_handle_rechecks_authorization_before_every_mutation",
         "tests/unit/test_incremental_verification.py::test_incremental_never_bypasses_status_trust",
         "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests",
-        "tests/process/test_state_crashes.py::test_killed_state_lock_holder_releases_waiting_process"
+        "tests/process/test_state_crashes.py::test_killed_state_lock_holder_releases_waiting_process",
+        "tests/unit/test_status_book_safety.py::test_stale_instance_cannot_overwrite_newer_status",
+        "tests/unit/test_status_book_safety.py::test_stale_instance_preserves_revocation",
+        "tests/unit/test_status_book_safety.py::test_out_of_order_revocation_is_terminal",
+        "tests/unit/test_status_book_safety.py::test_signed_invalid_status_is_not_persisted"
       ],
       "remaining_review": ""
     },
@@ -289,7 +298,11 @@
         "tests/unit/test_incremental_verification.py::test_final_start_rejects_any_extension",
         "tests/unit/test_incremental_verification.py::test_full_verification_rejects_extensions_after_final",
         "tests/process/test_writer_crashes.py::test_killed_checkpoint_commits_outbox_and_seal_together",
-        "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state"
+        "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state",
+        "tests/unit/test_rotation_registration.py::test_registration_requires_predecessor_evidence",
+        "tests/unit/test_rotation_registration.py::test_rotation_rejects_signed_mismatching_receipt",
+        "tests/unit/test_rotation_registration.py::test_external_predecessor_evidence_is_authenticated",
+        "tests/unit/test_rotation_registration.py::test_cli_rotates_to_a_new_witness_and_registers_external_evidence"
       ],
       "remaining_review": ""
     },
@@ -371,9 +384,11 @@
         "tests/unit/test_export_results.py::test_result_is_exact_metadata_from_one_snapshot",
         "tests/unit/test_export_results.py::test_parent_sync_error_leaves_complete_bundle_without_success_result",
         "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state",
-        "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests"
+        "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests",
+        "tests/unit/test_key_files.py::test_failed_flush_does_not_publish_partial_key",
+        "tests/unit/test_key_files.py::test_existing_key_survives_failed_overwrite"
       ],
-      "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Exact platform results are recorded separately in docs/release/validation-matrix.md; final release acceptance remains open and physical power-loss recovery is not established."
+      "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Platform and published-release results apply only to the revisions in docs/release/validation-matrix.md and docs/release/publication-0.1.0rc2.md. Later source fixes require separate validation; physical power-loss recovery is not established."
     },
     "T16": {
       "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",
@@ -421,7 +436,9 @@
         "tests/property/test_verifier_properties.py::test_record_work_budget_never_consumes_beyond_one_sentinel",
         "tests/unit/test_parser_regressions.py::test_object_key_limit_matches_string_value_limit",
         "tests/unit/test_parser_regressions.py::test_long_integer_has_a_stable_numeric_error",
-        "tests/unit/test_parser_regressions.py::test_deep_wire_input_has_a_stable_limit_error"
+        "tests/unit/test_parser_regressions.py::test_deep_wire_input_has_a_stable_limit_error",
+        "tests/unit/test_protocol_boundaries.py::test_signed_oversized_body_rejected",
+        "tests/unit/test_protocol_boundaries.py::test_protocol_body_limit_precedes_signature_work"
       ],
       "remaining_review": ""
     },
@@ -437,7 +454,11 @@
         "tests/unit/test_submission_retry.py::test_submission_classifies_http_failure_and_counts_attempt",
         "tests/unit/test_cli_append_contract.py::test_cli_append_reports_all_three_states_on_same_event",
         "tests/unit/test_typed_append_authorization.py::test_typed_append_retains_all_verified_authorization_checks",
-        "tests/unit/test_parser_regressions.py::test_duplicate_name_diagnostic_does_not_echo_private_input"
+        "tests/unit/test_parser_regressions.py::test_duplicate_name_diagnostic_does_not_echo_private_input",
+        "tests/unit/test_key_files.py::test_load_rejects_shared_key",
+        "tests/unit/test_key_files.py::test_load_rejects_symlink",
+        "tests/unit/test_key_files.py::test_rejects_shared_directory",
+        "tests/unit/test_status_book_safety.py::test_rejects_symlink_without_overwriting_target"
       ],
       "remaining_review": ""
     },
@@ -472,7 +493,10 @@
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wrong_import_location",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_stale_or_incomplete_wheel",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wheel_outside_selected_environment",
-        "tests/unit/test_validation_environment.py::test_inventory_records_runtime_without_unrelated_environment"
+        "tests/unit/test_validation_environment.py::test_inventory_records_runtime_without_unrelated_environment",
+        "tests/unit/test_benchmark.py::test_large_warmup_is_fully_witnessed_before_measurement",
+        "tests/unit/test_benchmark.py::test_http_submit_does_not_hide_retries",
+        "tests/unit/test_h1_writer_rollback.py::test_setup_failure_preserves_each_invalid_run"
       ],
       "remaining_review": "The historical scope accepted on 2026-10-28 remains unchanged. research/current-evidence-2026-11-10.md records a bounded local refresh at its measurement revision. Linux/WAN performance remains historical; the full proposed matrix, independent witness administration, default verified startup and automatic worker performance remain unmeasured."
     },

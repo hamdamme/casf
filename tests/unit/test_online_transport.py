@@ -22,6 +22,25 @@ TOKEN = "transport-test-token"
 LOG_ID = "123e4567-e89b-42d3-a456-426614174000"
 
 
+@pytest.mark.parametrize("expired_check", [1, 2])
+def test_socket_closes_if_deadline_expires_during_request_setup(monkeypatch, expired_check):
+    calls = 0
+
+    def remaining(_deadline):
+        nonlocal calls
+        calls += 1
+        if calls == expired_check:
+            raise TimeoutError("synthetic deadline")
+        return 1.0
+
+    with socket.socket() as connected:
+        monkeypatch.setattr(transport, "_connected_socket", lambda *a, **k: connected)
+        monkeypatch.setattr(transport, "_remaining", remaining)
+        with pytest.raises(TimeoutError):
+            transport.request("http://127.0.0.1", "POST", "/", TOKEN, b"{}", timeout=1)
+        assert connected.fileno() == -1
+
+
 @pytest.fixture()
 def certificate(tmp_path):
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)

@@ -132,11 +132,11 @@ def _build_arm(root: Path, manifest: dict, events_old: list[dict],
     checkpoints_path = root / f"{prefix}-local-checkpoints.json"
     writer = Writer(root / f"{prefix}.db", workload.seeded_key("log"), local_only=True)
     witness = None
-    if with_witness:
-        witness = Witness(root / "witness.db", workload.seeded_key("witness"),
-                          authority_keys=_authority_keys())
     local_checkpoints: list[dict] = []
     try:
+        if with_witness:
+            witness = Witness(root / "witness.db", workload.seeded_key("witness"),
+                              authority_keys=_authority_keys())
         writer.create_log(manifest)
         if witness is not None:
             witness.register_log(
@@ -243,17 +243,17 @@ def local_checkpoint_check(bundle_dir: Path, checkpoints_path: Path,
 
 @contextlib.contextmanager
 def _serve(db_path: Path):
-    service = WitnessService(db_path, workload.seeded_key("witness"),
-                             token=TOKEN, authority_keys=_authority_keys())
-    server = make_server(service, "127.0.0.1", 0)
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
-    try:
+    with contextlib.ExitStack() as cleanup:
+        service = WitnessService(db_path, workload.seeded_key("witness"),
+                                 token=TOKEN, authority_keys=_authority_keys())
+        cleanup.callback(service.close)
+        server = make_server(service, "127.0.0.1", 0)
+        cleanup.callback(server.server_close)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        cleanup.callback(server.shutdown)
         yield f"http://127.0.0.1:{server.server_address[1]}"
-    finally:
-        server.shutdown()
-        server.server_close()
-        service.close()
+
 
 
 def _export(db_path: Path, dest: Path) -> Path:
@@ -374,11 +374,12 @@ def run_one(seed: int, run_index: int, work: Path, old_count: int,
         nonlocal retained_pin
         bundle_dir = _export(work / "c.db", work / "bundle-c-current")
         anchor = read_bundle(bundle_dir).checkpoints[-1]
-        retained_pin = (int(anchor["body"]["index"]),
-                        str(anchor["checkpoint_hash"]))
         with _serve(work / "witness.db") as url:
             report, ms = _verify_online(bundle_dir, manifest_hash, url,
                                         None, captured)
+        if report.result is Result.PASS:
+            retained_pin = (int(anchor["body"]["index"]),
+                            str(anchor["checkpoint_hash"]))
         cases["c_current_control"] = _case_row(
             "c_current_control", report.result.value,
             list(report.diagnostic_codes), None, ms)
@@ -423,6 +424,8 @@ def run_one(seed: int, run_index: int, work: Path, old_count: int,
         captured.clear()
 
         def c_retained():
+            if retained_pin is None:
+                raise RuntimeError("healthy control did not establish a trusted checkpoint")
             report, ms = _verify_online(bundle_c_old, manifest_hash, url,
                                         retained_pin, captured)
             row = _case_row("c_restored_old_retained_pin",
@@ -496,13 +499,25 @@ def run_experiment(manifest_path: Path, out_dir: Path) -> dict:
         raise SystemExit(f"refusing to overwrite existing directory: {out}")
     cfg = json.loads(Path(manifest_path).read_text())
     c = cfg["configuration"]
+    if not c["seeds"] or c["runs"] != len(c["seeds"]):
+        raise ValueError("runs must match a nonempty seed list")
     rows = []
+    out.mkdir(parents=True)
     with tempfile.TemporaryDirectory() as tmp:
         for i, seed in enumerate(c["seeds"]):
-            rows.append(run_one(seed, i, Path(tmp) / f"run-{i:02d}",
-                                c["old_count"], c["new_count"],
-                                c["checkpoint_batch"], c["target_bytes"],
-                                c["extension_seed_offset"]))
+            try:
+                row = run_one(seed, i, Path(tmp) / f"run-{i:02d}",
+                              c["old_count"], c["new_count"],
+                              c["checkpoint_batch"], c["target_bytes"],
+                              c["extension_seed_offset"])
+            except Exception as exc:  # noqa: BLE001 - retain invalid trials
+                row = {"run_id": f"run-{i:02d}", "seed": seed,
+                       "cases": {case: _case_row(case, None, [],
+                                 f"{type(exc).__name__}: {exc}", None)
+                                 for case in EXPECTED}}
+            rows.append(row)
+            with (out / f"run-{i:02d}.json").open("x") as stream:
+                json.dump(row, stream, indent=2)
     artifact = {
         "experiment": cfg["experiment"],
         "hypothesis": cfg["hypothesis_text"],
@@ -515,7 +530,6 @@ def run_experiment(manifest_path: Path, out_dir: Path) -> dict:
         "environment": _environment(),
         "runs": rows,
     }
-    out.mkdir(parents=True)
     (out / "runs.v1.json").write_text(json.dumps(artifact, indent=2))
     (out / "report.md").write_text(_render_report(artifact))
     return artifact
@@ -591,7 +605,7 @@ def main(argv: list[str]) -> int:
             tally[payload["classification"]] = \
                 tally.get(payload["classification"], 0) + 1
     print(f"runs: {len(runs)}  classifications: {tally}")
-    return 0
+    return 1 if tally.get("invalid_trial", 0) else 0
 
 
 if __name__ == "__main__":

@@ -229,6 +229,7 @@ def test_status_book_retains_largest_serial(tmp_path):
 def test_status_book_rejects_non_strict_json_without_replacing_file(tmp_path, raw):
     path = tmp_path / "status.json"
     path.write_text(raw)
+    path.chmod(0o600)  # Reach strict parsing after the storage permission check.
     with pytest.raises(CasfError, match="status book is corrupt"):
         StatusBook(path)
     assert path.read_text() == raw

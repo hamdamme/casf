@@ -338,10 +338,23 @@ def _cmd_admin_register(args: argparse.Namespace) -> int:
     manifest = _read_json_file(args.manifest)
     status = _read_json_file(args.status_file)
     _validate_initial_status(manifest, status, authority_pub)
+    predecessor_paths = (args.predecessor_manifest, args.predecessor_checkpoint,
+                         args.predecessor_receipt)
+    evidence = None
+    if any(predecessor_paths):
+        if not all(predecessor_paths):
+            raise SchemaError("supply all three predecessor evidence files")
+        evidence = (_read_json_file(args.predecessor_manifest),
+                    _read_json_file(args.predecessor_checkpoint),
+                    _read_json_file(args.predecessor_receipt))
+    authorities = {crypto.key_id(authority_pub): authority_pub}
+    if args.predecessor_authority_public_key:
+        old_authority = _public_key(args.predecessor_authority_public_key)
+        authorities[crypto.key_id(old_authority)] = old_authority
     witness = Witness(args.db, witness_key,
-                      authority_keys={crypto.key_id(authority_pub): authority_pub})
+                      authority_keys=authorities)
     try:
-        witness.register_log(manifest, status)
+        witness.register_log(manifest, status, predecessor_evidence=evidence)
         manifest_hash = str(manifest["manifest_hash"])
     finally:
         witness.close()
@@ -370,8 +383,7 @@ def _cmd_admin_rotate(args: argparse.Namespace) -> int:
     if not isinstance(old_log_value, str) or not isinstance(old_witness_value, str):
         raise SchemaError("old manifest public keys are invalid")
     old_log_pub = crypto.b64url_decode(old_log_value)
-    if crypto.b64url_decode(old_witness_value) != witness_pub:
-        raise SchemaError("witness public key differs from the old manifest")
+    old_witness_pub = crypto.b64url_decode(old_witness_value)
     checkpoint = _read_json_file(args.final_checkpoint)
     receipt = _read_json_file(args.final_receipt)
     cp_body = _body_of(checkpoint)
@@ -383,7 +395,7 @@ def _cmd_admin_rotate(args: argparse.Namespace) -> int:
         new_log_id=str(uuid.uuid4()), witness_pub=witness_pub,
         created_at=datetime.now(UTC).isoformat(timespec="microseconds").replace(
             "+00:00", "Z"), final_checkpoint=checkpoint, final_receipt=receipt)
-    verify_predecessor(manifest, checkpoint, receipt, old_log_pub, witness_pub)
+    verify_predecessor(manifest, checkpoint, receipt, old_log_pub, old_witness_pub)
     _write_json_new(args.out, manifest)
     _print(args, {"manifest": args.out,
                   "log_id": _body_of(manifest)["log_id"]},
@@ -924,6 +936,11 @@ def _parser() -> argparse.ArgumentParser:
     register.add_argument("--witness-key", required=True)
     register.add_argument("--db", required=True)
     register.add_argument("--passphrase-env", default=PASS_ENV)
+    register.add_argument("--predecessor-manifest")
+    register.add_argument("--predecessor-checkpoint")
+    register.add_argument("--predecessor-receipt")
+    register.add_argument("--predecessor-authority-public-key",
+                          help="independently provisioned old authority, if different")
     register.set_defaults(func=_cmd_admin_register)
 
     rotate = admin_sub.add_parser("rotate", parents=[common],

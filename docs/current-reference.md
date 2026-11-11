@@ -39,6 +39,9 @@ things. Validation records must name the exact source or artifact bytes.
 
 The [repository review](release/repository-review.md) accounts for tracked files
 and records retained historical material, corrections and verification limits.
+The [line-review continuation](release/line-review-2026-11-11.md) records additional
+source fixes and incomplete manual coverage. Those fixes are unreleased and are
+not included in the published `0.1.0rc2` downloads.
 
 The specification states intended requirements, not proof of complete
 implementation. The source and tests establish implemented behavior. The

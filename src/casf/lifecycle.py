@@ -11,6 +11,9 @@ atomic state file.
 import json
 import os
 import re
+import secrets
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from typing import cast
 
@@ -21,6 +24,7 @@ from casf.canonical.jcs import parse
 from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, SchemaError
 from casf.model.schema import validate_protocol_body
+from casf.trust.state import _secure
 from casf.types import JsonObject, JsonValue
 
 __all__ = ["StatusBook", "rotate_epoch", "sign_status",
@@ -64,22 +68,46 @@ def sign_status(authority_priv: Ed25519PrivateKey, *, serial: int,
 class StatusBook:
     """Largest observed serial per manifest, outside the log store.
 
-    A statement is retained only when it advances the serial; a
-    rollback or a statement after revocation returns False and the
-    retained state never moves.
+    Active statements must advance the serial. Any authenticated revocation
+    is terminal, including one received out of order; the serial never decreases.
     """
 
     def __init__(self, path: str | Path) -> None:
         self._path = Path(path)
-        self._state: dict[str, JsonObject] = {}
-        if self._path.exists():
+        with self._locked() as directory:
+            self._read(directory)
+
+    @contextmanager
+    def _locked(self) -> Iterator[int]:
+        import fcntl
+
+        directory = os.open(self._path.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            _secure(directory, directory=True)
+            fd = os.open(self._path.name + ".lock", os.O_RDWR | os.O_CREAT
+                         | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600, dir_fd=directory)
             try:
-                raw = self._path.read_bytes()
-                if len(raw) > 1024 * 1024:
-                    raise ValueError("status book exceeds its size limit")
-                data = parse(raw)
-            except (OSError, CasfError, ValueError) as e:
-                raise CasfError("status book is corrupt") from e
+                _secure(fd)
+                fcntl.flock(fd, fcntl.LOCK_EX)
+                yield directory
+            finally:
+                os.close(fd)
+        finally:
+            os.close(directory)
+
+    def _read(self, directory: int) -> dict[str, JsonObject]:
+        try:
+            try:
+                fd = os.open(self._path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                             dir_fd=directory)
+            except FileNotFoundError:
+                return {}
+            with os.fdopen(fd, "rb") as stream:
+                _secure(stream.fileno())
+                raw = stream.read(1024 * 1024 + 1)
+            if len(raw) > 1024 * 1024:
+                raise ValueError("status book exceeds its size limit")
+            data = parse(raw)
             if not isinstance(data, dict) or any(
                     not isinstance(digest, str)
                     or re.fullmatch(r"[0-9a-f]{64}", digest) is None
@@ -90,10 +118,13 @@ class StatusBook:
                     or entry["status"] not in ("active", "revoked")
                     for digest, entry in data.items()):
                 raise CasfError("status book is corrupt")
-            self._state = cast(dict[str, JsonObject], data)
+            return cast(dict[str, JsonObject], data)
+        except (OSError, CasfError, ValueError) as e:
+            raise CasfError("status book is corrupt") from e
 
     def observed_serial(self, manifest_hash: str) -> int:
-        entry = self._state.get(manifest_hash)
+        with self._locked() as directory:
+            entry = self._read(directory).get(manifest_hash)
         if entry is None:
             return 0
         serial = entry.get("serial")
@@ -104,6 +135,10 @@ class StatusBook:
         """Validate one statement; retain only a serial advance."""
         body, sig = _expect_status(envelope)
         validate_protocol_body("status", body)
+        if body["issuer_id"] != crypto.key_id(authority_pub):
+            raise CasfError("status issuer does not match the authority key")
+        if body["status"] not in ("active", "revoked"):
+            raise SchemaError("unknown authority status")
         crypto.verify_status(authority_pub, body, sig)
         manifest_hash = body["manifest_hash"]
         serial = body["serial"]
@@ -112,21 +147,40 @@ class StatusBook:
                 or not isinstance(serial, int)
                 or not isinstance(status, str)):
             raise SchemaError("status body field types are wrong")
-        entry = self._state.get(manifest_hash)
-        if entry is not None:
-            if entry.get("status") == "revoked":
-                return False  # revocation is terminal
-            kept = entry.get("serial")
-            if isinstance(kept, int) and serial <= kept:
-                return False  # serial rollback
-        self._state[manifest_hash] = {"serial": serial, "status": status}
-        self._save()
+        with self._locked() as directory:
+            state = self._read(directory)
+            entry = state.get(manifest_hash)
+            if entry is not None:
+                if entry.get("status") == "revoked":
+                    return False  # revocation is terminal
+                kept = entry.get("serial")
+                if isinstance(kept, int) and serial <= kept:
+                    if status != "revoked":
+                        return False
+                    serial = kept  # retain both the high-water serial and revocation
+            state[manifest_hash] = {"serial": serial, "status": status}
+            self._save(directory, state)
         return True
 
-    def _save(self) -> None:
-        tmp = self._path.with_name(self._path.name + ".tmp")
-        tmp.write_text(json.dumps(self._state, sort_keys=True))
-        os.replace(tmp, self._path)
+    def _save(self, directory: int, state: dict[str, JsonObject]) -> None:
+        raw = json.dumps(state, sort_keys=True).encode() + b"\n"
+        if len(raw) > 1024 * 1024:
+            raise CasfError("status book exceeds its size limit")
+        temporary = ".casf-status-" + secrets.token_hex(16)
+        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                     0o600, dir_fd=directory)
+        try:
+            with os.fdopen(fd, "wb") as stream:
+                stream.write(raw)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, self._path.name, src_dir_fd=directory, dst_dir_fd=directory)
+            os.fsync(directory)
+        finally:
+            try:
+                os.unlink(temporary, dir_fd=directory)
+            except FileNotFoundError:
+                pass
 
 
 def _expect_status(env: JsonObject) -> tuple[JsonObject, str]:
@@ -144,13 +198,19 @@ def _final_evidence(final_checkpoint: JsonObject,
     cp_body, cp_hash, _cp_sig = _expect(final_checkpoint,
                                         "checkpoint_hash")
     rc_body, rc_hash, _rc_sig = _expect(final_receipt, "receipt_hash")
+    validate_protocol_body("checkpoint", cp_body)
+    validate_protocol_body("receipt", rc_body)
     if cp_body.get("final") is not True:
         raise CasfError("rotation requires the old final checkpoint")
     if crypto.digest_checkpoint(cp_body) != cp_hash:
         raise SchemaError("checkpoint_hash does not match the body")
     if crypto.digest_receipt(rc_body) != rc_hash:
         raise SchemaError("receipt_hash does not match the body")
-    if rc_body["checkpoint_hash"] != cp_hash:
+    if rc_body["checkpoint_hash"] != cp_hash or any(
+            rc_body[rc] != cp_body[cp] for rc, cp in (
+                ("log_id", "log_id"), ("manifest_hash", "manifest_hash"),
+                ("checkpoint_index", "index"), ("count", "count"),
+                ("head_hash", "head_hash"))):
         raise CasfError("receipt does not match the final checkpoint")
     return {
         "log_id": cp_body["log_id"],
@@ -195,12 +255,15 @@ def verify_predecessor(manifest_envelope: JsonObject,
     verify against the old log key and the witness key.
     """
     body, _mh, _sig = _expect(manifest_envelope, "manifest_hash")
+    validate_protocol_body("manifest", body)
     expected = _final_evidence(final_checkpoint, final_receipt)
     if body.get("predecessor") != expected:
         raise CasfError("predecessor does not match the final evidence")
     cp_body, _cp_hash, cp_sig = _expect(final_checkpoint,
                                         "checkpoint_hash")
     rc_body, _rc_hash, rc_sig = _expect(final_receipt, "receipt_hash")
+    if cp_body["key_id"] != crypto.key_id(old_log_pub):
+        raise CasfError("checkpoint names a different log key")
     crypto.verify_checkpoint(old_log_pub, cp_body, cp_sig)
     crypto.verify_receipt(witness_pub, rc_body, rc_sig)
     if rc_body["witness_id"] != crypto.key_id(witness_pub):

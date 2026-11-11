@@ -1,5 +1,10 @@
 # Local CASF administration
 
+This guide tracks development source. The [line-review corrections](release/line-review-2026-11-11.md),
+including strict key storage and predecessor registration options, are not in
+the published `0.1.0rc2` wheel. Use the development setup and explicit source
+commands in [installation](installation.md) when checking those changes.
+
 This guide covers the explicit file based provisioning commands. Keep
 authority and signing keys outside the repository. The commands refuse to
 overwrite output files and create those files with owner only permissions.
@@ -14,6 +19,8 @@ they are not a copy-and-run deployment configuration.
 ## Create keys and public key files
 
 ```bash
+mkdir -m 700 casf-admin
+cd casf-admin
 printf 'Key passphrase: '
 IFS= read -r -s CASF_PASSPHRASE
 printf '\n'
@@ -22,6 +29,13 @@ casf key generate --role authority --out authority.pem
 casf key generate --role log --out log.pem
 casf key generate --role witness --out witness.pem
 ```
+
+The key provider requires an owner-only key directory and regular, owner-only
+key files. It rejects symlinks and oversized input. Move existing keys into a
+private directory and set their permissions to `600` before loading them.
+Key creation publishes a completely written, flushed file without overwriting
+an existing destination. A reported storage failure requires inspecting the
+destination before retrying; it may have occurred after publication.
 
 Export only the public keys for provisioning. This small script decrypts the
 key locally and writes public PEM files; it does not print key material:
@@ -185,6 +199,21 @@ casf admin rotate --old-manifest manifest.json \
 
 The new epoch still needs a separate trust decision and witness registration.
 Do not replace the old manifest or its evidence.
+
+Registration verifies the predecessor's authority-signed manifest, final
+checkpoint, witness receipt and matching identities/counts. If this witness
+already retains that evidence, it is loaded from its database. Otherwise,
+provide all three files with `--predecessor-manifest`,
+`--predecessor-checkpoint` and `--predecessor-receipt`. If the old authority
+differs, also supply its independently obtained key through
+`--predecessor-authority-public-key`. Evidence files alone never authorize a
+new authority. Missing or invalid predecessor evidence prevents registration.
+
+The Python `StatusBook` compatibility API also requires an owner-only parent
+directory and file. It locks and rereads the file on every operation, preserves
+terminal revocation, and flushes updates before atomic replacement. Its stored
+JSON format is unchanged. Existing files with broader permissions must be
+protected before use; malformed state must be recovered from trusted evidence.
 
 The reference witness blocks new submissions until an active serial 1
 statement is installed, then accepts only advancing status serials. A verified

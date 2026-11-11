@@ -6,7 +6,11 @@ from typing import Literal, cast
 
 from casf import crypto
 from casf.canonical.jcs import canonicalize, parse
-from casf.canonical.limits import MAX_CANONICAL_BODY_BYTES, MAX_WIRE_ENVELOPE_BYTES
+from casf.canonical.limits import (
+    ENVELOPE_LIMITS,
+    MAX_CANONICAL_BODY_BYTES,
+    MAX_WIRE_ENVELOPE_BYTES,
+)
 from casf.errors import LimitError, SchemaError
 from casf.model.schema import DIGEST_RE, RECORD_FIELDS, validate_body, validate_protocol_body
 from casf.types import JsonObject
@@ -91,7 +95,7 @@ class AppendResult:
     def __init__(self, record: JsonObject, witness_state: WitnessState) -> None:
         if not isinstance(witness_state, WitnessState):
             raise SchemaError("witness_state must be a WitnessState")
-        encoded = canonicalize(record)
+        encoded = canonicalize(record, ENVELOPE_LIMITS)
         if len(encoded) > MAX_WIRE_ENVELOPE_BYTES:
             raise LimitError("record envelope exceeds the wire budget")
         snapshot = parse(encoded)

@@ -6,6 +6,17 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Enforce private key file permissions and publish complete key files atomically.
+- Enforce record and protocol body limits before verification and reject empty event fields.
+- Serialize retained status updates to prevent stale readers from replacing newer state.
+- Authenticate predecessor evidence before registering linked epochs.
+- Preserve the allowed body nesting depth when storing record envelopes.
+- Send witness submissions as UTF-8 without unnecessary Unicode escape expansion.
+- Close connected sockets when the request deadline expires during setup.
+- Drain benchmark warmup fully and count HTTP retries at one layer.
+- Preserve invalid experiment trials and clean up failed benchmark setup.
+- Prevent streaming fixture generation from replacing existing trust evidence.
+- Require crash tests to reach their intended failure point before passing.
 - Separate historical prototype documentation from current instructions.
 - Reconcile repository status, file dispositions and remaining review work.
 - Add repository, documentation and issue links to package metadata.

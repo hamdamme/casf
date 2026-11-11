@@ -182,7 +182,11 @@ def test_concurrent_writers_contiguous_sequence(tmp_path):
     for p in procs:
         p.start()
     for p in procs:
-        p.join(60)
+        p.join(30)
+        if p.is_alive():
+            p.kill()
+            p.join(5)
+            pytest.fail("writer worker did not exit")
         assert p.exitcode == 0
     w = Writer(db, LOG, local_only=True)
     bodies = [r["body"] for r in w.records(LOG_ID)]
@@ -195,8 +199,8 @@ def _mp_same_event(db_path):
     try:
         w.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-4266000000aa",
                  actor="alice", event_type="login", payload={}, attributes={})
-    except EventIdConflictError:
-        pass
+    finally:
+        w.close()
 
 def test_concurrent_same_event_id_one_record(tmp_path):
     db = tmp_path / "mp2.db"
@@ -206,7 +210,12 @@ def test_concurrent_same_event_id_one_record(tmp_path):
     for p in procs:
         p.start()
     for p in procs:
-        p.join(60)
+        p.join(30)
+        if p.is_alive():
+            p.kill()
+            p.join(5)
+            pytest.fail("writer worker did not exit")
+        assert p.exitcode == 0
     w = Writer(db, LOG, local_only=True)
     matches = [r for r in w.records(LOG_ID)
                if r["body"]["event_id"] == "123e4567-e89b-42d3-a456-4266000000aa"]
@@ -217,7 +226,7 @@ def test_concurrent_same_event_id_one_record(tmp_path):
 class CrashWriter(Writer):
     def _debug_hook(self, stage):
         if stage == "after_insert":
-            os._exit(1)  # simulated power loss before COMMIT
+            os._exit(77)  # simulated power loss before COMMIT
 
 
 def _mp_crash(db_path):
@@ -232,8 +241,12 @@ def test_crash_before_commit_is_all_or_none(tmp_path):
     _append(w)  # seq 1 committed
     p = MP.Process(target=_mp_crash, args=(db,))
     p.start()
-    p.join(60)
-    assert p.exitcode == 1
+    p.join(30)
+    if p.is_alive():
+        p.kill()
+        p.join(5)
+        pytest.fail("crash worker did not exit")
+    assert p.exitcode == 77
     w2 = Writer(db, LOG, local_only=True)
     bodies = [r["body"] for r in w2.records(LOG_ID)]
     assert [b["seq"] for b in bodies] == [1]  # no partial state
@@ -247,7 +260,7 @@ def test_committed_record_survives_restart(tmp_path):
     db = tmp_path / "restart.db"
     w = _writer(db)
     first = _append(w)
-    del w
+    w.close()
     w2 = Writer(db, LOG, local_only=True)
     again = w2.append(LOG_ID, event_id="123e4567-e89b-42d3-a456-426600000001",
                       actor="alice", event_type="login",

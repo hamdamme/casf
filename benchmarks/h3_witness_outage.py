@@ -24,6 +24,7 @@ import sys
 import threading
 import time
 import traceback
+from contextlib import ExitStack
 from datetime import UTC, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -302,23 +303,6 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
     run_root.chmod(0o700)
     writer_db = run_root / "writer.sqlite"
     witness_db = run_root / "witness.sqlite"
-    writer = Writer(writer_db, log_key, local_only=True)
-    writer.create_log(manifest)
-    service = WitnessService(
-        witness_db, witness_key, token=TOKEN,
-        authority_keys={crypto.key_id(auth_pub): auth_pub})
-    service.witness.register_log(
-        manifest, sign_status(
-            auth, serial=1, manifest_hash=str(manifest["manifest_hash"]),
-            status="active", issued_at=workload.TS, reason=""))
-    witness_server = make_server(service, "127.0.0.1", 0)
-    server_thread = threading.Thread(target=witness_server.serve_forever,
-                                     daemon=True)
-    server_thread.start()
-    time.sleep(0.05)  # let the real ASGI listener enter its serving loop
-    proxy = FaultProxy(int(witness_server.server_address[1]))
-    url = f"http://127.0.0.1:{proxy.port}"
-    start_clock = time.monotonic()
     rows: list[dict[str, Any]] = []
     attempts: list[dict[str, Any]] = []
     checkpoints: list[dict[str, Any]] = []
@@ -326,7 +310,32 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
     outage: dict[str, Any] | None = None
     last_witnessed_count = 0
     max_backlog = 0
+    previous_token = os.environ.get(TOKEN_ENV)
+    cleanup = ExitStack()
+    proxy = None
     try:
+        writer = Writer(writer_db, log_key, local_only=True)
+        cleanup.callback(writer.close)
+        writer.create_log(manifest)
+        service = WitnessService(
+            witness_db, witness_key, token=TOKEN,
+            authority_keys={crypto.key_id(auth_pub): auth_pub})
+        cleanup.callback(service.close)
+        service.witness.register_log(
+            manifest, sign_status(
+                auth, serial=1, manifest_hash=str(manifest["manifest_hash"]),
+                status="active", issued_at=workload.TS, reason=""))
+        witness_server = make_server(service, "127.0.0.1", 0)
+        cleanup.callback(witness_server.server_close)
+        server_thread = threading.Thread(target=witness_server.serve_forever,
+                                         daemon=True)
+        server_thread.start()
+        cleanup.callback(witness_server.shutdown)
+        time.sleep(0.05)  # let the real ASGI listener enter its serving loop
+        proxy = FaultProxy(int(witness_server.server_address[1]))
+        cleanup.callback(proxy.close)
+        url = f"http://127.0.0.1:{proxy.port}"
+        start_clock = time.monotonic()
         # Warmup consists of workload/key preparation above; no measured
         # database operations are discarded or hidden.
         for idx in range(16):
@@ -500,8 +509,8 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
             "events": rows, "checkpoints": checkpoints,
             "submission_attempts": attempts, "verifications": verifications,
             "outage": outage,
-            "proxy_counters": {"blocked_requests": proxy.blocked_requests,
-                                "forwarded_requests": proxy.forwarded_requests},
+            "proxy_counters": {"blocked_requests": proxy.blocked_requests if proxy else 0,
+                                "forwarded_requests": proxy.forwarded_requests if proxy else 0},
             "final_writer_count": writer_count,
             "final_witness_count": witness_count,
             "final_witness_checkpoint_index": witness_index,
@@ -514,15 +523,15 @@ def run_condition(root: Path, seed: int, condition: str, config: dict[str, Any],
             "traceback": traceback.format_exc(), "events": rows,
             "checkpoints": checkpoints, "submission_attempts": attempts,
             "verifications": verifications, "outage": outage,
-            "proxy_counters": {"blocked_requests": proxy.blocked_requests,
-                                "forwarded_requests": proxy.forwarded_requests},
+            "proxy_counters": {"blocked_requests": proxy.blocked_requests if proxy else 0,
+                                "forwarded_requests": proxy.forwarded_requests if proxy else 0},
         }
     finally:
-        proxy.close()
-        witness_server.shutdown()
-        witness_server.server_close()
-        service.close()
-        writer.close()
+        if previous_token is None:
+            os.environ.pop(TOKEN_ENV, None)
+        else:
+            os.environ[TOKEN_ENV] = previous_token
+        cleanup.close()
 
 
 def _paired_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -621,17 +630,21 @@ def _write_report(path: Path, manifest: dict[str, Any], rows: list[dict[str, Any
             "offline_during_outage", {})
         pending = next((c for c in outage_row.get("checkpoints", [])
                         if c.get("to_seq") == 24), {})
+        conclusion = (
+            "Both pilot runs completed; the configured timing was feasible for this pair."
+            if healthy_row.get("status") == outage_row.get("status") == "complete"
+            else "The pilot is incomplete; feasibility has not been established.")
         report = f"""# Canonical H3 feasibility pilot
 
 This is one matched synthetic pilot pair using the separate pilot manifest. It is excluded from measured results and provides no inferential estimate.
 
 - Healthy run: {healthy_row.get('status', 'missing')}; baseline and final online checks: {healthy_row.get('verifications', {}).get('healthy_baseline_online', {}).get('report')} and {healthy_row.get('verifications', {}).get('final_online', {}).get('report')}.
 - Outage run: {outage_row.get('status', 'missing')}; online freshness result: {online.get('report')}, exit {online.get('exit_code')}; offline integrity result: {offline.get('report')}, exit {offline.get('exit_code')}.
-- Fault delivery: {outage_row.get('proxy_counters')}; witness state during the block: {outage_row.get('outage', {}).get('witness_state_after_failed_submit')}.
+- Fault delivery: {outage_row.get('proxy_counters')}; witness state during the block: {(outage_row.get('outage') or {}).get('witness_state_after_failed_submit')}.
 - Checkpoint through record 24: initial result {pending.get('result')}; same pending bytes after failure: {pending.get('same_pending_bytes_after_failure')}; same checkpoint accepted after restoration: {pending.get('same_checkpoint_hash_retried')}.
 - Maximum pending suffix: {outage_row.get('max_unwitnessed_backlog_records')} records.
 
-These outcomes established that the frozen timeout, outage duration, and recovery deadline were feasible for the measured run. They are not included in the measured analysis.
+{conclusion} Pilot outcomes are not included in the measured analysis.
 
 Reproduction command: `.venv/bin/python -m benchmarks.h3_witness_outage --manifest benchmarks/h3-witness-outage-pilot.v1.json --output benchmarks/results/h3-witness-outage-pilot-v1`
 
@@ -787,6 +800,10 @@ def execute(manifest_path: Path, output: Path) -> None:
     config = manifest["configuration"]
     seeds = list(manifest["seeds"])
     order = list(manifest["run_order"])
+    if not seeds or any(type(seed) is not int for seed in seeds) or len(set(seeds)) != len(seeds):
+        raise SystemExit("manifest seeds must be nonempty unique integers")
+    if config["events_per_run"] != 32 or config["batch_size"] != 8:
+        raise SystemExit("this experiment requires 32 events and checkpoint batches of eight")
     expected_order = {(condition, seed) for seed in seeds
                       for condition in ("healthy", "outage")}
     if len(order) != len(expected_order) or {

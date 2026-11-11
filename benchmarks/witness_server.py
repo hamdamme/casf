@@ -31,15 +31,21 @@ def _authority_keys() -> dict:
 def build_server(host: str, port: int, *, token: str, seeds: list[int],
                  runs: int, db_path: Path) -> tuple:
     """Witness service with every planned run log pre registered."""
+    if not seeds or type(runs) is not int or runs < 1:
+        raise ValueError("nonempty seeds and positive runs are required")
     service = WitnessService(db_path, workload.seeded_key("witness"),
                              token=token,
                              authority_keys=_authority_keys())
-    for i in range(runs):
-        log_id = workload.run_log_id(seeds[i % len(seeds)], i)
-        manifest = workload.manifest(log_id)
-        service.witness.register_log(
-            manifest, workload.active_status(str(manifest["manifest_hash"])))
-    server = make_server(service, host, port)
+    try:
+        for i in range(runs):
+            log_id = workload.run_log_id(seeds[i % len(seeds)], i)
+            manifest = workload.manifest(log_id)
+            service.witness.register_log(
+                manifest, workload.active_status(str(manifest["manifest_hash"])))
+        server = make_server(service, host, port)
+    except BaseException:
+        service.close()
+        raise
     return service, server
 
 

@@ -18,3 +18,8 @@ For the supported workflow use [installation](../installation.md),
 The [specification](../specification/CASF_SPEC_001.md) defines protocol requirements.
 Original source bytes are preserved for provenance; retaining them does not
 endorse the prototype's claims or imply that its backlog is current work.
+
+Visual review on 11 November 2026 covered all 12 rendered pages. The original
+contains literal Markdown markers, large blank areas and an overflowing CLI line.
+These archival formatting defects are preserved with the original bytes; use the
+current guides linked above for readable, supported instructions.
