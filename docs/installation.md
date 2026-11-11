@@ -8,13 +8,13 @@ publication. Do not use `pip install casf` until a release is announced.
 
 ## Install from a checked candidate wheel
 
-The recorded checks cover CPython 3.12, 3.13, and 3.14 on macOS arm64 through
-manual local validation, and those Python versions on GitHub hosted Ubuntu
-x86_64 CI runners. The workflow uses `ubuntu-latest`, so it does not pin a
-specific Ubuntu point release. macOS is not covered by GitHub Actions. Other
-operating systems and processor types have not been validated for this
-candidate. These checks describe evidence scope, not a broad compatibility
-guarantee.
+The [validation matrix](release/validation-matrix.md) targets CPython 3.12,
+3.13 and 3.14 on GitHub hosted Ubuntu x86_64 and macOS arm64 runners, with
+locked and minimum direct dependencies. Runner images can change; each job
+records its actual components. Consult the exact revision's results before
+treating it as validated. Local macOS checks and historical results are
+recorded separately. Other operating systems and processor types are outside
+this matrix; the checks are not a broad compatibility guarantee.
 
 Download the wheel supplied with the approved release, then create a separate
 environment and install that file. Replace the example filename with the

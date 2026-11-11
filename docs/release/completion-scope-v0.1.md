@@ -11,8 +11,9 @@ no artifact or publication is approved by this scope record.
 The release includes the Python library and CLI, SQLite writer, reference
 witness, evidence export and verification, key lifecycle functions, synthetic
 demonstrations, and reproducibility documentation. Python 3.12, 3.13 and 3.14
-remain the validation targets on Ubuntu CI. Local macOS validation is recorded
-separately. Windows and production deployment readiness are not claimed.
+remain the validation targets. CI now covers Ubuntu x86_64 and macOS arm64;
+local macOS validation is recorded separately. Windows and production deployment
+readiness are not claimed. See the [matrix](validation-matrix.md) for exact checks.
 Support remains best effort for an experimental project, with the existing
 private reporting channel and clearly documented limitations.
 

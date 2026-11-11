@@ -15,7 +15,7 @@ uv run --locked python -m pytest tests/property tests/fuzz -v --hypothesis-show-
 uv run --locked python -m tests.fuzz --seed 20261110 --cases 2000 --failures /tmp/casf-fuzz
 ```
 
-All six Ubuntu CI jobs execute the properties and corpus replays. Each job
+All 12 Ubuntu/macOS CI jobs execute the properties and corpus replays. Each job
 also runs three mutation campaigns with seeds `20261110`, `47` and
 `9007199254740991`, each containing 2000 mutations plus the 25 seed cases.
 The minimum-runtime jobs use the same fixed Hypothesis tooling version as the
@@ -85,8 +85,8 @@ focused regression before accepting a fix. Hypothesis findings should likewise
 be reduced and committed as explicit examples or ordinary tests; its transient
 example database is not the regression record.
 
-CI uploads summaries and any saved failures as `parser-fuzz-locked-VERSION`
-and `parser-fuzz-minimum-VERSION` artifacts with 14-day retention, including
+CI uploads summaries and any saved failures as `parser-fuzz-locked-RUNNER-VERSION`
+and `parser-fuzz-minimum-RUNNER-VERSION` artifacts with 14-day retention, including
 when a campaign fails. Download and review a finding before that retention
 expires; accepted cases belong in the committed corpus. A hard timeout may
 interrupt before a failure artifact can be saved. The JSON campaign summaries
