@@ -1,5 +1,7 @@
 """Focused tests for the real-transport canonical H3 experiment harness."""
 
+import json
+import shlex
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -107,3 +109,33 @@ def test_experiment_refuses_existing_result_directory(tmp_path: Path):
     output.mkdir()
     with pytest.raises(SystemExit, match="refusing to overwrite"):
         execute(tmp_path / "missing-manifest.json", output)
+
+
+def test_incomplete_experiment_preserves_evidence_and_returns_failure(tmp_path, monkeypatch):
+    from benchmarks import h3_witness_outage as h3
+
+    manifest = tmp_path / "manifest with spaces.json"
+    config = json.loads((h3.ROOT / "benchmarks/h3-witness-outage.v1.json").read_text())
+    config.update({
+        "experiment": "h3-failed-runs", "seeds": [7],
+        "run_order": [{"configuration": c, "seed": 7} for c in ("healthy", "outage")],
+    })
+    manifest.write_text(json.dumps(config))
+
+    def failed_run(output, seed, condition, config, index):
+        return {"run_index": index, "seed": seed, "configuration": condition,
+                "status": "incomplete", "error": "simulated transport failure"}
+
+    monkeypatch.setattr(h3, "run_condition", failed_run)
+    output = tmp_path / "new results"
+    with pytest.raises(SystemExit, match="incomplete experiment"):
+        execute(manifest, output)
+    summary = json.loads((output / "summary.json").read_text())
+    assert summary["incomplete_runs"] == 2
+    assert summary["complete_runs"] == 0
+    assert len(list(output.glob("run-??.json"))) == 2
+    assert (output / "SHA256SUMS.txt").is_file()
+    environment = json.loads((output / "environment.json").read_text())
+    command = shlex.split(environment["exact_command"])
+    assert command[-4:] == ["--manifest", str(manifest), "--output", str(output)]
+    assert environment["exact_command"] in (output / "report.md").read_text()
