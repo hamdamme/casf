@@ -67,7 +67,8 @@ using synthetic reproduction data. [SECURITY.md](../SECURITY.md) states best-eff
 
 ## What completion means
 
-The experimental v0.1 completion plan is delivered. It does not establish a production
+The experimental v0.1 release is published; the [tracker](release/completion-tracker.md)
+separates delivered work from outstanding review. It does not establish a production
 service or stable 1.0 contract. Persistent Linux/HTTPS operation, independently administered
 witnesses, cloud deployment, physical power-loss testing and broader external review need
 separate scope and acceptance. The research H1 primary expectation remains unmet.

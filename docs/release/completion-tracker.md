@@ -7,13 +7,16 @@ Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted a
 [0.1.0rc2 is published](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
 The original audit and release-preparation records remain historical.
 
-**Current position:** All six phases and fourteen sessions are delivered for the
-agreed experimental scope. Final handoff documentation is submitted through a PR;
-merging that PR remains repository administration, not unperformed release validation.
-No merge is performed as part of this closeout.
+**Current position:** The experimental release is published. Repository-wide
+reconciliation corrects the earlier premature closeout: the original A06 archive
+and A08 package-link findings were still unresolved, and the final handoff is
+awaiting review. See the [file-by-file review](repository-review.md).
 
-**Progress:** 28/28 tasks complete; 0 remaining. 14/14 sessions complete;
-0 remaining. 6/6 phases complete; 0 remaining within this completion plan.
+**Progress:** 24/28 tasks accepted; F02 and F19 corrections and F27–F28 handoff
+are delivered but awaiting review. Four tasks, three affected sessions (1, 10,
+14) and three affected phases (1, 4, 6) remain open for acceptance. No additional
+implementation scope is invented by this correction; prior testing and release
+evidence remain credited. Review and merge have not been performed.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -22,7 +25,7 @@ These counts describe this completion plan, not the proportion of all historical
 | Phase | Session | Task | Work | Status |
 |---:|---:|---|---|---|
 | 1 | 1 — Current project review | F01 | Review current code, checks, and PR 29 | Complete |
-| 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Complete |
+| 1 | 1 — Current project review | F02 | Establish current inventory, baseline, and completion tracker | Awaiting review |
 | 1 | 2 — Final requirements | F03 | Define exact experimental release version, platform and support scope | Complete |
 | 1 | 2 — Final requirements | F04 | Map each gap to a fix/design decision and acceptance check | Complete |
 | 2 | 3 — Startup and trust | F05 | Complete agreed startup and manifest trust checks; address A02 | Complete |
@@ -39,7 +42,7 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Complete |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
-| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Complete |
+| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Awaiting review |
 | 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
 | 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
@@ -47,8 +50,8 @@ These counts describe this completion plan, not the proportion of all historical
 | 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Complete |
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Complete |
 | 6 | 13 — Publication | F26 | Verify public downloads and installation | Complete |
-| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Complete |
-| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Complete |
+| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Awaiting review |
+| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Awaiting review |
 
 ## Acceptance and reporting
 
@@ -71,8 +74,11 @@ After every completed task, report: task ID and changes; checks actually run and
 - Linux laptop validation is complete for the recorded Ubuntu/Python environment:
   1199 source tests and 1199 retained-wheel tests, zero failures/errors/skips,
   6075 parser cases and three 21-check demonstrations. This is separate from historical research.
-- Remaining implementation/release tasks in this plan: none. Review and merge the final
-  documentation PR to make this handoff the default-branch reference.
+- F02/F19 reconciliation: the tracked-file inventory, original audit dispositions,
+  historical archive, status corrections and package links are delivered in the
+  [repository review](repository-review.md). F27/F28 are also awaiting review.
+  The earlier zero-remaining statement did not satisfy the acceptance rule below;
+  final acceptance must wait for review of these corrections and handoff.
 - Ongoing work: maintain dependencies and reporting, protect retained state and backups,
   and scope any persistent witness/HTTPS/cloud deployment separately. Production 1.0,
   independent audit and new WAN measurements are not claimed. H1 remains unmet.
@@ -98,4 +104,4 @@ After every completed task, report: task ID and changes; checks actually run and
 - [Requirement-to-test evidence](../../tests/requirement_evidence.json)
 - [Coverage status](test-coverage-status.md)
 
-The dated repository audit and full file inventory were delivered in the maintainer's review workspace. They describe the baseline, not the post-fix branch.
+The original 9 November audit and inventory describe the baseline. The [repository review](repository-review.md) reuses their findings and records every tracked path, corrections, retained evidence and verification limits for this revision.

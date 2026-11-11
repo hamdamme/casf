@@ -37,9 +37,12 @@ things. Validation records must name the exact source or artifact bytes.
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
 | Supported platform checks and retained results | [Validation matrix](release/validation-matrix.md) |
 
+The [repository review](release/repository-review.md) accounts for tracked files
+and records retained historical material, corrections and verification limits.
+
 The specification states intended requirements, not proof of complete
 implementation. The source and tests establish implemented behavior. The
-numbered documents `01` through `05` and the original technical Word document
+numbered documents `01` through `05` and the [original technical Word document](historical/README.md)
 describe the earlier prototype. Their HMAC, encryption and `auditfw` examples
 are historical, not installation or API instructions for the current package.
 Dated release records describe only their recorded revisions and artifacts.

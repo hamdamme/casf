@@ -5,7 +5,8 @@ Updated 11 November 2026. The explicitly approved experimental 0.1.0rc2
 The [publication record](publication-0.1.0rc2.md) supersedes preparation-time status;
 its exact hashes and tested revisions remain distinct from subsequent documentation.
 The [operating handoff](../operating-handoff.md) and [completion tracker](completion-tracker.md)
-close the experimental plan. No PyPI upload was performed.
+describe the handoff awaiting review. Repository reconciliation corrects premature
+completion counts; see the [file review](repository-review.md). No PyPI upload was performed.
 
 ## Current disposition
 
@@ -24,7 +25,7 @@ close the experimental plan. No PyPI upload was performed.
 | Dependency advisories and licensing | Accepted in PR 54; preflight refreshed | All 25 exact queries completed without listed package advisories before publication. [Native findings](dependency-review-0.1.0rc2.md) retain their scoped dispositions; this is not host-library clearance. |
 | Security reporting | Setting confirmed enabled | The direct reporting route and best-effort policy are in [SECURITY.md](../../SECURITY.md). The [October 28 delivery record](phase3-closeout-2026-10-28.md) remains historical; no new report was sent. |
 | Release notes and acceptance | Explicit publication approval received | [Published notes](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2), exact retained assets and original build target were approved. Preparation records remain historical. |
-| Publication and handoff | Complete for experimental scope | [Public-installation evidence](publication-0.1.0rc2.md), [operating handoff](../operating-handoff.md) and [tracker](completion-tracker.md). Final documentation PR is submitted for maintainer merge. |
+| Publication and handoff | Publication verified; handoff awaiting review | [Public-installation evidence](publication-0.1.0rc2.md), [operating handoff](../operating-handoff.md) and [tracker](completion-tracker.md). Final documentation PR is submitted for maintainer merge. |
 
 ## Historical records
 
