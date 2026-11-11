@@ -1,67 +1,63 @@
-# Linux benchmark matrix: run sheet
+# Linux research reproduction
 
-The full benchmark matrix runs on the Ubuntu machine. Everything is
-synthetic; no private keys or services are needed (SPEC §23). The
-harness pins the operating system, Python, SQLite, cryptography, and
-commit inside every raw row, so results from this machine are
-directly comparable with the committed local subset.
+The additional Linux machine evaluation is deferred. Routine Ubuntu CI remains
+enabled; it checks correctness and installed packages, not representative
+deployment performance. No new Linux benchmark was run for this documentation
+update.
 
-## 1. Prepare
+The [original local replication](results/local-subset-v1-linux/report.md) and
+[Linux matrix](results/linux-matrix-v2/report.md) retain their recorded revisions,
+environments and measurements. The
+[earlier run sheet](https://github.com/hamdamme/casf/blob/6441e4569e8c420f5e8a71e55950af88ce46f336/benchmarks/linux-matrix.md)
+is historical; its fixed test count, reused output paths and database-size
+comparison are not instructions for the current candidate.
 
-```
-sudo apt update && sudo apt install -y python3.12 python3.12-venv git
-git clone https://github.com/hamdamme/casf.git
-cd casf
-python3.12 -m venv .venv-tools
-.venv-tools/bin/python -m pip install "uv==0.13.5"
-.venv-tools/bin/uv sync --locked --extra witness --extra dev --python python3.12
-```
+## Procedure for a future authorized run
 
-## 2. Sanity: the suite must be green first
+Select a clean source commit and record why these configurations are being
+rerun. Install Python 3.12–3.14 and the locked witness/development dependencies
+using the [dependency guide](../docs/dependencies.md). Record the actual OS,
+architecture, CPU, RAM, storage/filesystem, Python, SQLite and cryptography
+versions. A commit hash alone does not identify imported code or hardware.
 
-```
-.venv/bin/python -m pytest -q
-```
+From the repository root:
 
-Expected: 207 passed. Do not run benchmarks on a red suite.
-
-## 3. T19 replication: rerun the committed local subset
-
-```
-.venv/bin/python -m benchmarks.run_manifest benchmarks/manifest.v1.json benchmarks/results/local-subset-v1-linux
-```
-
-The second argument keeps the committed macOS results untouched.
-Then confirm the procedure reproduces (SPEC T19): record counts,
-witnessed counts, and database sizes must equal the committed values
-in `benchmarks/results/local-subset-v1/`. Latencies will differ; that
-is expected and reported, not hidden.
-
-## 4. Extended matrix
-
-```
-.venv/bin/python -m benchmarks.run_manifest benchmarks/manifest.v2.json
+```bash
+CASF_LINUX_RESULTS="$(mktemp -d /tmp/casf-linux-results-XXXXXX)"
+PYTHONPATH=src .venv/bin/python -m tests.validation_environment \
+  --import-mode source --output "$CASF_LINUX_RESULTS/environment.json"
+PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
+PYTHONPATH=src .venv/bin/python -m benchmarks.run_manifest \
+  benchmarks/manifest.v1.json "$CASF_LINUX_RESULTS/local"
+PYTHONPATH=src .venv/bin/python -m benchmarks.run_manifest \
+  benchmarks/manifest.v2.json "$CASF_LINUX_RESULTS/matrix"
 ```
 
-Four pinned configurations, ten runs each: 10000 records at 1 KiB
-and 4 KiB, 1000 at 16 KiB, and 10000 at 1 KiB with the witness over
-loopback HTTP behind a 25 ms injected round trip delay. Expect
-roughly 15 to 20 minutes total. Raw rows and the report land in
-`benchmarks/results/linux-matrix-v2/`.
+Require a clean inventory and a fully passing suite before measurement. The
+expected test total comes from the selected revision; there is no permanent
+numeric threshold. Run measurements sequentially after tests finish. Preserve
+all command exits, logs, failures and interruptions in the new output root.
 
-## 5. Keep the evidence
+The local manifest has ten seeds for each of two batch sizes. The extended
+manifest has four configurations, ten runs each, including a loopback witness
+with a configured 25 ms delay. These are a historical subset, not the full
+matrix proposed in SPEC Section 22. Configuration-block order is retained;
+its possible order/host-load effects must accompany timing interpretations.
 
-```
-tar czf casf-linux-results.tar.gz benchmarks/results/linux-matrix-v2 benchmarks/results/local-subset-v1-linux
-```
+## Evidence and comparisons
 
-Copy the archive back, or commit the results directories on a branch
-and open a pull request. Keep every run, including failed or
-interrupted ones; note interruptions in research/limitations.md.
+Compare seeds, requested record counts, checkpoint counts, witnessed prefixes,
+verification outcomes and retry counts with the declared procedure. Explain
+differences rather than changing expected outcomes after observing them.
+Database allocation can vary with SQLite, storage schema and environment;
+cross-revision byte equality is not a valid acceptance criterion. Latencies
+are observations of the identified host and workload, not portability promises.
 
-## Not covered yet
+Keep frozen manifest copies, exact commands, timestamps, runtime/import
+inventory, complete raw rows, reports and checksums. Verify them before
+publishing a reviewed subset in a new results directory. Exclude private keys,
+databases and retained verifier state. Interrupted output is retained under its
+original name; a rerun gets a new directory and is not silently substituted.
 
-The 25 ms configuration models one network class on loopback; a real
-wide area deployment with separate machines and an uncontrolled
-network is still open, so wide area numbers beyond the injected
-delay model may not be quoted.
+The historical WAN study is separate evidence. An injected loopback delay
+does not reproduce that path; see the [remote evaluation boundary](wide-area.md).
