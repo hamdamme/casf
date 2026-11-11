@@ -1,5 +1,10 @@
 # Typed log operations and immutable results
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §19 calls for a LogHandle and typed checkpoint, witness and export
 results. The Writer API currently returns dictionaries, a manifest digest,
 and a Path. ADR-012 added typed append without breaking those callers.

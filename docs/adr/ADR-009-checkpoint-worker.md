@@ -1,5 +1,10 @@
 # Checkpoint worker and retry scheduling
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 The foreground `CheckpointWorker` operates on an already verified signing
 `Writer`. `tick()` performs at most one submission; `run(stop)` polls until
 stopped or the final checkpoint is accepted. `casf witness work` exposes the

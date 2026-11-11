@@ -1,5 +1,10 @@
 # Prefix export and complete diagnostic serialization
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §§19–20 require bounded prefix exports and atomic publication without
 overwriting an existing destination. The previous check followed by ordinary
 `rename` can replace an empty directory created between those operations.

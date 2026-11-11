@@ -1,5 +1,9 @@
 # Experimental v0.1 completion scope
 
+This is a preparation-time record. The [publication record](publication-0.1.0rc2.md)
+now establishes the published status; original approval language and artifact
+evidence below describe their recorded stage, not pending publication work.
+
 The maintainer selected an experimental v0.1 release for research and evaluation
 and authorized implementation on 9 November 2026. The next review candidate is
 planned as 0.1.0rc2 because the old 0.1.0rc1 artifact approval does not cover new

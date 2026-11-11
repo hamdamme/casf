@@ -53,5 +53,5 @@ The [Linux run sheet](linux-matrix.md) separates future reproduction from
 historical results. Its extended manifest includes a loopback witness with
 25 ms injected delay. The [remote evaluation guide](wide-area.md) records the
 historical cloud study and the transport/provisioning work required before a
-new remote run. Additional Linux/cloud evaluation is deferred; neither guide
+new remote run. Additional Linux performance/cloud evaluation is deferred; neither guide
 claims new remote measurements or authorizes infrastructure provisioning.

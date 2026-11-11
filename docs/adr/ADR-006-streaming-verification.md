@@ -1,5 +1,10 @@
 # Streaming verification API decision
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 Date: 2026-10-27. Scope: SPEC Sections 5, 15, 19, and 20.
 
 ## Compatibility

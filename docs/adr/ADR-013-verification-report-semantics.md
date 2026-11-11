@@ -1,5 +1,10 @@
 # Verification report semantics
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §15 fixes report enums and distinguishes unavailable evidence from proven
 mismatches. The implementation currently uses older enum labels, reports
 missing trust as FAIL, and initializes unchecked dimensions as successful.

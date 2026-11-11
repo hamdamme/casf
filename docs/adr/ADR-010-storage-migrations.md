@@ -1,5 +1,10 @@
 # Versioned SQLite stores and explicit migration
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §§17 and 20 require relationships, exact length checks and versioned,
 transactional migrations that preserve authenticated bytes. Earlier stores
 have no version marker or foreign keys. Silently adding tables cannot install
