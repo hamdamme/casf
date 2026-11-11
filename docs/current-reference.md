@@ -1,9 +1,9 @@
 # Current CASF implementation reference
 
-This guide includes explicit writer trust pins on top of the PR 30
-startup and restore baseline, `65a0252ace032e5a5dae0a85d3d959b4c1b1e399`.
+This guide follows the implementation accepted through PR 49 at
+`4d89e764050455d8d0fe289bd6bb27710ec3b3bb` and the subsequent validation workflow.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
-work from remaining trust and recovery requirements. Package metadata is
+work from remaining validation, research and release gates. Package metadata is
 `0.1.0rc1`; the proposed wire profile is `casf-v1`. These identify different
 things. Validation records must name the exact source or artifact bytes.
 
@@ -27,6 +27,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Automatic checkpoint scheduling and retries | [Checkpoint worker](checkpoint-worker.md) |
 | Generated inputs and parser fuzzing | [Adversarial testing](adversarial-testing.md) |
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
+| Supported platform checks and retained results | [Validation matrix](release/validation-matrix.md) |
 
 The specification states intended requirements, not proof of complete
 implementation. The source and tests establish implemented behavior. The
@@ -126,7 +127,7 @@ of constant memory for every operation.
 | SQLite | Version 1 writer and witness schemas enforce relationships, exact lengths, types and ranges with WAL/FULL settings. Existing unversioned stores require explicit migration to a new path; envelope bytes and pending state are preserved. Structural checks do not establish freshness. | [Migration guide](storage-migrations.md), [storage tests](../tests/unit/test_storage_migrations.py) |
 | Export and status | Export streams a selected prefix from one snapshot and publishes without replacing any destination. Accepted checkpoint evidence is limited to that prefix. A pending final seal blocks export; database backup preserves pending state. Export does not create authority status. | [Export guide](export-and-reports.md), [verification](verification.md) |
 | Network | The client bounds total request time, response bytes, individual status and header lines, and header count. The reference service still needs operational TLS and access controls. | [Transport](../src/casf/transport.py), [server guide](witness-server.md) |
-| Validation | Hypothesis properties and bounded parser mutation campaigns run in CI alongside deterministic and selected integration/crash tests. Generated state-machine coverage, coverage-guided fuzzing and the complete process crash matrix remain open. | [Coverage status](release/test-coverage-status.md) |
+| Validation | Hypothesis properties, bounded parser mutation campaigns and 27 process-crash cases run with the full suite on Ubuntu and macOS. Named transaction and replacement boundaries are covered; complete generated state machines, coverage-guided fuzzing and physical power loss are not. | [Coverage status](release/test-coverage-status.md), [validation matrix](release/validation-matrix.md) |
 
 These differences remain explicit implementation limits. This guide does not
 amend the normative specification or mark full conformance achieved. Changes
@@ -135,10 +136,11 @@ and targeted implementation evidence.
 
 ## Evidence boundaries
 
-Hosted CI runs on Ubuntu for Python 3.12, 3.13 and 3.14. macOS evidence comes
-from manual local validation; there is no macOS CI job. Historical platform
-inventories identify the exact systems tested and do not certify all systems
-with the same operating system name.
+Hosted CI targets Ubuntu x86_64 and macOS arm64 for Python 3.12, 3.13 and 3.14,
+with locked and minimum direct dependencies. Each job retains source/import
+identity, actual runtime components and test reports. Results apply to their
+recorded revision. Historical manual platform inventories remain separate and
+do not certify all systems with the same operating system name.
 
 Research results remain tied to their original manifests, environments and
 source digests. Current code tests, historical measurements, limited external

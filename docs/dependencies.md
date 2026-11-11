@@ -60,7 +60,7 @@ Review the resolved versions, licenses, dependency advisories, and lockfile
 diff before accepting an update. When changing the build backend version,
 update both the build group and the uv build constraint in `pyproject.toml`.
 Repeat lint, typing, tests, package build, and wheel installation checks.
-CI exercises Python 3.12, 3.13, and 3.14 on Linux. Record any environment that
+CI exercises Python 3.12, 3.13, and 3.14 on Ubuntu and macOS. Record any environment that
 was not tested and retain the lockfile with the source commit for each new
 experiment. Historical result files and their recorded environments remain
 unchanged.
@@ -85,7 +85,8 @@ the scope of its dated platform checks. The package license uses the SPDX expres
 
 ## Minimum dependency compatibility
 
-The separate `minimum` CI job uses Python 3.12, 3.13, and 3.14. It reads the
+The separate `minimum` CI matrix uses Python 3.12, 3.13, and 3.14 on both
+platforms. It reads the
 base and witness requirements from pyproject.toml and uses uv's
 `lowest-direct` resolution in a fresh environment. The build backend minimum
 is also read from the declared build requirements. Transitive dependencies
@@ -103,3 +104,7 @@ a witness request and shutdown. It does not change uv.lock. Minimum version
 testing establishes compatibility only; it is not a security recommendation
 for those older packages. Use the reviewed locked environment for development
 and experiments.
+
+The [validation matrix](release/validation-matrix.md) describes retained test
+reports, actual runtime inventories, source and installed-wheel import checks,
+and the boundary between passing CI and final artifact acceptance.

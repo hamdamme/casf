@@ -69,6 +69,22 @@ establish power-loss durability or exhaustive crash scheduling. See also the
 An empty remaining review field in the map is not a proof that these broader
 requirements have been satisfied.
 
+## Validation review
+
+The [supported matrix](validation-matrix.md) runs the complete mapped suite on
+Ubuntu x86_64 and macOS arm64, with Python 3.12–3.14 and both dependency modes.
+The source/wheel import guards support the environment provenance part of T19;
+they do not repeat historical benchmark measurements. Retained JUnit reports,
+actual property statistics and seeded campaign summaries identify the checks
+executed for a revision. A missing, skipped or failed required check remains
+unresolved even if its test identifier appears in this map.
+
+The current implementation and process-crash assertions cover the previously
+open startup, trust, restore, scheduling, storage and public API work. This
+review does not claim exhaustive specification conformance: deployment trust
+provisioning, unavailable newer authority status, witness disaster recovery,
+storage hardware and final release approval remain explicit boundaries.
+
 ## Evidence and historical record
 
 The [current checklist](checklist-v0.1.md) identifies hosted validation and

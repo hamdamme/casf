@@ -1,39 +1,38 @@
 # Current experimental candidate checklist
 
-Updated 9 November 2026 for the startup/restore fix branch, based on merged
-PR 29 at `0f2df3de8dbee0da92c45d66167aac2813327a69`. Package metadata
-remains `0.1.0rc1`. This page records release gates; the
-[completion tracker](completion-tracker.md) records phases, sessions and tasks.
-Dated session records describe evidence available at their own revisions.
+Updated 10 November 2026 after PR 49 merged at
+`4d89e764050455d8d0fe289bd6bb27710ec3b3bb`. Package metadata remains
+`0.1.0rc1`; the next review candidate is planned as `0.1.0rc2` during final
+artifact preparation. No existing artifact approval covers these source changes.
+The [completion tracker](completion-tracker.md) records tasks and review status.
 
 ## Current disposition
 
 | Area | Status | Evidence and completion boundary |
 | --- | --- | --- |
-| Historical merged source validation | PASS for the PR 28 source | [Actions run 118](https://github.com/hamdamme/casf/actions/runs/41265472713) passed all six locked and minimum dependency jobs for Python 3.12, 3.13 and 3.14 at `a3bfa110810e88e5736b451f8e25b3f968c609dd`, merged as `93ba4325675c948b108a0281c2b0d97c713decdc`. These checks do not validate later source changes. |
-| Startup/restore fix batch | Local evidence recorded; hosted checks tracked on the fix PR | The reviewed local batch passed 455 tests, including 47 new cases, plus lint and typing. The previous PR head passed all six hosted jobs and build/install checks. Follow [PR #30](https://github.com/hamdamme/casf/pull/30) for exact-head hosted results and review status. [Recovery guide](../writer-recovery.md) states the implemented checks and remaining trust boundaries. This is not final artifact approval. |
-| Requirements traceability | Mapped with explicit limits | [Evidence map](../../tests/requirement_evidence.json), [traceability checks](../../tests/unit/test_traceability.py), and [current evidence guide](requirement-evidence.md). A mapped assertion is not proof of full specification conformance. |
-| Specification conformance | Not fully established | [Current implementation reference](../current-reference.md#operational-limits-and-specification-differences) records startup, restore, API and storage differences. These require implementation evidence or an explicit specification decision before claiming full conformance. |
-| Assessed security findings | Corrected or documented within assessed scope | [Phase 3 dispositions](phase3-closeout-2026-10-28.md#reviewer-findings-and-disposition), [October 31 source changes](notes-review-candidate-2026-10-31.md), and PR 28 header regressions. This does not assert that no unknown defects exist. |
-| Historical research evidence | Accepted with scope limits | Maintainer acceptance is recorded in [Phase 3 closeout](phase3-closeout-2026-10-28.md#research-evidence-boundary). Original results do not measure the current candidate. [Research guide](../../research/README.md) states the current interpretation. |
-| External review | Limited review accepted | [Scope](phase3-closeout-2026-10-28.md#review-coverage) records examined and unexamined areas. No additional reviewer is required by this cleanup. |
-| Platforms and native components | Evidence available for recorded environments | macOS arm64 was checked manually; Ubuntu hosted CI runs Python 3.12 through 3.14. The workflow uses ubuntu-latest. Exact earlier runtime inventories are in [closeout](phase3-closeout-2026-10-28.md#validated-platform-and-component-scope). No macOS CI or Windows validation is claimed. |
-| Licensing and reporting channel | Recorded checks complete within scope | [License inventory](dependency-review.md) and [closeout](phase3-closeout-2026-10-28.md). The original candidate carried Apache 2.0 notices and no vendored dependencies; a real private report established channel delivery. Final artifact contents must still be inspected. |
-| Final candidate artifacts | BLOCKED for current source | The October 28 approved files and October 31 review files predate later source changes. Select a final source revision, build into a new directory, verify clean installs and documented flows, inspect contents, and record exact hashes. Preserve prior artifacts unchanged. |
-| Dependency advisory freshness | Due with final artifact preparation | Queries are dated evidence. Refresh exact resolved versions when preparing the final candidate; do not report old advisory results as current. |
-| Exact artifact acceptance | Not recorded for current source | The October 28 approval applies only to its recorded hashes and notes. A later build requires its own hash confirmation and decision. |
+| Startup, trust and recovery implementation | Accepted through the merged implementation PRs | Verified opening checks independent pins, supplied status, full local history, fresh witness continuity and durable retained state. Restore preserves signed evidence and seals. [Recovery guide](../writer-recovery.md) and [assertion map](../../tests/requirement_evidence.json). |
+| Scheduling, storage and public interfaces | Accepted through PR 47 | Durable checkpoint retries, versioned schemas/migration, typed operations, complete bundle reads and trusted suffix verification have regression coverage. See the [current reference](../current-reference.md). |
+| Generated, fuzz and process testing | Accepted through PRs 48–49 | Twelve generated properties, a 25-case parser corpus, seeded mutation campaigns and 27 parent-controlled crash cases. Their [coverage limits](test-coverage-status.md) remain explicit. |
+| Supported validation matrix | Exact revision results required | [Twelve configurations](validation-matrix.md) cover Ubuntu x86_64 and macOS arm64, Python 3.12–3.14, locked/minimum direct dependencies, builds and installed-wheel checks. Review all jobs, runtime/import identities and retained results for the proposed revision. A badge alone does not close this gate. |
+| Requirements traceability | Mapped with explicit limits | [Evidence map](../../tests/requirement_evidence.json), structural [traceability checks](../../tests/unit/test_traceability.py), and [evidence guide](requirement-evidence.md). Named assertions are not proof of every specification rule. |
+| Specification and operational boundaries | Explicit; full conformance not claimed | [Current implementation limits](../current-reference.md#operational-limits-and-specification-differences) include administrative trust/status distribution, witness recovery assumptions, bounded generated coverage and hardware durability. |
+| Research evidence | Historical scope accepted; affected current runs remain | [October 28 acceptance](phase3-closeout-2026-10-28.md#research-evidence-boundary) remains valid for its original records. Rerun only affected experiments in new locations and reconcile outcomes before claiming results for current code. |
+| Documentation and critical-change review | Current workflow/release review remains | Validate the documented demo and operating flows, reconcile current versus historical instructions, and resolve release-blocking findings. Existing limited external review is preserved in [its scope record](phase3-closeout-2026-10-28.md#review-coverage). |
+| Final candidate artifacts | Not prepared for final acceptance | Select the final source, update candidate metadata, build into a new directory, inspect wheel/source contents, clean-install exact files and record hashes. Ordinary PR builds are validation artifacts, not approved release files. |
+| Dependency advisories and licensing | Refresh at final artifact preparation | [Earlier reviews](dependency-review.md) are dated. Inspect exact resolved packages, native components, notices and final contents; old advisory results are not current clearance. |
+| Security reporting | Historical channel test retained | [October 28 record](phase3-closeout-2026-10-28.md) documents the tested private reporting channel and best-effort scope. No new report was sent during validation. |
+| Release notes and acceptance | Pending final files and explicit approval | Prepare support details, limitations, hashes and notes for the exact candidate. Previous approval does not transfer to a new build. |
+| Publication and handoff | Not authorized or performed | Publish only after explicit approval of the prepared release, then verify public installation and complete the operating/maintenance handoff. |
 
 ## Historical records
 
-[Phase 3 closed on 28 October](phase3-closeout-2026-10-28.md) for the exact
-candidate recorded there. That completed milestone is preserved. Subsequent
-source fixes do not inherit that artifact approval, and later documentation
-cleanup does not reopen completed experiments or external review.
-
-The [October 28 notes](notes-v0.1.md), [October 31 review notes](notes-review-candidate-2026-10-31.md),
+The [October 28 closeout](phase3-closeout-2026-10-28.md),
+[October 28 notes](notes-v0.1.md), [October 31 review notes](notes-review-candidate-2026-10-31.md),
 [installation rehearsal](install-rehearsal-2026-10-27.md),
 [Session 3 validation](session3-validation.md), and
-[streaming validation](streaming-validation.md) are dated evidence.
-The previous combined checklist is preserved in
-[Git history at 93ba432](https://github.com/hamdamme/casf/blob/93ba4325675c948b108a0281c2b0d97c713decdc/docs/release/checklist-v0.1.md).
-It must not be used as the current gate table.
+[streaming validation](streaming-validation.md) describe their own revisions.
+Their original measurements, artifacts and acceptance decisions remain unchanged.
+
+The [previous checklist at PR 49's merge](https://github.com/hamdamme/casf/blob/4d89e764050455d8d0fe289bd6bb27710ec3b3bb/docs/release/checklist-v0.1.md)
+preserves the earlier gate table, including PR 28/30 validation. It is historical
+evidence, not the current release decision.

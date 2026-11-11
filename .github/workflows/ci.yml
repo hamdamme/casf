@@ -5,21 +5,41 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
 env:
   UV_PYTHON_DOWNLOADS: never
+  CASF_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.check-name }} (${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
+        include:
+          - os: ubuntu-latest
+            check-name: test
+          - os: macos-15
+            check-name: test macos
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # RQ4 collection tests inspect a pinned historical commit and its history.
           fetch-depth: 0
-      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install fixed tooling
@@ -29,17 +49,8 @@ jobs:
           echo "$RUNNER_TEMP/casf-tools/bin" >> "$GITHUB_PATH"
       - name: Install locked dependencies
         run: uv sync --locked --extra witness --extra dev --group build --python "$(command -v python)"
-      - name: Record runtime platform components
-        run: >-
-          uv run --locked python -c "import platform, sqlite3, ssl, sys, cffi, cryptography;
-          from cryptography.hazmat.bindings.openssl.binding import Binding;
-          binding = Binding();
-          print('platform:', platform.platform(), platform.machine());
-          print('python:', sys.version.split()[0]);
-          print('sqlite:', sqlite3.sqlite_version);
-          print('python TLS:', ssl.OPENSSL_VERSION);
-          print('cryptography:', cryptography.__version__, binding.ffi.string(binding.lib.OpenSSL_version(0)).decode());
-          print('cffi:', cffi.__version__)"
+      - name: Record source validation environment
+        run: .venv/bin/python tests/validation_environment.py --import-mode source --output "$RUNNER_TEMP/casf-validation/environment.json"
       - name: Check lockfile
         run: uv lock --check
       - name: Lint
@@ -47,7 +58,10 @@ jobs:
       - name: Type check
         run: .venv/bin/mypy src
       - name: Test suite
-        run: .venv/bin/python -m pytest tests/ -v --hypothesis-show-statistics
+        run: >-
+          .venv/bin/python -m pytest tests/ -v --hypothesis-show-statistics
+          --junitxml="$RUNNER_TEMP/casf-validation/pytest.xml"
+          | tee "$RUNNER_TEMP/casf-validation/pytest.log"
       - name: Bounded parser fuzzing
         timeout-minutes: 2
         run: |
@@ -59,18 +73,21 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: parser-fuzz-locked-${{ matrix.python-version }}
+          name: parser-fuzz-locked-${{ matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-fuzz/
           if-no-files-found: ignore
           retention-days: 14
       - name: Build package
         run: uv build --python .venv/bin/python --no-build-isolation --out-dir "$RUNNER_TEMP/casf-dist"
       - name: Check installed wheel
+        env:
+          PYTHONPATH: ""
         run: |
           uv export --locked --no-default-groups --no-emit-project --output-file "$RUNNER_TEMP/casf-runtime.txt" > /dev/null
           uv venv --python "$(command -v python)" "$RUNNER_TEMP/casf-wheel"
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --require-hashes -r "$RUNNER_TEMP/casf-runtime.txt"
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --no-deps "$RUNNER_TEMP"/casf-dist/*.whl
+          "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/validation_environment.py --import-mode wheel --output "$RUNNER_TEMP/casf-validation/base-wheel-environment.json"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I -c "import casf; print(casf.__version__)"
           "$RUNNER_TEMP/casf-wheel/bin/casf" --help
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py
@@ -78,20 +95,38 @@ jobs:
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
           uv export --locked --extra witness --no-default-groups --no-emit-project --output-file "$RUNNER_TEMP/casf-witness.txt" > /dev/null
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --require-hashes -r "$RUNNER_TEMP/casf-witness.txt"
+          "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/validation_environment.py --import-mode wheel --output "$RUNNER_TEMP/casf-validation/witness-wheel-environment.json"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py --witness
+      - name: Preserve validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: validation-locked-${{ matrix.os }}-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/casf-validation/
+          if-no-files-found: error
+          retention-days: 14
 
   minimum:
-    name: minimum (${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    name: ${{ matrix.check-name }} (${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-15]
         python-version: ["3.12", "3.13", "3.14"]
+        include:
+          - os: ubuntu-latest
+            check-name: minimum
+          - os: macos-15
+            check-name: minimum macos
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # RQ4 collection tests inspect a pinned historical commit and its history.
           fetch-depth: 0
-      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install fixed tooling
@@ -122,10 +157,17 @@ jobs:
           uv pip freeze --python "$RUNNER_TEMP/casf-minimum/bin/python"
       - name: Build with minimum backend
         run: '"$RUNNER_TEMP/casf-minimum/bin/python" -m build --no-isolation --outdir "$RUNNER_TEMP/casf-minimum-dist"'
-      - name: Install wheel and run suite
+      - name: Install wheel and record validation environment
         run: |
           uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --no-deps "$RUNNER_TEMP"/casf-minimum-dist/*.whl
+          "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/validation_environment.py --import-mode wheel --output "$RUNNER_TEMP/casf-validation/environment.json"
+      - name: Test installed wheel
+        run: >-
           "$RUNNER_TEMP/casf-minimum/bin/python" -m pytest tests/ -v --hypothesis-show-statistics
+          --junitxml="$RUNNER_TEMP/casf-validation/pytest.xml"
+          | tee "$RUNNER_TEMP/casf-validation/pytest.log"
+      - name: Check installed wheel
+        run: |
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/wheel_smoke.py --witness
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
@@ -141,9 +183,17 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: parser-fuzz-minimum-${{ matrix.python-version }}
+          name: parser-fuzz-minimum-${{ matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-fuzz/
           if-no-files-found: ignore
+          retention-days: 14
+      - name: Preserve validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: validation-minimum-${{ matrix.os }}-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/casf-validation/
+          if-no-files-found: error
           retention-days: 14
 
 # These jobs run the committed test suite. Coverage limits are recorded in

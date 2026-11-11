@@ -42,7 +42,7 @@ uv run --locked python -m pytest tests/process -v
 uv run --locked python -m pytest tests -v --hypothesis-show-statistics
 ```
 
-The ordinary CI suite includes these cases in all six Ubuntu jobs: CPython
+The ordinary CI suite includes these cases in all 12 Ubuntu/macOS jobs: CPython
 3.12, 3.13 and 3.14 with locked and minimum direct dependencies. Read the exact
 revision's job logs for pass/fail evidence. This document describes assertions,
 not a permanent claim that a later revision has passed.
@@ -70,4 +70,5 @@ temporary files or remove them while a save could still be active.
 
 All keys, events and credentials are synthetic. Sharing one test host does not
 establish independent operational failure domains. Passing this matrix does
-not complete the supported-platform validation review or approve a release.
+not by itself complete the [supported-platform review](release/validation-matrix.md)
+or approve a release.
