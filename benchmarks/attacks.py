@@ -393,7 +393,9 @@ def run_matrix(out_dir: Path) -> list[dict]:
     import tempfile
 
     out = Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
+    if out.exists():
+        raise SystemExit(f"refusing to overwrite existing result directory: {out}")
+    out.mkdir(parents=True)
     with tempfile.TemporaryDirectory() as work:
         rows = [run_case(case, Path(work) / case["name"])
                 for case in CASES]

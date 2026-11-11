@@ -366,13 +366,18 @@ def run_config(cfg: dict, out_dir: Path) -> dict:
     out.mkdir(parents=True, exist_ok=True)
     seeds = [int(s) for s in cfg["seeds"]]
     runs = int(cfg["runs"])
+    paths = [out / f"{cfg['name']}-run-{i}.json" for i in range(runs)]
+    for path in paths:
+        if path.exists():
+            raise FileExistsError(f"refusing to overwrite existing result file: {path}")
     last: dict = {}
     metrics: list[dict] = []
     files: list[str] = []
     for i in range(runs):
         row = _run_once(cfg, seeds[i % len(seeds)], i)
-        path = out / f"{cfg['name']}-run-{i}.json"
-        path.write_text(json.dumps(row, indent=2))
+        path = paths[i]
+        with path.open("x") as stream:
+            stream.write(json.dumps(row, indent=2))
         files.append(path.name)
         metrics.append(_metrics(row))
         last = row
