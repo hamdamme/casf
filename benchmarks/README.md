@@ -49,9 +49,9 @@ The second argument sets a new output directory. Choose an unused path for each
 run, including replication on a second machine (T19). The default historical
 output directory already exists in a checkout and must not be reused.
 
-The Ubuntu run sheet is linux-matrix.md; its manifest includes one
-configuration with the witness over loopback HTTP behind a 25 ms
-injected round trip delay. The wide area run sheet is wide-area.md:
-the writer runs on one machine and the witness on a cloud instance
-in another region (mode "remote"), producing the real network
-numbers for RQ2 and RQ3.
+The [Linux run sheet](linux-matrix.md) separates future reproduction from
+historical results. Its extended manifest includes a loopback witness with
+25 ms injected delay. The [remote evaluation guide](wide-area.md) records the
+historical cloud study and the transport/provisioning work required before a
+new remote run. Additional Linux/cloud evaluation is deferred; neither guide
+claims new remote measurements or authorizes infrastructure provisioning.
