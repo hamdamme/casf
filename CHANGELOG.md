@@ -4,7 +4,23 @@ All notable changes to this project are documented here.
 Format follows Keep a Changelog; versions follow SemVer after API
 stabilization (SPEC §26).
 
-## [Unreleased]
+## [Unreleased — 0.1.0rc2 candidate]
+
+- Complete verified startup, retained-state reconciliation and authenticated restore.
+- Add durable checkpoint scheduling/retries and explicit storage migration.
+- Expand typed interfaces, incremental verification and complete diagnostics.
+- Add generated, fuzz and process-crash coverage with twelve CI configurations.
+- Include a synthetic workflow and locked dependency recipe in source packages.
+- Prepare exact candidate files, installation evidence and release review.
+
+See [candidate release notes](docs/release/notes-0.1.0rc2.md) for changes,
+migration, support and limitations. Publication requires separate approval.
+
+## Earlier development entries (historical)
+
+The entries below retain their original test counts and implementation status.
+They describe progress at the time, not the current candidate's open work.
+
 ### Security
 - Bind witness receipt lookups to the log named in the request URL.
 - Add explicit active-status policy to restore. Verify supplied authority

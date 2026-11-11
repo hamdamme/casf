@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 52 is merged into main at `79fce315a3b0ec06f2293643f01ea66a62b79136`. Candidate preparation starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 53 is merged into main at `7af8d93e182868e96f76ab7cef72a23143e0f1d7`. Release-evidence preparation starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phases 1–4 and Sessions 1–10 complete. Phase 5, Session 11 is awaiting review of the candidate builds and clean-install verification. Additional Linux/cloud evaluation is deferred by the maintainer; Ubuntu CI continues.
+**Current position:** Phases 1–4 and Sessions 1–11 complete. Phase 5, Session 12 is awaiting review of advisories, licensing, release notes and the approval proposal. Additional Linux/cloud evaluation is deferred by the maintainer; Ubuntu CI continues.
 
-**Progress:** 20/28 tasks complete; 8 remaining. 10/14 sessions complete; 4 remaining. 4/6 phases complete; 2 remaining, including the current phase.
+**Progress:** 22/28 tasks complete; 6 remaining. 11/14 sessions complete; 3 remaining. 4/6 phases complete; 2 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -34,10 +34,10 @@ These counts describe this completion plan, not the proportion of all historical
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
 | 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Complete |
 | 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
-| 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Awaiting review |
-| 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Awaiting review |
-| 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Pending |
-| 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Pending |
+| 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
+| 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
+| 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Awaiting review |
+| 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Awaiting review |
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Pending |
 | 6 | 13 — Publication | F26 | Verify public downloads and installation | Pending |
 | 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Pending |
@@ -51,15 +51,15 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 52 is merged. The workflow and scoped implementation review are accepted, completing F19–F20, Session 10 and Phase 4.
-- F21: prepared version 0.1.0rc2, built an exact wheel and source archive from clean commit `e92194fe0fa6eb37c2ff9016c381b8e734008880`, inspected their contents and metadata, and recorded their hashes. Both source-selected and installed developer imports matched all 39 runtime files.
-- F22: passed 32 checks across fresh base-wheel, witness-wheel and source-archive environments. Both witness-capable installations ran the 21-check synthetic workflow. Public-only verification, CLI entry points, optional dependency behavior and installed import identities passed.
-- Local validation: 1199 tests, lint, strict typing and lock consistency passed. Six damaged package copies were rejected. CI now checks package contents and the installed demo in all twelve configurations; those jobs must pass for the proposed PR revision.
-- Evidence: [candidate record](candidate-0.1.0rc2.md), [file hashes and installation results](candidate-0.1.0rc2.json), and [build procedure](candidate-build.md). CI validation files are distinct from the retained local candidate files.
-- Remaining acceptance: review F21–F22 and CI. Final advisories, licensing, package acceptance, notes, support details and publication approval remain open. Additional Linux/cloud deployment evaluation is deferred.
-- Remaining: 8 tasks, 4 sessions and 2 phases, including F21–F22 awaiting review. Accepting this batch completes Session 11, leaving 6 tasks, 3 sessions and 2 phases.
-- User action: review the candidate preparation draft PR and its checks. No release tag or publication was created.
-- Next task after acceptance: Phase 5, Session 12 — refresh advisory/license evidence and prepare final release notes, hashes, support details and checklist (F23–F24).
+- PR 53 is merged. Candidate build and clean-install evidence are accepted, completing F21–F22 and Session 11.
+- F23: all 25 exact external package/tool versions were queried through OSV and PyPI; no listed advisories or yanked files were returned. License/notice files and both exact candidate archives were inspected. Native findings are assessed separately with explicit applicability and deployment limits; green tests do not certify host libraries.
+- F24: prepared release notes, support guidance, exact asset hashes, a checksum file and a concrete GitHub prerelease proposal. The proposed tag identifies the original build commit; later review commits are not misrepresented as the artifact source. No PyPI publication is proposed.
+- Validation: the unchanged installed wheel passed 1199 tests and the 21-check demo on an isolated Python 3.12.16 runtime. All 39 imports matched source. Lint, typing and the unchanged dependency lock passed. CI now checks setup-python's latest available versions across all twelve configurations; its macOS catalog still trails upstream for some minors. Hosted compatibility checks do not certify a patched runtime.
+- Evidence: [dependency/native review](dependency-review-0.1.0rc2.md), [release notes](notes-0.1.0rc2.md), [exact proposal](approval-0.1.0rc2.md), [manifest](release-manifest-0.1.0rc2.json), and [checksums](SHA256SUMS-0.1.0rc2.txt). Reporting is enabled; no new private report was sent.
+- Remaining acceptance: review F23–F24 and final CI, including the scoped native-library dispositions. Publication needs a fresh preflight and separate explicit approval of the exact files, notes, tag target and destination. Additional Linux/cloud deployment evaluation remains deferred.
+- Remaining: 6 tasks, 3 sessions and 2 phases, including F23–F24 awaiting review. Accepting this batch completes Session 12 and Phase 5, leaving 4 tasks, 2 sessions and 1 phase.
+- User action: review the release-evidence draft PR and its checks. Merging it does not authorize publication.
+- Next task after acceptance: Phase 6, Session 13 — confirm the exact publication proposal, obtain explicit approval, publish only if approved, then verify public downloads and installation (F25–F26).
 
 ## Evidence
 

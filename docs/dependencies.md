@@ -83,6 +83,10 @@ license compliance or artifact acceptance.
 
 ## Current review record
 
+The [0.1.0rc2 review](release/dependency-review-0.1.0rc2.md) records the latest
+exact-version queries, distribution licenses and native-library findings.
+The earlier dated records below are preserved as history.
+
 The [locked dependency review](release/dependency-review.md) records the full
 Python package inventory, dated advisory queries, license declarations, and
 the scope of its dated platform checks. The package license uses the SPDX expression

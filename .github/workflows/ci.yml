@@ -42,6 +42,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
+          check-latest: true
       - name: Install fixed tooling
         run: |
           python -m venv "$RUNNER_TEMP/casf-tools"
@@ -132,6 +133,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
+          check-latest: true
       - name: Install fixed tooling
         run: |
           python -m venv "$RUNNER_TEMP/casf-tools"

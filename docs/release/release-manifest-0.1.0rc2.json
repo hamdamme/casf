@@ -1,0 +1,52 @@
+{
+  "assets": [
+    {
+      "name": "casf-0.1.0rc2-py3-none-any.whl",
+      "sha256": "c38dcfedfc7173db826177a96dc0d442e90f52bb04447c917395420e9233cec2",
+      "size": 105223
+    },
+    {
+      "name": "casf-0.1.0rc2.tar.gz",
+      "sha256": "62f9f829b43de8e4987aaed3393d7427bf4b137b197dc34fea4800c325dc16b1",
+      "size": 141119
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "repository_file": "docs/release/SHA256SUMS-0.1.0rc2.txt",
+      "sha256": "c5a5d7fc7df039cabf4f96359fc5dd68f1cf67009dfb524ed4c048eea30ec1e3",
+      "size": 184
+    }
+  ],
+  "candidate_evidence": "docs/release/candidate-0.1.0rc2.json",
+  "dependency_review": "docs/release/dependency-review-0.1.0rc2.json",
+  "destination": {
+    "prerelease": true,
+    "repository": "hamdamme/casf",
+    "service": "GitHub Releases",
+    "tag": "v0.1.0rc2",
+    "target_commit": "e92194fe0fa6eb37c2ff9016c381b8e734008880",
+    "title": "CASF 0.1.0rc2"
+  },
+  "notes": {
+    "path": "docs/release/notes-0.1.0rc2.md",
+    "rendering": "Resolve relative links against the accepted release-evidence revision before publication; review the rendered body.",
+    "sha256": "5167a91c4ebfd3839371229d80ed191ab78e4293c51f332e056b6f2c188d2847"
+  },
+  "preparation_preflight": {
+    "checked_at": "2026-11-11T03:06:57.985069+00:00",
+    "existing_github_releases": [],
+    "existing_tag_refs": [],
+    "private_vulnerability_reporting": {
+      "enabled": true
+    },
+    "pypi_casf": {
+      "http_status": 404
+    }
+  },
+  "publication_approved": false,
+  "pypi_publication_included": false,
+  "runtime_review": "docs/release/runtime-review-0.1.0rc2.json",
+  "schema_version": 1,
+  "status": "prepared_for_review",
+  "version": "0.1.0rc2"
+}
