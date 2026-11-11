@@ -92,8 +92,14 @@ The exact existing candidate wheel, with the unchanged locked dependencies,
 passed **1199 tests**, witness startup/shutdown and the **21-check demo** there.
 All 39 imported runtime files matched source. The [runtime record](runtime-review-0.1.0rc2.json)
 identifies the interpreter download, actual components and test revision.
-System Python was not changed. CI now requests current patch releases for
-each supported Python minor rather than accepting a stale cached patch.
+System Python was not changed. CI now checks the setup-python catalog for the
+latest available interpreter within each supported minor, rather than relying
+only on its cache. Catalog availability varies by platform and can lag upstream
+security releases. The [first review run](https://github.com/hamdamme/casf/actions/runs/42951661939)
+selected 3.12.16, 3.13.18 and 3.14.10 on Ubuntu, but 3.12.10, 3.13.17 and 3.14.10
+on macOS. Those hosted jobs are compatibility evidence, not a patched-runtime
+recommendation. The separate local 3.12.16 check above covers the unchanged
+candidate on a newer macOS interpreter.
 
 | Finding | CASF assessment and limit |
 | --- | --- |
