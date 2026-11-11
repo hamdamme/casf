@@ -61,6 +61,9 @@ its checks.
   state-file boundaries. They cover competing processes, exact HTTP receipt
   replay, final seals and verified restart when retained state leads the
   local receipt journal.
+- [Validation provenance](validation-matrix.md) covers the 12 Ubuntu/macOS
+  configurations. Import guards reject stale, incomplete or wrongly located
+  CASF packages; each job retains runtime inventories and pytest reports.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest
@@ -76,7 +79,8 @@ its checks.
   There is no coverage-guided campaign over transport, storage or crypto internals.
 - The process crash matrix covers named transaction and replacement boundaries.
   It does not cover every instruction, host reboot, torn writes or physical
-  power loss. Exact supported-platform validation remains a separate gate.
+  power loss. Exact supported-platform results are reviewed against the
+  [matrix](validation-matrix.md), separately from final artifact acceptance.
 - The review candidate adds signed initial status provisioning and terminal
   witness revocation enforcement. This only proves behavior when the witness
   receives the statement; it cannot prove that a newer authority statement
