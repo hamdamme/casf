@@ -13,6 +13,7 @@ Repository reconciliation corrected premature completion counts; see the
 
 | Area | Status | Evidence and completion boundary |
 | --- | --- | --- |
+| PR 57 repository continuation | Review and fixes delivered; acceptance pending | [Per-file methods and findings](line-review-2026-11-11.md), updated assertion map and PR checks. Published assets remain unchanged. |
 | Startup, trust and recovery implementation | Accepted through the merged implementation PRs | Verified opening checks independent pins, supplied status, full local history, fresh witness continuity and durable retained state. Restore preserves signed evidence and seals. [Recovery guide](../writer-recovery.md) and [assertion map](../../tests/requirement_evidence.json). |
 | Scheduling, storage and public interfaces | Accepted through PR 47 | Durable checkpoint retries, versioned schemas/migration, typed operations, complete bundle reads and trusted suffix verification have regression coverage. See the [current reference](../current-reference.md). |
 | Generated, fuzz and process testing | Accepted through PRs 48–49 | Twelve generated properties, a 25-case parser corpus, seeded mutation campaigns and 27 parent-controlled crash cases. Their [coverage limits](test-coverage-status.md) remain explicit. |

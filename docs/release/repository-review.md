@@ -5,7 +5,7 @@ Reviewed 11 November 2026 against handoff head
 `ecc47630c1340ac118dc50f2989cc51c37171080`. This records inventory and targeted
 checks from the original request, rather than an exhaustive line-by-line review.
 The [continuation](line-review-2026-11-11.md) records newly reproduced defects and
-the still-unfinished manual coverage. It does not replace the release
+the completed tracked-file review methods and explicit limits. It does not replace the release
 or its exact-byte evidence. The maintainer accepted the corrections and final
 handoff by merging [PR 55](https://github.com/hamdamme/casf/pull/55) as
 `710fbe346598c05ab4989a3656c907eb0aa2c853`. The review findings below preserve

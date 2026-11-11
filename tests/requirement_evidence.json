@@ -493,7 +493,10 @@
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wrong_import_location",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_stale_or_incomplete_wheel",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wheel_outside_selected_environment",
-        "tests/unit/test_validation_environment.py::test_inventory_records_runtime_without_unrelated_environment"
+        "tests/unit/test_validation_environment.py::test_inventory_records_runtime_without_unrelated_environment",
+        "tests/unit/test_benchmark.py::test_large_warmup_is_fully_witnessed_before_measurement",
+        "tests/unit/test_benchmark.py::test_http_submit_does_not_hide_retries",
+        "tests/unit/test_h1_writer_rollback.py::test_setup_failure_preserves_each_invalid_run"
       ],
       "remaining_review": "The historical scope accepted on 2026-10-28 remains unchanged. research/current-evidence-2026-11-10.md records a bounded local refresh at its measurement revision. Linux/WAN performance remains historical; the full proposed matrix, independent witness administration, default verified startup and automatic worker performance remain unmeasured."
     },
