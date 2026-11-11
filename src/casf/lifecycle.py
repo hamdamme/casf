@@ -198,13 +198,19 @@ def _final_evidence(final_checkpoint: JsonObject,
     cp_body, cp_hash, _cp_sig = _expect(final_checkpoint,
                                         "checkpoint_hash")
     rc_body, rc_hash, _rc_sig = _expect(final_receipt, "receipt_hash")
+    validate_protocol_body("checkpoint", cp_body)
+    validate_protocol_body("receipt", rc_body)
     if cp_body.get("final") is not True:
         raise CasfError("rotation requires the old final checkpoint")
     if crypto.digest_checkpoint(cp_body) != cp_hash:
         raise SchemaError("checkpoint_hash does not match the body")
     if crypto.digest_receipt(rc_body) != rc_hash:
         raise SchemaError("receipt_hash does not match the body")
-    if rc_body["checkpoint_hash"] != cp_hash:
+    if rc_body["checkpoint_hash"] != cp_hash or any(
+            rc_body[rc] != cp_body[cp] for rc, cp in (
+                ("log_id", "log_id"), ("manifest_hash", "manifest_hash"),
+                ("checkpoint_index", "index"), ("count", "count"),
+                ("head_hash", "head_hash"))):
         raise CasfError("receipt does not match the final checkpoint")
     return {
         "log_id": cp_body["log_id"],
@@ -249,12 +255,15 @@ def verify_predecessor(manifest_envelope: JsonObject,
     verify against the old log key and the witness key.
     """
     body, _mh, _sig = _expect(manifest_envelope, "manifest_hash")
+    validate_protocol_body("manifest", body)
     expected = _final_evidence(final_checkpoint, final_receipt)
     if body.get("predecessor") != expected:
         raise CasfError("predecessor does not match the final evidence")
     cp_body, _cp_hash, cp_sig = _expect(final_checkpoint,
                                         "checkpoint_hash")
     rc_body, _rc_hash, rc_sig = _expect(final_receipt, "receipt_hash")
+    if cp_body["key_id"] != crypto.key_id(old_log_pub):
+        raise CasfError("checkpoint names a different log key")
     crypto.verify_checkpoint(old_log_pub, cp_body, cp_sig)
     crypto.verify_receipt(witness_pub, rc_body, rc_sig)
     if rc_body["witness_id"] != crypto.key_id(witness_pub):

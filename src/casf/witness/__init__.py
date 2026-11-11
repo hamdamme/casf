@@ -28,6 +28,8 @@ from casf import crypto
 from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import SAFE_INT_MAX, WITNESS_MAX_RECORDS
 from casf.errors import CasfError, NoCheckpointError, SchemaError
+from casf.lifecycle import verify_predecessor
+from casf.model.operations import Manifest
 from casf.model.schema import validate_protocol_body
 from casf.storage import Database
 from casf.storage.schema import WITNESS as SCHEMA
@@ -82,7 +84,9 @@ class Witness:
     # ------------------------------------------------------ registration
 
     def register_log(self, manifest_envelope: JsonObject,
-                     initial_status: JsonObject | None = None) -> str:
+                     initial_status: JsonObject | None = None, *,
+                     predecessor_evidence: tuple[JsonObject, JsonObject, JsonObject] | None = None
+                     ) -> str:
         """Register a preapproved manifest (SPEC §10, §13).
 
         This is the local administrator command; remote callers
@@ -91,13 +95,17 @@ class Witness:
         witness. Supplying the active serial 1 status statement stores
         manifest, witness head, and status in one transaction. Omitting it
         leaves the log unable to accept new checkpoints until status is
-        installed.
+        installed. A successor requires the old manifest and final evidence,
+        either retained here or supplied as predecessor_evidence. The old
+        authority must also be independently provisioned.
         """
         with self._lock:
-            return self._register_log(manifest_envelope, initial_status)
+            return self._register_log(manifest_envelope, initial_status, predecessor_evidence)
 
     def _register_log(self, manifest_envelope: JsonObject,
-                      initial_status: JsonObject | None) -> str:
+                      initial_status: JsonObject | None,
+                      predecessor_evidence: tuple[JsonObject, JsonObject, JsonObject] | None
+                      ) -> str:
         if set(manifest_envelope) != {"body", "manifest_hash", "signature"}:
             raise SchemaError("manifest envelope must be exactly "
                               "body, manifest_hash, signature")
@@ -115,6 +123,8 @@ class Witness:
             if isinstance(issuer, str) else None
         if authority is None:
             raise CasfError("no authority key configured for the issuer")
+        if crypto.key_id(authority) != issuer:
+            raise CasfError("authority key id does not match its key")
         crypto.verify_manifest(authority, body, signature)
         if body["witness_id"] != self._witness_id:
             raise CasfError("manifest names a different witness")
@@ -127,6 +137,7 @@ class Witness:
         if witness_pub != self._pub:
             raise CasfError("manifest witness key does not match this witness")
         log_pub = crypto.b64url_decode(log_key_value)
+        crypto.load_public_key(log_pub)
         if crypto.key_id(log_pub) != body["log_key_id"]:
             raise CasfError("manifest log key id does not match its key")
         status_values: tuple[int, str] | None = None
@@ -157,6 +168,7 @@ class Witness:
         con = self._db.connection
         try:
             con.execute("BEGIN IMMEDIATE")
+            self._validate_predecessor(manifest_envelope, predecessor_evidence)
             con.execute("INSERT INTO manifests VALUES (?, ?, ?)",
                         (log_id, manifest_hash,
                          canonicalize(manifest_envelope)))
@@ -173,7 +185,57 @@ class Witness:
         except sqlite3.IntegrityError as e:
             con.rollback()
             raise CasfError("log already registered") from e
+        except BaseException:
+            con.rollback()
+            raise
         return log_id
+
+    def _validate_predecessor(self, manifest: JsonObject,
+                              evidence: tuple[JsonObject, JsonObject, JsonObject] | None) -> None:
+        body = manifest["body"]
+        assert isinstance(body, dict)
+        predecessor = body["predecessor"]
+        if predecessor is None:
+            if evidence is not None:
+                raise SchemaError("initial manifests must not supply predecessor evidence")
+            return
+        assert isinstance(predecessor, dict)
+        if evidence is None:
+            row = self._db.connection.execute(
+                "SELECT envelope FROM manifests WHERE log_id=?", (predecessor["log_id"],)
+            ).fetchone()
+            if row is None:
+                raise CasfError("predecessor manifest and final evidence are required")
+            old_manifest = parse(bytes(row[0]))
+            if not isinstance(old_manifest, dict):
+                raise SchemaError("stored predecessor manifest is invalid")
+            digest = predecessor["final_checkpoint_hash"]
+            assert isinstance(digest, str)
+            checkpoint, receipt = self._receipt_locked(digest)
+        else:
+            old_manifest, checkpoint, receipt = evidence
+        old = Manifest(old_manifest)
+        old_body = old.body
+        if (old.log_id != predecessor["log_id"] or old.digest != predecessor["manifest_hash"]
+                or old.log_id == body["log_id"]):
+            raise CasfError("predecessor manifest identity does not match the epoch link")
+        issuer = old_body["issuer_id"]
+        assert isinstance(issuer, str)
+        authority = self._authority_keys.get(issuer)
+        if authority is None or crypto.key_id(authority) != issuer:
+            raise CasfError("predecessor authority is not independently provisioned")
+        signature = old_manifest["signature"]
+        assert isinstance(signature, str)
+        crypto.verify_manifest(authority, old_body, signature)
+        log_value, witness_value = old_body["log_public_key"], old_body["witness_public_key"]
+        assert isinstance(log_value, str) and isinstance(witness_value, str)
+        log_key, witness_key = crypto.b64url_decode(log_value), crypto.b64url_decode(witness_value)
+        crypto.load_public_key(log_key)
+        crypto.load_public_key(witness_key)
+        if (crypto.key_id(log_key) != old_body["log_key_id"]
+                or crypto.key_id(witness_key) != old_body["witness_id"]):
+            raise CasfError("predecessor public key binding is invalid")
+        verify_predecessor(manifest, checkpoint, receipt, log_key, witness_key)
 
     def install_status(self, log_id: str,
                        status_envelope: JsonObject) -> bool:
