@@ -30,6 +30,9 @@ def check_metadata(data, project):
                          "License-Expression": project["license"]}.items():
         if metadata.get_all(field) != [value]:
             raise ValueError(f"package metadata mismatch: {field}")
+    urls = {f"{name}, {url}" for name, url in project.get("urls", {}).items()}
+    if set(metadata.get_all("Project-URL", [])) != urls:
+        raise ValueError("package project URLs mismatch")
     if metadata.get_all("License-File") != ["LICENSE"]:
         raise ValueError("package license declaration mismatch")
     if set(metadata.get_all("Provides-Extra", [])) != set(project["optional-dependencies"]):
