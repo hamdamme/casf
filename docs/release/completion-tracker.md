@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 49 is merged into main at `4d89e764050455d8d0fe289bd6bb27710ec3b3bb`. The validation batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 50 is merged into main at `b3cf12be89455f5515a8ad001295086c91527342`. The research refresh starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phases 1–2 and Sessions 1–7 complete. Phase 3, Session 8 is awaiting review of the supported validation matrix and consolidated evidence.
+**Current position:** Phases 1–3 and Sessions 1–8 complete. Phase 4, Session 9 is awaiting review of the affected research reruns and evidence reconciliation.
 
-**Progress:** 15/28 tasks complete; 13 remaining. 7/14 sessions complete; 7 remaining. 2/6 phases complete; 4 remaining, including the current phase.
+**Progress:** 16/28 tasks complete; 12 remaining. 8/14 sessions complete; 6 remaining. 3/6 phases complete; 3 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -29,9 +29,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Complete |
 | 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Complete |
 | 3 | 8 — Crashes and full validation | F15 | Exercise process crashes, concurrency, interrupted submissions and recovery | Complete |
-| 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Awaiting review |
-| 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Pending |
-| 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Pending |
+| 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
+| 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Awaiting review |
+| 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Awaiting review |
 | 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | In progress |
 | 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Pending |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Pending |
@@ -51,15 +51,14 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 49 is merged. Parent-controlled process crashes, competing writers/witnesses, retained state and interrupted HTTP submission coverage have been accepted, completing F15.
-- The validation workflow now covers 12 Ubuntu/macOS configurations: Python 3.12–3.14 with locked and minimum direct dependencies. Existing Ubuntu check names are preserved.
-- Each job retains runtime/source/import inventories, pytest XML and logs, and parser campaign evidence. Import guards reject stale or incomplete installed CASF files. Checkout/setup actions use reviewed Node 24 pins.
-- Local validation: 1187 tests, lint, typing, source/wheel builds, base/witness smoke checks and public verification. Exact hosted results and environment inventories belong to the validation PR and its recorded source revision.
-- The current checklist and requirement guide replace stale implementation status while preserving dated measurements and prior artifact decisions. No protocol, runtime implementation or storage-format change is included.
-- Remaining acceptance: review F16 against all 12 job results and retained evidence. This does not approve final artifacts or establish exhaustive specification conformance, physical power-loss durability or production readiness.
-- Remaining: 13 tasks, 7 sessions and 4 phases, including F16 awaiting review. Accepting this batch completes Session 8 and Phase 3, leaving 12 tasks, 6 sessions and 3 phases.
-- User action: review the validation draft PR and its checks. Nothing is merged or released by this work.
-- Next task after acceptance: Phase 4, Session 9 — rerun affected research experiments in new output locations and reconcile current versus historical evidence (F17–F18).
+- PR 50 is merged. Its twelve supported configurations and consolidated evidence have been accepted, completing F16, Session 8 and Phase 3.
+- F17: recorded a plan before collection, protected existing benchmark outputs, and reran ten detection cases, ten H1 trials, twenty local performance runs, twenty H3 runs and RQ4 counts in new locations. Measurement source and import identity are pinned separately from result assembly.
+- F18: added a dated reconciliation and reviewed public subset. H1 still returns INCONCLUSIVE without the retained newer pin; this remains an expectation mismatch. All 193 protected historical files are unchanged and 525 H3 raw checksums were verified. Historical WAN/Linux/preprint values remain historical.
+- Local validation: 47 focused harness tests, the complete 1191-test suite, lint and typing passed. Hosted results belong to the proposed PR revision; all twelve jobs must pass before merge readiness is claimed.
+- Remaining acceptance: review F17–F18 against the bounded rerun scope and explicit omissions. These studies do not measure independent witness administration, default verified startup, automatic worker performance or the full proposed workload matrix.
+- Remaining: 12 tasks, 6 sessions and 3 phases, including F17–F18 awaiting review. Accepting this batch completes Session 9, leaving 10 tasks, 5 sessions and 3 phases.
+- User action: review the research draft PR and its checks. Nothing is merged or released by this work.
+- Next task after acceptance: Phase 4, Session 10 — validate documentation/demo workflows and review critical changes (F19–F20).
 
 ## Evidence
 
@@ -69,6 +68,7 @@ After every completed task, report: task ID and changes; checks actually run and
 - [Generated inputs and parser fuzzing](../adversarial-testing.md)
 - [Process crash and concurrency matrix](../process-crash-testing.md)
 - [Supported validation matrix and evidence](validation-matrix.md)
+- [Current research measurements and reconciliation](../../research/current-evidence-2026-11-10.md)
 - [Bundle and incremental verification](../verifier-api.md)
 - [Typed log operations and result boundaries](../log-api.md)
 - [Typed append requests and results](../append-api.md)

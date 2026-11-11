@@ -22,7 +22,7 @@ prove the correctness of every assertion.
 | T15 | Export snapshots, restore, malformed bundles, missing WAL and late stream errors. |
 | T16 and T17 | Input and work budgets, bounded streaming state and selected secret diagnostic checks. |
 | T18 | Expected unwitnessed tail nondetection and explicit suffix reporting. |
-| T19 | Repeatable small manifest procedure and captured environment metadata. Historical full experiments remain separate evidence. |
+| T19 | Repeatable small manifest procedure, output-preservation regressions and captured source/import metadata. The [local follow-up](../../research/current-evidence-2026-11-10.md) separates current measurements from historical full experiments. |
 | T20 to T22 | Stolen key boundaries, retained and isolated witness rollback cases, signed equivocation and receipt retry after commit. |
 
 The map supplies exact Python node identifiers. These are coverage statements,

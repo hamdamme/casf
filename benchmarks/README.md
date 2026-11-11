@@ -9,6 +9,13 @@ used for each run. This setup does not change the recorded environments or
 results of earlier experiments. Choose a new output directory for each new
 experiment to preserve existing evidence.
 
+The [current implementation follow-up](results/current-evidence-2026-11-10/README.md)
+records a separate local rerun with source/import provenance and explicit
+historical comparisons. The manifest and detection runners refuse existing
+output directories; the configuration runner refuses existing row files.
+An incomplete H3 run retains its evidence and makes the experiment exit with
+failure. Always inspect raw outcomes as well as process exit status.
+
 Layout:
 
 - `workload.py` — deterministic seeded event generator. Pads each
@@ -35,12 +42,12 @@ Layout:
 Run the local subset:
 
 ```
-python -m benchmarks.run_manifest benchmarks/manifest.v1.json
+PYTHONPATH=src .venv/bin/python -m benchmarks.run_manifest benchmarks/manifest.v1.json /tmp/casf-local-new-run
 ```
 
-An optional second argument sets the output directory, used when a
-second machine replicates the procedure without overwriting
-committed results (T19).
+The second argument sets a new output directory. Choose an unused path for each
+run, including replication on a second machine (T19). The default historical
+output directory already exists in a checkout and must not be reused.
 
 The Ubuntu run sheet is linux-matrix.md; its manifest includes one
 configuration with the witness over loopback HTTP behind a 25 ms

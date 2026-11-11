@@ -457,18 +457,21 @@
       "remaining_review": ""
     },
     "T19": {
-      "assertion_scope": "A repeated small manifest preserves procedure and records environment metadata.",
+      "assertion_scope": "A repeated small manifest preserves procedure, protects existing results and records source/import metadata; incomplete outage experiments retain evidence and return failure.",
       "nodeids": [
         "tests/unit/test_benchmark.py::test_manifest_rerun_reproduces_procedure",
         "tests/unit/test_benchmark.py::test_runner_smoke_produces_raw_rows",
         "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir",
+        "tests/unit/test_benchmark.py::test_experiment_preserves_existing_output",
+        "tests/unit/test_benchmark.py::test_config_checks_all_output_paths_before_running",
+        "tests/test_h3_witness_outage.py::test_incomplete_experiment_preserves_evidence_and_returns_failure",
         "tests/unit/test_validation_environment.py::test_inventory_distinguishes_source_and_matching_wheel",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wrong_import_location",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_stale_or_incomplete_wheel",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wheel_outside_selected_environment",
         "tests/unit/test_validation_environment.py::test_inventory_records_runtime_without_unrelated_environment"
       ],
-      "remaining_review": "The maintainer accepted the historical benchmark scope on 2026-10-28 in docs/release/phase3-closeout-2026-10-28.md. Those recorded Linux and wide area results apply only to their original source and environments, not the current candidate; no new candidate performance is claimed."
+      "remaining_review": "The historical scope accepted on 2026-10-28 remains unchanged. research/current-evidence-2026-11-10.md records a bounded local refresh at its measurement revision. Linux/WAN performance remains historical; the full proposed matrix, independent witness administration, default verified startup and automatic worker performance remain unmeasured."
     },
     "T20": {
       "assertion_scope": "A stolen key cannot hide a prefix rewrite from an anchor but can sign a false suffix.",
