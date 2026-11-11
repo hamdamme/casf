@@ -1,12 +1,19 @@
 # CASF completion tracker
 
-Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
+Updated 11 November 2026. Target: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 53 is merged into main at `7af8d93e182868e96f76ab7cef72a23143e0f1d7`. Release-evidence preparation starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
+`ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
+[0.1.0rc2 is published](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
+The original audit and release-preparation records remain historical.
 
-**Current position:** Phases 1–4 and Sessions 1–11 complete. Phase 5, Session 12 is awaiting review of advisories, licensing, release notes and the approval proposal. Additional Linux/cloud evaluation is deferred by the maintainer; Ubuntu CI continues.
+**Current position:** All six phases and fourteen sessions are delivered for the
+agreed experimental scope. Final handoff documentation is submitted through a PR;
+merging that PR remains repository administration, not unperformed release validation.
+No merge is performed as part of this closeout.
 
-**Progress:** 22/28 tasks complete; 6 remaining. 11/14 sessions complete; 3 remaining. 4/6 phases complete; 2 remaining, including the current phase.
+**Progress:** 28/28 tasks complete; 0 remaining. 14/14 sessions complete;
+0 remaining. 6/6 phases complete; 0 remaining within this completion plan.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -36,12 +43,12 @@ These counts describe this completion plan, not the proportion of all historical
 | 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
 | 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
-| 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Awaiting review |
-| 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Awaiting review |
-| 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Pending |
-| 6 | 13 — Publication | F26 | Verify public downloads and installation | Pending |
-| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Pending |
-| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Pending |
+| 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Complete |
+| 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Complete |
+| 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Complete |
+| 6 | 13 — Publication | F26 | Verify public downloads and installation | Complete |
+| 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Complete |
+| 6 | 14 — Final handoff | F28 | Verify source/release consistency and close tracker with evidence | Complete |
 
 ## Acceptance and reporting
 
@@ -51,15 +58,24 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 53 is merged. Candidate build and clean-install evidence are accepted, completing F21–F22 and Session 11.
-- F23: all 25 exact external package/tool versions were queried through OSV and PyPI; no listed advisories or yanked files were returned. License/notice files and both exact candidate archives were inspected. Native findings are assessed separately with explicit applicability and deployment limits; green tests do not certify host libraries.
-- F24: prepared release notes, support guidance, exact asset hashes, a checksum file and a concrete GitHub prerelease proposal. The proposed tag identifies the original build commit; later review commits are not misrepresented as the artifact source. No PyPI publication is proposed.
-- Validation: the unchanged installed wheel passed 1199 tests and the 21-check demo on an isolated Python 3.12.16 runtime. All 39 imports matched source. Lint, typing and the unchanged dependency lock passed. CI now checks setup-python's latest available versions across all twelve configurations; its macOS catalog still trails upstream for some minors. Hosted compatibility checks do not certify a patched runtime.
-- Evidence: [dependency/native review](dependency-review-0.1.0rc2.md), [release notes](notes-0.1.0rc2.md), [exact proposal](approval-0.1.0rc2.md), [manifest](release-manifest-0.1.0rc2.json), and [checksums](SHA256SUMS-0.1.0rc2.txt). Reporting is enabled; no new private report was sent.
-- Remaining acceptance: review F23–F24 and final CI, including the scoped native-library dispositions. Publication needs a fresh preflight and separate explicit approval of the exact files, notes, tag target and destination. Additional Linux/cloud deployment evaluation remains deferred.
-- Remaining: 6 tasks, 3 sessions and 2 phases, including F23–F24 awaiting review. Accepting this batch completes Session 12 and Phase 5, leaving 4 tasks, 2 sessions and 1 phase.
-- User action: review the release-evidence draft PR and its checks. Merging it does not authorize publication.
-- Next task after acceptance: Phase 6, Session 13 — confirm the exact publication proposal, obtain explicit approval, publish only if approved, then verify public downloads and installation (F25–F26).
+- F23–F24: advisory, license, native-component and release-preparation review accepted in PR 54.
+- F25–F26: the explicitly approved GitHub prerelease was published at the exact build
+  commit with the retained wheel, source archive and checksum file. Public downloads
+  on Mac and Linux matched all three hashes; fresh public wheel/source installations
+  passed CLI, import, witness, public-verification and 21-check demonstrations. No PyPI upload.
+- F27: [operating handoff](../operating-handoff.md) delivers installation/demo entry points,
+  trust and state responsibilities, monitoring, backup/recovery, maintenance and support limits.
+- F28: [publication evidence](publication-0.1.0rc2.md) and its machine-readable record
+  identify the tag, assets, reviewed CI and Linux results. All 46 packaged source inputs
+  match the build revision and accepted review checkout; all 39 imported runtime files match.
+- Linux laptop validation is complete for the recorded Ubuntu/Python environment:
+  1199 source tests and 1199 retained-wheel tests, zero failures/errors/skips,
+  6075 parser cases and three 21-check demonstrations. This is separate from historical research.
+- Remaining implementation/release tasks in this plan: none. Review and merge the final
+  documentation PR to make this handoff the default-branch reference.
+- Ongoing work: maintain dependencies and reporting, protect retained state and backups,
+  and scope any persistent witness/HTTPS/cloud deployment separately. Production 1.0,
+  independent audit and new WAN measurements are not claimed. H1 remains unmet.
 
 ## Evidence
 
