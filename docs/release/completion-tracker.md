@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 51 is merged into main at `6441e4569e8c420f5e8a71e55950af88ce46f336`. The workflow and review batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 52 is merged into main at `79fce315a3b0ec06f2293643f01ea66a62b79136`. Candidate preparation starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phases 1–3 and Sessions 1–9 complete. Phase 4, Session 10 is awaiting review of the documented workflows and critical-change review. Additional Linux/cloud evaluation is deferred by the maintainer; Ubuntu CI continues.
+**Current position:** Phases 1–4 and Sessions 1–10 complete. Phase 5, Session 11 is awaiting review of the candidate builds and clean-install verification. Additional Linux/cloud evaluation is deferred by the maintainer; Ubuntu CI continues.
 
-**Progress:** 18/28 tasks complete; 10 remaining. 9/14 sessions complete; 5 remaining. 3/6 phases complete; 3 remaining, including the current phase.
+**Progress:** 20/28 tasks complete; 8 remaining. 10/14 sessions complete; 4 remaining. 4/6 phases complete; 2 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -32,10 +32,10 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Complete |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
-| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Awaiting review |
-| 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Awaiting review |
-| 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Pending |
-| 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Pending |
+| 4 | 10 — Documentation and review | F19 | Verify user workflows/demo; retire obsolete runner and clarify historical material after review | Complete |
+| 4 | 10 — Documentation and review | F20 | Review critical changes and resolve release-blocking findings | Complete |
+| 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Awaiting review |
+| 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Awaiting review |
 | 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Pending |
 | 5 | 12 — Release evidence | F24 | Prepare release notes, hashes, support details and final checklist | Pending |
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Pending |
@@ -51,15 +51,15 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 51 is merged. The bounded local research refresh and historical/current reconciliation have been accepted, completing F17–F18 and Session 9.
-- F19: added a runnable 21-check synthetic workflow; clarified installed versus source environments, key provisioning and schema migration; corrected the Linux/cloud run sheets. The obsolete alternate runner was already removed in PR 30.
-- F20: reviewed selected startup, retained-state, recovery, worker, storage, export and verification paths. Six regressions reproduced a legacy remote benchmark URL downgrade; unsupported URLs now fail before submission. The [review record](workflow-review-2026-11-10.md) identifies the inspected paths, fixes and limits.
-- Local validation: 1199 tests, six traceability checks, lint across runtime/tests/benchmarks/examples, strict typing and lock check passed. The clean-source demo and first/repeated offline CLI verification passed. All twelve hosted configurations must pass for the PR revision.
-- Preservation: 260 research/result/historical-document files are unchanged. No private real-document rerun, cloud provisioning or additional Linux/WAN benchmark is claimed. The maintainer deferred that separate environment evaluation.
-- Remaining acceptance: review F19–F20 and CI. This review is scoped implementation review, not an independent security audit. Exact candidate artifacts, fresh installation acceptance and final advisory/license review remain separate.
-- Remaining: 10 tasks, 5 sessions and 3 phases, including F19–F20 awaiting review. Accepting this batch completes Session 10 and Phase 4, leaving 8 tasks, 4 sessions and 2 phases.
-- User action: review the workflow draft PR and its checks. Nothing is merged or released by this work.
-- Next task after acceptance: Phase 5, Session 11 — prepare identified candidate packages and verify clean installations (F21–F22).
+- PR 52 is merged. The workflow and scoped implementation review are accepted, completing F19–F20, Session 10 and Phase 4.
+- F21: prepared version 0.1.0rc2, built an exact wheel and source archive from clean commit `e92194fe0fa6eb37c2ff9016c381b8e734008880`, inspected their contents and metadata, and recorded their hashes. Both source-selected and installed developer imports matched all 39 runtime files.
+- F22: passed 32 checks across fresh base-wheel, witness-wheel and source-archive environments. Both witness-capable installations ran the 21-check synthetic workflow. Public-only verification, CLI entry points, optional dependency behavior and installed import identities passed.
+- Local validation: 1199 tests, lint, strict typing and lock consistency passed. Six damaged package copies were rejected. CI now checks package contents and the installed demo in all twelve configurations; those jobs must pass for the proposed PR revision.
+- Evidence: [candidate record](candidate-0.1.0rc2.md), [file hashes and installation results](candidate-0.1.0rc2.json), and [build procedure](candidate-build.md). CI validation files are distinct from the retained local candidate files.
+- Remaining acceptance: review F21–F22 and CI. Final advisories, licensing, package acceptance, notes, support details and publication approval remain open. Additional Linux/cloud deployment evaluation is deferred.
+- Remaining: 8 tasks, 4 sessions and 2 phases, including F21–F22 awaiting review. Accepting this batch completes Session 11, leaving 6 tasks, 3 sessions and 2 phases.
+- User action: review the candidate preparation draft PR and its checks. No release tag or publication was created.
+- Next task after acceptance: Phase 5, Session 12 — refresh advisory/license evidence and prepare final release notes, hashes, support details and checklist (F23–F24).
 
 ## Evidence
 

@@ -53,9 +53,8 @@ unset PYTHONPATH PYTHONHOME
 "$CASF_CANDIDATE_ROOT/base/bin/python" -I "$CASF_CHECKOUT/tests/wheel_smoke.py"
 ```
 
-Repeat in a new environment using `witness.txt` and the same wheel. Run
-tools and test scripts by absolute path through `CASF_CHECKOUT` from this directory.
-Run
+Repeat in a new environment using `witness.txt` and the same wheel. Use absolute tool and test-script paths through `CASF_CHECKOUT` from this
+directory. Run
 `tests/wheel_smoke.py --witness` and `examples/verified_workflow.py NEW_DIRECTORY`
 with that environment's `python -I`. The workflow must report 21 checks and the
 expected tamper/unavailable-witness outcomes. Run `tests/public_fixture.py` and
