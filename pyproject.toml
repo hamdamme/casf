@@ -14,6 +14,11 @@ dependencies = [
     "cryptography>=41.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/hamdamme/casf"
+Documentation = "https://github.com/hamdamme/casf/blob/main/docs/current-reference.md"
+Issues = "https://github.com/hamdamme/casf/issues"
+
 [project.optional-dependencies]
 witness = ["uvicorn==0.54.0", "h11>=0.16.0"]
 dev = [

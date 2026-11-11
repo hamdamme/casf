@@ -21,6 +21,13 @@ first, protocol rule second, implementation third.
 
 ## Documentation consistency
 
+- Run `.venv/bin/python tests/repository_check.py` before submitting changes.
+  It reads every tracked file, checks local Markdown links including headings,
+  parses structured formats, restores SQL fixtures and checks retained hashes.
+  Stage new intended files before running it locally. CI checks the committed tree.
+  A structural pass is not a semantic review: also reconcile current claims,
+  historical status and any affected examples against the implementation.
+
 - Keep active installation, API and status guidance linked from
   `docs/current-reference.md`. Distinguish intended specification behavior
   from verified implementation behavior.

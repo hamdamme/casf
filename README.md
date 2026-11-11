@@ -11,11 +11,15 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** experimental release candidate, not yet published
+**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** [published experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
-The protocol specification remains a design review document. The project has not undergone an independent security audit or a public release, and it should not be treated as production ready security infrastructure.
+The protocol specification remains a design review document. The project has not undergone an independent security audit and should not be treated as production ready security infrastructure.
+
+Start with the [operating and maintenance handoff](docs/operating-handoff.md). The
+[publication record](docs/release/publication-0.1.0rc2.md) identifies the exact release
+files and verified downloads. No PyPI release has been published.
 
 ## Capabilities
 
@@ -42,7 +46,7 @@ PYTHONPATH=src .venv/bin/casf --help
 PYTHONPATH=src .venv/bin/python -m pytest tests/
 ```
 
-This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The earlier operation and verification manuals are preserved as historical design context; their examples describe the superseded prototype.
+This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The [historical archive](docs/historical/README.md) preserves the original Word document and prototype manuals; their examples are not current instructions.
 
 For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc2` candidate is not published to a package index. Do not install it with a package index command yet.
 
@@ -98,6 +102,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | `research/` | Current research guide, historical protocol, study methods and preprint |
 | `docs/specification/` | Governing specification draft |
 | `docs/adr/` | Recorded architectural decisions |
+| `docs/historical/` | Archived original Word document and prototype index |
 | `docs/01-*.md` through `docs/05-*.md` | Earlier design documents, not the governing protocol |
 
 The active implementation is under `src/casf/`. The earlier prototype remains accessible in the repository's Git history.
@@ -116,4 +121,6 @@ Do not describe CASF as tamper proof, formally verified, independently audited, 
 
 ## License
 
-Licensed under the [Apache License 2.0](LICENSE).
+The software is licensed under the [Apache License 2.0](LICENSE). The
+[research manuscript](research/preprint/README.md) has a separate publication
+license decision pending; no manuscript deposit or DOI is claimed.

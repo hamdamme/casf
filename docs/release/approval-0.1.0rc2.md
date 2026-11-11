@@ -1,5 +1,9 @@
 # Proposed 0.1.0rc2 publication
 
+This is a preparation-time record. The [publication record](publication-0.1.0rc2.md)
+now establishes the published status; original approval language and artifact
+evidence below describe their recorded stage, not pending publication work.
+
 Prepared for review only. Merging the release-evidence PR does not authorize
 tag creation, asset upload, a GitHub release or package-index publication.
 

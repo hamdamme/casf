@@ -1,5 +1,10 @@
 # Immutable append requests and explicit results
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §§11, 17 and 19 require copying caller input before locking and returning
 an explicit committed record and witness state. The existing `Writer.append`
 retains references to payload and attribute dictionaries after calculating the

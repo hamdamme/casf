@@ -1,5 +1,10 @@
 # Explicit writer reconciliation
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 Date: 2026-11-10. Scope: SPEC Sections 14, 17, 18 and 19.
 
 ## API and trust boundary

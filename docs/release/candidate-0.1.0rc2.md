@@ -1,5 +1,9 @@
 # Candidate 0.1.0rc2 build and installation record
 
+This is a preparation-time record. The [publication record](publication-0.1.0rc2.md)
+now establishes the published status; original approval language and artifact
+evidence below describe their recorded stage, not pending publication work.
+
 The previous workflow review was accepted in PR 52, merged as
 `79fce315a3b0ec06f2293643f01ea66a62b79136`. The local candidate below was built
 from clean committed source `e92194fe0fa6eb37c2ff9016c381b8e734008880`, exported

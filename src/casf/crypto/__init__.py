@@ -9,8 +9,8 @@ Rules enforced here:
     64 lowercase hex; binary wire fields are unpadded base64url.
   - Key IDs are digests of raw public keys under the key-id domain.
 
-Verification is public-key-only: no private key material is accepted
-by any function in this module.
+Verification functions accept public keys only. Signing helpers separately
+require the corresponding private key; neither kind persists key material.
 """
 
 import base64

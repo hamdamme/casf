@@ -1,5 +1,10 @@
 # Trusted checkpoint starts and complete bundle verification
 
+This decision records its implementation-time context. Statements about separate
+work refer to that stage; use the [current reference](../current-reference.md)
+and [completion tracker](../release/completion-tracker.md) for present behavior
+and acceptance status.
+
 SPEC §§15 and 19 require incremental verification from a trusted checkpoint
 and a public verify-bundle operation. The current verifier always starts at
 genesis; callers of open_bundle must remember to consume records to EOF.

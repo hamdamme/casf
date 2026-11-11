@@ -1,5 +1,9 @@
 # CASF 0.1.0rc2
 
+This is a preparation-time record. The [publication record](publication-0.1.0rc2.md)
+now establishes the published status; original approval language and artifact
+evidence below describe their recorded stage, not pending publication work.
+
 Experimental release candidate for research and evaluation. These are prepared
 release notes; the candidate is not published or approved for publication.
 

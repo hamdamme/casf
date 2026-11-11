@@ -1,9 +1,10 @@
 # Linux research reproduction
 
-The additional Linux machine evaluation is deferred. Routine Ubuntu CI remains
-enabled; it checks correctness and installed packages, not representative
-deployment performance. No new Linux benchmark was run for this documentation
-update.
+The Linux laptop installation and correctness checks are recorded in the
+[publication evidence](../docs/release/publication-0.1.0rc2.md). New Linux
+performance measurements remain deferred. Routine Ubuntu CI checks correctness
+and installed packages; neither it nor the laptop checks establish representative
+deployment performance. This guide describes a future research rerun.
 
 The [original local replication](results/local-subset-v1-linux/report.md) and
 [Linux matrix](results/linux-matrix-v2/report.md) retain their recorded revisions,

@@ -1,7 +1,9 @@
 # Current CASF implementation reference
 
-This guide follows the implementation, validation and research accepted through PR 53 at
-`7af8d93e182868e96f76ab7cef72a23143e0f1d7`. The separate
+The experimental 0.1.0rc2 GitHub prerelease is published. The
+[publication record](release/publication-0.1.0rc2.md) distinguishes the build commit,
+accepted review revision, Linux validation and public-installation evidence.
+Start with the [operating handoff](operating-handoff.md). The separate
 [research follow-up](../research/current-evidence-2026-11-10.md) identifies its
 measurement revision and preserves the historical results.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
@@ -20,7 +22,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](specification/CASF_SPEC_001.md) |
 | Research questions, outcomes and source records | [Research guide](../research/README.md) |
 | Exact candidate files and installation checks | [Candidate record](release/candidate-0.1.0rc2.md) and [build procedure](release/candidate-build.md) |
-| Prepared release and advisory scope | [Release notes](release/notes-0.1.0rc2.md), [dependency review](release/dependency-review-0.1.0rc2.md) and [approval proposal](release/approval-0.1.0rc2.md) |
+| Release preparation and advisory scope | [Release notes](release/notes-0.1.0rc2.md), [dependency review](release/dependency-review-0.1.0rc2.md) and [approval proposal](release/approval-0.1.0rc2.md) |
 | Candidate state and validation | [Release checklist](release/checklist-v0.1.md) |
 | Current workflow and scoped code review | [Review record](release/workflow-review-2026-11-10.md) |
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
@@ -35,9 +37,12 @@ things. Validation records must name the exact source or artifact bytes.
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
 | Supported platform checks and retained results | [Validation matrix](release/validation-matrix.md) |
 
+The [repository review](release/repository-review.md) accounts for tracked files
+and records retained historical material, corrections and verification limits.
+
 The specification states intended requirements, not proof of complete
 implementation. The source and tests establish implemented behavior. The
-numbered documents `01` through `05` and the original technical Word document
+numbered documents `01` through `05` and the [original technical Word document](historical/README.md)
 describe the earlier prototype. Their HMAC, encryption and `auditfw` examples
 are historical, not installation or API instructions for the current package.
 Dated release records describe only their recorded revisions and artifacts.

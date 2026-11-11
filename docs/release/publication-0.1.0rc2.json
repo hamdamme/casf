@@ -1,0 +1,243 @@
+{
+  "accepted_review_commit": "ecc47630c1340ac118dc50f2989cc51c37171080",
+  "assets": [
+    {
+      "name": "casf-0.1.0rc2-py3-none-any.whl",
+      "sha256": "c38dcfedfc7173db826177a96dc0d442e90f52bb04447c917395420e9233cec2",
+      "size": 105223
+    },
+    {
+      "name": "casf-0.1.0rc2.tar.gz",
+      "sha256": "62f9f829b43de8e4987aaed3393d7427bf4b137b197dc34fea4800c325dc16b1",
+      "size": 141119
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "repository_file": "docs/release/SHA256SUMS-0.1.0rc2.txt",
+      "sha256": "c5a5d7fc7df039cabf4f96359fc5dd68f1cf67009dfb524ed4c048eea30ec1e3",
+      "size": 184
+    }
+  ],
+  "ci": {
+    "demo_checks_per_job": 21,
+    "head": "823948ee72bd36d3411aa5170c84a619ad582892",
+    "jobs_passed": 12,
+    "run": "https://github.com/hamdamme/casf/actions/runs/42952534486",
+    "tests_per_job": 1199
+  },
+  "linux_validation": {
+    "demos": {
+      "candidate-demo": {
+        "checks": 21,
+        "private_state_retained": false,
+        "status": "complete"
+      },
+      "sdist-demo": {
+        "checks": 21,
+        "private_state_retained": false,
+        "status": "complete"
+      },
+      "source-demo": {
+        "checks": 21,
+        "private_state_retained": false,
+        "status": "complete"
+      }
+    },
+    "limitations": [
+      "One Ubuntu x86_64 laptop and its recorded Python 3.14.4 runtime.",
+      "Native version strings and cached apt metadata do not establish security patch coverage.",
+      "Temporary local witness tests do not validate a persistent cross-host HTTPS deployment.",
+      "No physical power-loss experiment, independent audit or new research measurement.",
+      "Laptop-built packages are separate from retained candidate hashes."
+    ],
+    "native_components": {
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "python_tls": "OpenSSL 3.5.5 27 Jan 2026",
+      "sqlite": "3.46.1"
+    },
+    "parser_cases": 6075,
+    "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+    "retained_wheel_tests": {
+      "errors": 0,
+      "failures": 0,
+      "seconds": 78.631,
+      "skipped": 0,
+      "tests": 1199
+    },
+    "source_commit": "7af8d93e182868e96f76ab7cef72a23143e0f1d7",
+    "source_tests": {
+      "errors": 0,
+      "failures": 0,
+      "seconds": 78.885,
+      "skipped": 0,
+      "tests": 1199
+    },
+    "ubuntu_packages": [
+      "libsqlite3-0:amd64\t3.46.1-9ubuntu0.3",
+      "libssl3t64:amd64\t3.5.5-1ubuntu3.7",
+      "python3.14\t3.14.4-1ubuntu0.2"
+    ]
+  },
+  "packaged_inputs_identical_to_build_and_review": [
+    "LICENSE",
+    "MANIFEST.in",
+    "README.md",
+    "examples/__init__.py",
+    "examples/verified_workflow.py",
+    "pyproject.toml",
+    "src/casf/__init__.py",
+    "src/casf/api.py",
+    "src/casf/bundle.py",
+    "src/casf/canonical/__init__.py",
+    "src/casf/canonical/jcs.py",
+    "src/casf/canonical/limits.py",
+    "src/casf/cli/__init__.py",
+    "src/casf/crypto/__init__.py",
+    "src/casf/errors.py",
+    "src/casf/filesystem.py",
+    "src/casf/keys.py",
+    "src/casf/lifecycle.py",
+    "src/casf/model/__init__.py",
+    "src/casf/model/api.py",
+    "src/casf/model/operations.py",
+    "src/casf/model/schema.py",
+    "src/casf/online.py",
+    "src/casf/py.typed",
+    "src/casf/storage/__init__.py",
+    "src/casf/storage/legacy.py",
+    "src/casf/storage/schema.py",
+    "src/casf/storage/versioning.py",
+    "src/casf/transport.py",
+    "src/casf/trust/__init__.py",
+    "src/casf/trust/state.py",
+    "src/casf/types.py",
+    "src/casf/verifier/__init__.py",
+    "src/casf/verifier/anchor.py",
+    "src/casf/verifier/bundle.py",
+    "src/casf/verifier/report.py",
+    "src/casf/witness/__init__.py",
+    "src/casf/witness/http.py",
+    "src/casf/witness/protocol.py",
+    "src/casf/witness/server.py",
+    "src/casf/writer/__init__.py",
+    "src/casf/writer/recovery.py",
+    "src/casf/writer/startup.py",
+    "src/casf/writer/validation.py",
+    "src/casf/writer/worker.py",
+    "uv.lock"
+  ],
+  "prerelease": true,
+  "public_downloads_verified_on": [
+    "macOS arm64",
+    "Ubuntu x86_64"
+  ],
+  "public_installations": {
+    "sdist": {
+      "demo_checks": 21,
+      "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+      "public_verification": "{\"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\"], \"result\": \"PASS\", \"trust_status\": \"TRUSTED\", \"verified_through\": 2}\n",
+      "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "runtime_files_sha256": {
+        "__init__.py": "e590eee9a0a379b56fa5e4c7524b1461b594118b5c6c76b925a2fe96fef7a056",
+        "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "canonical/limits.py": "6c6f2c662f5fd09e9958b352e037fe8a497498994ee86758d0ee80a25834c4ad",
+        "cli/__init__.py": "a8a1ea0d11fc70048b02be91d99cd295de2090b3636250feb57aeff7cce8c3f5",
+        "crypto/__init__.py": "54c6324646469e7dd61236153a9feea049279445a61ac612843eb45cc7c31bbf",
+        "errors.py": "764f8068e1eb811c9e39f26c6f59dca0d3e21c68e33bc6897398df535925b189",
+        "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "keys.py": "466b9b6e93869d566c02ad843a95228b54ff2c477d22012b6a104a4649d38c70",
+        "lifecycle.py": "19b9dc51c34a1d35e10fc77b1f980a02cde2e11220743d005cfb375c6108f036",
+        "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "model/api.py": "6bf1210859be4de25dfff8d3a0fafc439f6b66dab27acf68603f2ba9cbd25884",
+        "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "model/schema.py": "dd7a1cb9f667188b4588f42d3e514f06e38fc3713e9694b1b0bc770ecd61b331",
+        "online.py": "955ecf73acd7b704ec1083a3e6f6788028001fa1af6b0966cb2695de57ab1a7c",
+        "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "storage/__init__.py": "f6f6ec2ce3f5283b6c69ea64b6d98c7f8dd4819bcea5ea96a6bbb3f7c7167bfd",
+        "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+        "transport.py": "94ba171846b45a724a86bf2ebf914ea748f86a6b619f6f87ca78ad695f975024",
+        "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+        "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "verifier/__init__.py": "6e7d50137dd6810da5ce7a1b5ef3e9b527876960e117ca28ed33c98a36594903",
+        "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "verifier/bundle.py": "d90cc8dbf6eb96a3521b99457eba0200f0a252fd3c56f473dafe46bc7ba321ce",
+        "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "witness/__init__.py": "09da24ed82165dd636b6858b0fe402ffa0ee8b99e88b5727a083d75b1c0c8fc8",
+        "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "writer/__init__.py": "64b1eaba6f79acb411f2823d395fe412ba2b8a2768a0584c5eb44150e93941fb",
+        "writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+        "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+      },
+      "smoke": "Witness wheel request and shutdown passed\n",
+      "source_commit": "7af8d93e182868e96f76ab7cef72a23143e0f1d7",
+      "worktree_clean": true
+    },
+    "wheel": {
+      "demo_checks": 21,
+      "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+      "public_verification": "{\"diagnostic_codes\": [\"STATUS_CURRENTNESS_UNCONFIRMED\"], \"result\": \"PASS\", \"trust_status\": \"TRUSTED\", \"verified_through\": 2}\n",
+      "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "runtime_files_sha256": {
+        "__init__.py": "e590eee9a0a379b56fa5e4c7524b1461b594118b5c6c76b925a2fe96fef7a056",
+        "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "canonical/limits.py": "6c6f2c662f5fd09e9958b352e037fe8a497498994ee86758d0ee80a25834c4ad",
+        "cli/__init__.py": "a8a1ea0d11fc70048b02be91d99cd295de2090b3636250feb57aeff7cce8c3f5",
+        "crypto/__init__.py": "54c6324646469e7dd61236153a9feea049279445a61ac612843eb45cc7c31bbf",
+        "errors.py": "764f8068e1eb811c9e39f26c6f59dca0d3e21c68e33bc6897398df535925b189",
+        "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "keys.py": "466b9b6e93869d566c02ad843a95228b54ff2c477d22012b6a104a4649d38c70",
+        "lifecycle.py": "19b9dc51c34a1d35e10fc77b1f980a02cde2e11220743d005cfb375c6108f036",
+        "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "model/api.py": "6bf1210859be4de25dfff8d3a0fafc439f6b66dab27acf68603f2ba9cbd25884",
+        "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "model/schema.py": "dd7a1cb9f667188b4588f42d3e514f06e38fc3713e9694b1b0bc770ecd61b331",
+        "online.py": "955ecf73acd7b704ec1083a3e6f6788028001fa1af6b0966cb2695de57ab1a7c",
+        "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "storage/__init__.py": "f6f6ec2ce3f5283b6c69ea64b6d98c7f8dd4819bcea5ea96a6bbb3f7c7167bfd",
+        "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+        "transport.py": "94ba171846b45a724a86bf2ebf914ea748f86a6b619f6f87ca78ad695f975024",
+        "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+        "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "verifier/__init__.py": "6e7d50137dd6810da5ce7a1b5ef3e9b527876960e117ca28ed33c98a36594903",
+        "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "verifier/bundle.py": "d90cc8dbf6eb96a3521b99457eba0200f0a252fd3c56f473dafe46bc7ba321ce",
+        "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "witness/__init__.py": "09da24ed82165dd636b6858b0fe402ffa0ee8b99e88b5727a083d75b1c0c8fc8",
+        "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "writer/__init__.py": "64b1eaba6f79acb411f2823d395fe412ba2b8a2768a0584c5eb44150e93941fb",
+        "writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+        "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+      },
+      "smoke": "Witness wheel request and shutdown passed\n",
+      "source_commit": "7af8d93e182868e96f76ab7cef72a23143e0f1d7",
+      "worktree_clean": true
+    }
+  },
+  "publication_approved": true,
+  "published_at": "2026-11-11T16:35:08Z",
+  "pypi_published": false,
+  "release_url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2",
+  "schema_version": 1,
+  "tag": "v0.1.0rc2",
+  "tag_target": "e92194fe0fa6eb37c2ff9016c381b8e734008880"
+}

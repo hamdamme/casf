@@ -4,7 +4,13 @@ All notable changes to this project are documented here.
 Format follows Keep a Changelog; versions follow SemVer after API
 stabilization (SPEC §26).
 
-## [Unreleased — 0.1.0rc2 candidate]
+## [Unreleased]
+
+- Separate historical prototype documentation from current instructions.
+- Reconcile repository status, file dispositions and remaining review work.
+- Add repository, documentation and issue links to package metadata.
+
+## [0.1.0rc2] — 2026-11-11
 
 - Complete verified startup, retained-state reconciliation and authenticated restore.
 - Add durable checkpoint scheduling/retries and explicit storage migration.
@@ -13,13 +19,16 @@ stabilization (SPEC §26).
 - Include a synthetic workflow and locked dependency recipe in source packages.
 - Prepare exact candidate files, installation evidence and release review.
 
-See [candidate release notes](docs/release/notes-0.1.0rc2.md) for changes,
-migration, support and limitations. Publication requires separate approval.
+See the [published release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
+and [publication evidence](docs/release/publication-0.1.0rc2.md) for exact assets,
+installation checks, support and limitations. No PyPI publication was performed.
 
 ## Earlier development entries (historical)
 
 The entries below retain their original test counts and implementation status.
-They describe progress at the time, not the current candidate's open work.
+They describe progress at the time, not the current release's open work.
+The historical prototype tag label below is not available on the remote; use
+the [pinned archive source](https://github.com/hamdamme/casf/tree/ba417691b4a748692d98b799494a5aeefd737129/auditfw).
 
 ### Security
 - Bind witness receipt lookups to the log named in the request URL.

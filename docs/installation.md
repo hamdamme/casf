@@ -1,11 +1,13 @@
 # Install and use CASF
 
-CASF `0.1.0rc2` is an experimental candidate under review and has not been
-published to a package index. The earlier `0.1.0rc1` artifact approval does
-not cover this candidate. Exact files require separate publication approval.
-Do not use `pip install casf` until a release is announced.
+CASF `0.1.0rc2` is published as an experimental
+[GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
+Download the named release assets and verify their [checksums](release/SHA256SUMS-0.1.0rc2.txt).
+No PyPI publication was performed; do not use `pip install casf` to obtain this release.
+See the [publication evidence](release/publication-0.1.0rc2.md) and
+[operating handoff](operating-handoff.md).
 
-## Install from a checked candidate wheel
+## Install from the published wheel
 
 The [validation matrix](release/validation-matrix.md) targets CPython 3.12,
 3.13 and 3.14 on GitHub hosted Ubuntu x86_64 and macOS arm64 runners, with
@@ -29,8 +31,7 @@ source .venv/bin/activate
 The wheel includes the witness server code, but does not install its optional
 HTTP server dependencies unless the `witness` extra is selected. For a checked
 local wheel, install `"./casf-0.1.0rc2-py3-none-any.whl[witness]"` using the
-environment's pip. The filename is illustrative until new artifacts are
-approved. For
+environment's pip. For
 development from a source checkout, the repository's locked setup installs
 the witness and development tools:
 

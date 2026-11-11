@@ -83,7 +83,8 @@ The current implementation and process-crash assertions cover the previously
 open startup, trust, restore, scheduling, storage and public API work. This
 review does not claim exhaustive specification conformance: deployment trust
 provisioning, unavailable newer authority status, witness disaster recovery,
-storage hardware and final release approval remain explicit boundaries.
+storage hardware and approval of any later release remain explicit boundaries.
+The published rc2 approval is recorded in the [publication evidence](publication-0.1.0rc2.md).
 
 ## Evidence and historical record
 

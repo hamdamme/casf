@@ -65,9 +65,10 @@ its checks.
   configurations. Import guards reject stale, incomplete or wrongly located
   CASF packages; each job retains runtime inventories and pytest reports.
 - Several malformed, adversarial and integration cases are covered under
-  `tests/unit`, including release gap regressions. Empty `adversarial`,
-  `integration` and `property` directory scaffolds and the obsolete pytest
-  shim runner were removed. New test categories must contain actual coverage.
+  `tests/unit`, including release gap regressions. Empty `adversarial` and
+  `integration` scaffolds and the obsolete pytest shim runner were removed.
+  `tests/property` now contains executable generated tests, not a placeholder.
+  New test categories must contain actual coverage.
 - The review candidate adds duplicate JSON, negative zero, bounded network
   response and total deadline cases, plus administration and wheel checks.
 
