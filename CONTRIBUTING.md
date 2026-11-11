@@ -8,8 +8,11 @@ welcome but please open an issue before large changes.
 - Preserve casf-v1 bytes, domains, trust rules, and failure semantics.
 - Do not invent cryptography or silently relax validation.
 - Synthetic data only; never commit keys, databases, or real audit data.
-- Every change must state which requirement IDs (R01-R12) it affects
-  and which tests were actually run.
+- Record affected protocol requirements (R01-R12) in the requirement evidence
+  map or review record, with tests actually run. Keep commit subjects and PR
+  descriptions short: explain the behavior change and relevant validation.
+- Keep completion phases, sessions and personal task assignments in the
+  completion tracker, not PR descriptions.
 
 ## Review
 The maintainer reviews every change before merge, whatever its origin.

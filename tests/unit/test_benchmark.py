@@ -255,9 +255,9 @@ def test_remote_runner_rejects_unsupported_urls_before_submission(tmp_path, monk
     monkeypatch.setattr(runner, "_http_submit", unexpected_submitter)
     config = {"witness": "remote", "witness_url": url,
               "witness_token_env": "CASF_BENCH_TOKEN"}
-    with pytest.raises(ValueError, match="remote witness URL"):
-        with runner._witness_stack(tmp_path, config, workload.LOG_ID):
-            pytest.fail("unsupported URL was accepted")
+    with (pytest.raises(ValueError, match="remote witness URL"),
+          runner._witness_stack(tmp_path, config, workload.LOG_ID)):
+        pytest.fail("unsupported URL was accepted")
 
 
 def test_checkpoint_cycle_retries_transient_timeout(tmp_path):

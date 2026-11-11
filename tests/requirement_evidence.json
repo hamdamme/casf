@@ -111,6 +111,7 @@
         "tests/unit/test_incremental_verification.py::test_suffix_matches_full_verification_without_checking_prefix_bodies",
         "tests/unit/test_incremental_verification.py::test_empty_suffix_does_not_claim_prior_bodies_were_checked",
         "tests/unit/test_verify_bundle.py::test_complete_bundle_api_matches_stream_verifier",
+        "tests/unit/test_workflow_demo.py::test_verified_workflow_demo",
         "tests/property/test_verifier_properties.py::test_full_and_incremental_reports_agree_on_generated_suffixes"
       ],
       "remaining_review": ""
@@ -464,6 +465,8 @@
         "tests/unit/test_benchmark.py::test_manifest_cli_honors_output_dir",
         "tests/unit/test_benchmark.py::test_experiment_preserves_existing_output",
         "tests/unit/test_benchmark.py::test_config_checks_all_output_paths_before_running",
+        "tests/unit/test_benchmark.py::test_remote_runner_rejects_unsupported_urls_before_submission",
+        "tests/unit/test_workflow_demo.py::test_demo_preserves_existing_output",
         "tests/test_h3_witness_outage.py::test_incomplete_experiment_preserves_evidence_and_returns_failure",
         "tests/unit/test_validation_environment.py::test_inventory_distinguishes_source_and_matching_wheel",
         "tests/unit/test_validation_environment.py::test_inventory_rejects_wrong_import_location",
