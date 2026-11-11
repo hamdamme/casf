@@ -1,0 +1,24 @@
+{
+  "captured_at_utc": "2026-11-11T01:28:19.382656+00:00",
+  "timing": "Supplementary host metadata captured after measurements.",
+  "cpu": "Apple M1",
+  "logical_cpu_count": 8,
+  "ram_bytes": 17179869184,
+  "storage": {
+    "FilesystemType": "apfs",
+    "FilesystemName": "APFS",
+    "BusProtocol": "Apple Fabric",
+    "SolidState": true,
+    "TotalSize": 245107195904,
+    "APFSContainerSize": 245107195904,
+    "DeviceBlockSize": 4096
+  },
+  "commands": [
+    "sysctl -n machdep.cpu.brand_string",
+    "sysctl -n hw.logicalcpu",
+    "sysctl -n hw.memsize",
+    "df -P /private/tmp/casf-research-20261110",
+    "diskutil info -plist /dev/disk3s5"
+  ],
+  "note": "The legacy H3 recorder's filesystem_type='/' is not a filesystem identification. Use the diskutil fields here. diskutil info on the output directory itself was unsupported; df identified the containing volume."
+}

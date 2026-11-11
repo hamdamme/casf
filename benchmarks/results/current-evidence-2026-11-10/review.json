@@ -1,0 +1,398 @@
+{
+  "detection_cases_matched": 10,
+  "h1": {
+    "b_current_control": {
+      "classifications": {
+        "as_expected": 10
+      },
+      "diagnostics": [],
+      "outcomes": {
+        "PASS": 10
+      }
+    },
+    "b_restored_old": {
+      "classifications": {
+        "as_expected": 10
+      },
+      "diagnostics": [],
+      "outcomes": {
+        "PASS": 10
+      }
+    },
+    "c_current_control": {
+      "classifications": {
+        "as_expected": 10
+      },
+      "diagnostics": [
+        "STATUS_CURRENTNESS_UNCONFIRMED"
+      ],
+      "outcomes": {
+        "PASS": 10
+      }
+    },
+    "c_recovered_control": {
+      "classifications": {
+        "as_expected": 10
+      },
+      "diagnostics": [
+        "STATUS_CURRENTNESS_UNCONFIRMED"
+      ],
+      "outcomes": {
+        "PASS": 10
+      }
+    },
+    "c_restored_old_primary": {
+      "classifications": {
+        "outcome_mismatch": 10
+      },
+      "diagnostics": [
+        "STATUS_CURRENTNESS_UNCONFIRMED",
+        "WITNESS_AHEAD"
+      ],
+      "outcomes": {
+        "INCONCLUSIVE": 10
+      }
+    },
+    "c_restored_old_retained_pin": {
+      "classifications": {
+        "detection": 10
+      },
+      "diagnostics": [
+        "STATUS_CURRENTNESS_UNCONFIRMED",
+        "WITNESS_STATE_CONFLICT"
+      ],
+      "outcomes": {
+        "FAIL": 10
+      }
+    }
+  },
+  "h3_complete_runs": 20,
+  "h3_paired_analysis": {
+    "backlog_and_recovery": {
+      "automatic_retry_attempts": 0,
+      "explicit_same_pending_checkpoint_retries": 10,
+      "failed_outage_submission_attempts": 10,
+      "outage_blocked_request_counts": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outage_max_unwitnessed_backlog_records": [
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "outage_recovery_elapsed_ns": [
+        21198458,
+        14510209,
+        17810584,
+        21247500,
+        21418750,
+        22910709,
+        21204333,
+        20084500,
+        22425625,
+        22426792
+      ]
+    },
+    "h3b_freshness_and_offline_validity": {
+      "final_online_pass": 10,
+      "healthy_online_baseline_pass": 10,
+      "offline_integrity_pass": 10,
+      "online_inconclusive_with_freshness_diagnostic": 10,
+      "outage_runs": 10
+    },
+    "record24_commit_to_persisted_receipt_latency_ns": {
+      "healthy_run_level": {
+        "bootstrap_95_percentile_interval_ns": [
+          9200091.8,
+          9490571.1
+        ],
+        "mean_ns": 9367733.6,
+        "median_ns": 9450729.5,
+        "n": 10
+      },
+      "outage_run_level": {
+        "bootstrap_95_percentile_interval_ns": [
+          2982735242,
+          2993358183.3
+        ],
+        "mean_ns": 2988555229.3,
+        "median_ns": 2991996833.0,
+        "n": 10
+      },
+      "paired_outage_minus_healthy_run_level_difference": {
+        "bootstrap_95_percentile_interval_ns": [
+          2973492629.2,
+          2983929453.9
+        ],
+        "mean_ns": 2979187495.7,
+        "median_ns": 2982499707.5,
+        "n": 10
+      }
+    }
+  },
+  "h3_raw_checksums_verified": 525,
+  "historical_files_verified": 193,
+  "local": {
+    "128": {
+      "database_bytes_range": [
+        2355200,
+        2404352
+      ],
+      "full_integrity_verifications_passed": 10,
+      "mean_summed_submit_seconds": 0.4577590798,
+      "measured_records_per_run": 1000,
+      "record_bytes_range": [
+        1583101,
+        1583101
+      ],
+      "retries": 0,
+      "runs": 10,
+      "timed_submissions_per_run": 8,
+      "witnessed_through": 1100
+    },
+    "16": {
+      "database_bytes_range": [
+        2277376,
+        2654208
+      ],
+      "full_integrity_verifications_passed": 10,
+      "mean_summed_submit_seconds": 0.5021404525,
+      "measured_records_per_run": 1000,
+      "record_bytes_range": [
+        1583101,
+        1583101
+      ],
+      "retries": 0,
+      "runs": 10,
+      "timed_submissions_per_run": 63,
+      "witnessed_through": 1100
+    }
+  },
+  "measurement_commit": "09feba1676e0ba319b4e36cb6c2fa76264842b47",
+  "rq4_environment": {
+    "cpu_count": 8,
+    "dependency_lock_sha256": "74d7a79ae1f872337d26b1b0242c38d8eafd293d673b8a1193ef5b84a08d98fe",
+    "machine": "arm64",
+    "measured_commit": "b3cf12be89455f5515a8ad001295086c91527342",
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "python_version": "3.12.11",
+    "snapshot_method": "git archive of selected commit tracked files"
+  },
+  "rq4_measurements": {
+    "benchmark_size": {
+      "files": 11,
+      "non_blank_lines": 2721,
+      "total_lines": 3061
+    },
+    "ci_surface": {
+      "ci_python_versions": [
+        "3.12",
+        "3.13",
+        "3.14"
+      ],
+      "workflow_files": [
+        "ci.yml"
+      ]
+    },
+    "dependencies": {
+      "dependency_groups": {
+        "build": [
+          "build>=1.2",
+          "setuptools==84.2.1"
+        ]
+      },
+      "direct_external_total": 9,
+      "direct_runtime": [
+        "cryptography>=41.0"
+      ],
+      "locked_external_packages": 24,
+      "optional_extras": {
+        "dev": [
+          "hypothesis>=6.0",
+          "mypy>=1.10",
+          "pytest>=8.0",
+          "ruff>=0.5"
+        ],
+        "witness": [
+          "h11>=0.16.0",
+          "uvicorn==0.54.0"
+        ]
+      }
+    },
+    "documentation_size": {
+      "docs": {
+        "files": 50,
+        "non_blank_lines": 4074,
+        "total_lines": 4835
+      },
+      "research_top_level": {
+        "files": 7,
+        "non_blank_lines": 540,
+        "total_lines": 669
+      }
+    },
+    "installation_burden": {
+      "bash_command_blocks": 6,
+      "guide_lines": 97
+    },
+    "maintenance_history": {
+      "calendar_span_days": 30,
+      "commits_at_head": 269,
+      "committed_result_directories": 11,
+      "first_commit_date": "2026-10-11",
+      "latest_commit_date": "2026-11-10",
+      "merge_pull_request_message_matches": 45,
+      "release_documents": 16
+    },
+    "source_size": {
+      "modules": {
+        "(top level)": {
+          "files": 10,
+          "non_blank_lines": 920,
+          "total_lines": 1077
+        },
+        "canonical": {
+          "files": 3,
+          "non_blank_lines": 243,
+          "total_lines": 273
+        },
+        "cli": {
+          "files": 1,
+          "non_blank_lines": 975,
+          "total_lines": 1087
+        },
+        "crypto": {
+          "files": 1,
+          "non_blank_lines": 171,
+          "total_lines": 213
+        },
+        "model": {
+          "files": 4,
+          "non_blank_lines": 423,
+          "total_lines": 509
+        },
+        "storage": {
+          "files": 4,
+          "non_blank_lines": 538,
+          "total_lines": 574
+        },
+        "trust": {
+          "files": 2,
+          "non_blank_lines": 162,
+          "total_lines": 181
+        },
+        "verifier": {
+          "files": 4,
+          "non_blank_lines": 881,
+          "total_lines": 957
+        },
+        "witness": {
+          "files": 4,
+          "non_blank_lines": 943,
+          "total_lines": 1048
+        },
+        "writer": {
+          "files": 5,
+          "non_blank_lines": 1732,
+          "total_lines": 1884
+        }
+      },
+      "root": "src/casf",
+      "total": {
+        "files": 38,
+        "non_blank_lines": 6988,
+        "total_lines": 7803
+      }
+    },
+    "spec_burden": {
+      "adr_documents": 11,
+      "milestone_ids": [
+        "M0",
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8"
+      ],
+      "requirement_ids": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "task_ids": [
+        "C00",
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12"
+      ],
+      "test_ids": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
+        "T06",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13",
+        "T14",
+        "T15",
+        "T16",
+        "T17",
+        "T18",
+        "T19",
+        "T20",
+        "T21",
+        "T22"
+      ]
+    },
+    "test_size": {
+      "files": 92,
+      "non_blank_lines": 11857,
+      "test_functions": 649,
+      "total_lines": 13936
+    }
+  },
+  "source_import_files_verified": 39
+}
