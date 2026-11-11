@@ -79,6 +79,8 @@ jobs:
           retention-days: 14
       - name: Build package
         run: uv build --python .venv/bin/python --no-build-isolation --out-dir "$RUNNER_TEMP/casf-dist"
+      - name: Inspect package contents and metadata
+        run: .venv/bin/python tests/package_artifacts.py "$RUNNER_TEMP/casf-dist" --output "$RUNNER_TEMP/casf-validation/package-artifacts.json"
       - name: Check installed wheel
         env:
           PYTHONPATH: ""
@@ -97,6 +99,7 @@ jobs:
           uv pip install --python "$RUNNER_TEMP/casf-wheel/bin/python" --require-hashes -r "$RUNNER_TEMP/casf-witness.txt"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/validation_environment.py --import-mode wheel --output "$RUNNER_TEMP/casf-validation/witness-wheel-environment.json"
           "$RUNNER_TEMP/casf-wheel/bin/python" -I tests/wheel_smoke.py --witness
+          "$RUNNER_TEMP/casf-wheel/bin/python" -I examples/verified_workflow.py "$RUNNER_TEMP/casf-validation/installed-demo"
       - name: Preserve validation evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -157,6 +160,8 @@ jobs:
           uv pip freeze --python "$RUNNER_TEMP/casf-minimum/bin/python"
       - name: Build with minimum backend
         run: '"$RUNNER_TEMP/casf-minimum/bin/python" -m build --no-isolation --outdir "$RUNNER_TEMP/casf-minimum-dist"'
+      - name: Inspect package contents and metadata
+        run: '"$RUNNER_TEMP/casf-minimum/bin/python" tests/package_artifacts.py "$RUNNER_TEMP/casf-minimum-dist" --output "$RUNNER_TEMP/casf-validation/package-artifacts.json"'
       - name: Install wheel and record validation environment
         run: |
           uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --no-deps "$RUNNER_TEMP"/casf-minimum-dist/*.whl
@@ -171,6 +176,7 @@ jobs:
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/wheel_smoke.py --witness
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
+          "$RUNNER_TEMP/casf-minimum/bin/python" -I examples/verified_workflow.py "$RUNNER_TEMP/casf-validation/installed-demo"
 
       - name: Bounded parser fuzzing
         timeout-minutes: 2
