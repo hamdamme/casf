@@ -11,6 +11,10 @@ All 46 packaged source inputs were compared byte for byte with the source archiv
 the build revision and the accepted review checkout. All 39 runtime files also
 matched in the isolated public-download installations. Generated packaging metadata
 is checked by the package inspector rather than treated as a tracked source input.
+The subsequent handoff updates README release status; that documentation change
+would alter metadata in a new build. It does not change the published assets.
+The 46-input equality above refers to the accepted review revision, not a claim
+that rebuilding a later documentation commit reproduces the released packages.
 
 The [machine-readable record](publication-0.1.0rc2.json) contains exact hashes,
 asset sizes, runtime inventories, validation totals and the reviewed CI run.

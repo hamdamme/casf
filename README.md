@@ -11,11 +11,15 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** experimental release candidate, not yet published
+**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** [published experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
-The protocol specification remains a design review document. The project has not undergone an independent security audit or a public release, and it should not be treated as production ready security infrastructure.
+The protocol specification remains a design review document. The project has not undergone an independent security audit and should not be treated as production ready security infrastructure.
+
+Start with the [operating and maintenance handoff](docs/operating-handoff.md). The
+[publication record](docs/release/publication-0.1.0rc2.md) identifies the exact release
+files and verified downloads. No PyPI release has been published.
 
 ## Capabilities
 
