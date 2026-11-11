@@ -51,6 +51,11 @@ its checks.
   failures after early verdicts, descriptor closure, complete-input budgets,
   skipped-prefix disclosure and conflicting anchor evidence. Installed-wheel
   checks exercise both APIs without loading writer or storage modules.
+- [Generated inputs and parser fuzzing](../adversarial-testing.md) add 12
+  Hypothesis properties, a 25-case parser corpus and three bounded mutation
+  campaigns per CI job. Generated scenarios cover serialization, record edits,
+  truncation, trusted suffixes and work budgets. Unexpected parser failures
+  produce replay artifacts; reviewed findings are committed as regressions.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest
@@ -60,10 +65,10 @@ its checks.
 
 ## Coverage still absent or limited
 
-- No test uses Hypothesis property generators, despite Hypothesis being a
-  development dependency. Property based coverage is deferred; the package
-  must not claim it has been exercised.
-- No maintained fuzzing corpus or fuzzing job was found.
+- Generated properties cover selected serialization and verifier contracts,
+  not every protocol rule or a complete writer/witness state machine.
+- Fuzzing is bounded, deterministic byte mutation against wire/config JSON.
+  There is no coverage-guided campaign over transport, storage or crypto internals.
 - Crash recovery and concurrent process behavior have selected deterministic
   unit tests, not a complete process level crash matrix.
 - The review candidate adds signed initial status provisioning and terminal
@@ -72,5 +77,5 @@ its checks.
   was not withheld.
 
 Before a stable 1.0 release, map every mandatory specification outcome to a
-passing automated test or a reviewed manual check. The property, fuzzing, and
-full crash matrix limits remain explicit.
+passing automated test or a reviewed manual check. The scope of generated tests,
+fuzz targets and the incomplete full crash matrix remains explicit.

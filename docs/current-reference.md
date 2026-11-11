@@ -25,6 +25,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Prefix exports and machine diagnostics | [Export and reports](export-and-reports.md) |
 | SQLite schema checks and upgrades | [Storage migration](storage-migrations.md) |
 | Automatic checkpoint scheduling and retries | [Checkpoint worker](checkpoint-worker.md) |
+| Generated inputs and parser fuzzing | [Adversarial testing](adversarial-testing.md) |
 | Test evidence and its limits | [Requirement evidence](release/requirement-evidence.md) and [coverage](release/test-coverage-status.md) |
 
 The specification states intended requirements, not proof of complete
@@ -125,7 +126,7 @@ of constant memory for every operation.
 | SQLite | Version 1 writer and witness schemas enforce relationships, exact lengths, types and ranges with WAL/FULL settings. Existing unversioned stores require explicit migration to a new path; envelope bytes and pending state are preserved. Structural checks do not establish freshness. | [Migration guide](storage-migrations.md), [storage tests](../tests/unit/test_storage_migrations.py) |
 | Export and status | Export streams a selected prefix from one snapshot and publishes without replacing any destination. Accepted checkpoint evidence is limited to that prefix. A pending final seal blocks export; database backup preserves pending state. Export does not create authority status. | [Export guide](export-and-reports.md), [verification](verification.md) |
 | Network | The client bounds total request time, response bytes, individual status and header lines, and header count. The reference service still needs operational TLS and access controls. | [Transport](../src/casf/transport.py), [server guide](witness-server.md) |
-| Validation | Deterministic regressions and selected integration and crash scenarios exist. A maintained fuzzing job, exercised property generators and a complete process crash matrix are not established. | [Coverage status](release/test-coverage-status.md) |
+| Validation | Hypothesis properties and bounded parser mutation campaigns run in CI alongside deterministic and selected integration/crash tests. Generated state-machine coverage, coverage-guided fuzzing and the complete process crash matrix remain open. | [Coverage status](release/test-coverage-status.md) |
 
 These differences remain explicit implementation limits. This guide does not
 amend the normative specification or mark full conformance achieved. Changes

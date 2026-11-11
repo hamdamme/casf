@@ -50,7 +50,11 @@
       "nodeids": [
         "tests/unit/test_canonical.py::test_reject_duplicate_keys",
         "tests/unit/test_canonical.py::test_reject_float",
-        "tests/unit/test_canonical.py::test_reject_invalid_unicode"
+        "tests/unit/test_canonical.py::test_reject_invalid_unicode",
+        "tests/property/test_canonical_properties.py::test_escaped_duplicate_names_are_rejected",
+        "tests/property/test_canonical_properties.py::test_integer_looking_noninteger_tokens_are_rejected",
+        "tests/property/test_canonical_properties.py::test_lone_surrogates_fail_in_names_and_values",
+        "tests/fuzz/test_runner.py::test_parser_regression_corpus"
       ],
       "remaining_review": ""
     },
@@ -60,7 +64,9 @@
         "tests/unit/test_canonical.py::test_key_ordering_utf16_not_codepoint",
         "tests/unit/test_canonical.py::test_string_escaping_controls",
         "tests/unit/test_canonical.py::test_nested_arrays_and_safe_edges",
-        "tests/unit/test_canonical.py::test_reject_unsafe_integer"
+        "tests/unit/test_canonical.py::test_reject_unsafe_integer",
+        "tests/property/test_canonical_properties.py::test_canonical_roundtrip_preserves_generated_values",
+        "tests/property/test_canonical_properties.py::test_object_permutation_preserves_canonical_bytes"
       ],
       "remaining_review": ""
     },
@@ -74,7 +80,8 @@
         "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_records_and_indexes",
         "tests/unit/test_writer_integrity_recovery.py::test_wrong_signing_key_cannot_extend_existing_log",
         "tests/unit/test_writer_trust.py::test_writer_rejects_forged_authority_at_every_boundary",
-        "tests/unit/test_writer_reconciliation.py::test_valid_signatures_cannot_reconcile_different_records"
+        "tests/unit/test_writer_reconciliation.py::test_valid_signatures_cannot_reconcile_different_records",
+        "tests/property/test_verifier_properties.py::test_record_mutations_cannot_retain_a_successful_signature"
       ],
       "remaining_review": ""
     },
@@ -86,7 +93,8 @@
         "tests/unit/test_verifier.py::test_log_id_mismatch_fails",
         "tests/unit/test_release_gaps.py::test_record_mutations",
         "tests/unit/test_streaming.py::test_stream_rejects_record_changes",
-        "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_records_and_indexes"
+        "tests/unit/test_writer_integrity_recovery.py::test_startup_rejects_corrupt_records_and_indexes",
+        "tests/property/test_verifier_properties.py::test_middle_sequence_mutations_report_exact_failure"
       ],
       "remaining_review": ""
     },
@@ -102,7 +110,8 @@
         "tests/unit/test_report_semantics.py::test_completed_reports_use_spec_labels_and_versioned_serialization",
         "tests/unit/test_incremental_verification.py::test_suffix_matches_full_verification_without_checking_prefix_bodies",
         "tests/unit/test_incremental_verification.py::test_empty_suffix_does_not_claim_prior_bodies_were_checked",
-        "tests/unit/test_verify_bundle.py::test_complete_bundle_api_matches_stream_verifier"
+        "tests/unit/test_verify_bundle.py::test_complete_bundle_api_matches_stream_verifier",
+        "tests/property/test_verifier_properties.py::test_full_and_incremental_reports_agree_on_generated_suffixes"
       ],
       "remaining_review": ""
     },
@@ -174,7 +183,8 @@
         "tests/unit/test_writer_reconciliation.py::test_record_loss_is_terminal_even_after_witness_rollback",
         "tests/unit/test_writer_reconciliation.py::test_rejects_retained_checkpoint_rollback_or_fork",
         "tests/unit/test_writer_reconciliation.py::test_rejects_fresh_witness_behind_local_journal",
-        "tests/unit/test_recovery_drills.py::test_writer_and_witness_rollback_cannot_replace_retained_checkpoint"
+        "tests/unit/test_recovery_drills.py::test_writer_and_witness_rollback_cannot_replace_retained_checkpoint",
+        "tests/property/test_verifier_properties.py::test_truncated_history_needs_external_evidence"
       ],
       "remaining_review": ""
     },
@@ -394,12 +404,18 @@
         "tests/unit/test_verify_bundle.py::test_early_verdict_cannot_hide_malformed_tail",
         "tests/unit/test_verify_bundle.py::test_early_verdict_cannot_hide_missing_records",
         "tests/unit/test_verify_bundle.py::test_files_closed_before_return_or_error",
-        "tests/unit/test_bundle.py::test_export_metadata_uses_strict_protocol_types"
+        "tests/unit/test_bundle.py::test_export_metadata_uses_strict_protocol_types",
+        "tests/property/test_canonical_properties.py::test_container_depth_has_an_exact_boundary",
+        "tests/property/test_canonical_properties.py::test_utf8_byte_limit_applies_to_names_and_values",
+        "tests/property/test_verifier_properties.py::test_record_work_budget_never_consumes_beyond_one_sentinel",
+        "tests/unit/test_parser_regressions.py::test_object_key_limit_matches_string_value_limit",
+        "tests/unit/test_parser_regressions.py::test_long_integer_has_a_stable_numeric_error",
+        "tests/unit/test_parser_regressions.py::test_deep_wire_input_has_a_stable_limit_error"
       ],
       "remaining_review": ""
     },
     "T17": {
-      "assertion_scope": "Secret markers are absent from CLI and server diagnostics.",
+      "assertion_scope": "Secret markers are absent from CLI, server and duplicate-key parser diagnostics.",
       "nodeids": [
         "tests/unit/test_cli.py::test_wrong_passphrase_never_printed",
         "tests/unit/test_cli.py::test_token_never_printed",
@@ -409,7 +425,8 @@
         "tests/unit/test_recovery_storage.py::test_cli_corrupt_backup_returns_local_error_without_traceback",
         "tests/unit/test_submission_retry.py::test_submission_classifies_http_failure_and_counts_attempt",
         "tests/unit/test_cli_append_contract.py::test_cli_append_reports_all_three_states_on_same_event",
-        "tests/unit/test_typed_append_authorization.py::test_typed_append_retains_all_verified_authorization_checks"
+        "tests/unit/test_typed_append_authorization.py::test_typed_append_retains_all_verified_authorization_checks",
+        "tests/unit/test_parser_regressions.py::test_duplicate_name_diagnostic_does_not_echo_private_input"
       ],
       "remaining_review": ""
     },
@@ -424,7 +441,8 @@
         "tests/unit/test_incremental_verification.py::test_retained_checkpoint_remains_binding",
         "tests/unit/test_incremental_verification.py::test_retained_state_before_start_requires_history",
         "tests/unit/test_incremental_verification.py::test_incremental_online_view_keeps_freshness_rules",
-        "tests/unit/test_verify_bundle.py::test_incremental_bundle_checks_only_suffix_signatures"
+        "tests/unit/test_verify_bundle.py::test_incremental_bundle_checks_only_suffix_signatures",
+        "tests/property/test_verifier_properties.py::test_truncated_history_needs_external_evidence"
       ],
       "remaining_review": ""
     },

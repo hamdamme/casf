@@ -1,0 +1,197 @@
+[
+  {
+    "name": "null",
+    "target": "wire",
+    "expected": "accepted",
+    "text": "null"
+  },
+  {
+    "name": "unicode-order",
+    "target": "wire",
+    "expected": "accepted",
+    "text": "{\"\\uffff\":1,\"\ud83d\ude00\":2,\"a\":\"\\n\"}"
+  },
+  {
+    "name": "safe-integers",
+    "target": "wire",
+    "expected": "accepted",
+    "text": "[-9007199254740991,0,9007199254740991]"
+  },
+  {
+    "name": "nested-object",
+    "target": "wire",
+    "expected": "accepted",
+    "text": "{\"items\":[{},[],null,true,false]}"
+  },
+  {
+    "name": "duplicate-name",
+    "target": "wire",
+    "expected": "DuplicateKeyError",
+    "text": "{\"a\":0,\"a\":1}"
+  },
+  {
+    "name": "escaped-duplicate",
+    "target": "wire",
+    "expected": "DuplicateKeyError",
+    "text": "{\"a\":0,\"\\u0061\":1}"
+  },
+  {
+    "name": "negative-zero",
+    "target": "wire",
+    "expected": "NumericError",
+    "text": "-0"
+  },
+  {
+    "name": "exponent",
+    "target": "wire",
+    "expected": "NumericError",
+    "text": "1e0"
+  },
+  {
+    "name": "nonfinite",
+    "target": "wire",
+    "expected": "NumericError",
+    "text": "NaN"
+  },
+  {
+    "name": "unsafe-integer",
+    "target": "wire",
+    "expected": "NumericError",
+    "text": "9007199254740992"
+  },
+  {
+    "name": "invalid-utf8",
+    "target": "wire",
+    "expected": "SchemaError",
+    "hex": "22ff22"
+  },
+  {
+    "name": "byte-order-mark",
+    "target": "wire",
+    "expected": "SchemaError",
+    "hex": "efbbbf7b7d"
+  },
+  {
+    "name": "lone-surrogate",
+    "target": "wire",
+    "expected": "UnicodeError_",
+    "text": "\"\\ud800\""
+  },
+  {
+    "name": "invalid-json",
+    "target": "wire",
+    "expected": "SchemaError",
+    "text": "{\"a\":}"
+  },
+  {
+    "name": "oversized-key",
+    "target": "wire",
+    "expected": "LimitError",
+    "parts": [
+      {
+        "text": "{\""
+      },
+      {
+        "text": "a",
+        "repeat": 32769
+      },
+      {
+        "text": "\":null}"
+      }
+    ]
+  },
+  {
+    "name": "long-integer",
+    "target": "wire",
+    "expected": "NumericError",
+    "parts": [
+      {
+        "text": "9",
+        "repeat": 4301
+      }
+    ]
+  },
+  {
+    "name": "deep-containers",
+    "target": "wire",
+    "expected": "LimitError",
+    "parts": [
+      {
+        "text": "[",
+        "repeat": 2048
+      },
+      {
+        "text": "0"
+      },
+      {
+        "text": "]",
+        "repeat": 2048
+      }
+    ]
+  },
+  {
+    "name": "private-duplicate-name",
+    "target": "wire",
+    "expected": "DuplicateKeyError",
+    "text": "{\"synthetic-secret-marker\":0,\"synthetic-secret-marker\":1}"
+  },
+  {
+    "name": "fractional-config",
+    "target": "config",
+    "expected": "accepted",
+    "text": "{\"timeout\":0.25,\"enabled\":true}"
+  },
+  {
+    "name": "config-nonfinite",
+    "target": "config",
+    "expected": "NumericError",
+    "text": "Infinity"
+  },
+  {
+    "name": "config-negative-zero",
+    "target": "config",
+    "expected": "NumericError",
+    "text": "-0.0"
+  },
+  {
+    "name": "config-long-integer",
+    "target": "config",
+    "expected": "NumericError",
+    "parts": [
+      {
+        "text": "9",
+        "repeat": 4301
+      }
+    ]
+  },
+  {
+    "name": "config-private-duplicate",
+    "target": "config",
+    "expected": "DuplicateKeyError",
+    "text": "{\"synthetic-secret-marker\":0,\"synthetic-secret-marker\":1}"
+  },
+  {
+    "name": "config-depth",
+    "target": "config",
+    "expected": "SchemaError",
+    "parts": [
+      {
+        "text": "[",
+        "repeat": 17
+      },
+      {
+        "text": "0"
+      },
+      {
+        "text": "]",
+        "repeat": 17
+      }
+    ]
+  },
+  {
+    "name": "config-surrogate",
+    "target": "config",
+    "expected": "SchemaError",
+    "text": "\"\\udfff\""
+  }
+]

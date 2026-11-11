@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 46 is merged into main at `0673df9a0ce0c3763feb1877e49ee24a5f783493`. The incremental-verifier batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 47 is merged into main at `3ad32944e668c2c35f79cb9f68723f3438411013`. The adversarial-testing batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phase 1 and Sessions 3–5 complete. Phase 2, Session 6 in progress; storage migration is complete, and the final planned public interface batch awaits review.
+**Current position:** Phases 1–2 and Sessions 1–6 complete. Phase 3, Session 7 is awaiting review of generated-input tests and bounded parser fuzzing.
 
-**Progress:** 11/28 tasks complete; 17 remaining. 5/14 sessions complete; 9 remaining. 1/6 phases complete; 5 remaining, including the current phase.
+**Progress:** 12/28 tasks complete; 16 remaining. 6/14 sessions complete; 8 remaining. 2/6 phases complete; 4 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -25,9 +25,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 2 | 5 — Checkpoint operation | F09 | Complete agreed checkpoint scheduling and retry behavior | Complete |
 | 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | Complete |
 | 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Complete |
-| 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | Awaiting review |
-| 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Pending |
-| 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Pending |
+| 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | Complete |
+| 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Awaiting review |
+| 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Awaiting review |
 | 3 | 8 — Crashes and full validation | F15 | Exercise process crashes, concurrency, interrupted submissions and recovery | Pending |
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Pending |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Pending |
@@ -51,22 +51,23 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 46 is merged. Typed log operations and immutable result ownership have been accepted.
-- This review batch adds explicit VerificationAnchor inputs, contiguous suffix verification and a bounded verify_bundle API that consumes records through EOF before returning a report.
-- Reports identify the trusted prefix and the absolute suffix range actually checked. Anchor signatures and bindings are authenticated before record consumption; status, revocation, retained-state and freshness requirements remain enforced.
-- Full and incremental anchored checks reject inconsistent signed receipt fields and extensions after final checkpoints. Malformed trailing bundle input never returns a partial report.
-- Validation: exact local and hosted results belong to the draft PR. Focused tests cover ownership, bad signatures, chain gaps, final seals, authority status, online views, retained checkpoints, resource limits, EOF failures and independent installed-wheel verification.
-- Preservation: authenticated formats, frozen vectors, storage schema version 1 and historical research outputs are unchanged. The CLI retains full verification and durable status handling. No release was published.
-- Remaining F12 acceptance: review this final planned interface batch and its validation. Session 6 and Phase 2 stay open until acceptance; later adversarial and release gates remain separate.
-- Remaining: 17 tasks, 9 sessions and 5 phases, including work awaiting review. Accepting F12 will leave 16 tasks, 8 sessions and 4 phases.
-- User action: review the incremental-verifier draft PR and its checks. Nothing is merged or released by this work.
-- Next task after acceptance: Phase 3, Session 7 — generated/property tests and bounded fuzzing (F13–F14).
+- PR 47 is merged. Complete bundle reads and trusted checkpoint starts have been accepted, completing F12, Session 6 and Phase 2.
+- This review batch adds 12 Hypothesis properties for canonical serialization, sequence mutations, exact failure ranges, truncation, trusted suffixes and record-work budgets.
+- A 25-case JSON parser corpus is replayed by pytest. Every CI matrix job also runs three fixed-seed campaigns of 2000 byte mutations each, with bounded input/count/time budgets and retained summary/failure artifacts.
+- Reproduced findings are fixed and retained as regressions: object-key byte limits, long integer conversion errors, deep parser recursion and duplicate-name diagnostic disclosure. Corpus expectations remain specific; unexpected exceptions fail the campaign.
+- Validation: exact local and hosted results belong to the draft PR. Generated example counts appear in Hypothesis statistics; mutation summaries record input digests and completed counts. These are separate from pytest test totals.
+- Preservation: valid authenticated bytes, frozen vectors, storage schema and historical measurements are unchanged. No release was published.
+- Remaining acceptance: review F13–F14 and their CI evidence. The generated scenarios and parser mutation targets have explicit scope; complete process/crash validation remains open.
+- Remaining: 16 tasks, 8 sessions and 4 phases, including the two tasks awaiting review. Accepting this batch leaves 14 tasks, 7 sessions and 4 phases.
+- User action: review the adversarial-testing draft PR and its checks. Nothing is merged or released by this work.
+- Next task after acceptance: Phase 3, Session 8 — process crash/concurrency coverage and the supported validation matrix (F15–F16).
 
 ## Evidence
 
 - [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
+- [Generated inputs and parser fuzzing](../adversarial-testing.md)
 - [Bundle and incremental verification](../verifier-api.md)
 - [Typed log operations and result boundaries](../log-api.md)
 - [Typed append requests and results](../append-api.md)

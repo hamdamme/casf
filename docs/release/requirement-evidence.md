@@ -40,18 +40,19 @@ The writer trust tests add T03, T12, T15 and T17 coverage for explicitly
 supplied pins during creation, startup, restore and CLI operations. They reject
 forged authority signatures, replaced or unprovisioned manifests and wrong
 witness identities. Compatibility calls without pins still perform local-only
-validation. These assertions do not establish writer status checking or fresh
-witness reconciliation; see [writer recovery](../writer-recovery.md).
+validation. Those original assertions alone do not establish writer status checking or
+fresh witness reconciliation. Later startup and reconciliation tests are linked
+in the same map; see [writer recovery](../writer-recovery.md).
 
 ## Streaming and trust boundaries
 
 The CLI uses `open_bundle` and checks the unread tail before accepting a
 result or saving state. The verifier retains only checkpoint boundary digests
-and bounded protocol evidence. `read_bundle`, writer export and restore remain
-eager. The [API decision](../adr/ADR-006-streaming-verification.md) and
+and bounded protocol evidence. Writer export now streams a snapshot;
+`read_bundle` and restore remain eager. The [API decision](../adr/ADR-006-streaming-verification.md) and
 [streaming measurements](streaming-validation.md) identify this scope.
 
-Missing authority status fails with UNKNOWN trust. A signed active status
+Missing authority status reports INCONCLUSIVE with UNKNOWN trust. A signed active status
 can pass with `STATUS_CURRENTNESS_UNCONFIRMED`; there is no invented expiry
 rule or proof of globally current revocation knowledge. See
 [verification](../verification.md).
@@ -59,7 +60,8 @@ rule or proof of globally current revocation knowledge. See
 The [implementation reference](../current-reference.md#operational-limits-and-specification-differences)
 records differences from the proposed specification, including full startup
 verification and restore reconciliation. The [coverage summary](test-coverage-status.md)
-records absent property generation, fuzzing and full process crash coverage.
+records the scope of generated properties, bounded parser mutation campaigns
+and the incomplete full process crash matrix. See the [testing guide](../adversarial-testing.md).
 An empty remaining review field in the map is not a proof that these broader
 requirements have been satisfied.
 
