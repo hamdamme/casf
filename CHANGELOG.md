@@ -14,7 +14,7 @@ stabilization (SPEC §26).
 - Prepare exact candidate files, installation evidence and release review.
 
 See [candidate release notes](docs/release/notes-0.1.0rc2.md) for changes,
-migration, support and limitations. Publication remains separately approved.
+migration, support and limitations. Publication requires separate approval.
 
 ## Earlier development entries (historical)
 
