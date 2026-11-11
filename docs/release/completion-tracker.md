@@ -2,11 +2,11 @@
 
 Updated 10 November 2026. Target confirmed by the maintainer: experimental v0.1 for research and evaluation.
 
-Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 47 is merged into main at `3ad32944e668c2c35f79cb9f68723f3438411013`. The adversarial-testing batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
+Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 48 is merged into main at `5ccb32408d9a0099b37f9b6476248c8b41914ad7`. The process-crash batch starts from that revision and targets main directly. The original audit remains a record of its earlier baseline.
 
-**Current position:** Phases 1–2 and Sessions 1–6 complete. Phase 3, Session 7 is awaiting review of generated-input tests and bounded parser fuzzing.
+**Current position:** Phases 1–2 and Sessions 1–7 complete. Phase 3, Session 8 is awaiting review of process crash and concurrency coverage. The supported validation review remains next.
 
-**Progress:** 12/28 tasks complete; 16 remaining. 6/14 sessions complete; 8 remaining. 2/6 phases complete; 4 remaining, including the current phase.
+**Progress:** 14/28 tasks complete; 14 remaining. 7/14 sessions complete; 7 remaining. 2/6 phases complete; 4 remaining, including the current phase.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -26,9 +26,9 @@ These counts describe this completion plan, not the proportion of all historical
 | 2 | 5 — Checkpoint operation | F10 | Verify outages, restarts, duplicate submissions and pending/witnessed reporting | Complete |
 | 2 | 6 — Storage and public interfaces | F11 | Resolve database integrity and migration requirements | Complete |
 | 2 | 6 — Storage and public interfaces | F12 | Resolve agreed API, export and verification-report conformance gaps | Complete |
-| 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Awaiting review |
-| 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Awaiting review |
-| 3 | 8 — Crashes and full validation | F15 | Exercise process crashes, concurrency, interrupted submissions and recovery | Pending |
+| 3 | 7 — Adversarial inputs | F13 | Implement generated-input/property tests with actual coverage | Complete |
+| 3 | 7 — Adversarial inputs | F14 | Implement bounded fuzz testing and preserve failures as regressions | Complete |
+| 3 | 8 — Crashes and full validation | F15 | Exercise process crashes, concurrency, interrupted submissions and recovery | Awaiting review |
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Pending |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Pending |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Pending |
@@ -51,16 +51,15 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Latest session summary
 
-- PR 47 is merged. Complete bundle reads and trusted checkpoint starts have been accepted, completing F12, Session 6 and Phase 2.
-- This review batch adds 12 Hypothesis properties for canonical serialization, sequence mutations, exact failure ranges, truncation, trusted suffixes and record-work budgets.
-- A 25-case JSON parser corpus is replayed by pytest. Every CI matrix job also runs three fixed-seed campaigns of 2000 byte mutations each, with bounded input/count/time budgets and retained summary/failure artifacts.
-- Reproduced findings are fixed and retained as regressions: object-key byte limits, long integer conversion errors, deep parser recursion and duplicate-name diagnostic disclosure. Corpus expectations remain specific; unexpected exceptions fail the campaign.
-- Validation: exact local and hosted results belong to the draft PR. Generated example counts appear in Hypothesis statistics; mutation summaries record input digests and completed counts. These are separate from pytest test totals.
-- Preservation: valid authenticated bytes, frozen vectors, storage schema and historical measurements are unchanged. No release was published.
-- Remaining acceptance: review F13–F14 and their CI evidence. The generated scenarios and parser mutation targets have explicit scope; complete process/crash validation remains open.
-- Remaining: 16 tasks, 8 sessions and 4 phases, including the two tasks awaiting review. Accepting this batch leaves 14 tasks, 7 sessions and 4 phases.
-- User action: review the adversarial-testing draft PR and its checks. Nothing is merged or released by this work.
-- Next task after acceptance: Phase 3, Session 8 — process crash/concurrency coverage and the supported validation matrix (F15–F16).
+- PR 48 is merged. Generated-input properties, bounded parser fuzzing and retained parser regressions have been accepted, completing F13–F14 and Session 7.
+- This batch adds 27 process cases with parent-controlled SIGKILL at append, checkpoint, witness acceptance and retained-state replacement boundaries.
+- Competing writer and witness processes verify lock release, event idempotency and a single accepted branch. Real HTTP submissions verify exact receipt replay and restart when external state leads the local receipt journal, including final seals.
+- Validation: the 27 new cases pass locally. Full-suite and hosted results belong to the draft PR and its exact revision. No runtime, protocol or storage-format change is included.
+- Scope: the documented matrix covers named boundaries, not every instruction, host reboot or power loss. Historical measurements are preserved. No release was published.
+- Remaining acceptance: review F15 and its CI evidence. F16 remains pending for the supported-platform validation review and consolidated requirement evidence; ordinary PR checks alone do not close that task.
+- Remaining: 14 tasks, 7 sessions and 4 phases, including the task awaiting review. Accepting this batch leaves 13 tasks, 7 sessions and 4 phases because F16 still belongs to Session 8.
+- User action: review the process-crash draft PR and its checks. Nothing is merged or released by this work.
+- Next task after acceptance: Phase 3, Session 8 — supported validation matrix and requirement evidence (F16).
 
 ## Evidence
 
@@ -68,6 +67,7 @@ After every completed task, report: task ID and changes; checks actually run and
 - [Startup and recovery behavior and limitations](../writer-recovery.md)
 - [Recovery drill matrix and operating procedure](../recovery-drills.md)
 - [Generated inputs and parser fuzzing](../adversarial-testing.md)
+- [Process crash and concurrency matrix](../process-crash-testing.md)
 - [Bundle and incremental verification](../verifier-api.md)
 - [Typed log operations and result boundaries](../log-api.md)
 - [Typed append requests and results](../append-api.md)

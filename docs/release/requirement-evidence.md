@@ -14,7 +14,7 @@ prove the correctness of every assertion.
 | --- | --- |
 | T01 to T04 | Canonical bytes, malformed JSON, signature and digest checks, sequence gaps, duplicates, reordered records, genesis and log binding. |
 | T05 | Export verification and verified ranges, including eager and streaming parity. |
-| T06 and T07 | Concurrent sequencing and selected process exit and idempotent retry cases. |
+| T06 and T07 | Concurrent sequencing, parent-controlled kills around append/checkpoint commits, and idempotent retries after lock-holder death. |
 | T08 and T09 | Invalid extensions, checkpoint conflicts and concurrent forks. |
 | T10 and T11 | Restore below a trusted anchor, nonce checks, replay and inconclusive timeout. |
 | T12 and T13 | Version, manifest, key and witness identity binding; status serial and revocation checks. |
@@ -61,7 +61,11 @@ The [implementation reference](../current-reference.md#operational-limits-and-sp
 records differences from the proposed specification, including full startup
 verification and restore reconciliation. The [coverage summary](test-coverage-status.md)
 records the scope of generated properties, bounded parser mutation campaigns
-and the incomplete full process crash matrix. See the [testing guide](../adversarial-testing.md).
+and the [process crash matrix](../process-crash-testing.md). The latter covers
+witness fork competition, exact receipt replay, final seals, atomic retained
+state and verified recovery after interrupted HTTP submissions. It does not
+establish power-loss durability or exhaustive crash scheduling. See also the
+[generated-input guide](../adversarial-testing.md).
 An empty remaining review field in the map is not a proof that these broader
 requirements have been satisfied.
 

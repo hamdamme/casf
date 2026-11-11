@@ -121,7 +121,8 @@
         "tests/unit/test_writer.py::test_concurrent_writers_contiguous_sequence",
         "tests/unit/test_writer.py::test_concurrent_same_event_id_one_record",
         "tests/unit/test_append_contract.py::test_concurrent_typed_retries_return_one_identical_record",
-        "tests/unit/test_append_contract.py::test_event_conflict_does_not_consume_a_sequence"
+        "tests/unit/test_append_contract.py::test_event_conflict_does_not_consume_a_sequence",
+        "tests/process/test_concurrency.py::test_killed_writer_allows_competing_append_or_retry"
       ],
       "remaining_review": ""
     },
@@ -142,7 +143,9 @@
         "tests/unit/test_operation_snapshots.py::test_receipt_snapshots_validated_signature_before_storage",
         "tests/unit/test_log_operations.py::test_create_commit_failure_returns_no_handle",
         "tests/unit/test_log_operations.py::test_checkpoint_commit_failure_returns_no_result",
-        "tests/unit/test_log_operations.py::test_receipt_commit_failure_cannot_return_witnessed"
+        "tests/unit/test_log_operations.py::test_receipt_commit_failure_cannot_return_witnessed",
+        "tests/process/test_writer_crashes.py::test_killed_append_retries_one_complete_record",
+        "tests/process/test_writer_crashes.py::test_killed_checkpoint_commits_outbox_and_seal_together"
       ],
       "remaining_review": ""
     },
@@ -170,7 +173,8 @@
     "T09": {
       "assertion_scope": "Accept at most one of two concurrent signed forks.",
       "nodeids": [
-        "tests/unit/test_witness.py::test_concurrent_forks_single_winner"
+        "tests/unit/test_witness.py::test_concurrent_forks_single_winner",
+        "tests/process/test_witness_crashes.py::test_competing_witness_process_accepts_only_one_branch_after_kill"
       ],
       "remaining_review": ""
     },
@@ -263,7 +267,9 @@
         "tests/unit/test_cli_report_semantics.py::test_cli_reports_verdict_and_preserves_checkpoint_on_nonpass",
         "tests/unit/test_report_semantics.py::test_retained_revocation_survives_missing_trust",
         "tests/unit/test_log_handle_authorization.py::test_handle_rechecks_authorization_before_every_mutation",
-        "tests/unit/test_incremental_verification.py::test_incremental_never_bypasses_status_trust"
+        "tests/unit/test_incremental_verification.py::test_incremental_never_bypasses_status_trust",
+        "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests",
+        "tests/process/test_state_crashes.py::test_killed_state_lock_holder_releases_waiting_process"
       ],
       "remaining_review": ""
     },
@@ -280,7 +286,9 @@
         "tests/unit/test_checkpoint_worker.py::test_pending_final_checkpoint_retries_and_stops",
         "tests/unit/test_storage_migrations.py::test_migrated_pair_replays_pending_final_receipt_without_resigning",
         "tests/unit/test_incremental_verification.py::test_final_start_rejects_any_extension",
-        "tests/unit/test_incremental_verification.py::test_full_verification_rejects_extensions_after_final"
+        "tests/unit/test_incremental_verification.py::test_full_verification_rejects_extensions_after_final",
+        "tests/process/test_writer_crashes.py::test_killed_checkpoint_commits_outbox_and_seal_together",
+        "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state"
       ],
       "remaining_review": ""
     },
@@ -360,9 +368,11 @@
         "tests/unit/test_export_contract.py::test_pending_final_seal_blocks_every_export_prefix",
         "tests/unit/test_cli_export.py::test_cli_prefix_export_reports_and_validates_the_requested_range",
         "tests/unit/test_export_results.py::test_result_is_exact_metadata_from_one_snapshot",
-        "tests/unit/test_export_results.py::test_parent_sync_error_leaves_complete_bundle_without_success_result"
+        "tests/unit/test_export_results.py::test_parent_sync_error_leaves_complete_bundle_without_success_result",
+        "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state",
+        "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests"
       ],
-      "remaining_review": "The broader recovery failure matrix, automatic scheduling and final release acceptance remain open."
+      "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Supported-platform validation and final release acceptance remain open; physical power-loss recovery is not established."
     },
     "T16": {
       "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",
@@ -476,7 +486,9 @@
         "tests/unit/test_witness.py::test_identical_retry_replays_same_receipt",
         "tests/unit/test_witness.py::test_crash_after_commit_replays_same_receipt",
         "tests/unit/test_receipt_recovery.py::test_recover_receipt_after_restart_over_http",
-        "tests/unit/test_checkpoint_worker.py::test_lost_receipt_response_reuses_original_acceptance"
+        "tests/unit/test_checkpoint_worker.py::test_lost_receipt_response_reuses_original_acceptance",
+        "tests/process/test_witness_crashes.py::test_killed_witness_replays_committed_receipt",
+        "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state"
       ],
       "remaining_review": ""
     }

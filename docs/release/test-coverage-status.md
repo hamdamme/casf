@@ -56,6 +56,11 @@ its checks.
   campaigns per CI job. Generated scenarios cover serialization, record edits,
   truncation, trusted suffixes and work budgets. Unexpected parser failures
   produce replay artifacts; reviewed findings are committed as regressions.
+- [Process crash tests](../process-crash-testing.md) add 27 parameterized
+  cases with parent-controlled SIGKILL at append, checkpoint, witness and
+  state-file boundaries. They cover competing processes, exact HTTP receipt
+  replay, final seals and verified restart when retained state leads the
+  local receipt journal.
 - Several malformed, adversarial and integration cases are covered under
   `tests/unit`, including release gap regressions. Empty `adversarial`,
   `integration` and `property` directory scaffolds and the obsolete pytest
@@ -69,8 +74,9 @@ its checks.
   not every protocol rule or a complete writer/witness state machine.
 - Fuzzing is bounded, deterministic byte mutation against wire/config JSON.
   There is no coverage-guided campaign over transport, storage or crypto internals.
-- Crash recovery and concurrent process behavior have selected deterministic
-  unit tests, not a complete process level crash matrix.
+- The process crash matrix covers named transaction and replacement boundaries.
+  It does not cover every instruction, host reboot, torn writes or physical
+  power loss. Exact supported-platform validation remains a separate gate.
 - The review candidate adds signed initial status provisioning and terminal
   witness revocation enforcement. This only proves behavior when the witness
   receives the statement; it cannot prove that a newer authority statement
@@ -78,4 +84,4 @@ its checks.
 
 Before a stable 1.0 release, map every mandatory specification outcome to a
 passing automated test or a reviewed manual check. The scope of generated tests,
-fuzz targets and the incomplete full crash matrix remains explicit.
+fuzz targets and the bounded process crash matrix remains explicit.

@@ -42,7 +42,8 @@ The standard JSON decoder comparison checks interpretation, not independent
 RFC 8785 certification. Frozen byte/signature vectors remain separate checks.
 The properties are at the public verifier and canonicalization boundaries;
 they do not generate a complete writer/witness state machine or process crash
-schedule. Those validation gates remain open.
+schedule. The separate [process matrix](process-crash-testing.md) exercises
+named crash boundaries with parent-controlled kills.
 
 ## Fuzz bounds and evidence
 

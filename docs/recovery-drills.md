@@ -73,7 +73,9 @@ automatically. Publication atomicity does not establish hardware durability.
 SQLite `max_page_count` produces real `SQLITE_FULL` errors without filling the
 host disk. Backup copy and sync failures inject `ENOSPC`; process tests terminate
 at selected boundaries. These are not physical power-loss tests or an exhaustive
-filesystem/device failure campaign. Deployment-specific storage testing and
-the broader process crash/concurrency matrix remain separate acceptance work.
+filesystem/device failure campaign. The separate
+[process crash matrix](process-crash-testing.md) adds parent-controlled kills,
+concurrent processes and interrupted verified submissions. Deployment-specific
+storage testing and supported-platform validation remain separate acceptance work.
 Full specification conformance and release readiness are not established by
 these drills alone.
