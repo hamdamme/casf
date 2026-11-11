@@ -82,6 +82,8 @@ def _serialize(value: JsonValue, depth: int, limits: Limits) -> str:
         for k in keys:
             if not isinstance(k, str):
                 raise SchemaError("object keys must be strings")
+            if len(_encode_utf8(k)) > limits.max_string_bytes:
+                raise LimitError("object key exceeds maximum UTF-8 byte length")
         keys.sort(key=utf16_sort_key)
         return "{" + ",".join(
             _escape_string(k) + ":" + _serialize(value[k], depth + 1, limits)
@@ -113,11 +115,15 @@ def canonicalize(value: JsonValue, limits: Limits | None = None) -> bytes:
 
 def _reject_number_token(token: str) -> None:
     # Any float-routed token ('.', 'e', 'E', NaN, Infinity) is forbidden.
-    raise NumericError(f"forbidden numeric token: {token!r}")
+    raise NumericError("forbidden numeric token")
 
 def _parse_int(token: str) -> int:
     if token.startswith("-0"):
         raise NumericError("negative zero is forbidden")
+    # Reject before int() reaches CPython's configurable digit ceiling or
+    # allocates an arbitrarily large integer on another interpreter.
+    if len(token.removeprefix("-")) > len(str(SAFE_INT_MAX)):
+        raise NumericError("integer outside safe range")
     value = int(token)
     if not (SAFE_INT_MIN <= value <= SAFE_INT_MAX):
         raise NumericError("integer outside safe range")
@@ -127,7 +133,7 @@ def _no_duplicates(pairs: list[tuple[str, JsonValue]]) -> dict[str, JsonValue]:
     obj: dict[str, JsonValue] = {}
     for key, value in pairs:
         if key in obj:
-            raise DuplicateKeyError(f"duplicate property name: {key!r}")
+            raise DuplicateKeyError("duplicate property name")
         obj[key] = value
     return obj
 
@@ -153,8 +159,13 @@ def parse(text: str | bytes) -> JsonValue:
         raise
     except json.JSONDecodeError as e:
         raise SchemaError(f"invalid JSON: {e.msg}") from e
+    except RecursionError as e:
+        raise LimitError("JSON nesting exceeds parser capacity") from e
     # reject lone surrogates surviving escapes (json accepts "\ud800")
-    _check_strings(value, set())
+    try:
+        _check_strings(value, set())
+    except RecursionError as e:
+        raise LimitError("JSON nesting exceeds parser capacity") from e
     return value
 
 
@@ -177,14 +188,14 @@ def parse_config(text: str | bytes) -> object:
     def parse_float(token: str) -> float:
         value = float(token)
         if not math.isfinite(value) or (value == 0.0 and token.startswith("-")):
-            raise NumericError(f"forbidden numeric token: {token!r}")
+            raise NumericError("forbidden numeric token")
         return value
 
     def no_duplicate_config(pairs: list[tuple[str, object]]) -> dict[str, object]:
         result: dict[str, object] = {}
         for key, value in pairs:
             if key in result:
-                raise DuplicateKeyError(f"duplicate property name: {key!r}")
+                raise DuplicateKeyError("duplicate property name")
             result[key] = value
         return result
 
