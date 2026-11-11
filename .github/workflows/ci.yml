@@ -47,7 +47,22 @@ jobs:
       - name: Type check
         run: .venv/bin/mypy src
       - name: Test suite
-        run: .venv/bin/python -m pytest tests/ -v
+        run: .venv/bin/python -m pytest tests/ -v --hypothesis-show-statistics
+      - name: Bounded parser fuzzing
+        timeout-minutes: 2
+        run: |
+          mkdir -p "$RUNNER_TEMP/casf-fuzz"
+          for seed in 20261110 47 9007199254740991; do
+            .venv/bin/python -m tests.fuzz --seed "$seed" --cases 2000 --failures "$RUNNER_TEMP/casf-fuzz" | tee -a "$RUNNER_TEMP/casf-fuzz/summary.jsonl"
+          done
+      - name: Preserve parser fuzz evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: parser-fuzz-locked-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/casf-fuzz/
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Build package
         run: uv build --python .venv/bin/python --no-build-isolation --out-dir "$RUNNER_TEMP/casf-dist"
       - name: Check installed wheel
@@ -102,7 +117,7 @@ jobs:
         run: |
           uv venv --python "$(command -v python)" "$RUNNER_TEMP/casf-minimum"
           uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --resolution lowest-direct -r "$RUNNER_TEMP/casf-minimum.in" -r "$RUNNER_TEMP/casf-backend.in"
-          uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" "pytest==9.1.1" "build==1.6.1" "wheel==0.45.1"
+          uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" "pytest==9.1.1" "hypothesis==6.170.9" "build==1.6.1" "wheel==0.45.1"
           uv pip check --python "$RUNNER_TEMP/casf-minimum/bin/python"
           uv pip freeze --python "$RUNNER_TEMP/casf-minimum/bin/python"
       - name: Build with minimum backend
@@ -110,10 +125,26 @@ jobs:
       - name: Install wheel and run suite
         run: |
           uv pip install --python "$RUNNER_TEMP/casf-minimum/bin/python" --no-deps "$RUNNER_TEMP"/casf-minimum-dist/*.whl
-          "$RUNNER_TEMP/casf-minimum/bin/python" -m pytest tests/ -v
+          "$RUNNER_TEMP/casf-minimum/bin/python" -m pytest tests/ -v --hypothesis-show-statistics
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/wheel_smoke.py --witness
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_fixture.py "$RUNNER_TEMP/casf-public"
           "$RUNNER_TEMP/casf-minimum/bin/python" -I tests/public_verify.py "$RUNNER_TEMP/casf-public"
+
+      - name: Bounded parser fuzzing
+        timeout-minutes: 2
+        run: |
+          mkdir -p "$RUNNER_TEMP/casf-fuzz"
+          for seed in 20261110 47 9007199254740991; do
+            "$RUNNER_TEMP/casf-minimum/bin/python" -m tests.fuzz --seed "$seed" --cases 2000 --failures "$RUNNER_TEMP/casf-fuzz" | tee -a "$RUNNER_TEMP/casf-fuzz/summary.jsonl"
+          done
+      - name: Preserve parser fuzz evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: parser-fuzz-minimum-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/casf-fuzz/
+          if-no-files-found: ignore
+          retention-days: 14
 
 # These jobs run the committed test suite. Coverage limits are recorded in
 # docs/release/test-coverage-status.md; candidate gates are in checklist-v0.1.md.
