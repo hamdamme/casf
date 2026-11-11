@@ -49,8 +49,8 @@ substituted into that bundle.
 
 Keys, writer/witness databases, backup, tampered copy and retained state live
 in a temporary owner-only directory and are removed when the example finishes.
-The randomly generated demo credentials are restored out of the process
-environment afterward. Never use this disposable-state behavior for real logs.
+Any prior passphrase/token environment values are restored afterward; generated
+demo values are removed. Never use this disposable-state behavior for real logs.
 
 ## Verify the public output again
 

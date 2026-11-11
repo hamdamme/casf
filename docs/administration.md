@@ -14,7 +14,8 @@ they are not a copy-and-run deployment configuration.
 ## Create keys and public key files
 
 ```bash
-read -r -s -p 'Key passphrase: ' CASF_PASSPHRASE
+printf 'Key passphrase: '
+IFS= read -r -s CASF_PASSPHRASE
 printf '\n'
 export CASF_PASSPHRASE
 casf key generate --role authority --out authority.pem
