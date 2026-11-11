@@ -77,12 +77,12 @@ def test_killed_witness_replays_committed_receipt(tmp_path, stage, final):
         witness.close()
 
 
-def _competing_accept(path, checkpoint, pipe):
+def _competing_accept(path, checkpoint, records, pipe):
     witness = _open(path)
     witness._db.connection = BeginSignal(witness._db.connection, pipe)
     try:
         try:
-            receipt = witness.submit(LOG_ID, checkpoint, [])
+            receipt = witness.submit(LOG_ID, checkpoint, records)
         except ConflictError:
             pipe.send(("result", "conflict"))
         else:
@@ -96,14 +96,20 @@ def test_competing_witness_process_accepts_only_one_branch_after_kill(tmp_path, 
     writer = _writer(tmp_path / "writer.db")
     _append(writer, 1)
     checkpoint = _checkpoint(writer, 0, 1)
-    alternative = _checkpoint(writer, 0, 0)
     records = list(writer.records(LOG_ID))
     writer.close()
+    fork = _writer(tmp_path / "fork.db")
+    _append(fork, 2)  # A different signed event at the same sequence position.
+    alternative = _checkpoint(fork, 0, 1)
+    fork_records = list(fork.records(LOG_ID))
+    fork.close()
+    assert records[0]["body"]["seq"] == fork_records[0]["body"]["seq"] == 1
+    assert records[0]["record_hash"] != fork_records[0]["record_hash"]
     path = tmp_path / "wit.db"
     _witness(tmp_path).close()
     with worker(_crash_accept, path, checkpoint, records, stage) as (first, first_pipe):
         original_receipt = receive(first_pipe, stage)
-        with worker(_competing_accept, path, alternative) as (second, second_pipe):
+        with worker(_competing_accept, path, alternative, fork_records) as (second, second_pipe):
             receive(second_pipe, "attempting")
             kill(first)
             result = receive(second_pipe, "result")
@@ -116,10 +122,10 @@ def test_competing_witness_process_accepts_only_one_branch_after_kill(tmp_path, 
             assert canonicalize(witness.submit(LOG_ID, checkpoint, records)) == original_receipt
         else:
             assert result["body"]["checkpoint_hash"] == alternative["checkpoint_hash"]
-            assert witness.submit(LOG_ID, alternative, []) == result
+            assert witness.submit(LOG_ID, alternative, fork_records) == result
             with pytest.raises(ConflictError):
                 witness.submit(LOG_ID, checkpoint, records)
         assert _journal(witness) == accepted
-        assert [len(rows) for rows in accepted[:3]] == [1, 1, 1]
+        assert [len(rows) for rows in accepted] == [1, 1, 1, 1]
     finally:
         witness.close()

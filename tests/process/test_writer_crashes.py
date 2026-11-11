@@ -1,6 +1,7 @@
 """R04/T07: record, checkpoint, outbox and seal commit boundaries."""
 
 import sqlite3
+from contextlib import closing
 
 import pytest
 
@@ -94,5 +95,5 @@ def test_killed_checkpoint_commits_outbox_and_seal_together(tmp_path, stage, fin
     finally:
         writer.close()
     # Read independently after all writer connections close.
-    with sqlite3.connect(path) as con:
+    with closing(sqlite3.connect(path)) as con:
         assert con.execute("PRAGMA integrity_check").fetchone() == ("ok",)
