@@ -272,3 +272,21 @@ def test_online_stream_matches_eager_with_retained_checkpoint(tmp_path):
     assert actual == expected
     assert actual.result is Result.PASS
     assert actual.verified_through == 257
+
+
+def test_generator_preserves_existing_trust_evidence(tmp_path):
+    path = tmp_path / 'bundle.new'
+    trust = path.with_suffix('.trust.json')
+    trust.write_bytes(b'previous evidence')
+    with pytest.raises(FileExistsError):
+        generate(path, 1)
+    assert trust.read_bytes() == b'previous evidence'
+    assert not path.exists()
+
+
+@pytest.mark.parametrize('count,anchor', [(-1, None), (True, None), (1, -1), (1, True)])
+def test_generator_rejects_invalid_counts_before_writing(tmp_path, count, anchor):
+    path = tmp_path / 'bundle'
+    with pytest.raises(ValueError):
+        generate(path, count, anchor)
+    assert not path.exists()
