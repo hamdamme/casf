@@ -230,6 +230,10 @@ def _witness_stack(root: Path, cfg: dict, log_id: str):
         parts = urlsplit(url)
         if not parts.hostname:
             raise ValueError("remote witness needs a witness_url")
+        if (parts.scheme != "http" or parts.username is not None or parts.password is not None
+                or parts.path not in ("", "/") or parts.query or parts.fragment):
+            raise ValueError("remote witness URL must be a plain HTTP origin without credentials; "
+                             "this research runner requires a separately protected network path")
         env_name = str(cfg.get("witness_token_env", ""))
         token = os.environ.get(env_name, "")
         if not token:
