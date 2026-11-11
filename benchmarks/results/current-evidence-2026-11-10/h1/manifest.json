@@ -1,0 +1,57 @@
+{
+  "experiment": "h1-writer-rollback-v1",
+  "hypothesis_id": "H1",
+  "hypothesis_source": "CASF_SPEC_001.md Section 22",
+  "hypothesis_text": "C, a signed chain with an external witness, detects restoration below the witness retained state when that witness remains honest and reachable. B, an isolated signed chain with only local checkpoints, cannot distinguish the same old valid snapshot from its original history when it has no newer independent reference.",
+  "predeclared_before_runs": true,
+  "configuration": {
+    "old_count": 24,
+    "new_count": 32,
+    "checkpoint_batch": 8,
+    "target_bytes": 512,
+    "runs": 10,
+    "seeds": [7301, 7307, 7313, 7319, 7325, 7331, 7337, 7343, 7349, 7355],
+    "extension_seed_offset": 50000,
+    "fresh_databases_per_run": true,
+    "fresh_verifier_context_per_case": true
+  },
+  "arms": {
+    "B": "Signed chain with local checkpoints only. The B writer never contacts any witness and obtains no receipts. The CASF writer accepts at most one unwitnessed checkpoint (outbox rule), so the multiple local checkpoints for this arm are produced by a research-only harness adapter as valid signed protocol objects stored beside the writer database; production code, bytes, and trust rules are unchanged. Evaluation uses integrity verification plus a research-only local checkpoint consistency check.",
+    "C": "Signed chain with an external witness. Checkpoints are submitted and receipts recorded through record 24 and through record 32."
+  },
+  "comparability": "Both arms use the same event seeds, event sizes, signing keys, serialization, checkpoint schedule, and storage settings. Recorded differences: only the C arm involves witness submission and receipts; B arm checkpoint objects carry a fixed benchmark timestamp because they are produced by the harness adapter rather than the writer.",
+  "known_api_limitation": "The CASF v1 writer cannot retain more than one unwitnessed (local only) checkpoint; a local checkpoint only profile is not a supported production configuration. B therefore relies on the documented harness adapter for checkpoint production. This limitation is reported as part of the experiment findings.",
+  "attacker_capabilities": [
+    "Restore the writer store to a complete earlier valid snapshot",
+    "No access to witness state, no key compromise, no content mutation"
+  ],
+  "trust_assumptions": [
+    "A1 to A6 per SPEC Section 6",
+    "The witness is honest and reachable",
+    "Verifier trust pins and authority status are provisioned correctly"
+  ],
+  "verifier_retained_state": {
+    "primary_c": "No previously retained newer client checkpoint; only the served evidence and live witness view",
+    "supplementary_c": "A retained checkpoint pin at count 32 captured during the healthy phase"
+  },
+  "witness_deployment": "In process loopback HTTP service on one machine; a controlled functional experiment, not proof of separate administrative operation",
+  "predeclared_expectations": {
+    "b_current_control": "Local validation of the current 32 record history succeeds",
+    "c_current_control": "Online verification of the current 32 record history returns PASS",
+    "b_restored_old": "Local validation of the restored 24 record snapshot succeeds; currentness is not established because no newer independent reference exists",
+    "c_restored_old_primary": "Online verification of the restored 24 record snapshot rejects it (overall FAIL) because the witness retains state at 32 ahead of the presented history",
+    "c_restored_old_retained_pin": "Online verification with the retained pin at 32 returns FAIL",
+    "c_recovered_control": "Online verification returns PASS again after the current writer snapshot is restored"
+  },
+  "classification_rules": {
+    "detection": "Observed result matches the predeclared expectation with diagnostic codes attributable to the history mismatch",
+    "evidence_against": "The restored old snapshot is accepted as current (PASS) in the primary C case",
+    "outcome_mismatch": "A non PASS result that is not the predeclared FAIL, for example INCONCLUSIVE; it is investigated and reported, and is not counted as a detection",
+    "invalid_trial": "Setup, connectivity, trust provisioning, or infrastructure failure; the trial is invalid rather than a detection or a refutation"
+  },
+  "notes": [
+    "INCONCLUSIVE is not the expected successful detection for the primary C case",
+    "This experiment differs from T21: T21 rolls back witness state; here the witness state is preserved and only the writer is rolled back",
+    "Departures from the broader SPEC Section 22 matrix: one record size near 512 bytes, a 24 and 32 record scale, loopback witness, no outage or loss injection"
+  ]
+}

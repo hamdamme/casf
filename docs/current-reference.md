@@ -1,7 +1,9 @@
 # Current CASF implementation reference
 
-This guide follows the implementation accepted through PR 49 at
-`4d89e764050455d8d0fe289bd6bb27710ec3b3bb` and the subsequent validation workflow.
+This guide follows the implementation and validation accepted through PR 50 at
+`b3cf12be89455f5515a8ad001295086c91527342`. The separate
+[research follow-up](../research/current-evidence-2026-11-10.md) identifies its
+measurement revision and preserves the historical results.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
 work from remaining validation, research and release gates. Package metadata is
 `0.1.0rc1`; the proposed wire profile is `casf-v1`. These identify different

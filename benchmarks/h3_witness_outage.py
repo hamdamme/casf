@@ -14,11 +14,13 @@ import json
 import os
 import platform
 import random
+import shlex
 import shutil
 import socket
 import sqlite3
 import statistics
 import subprocess
+import sys
 import threading
 import time
 import traceback
@@ -694,7 +696,7 @@ H3b: {('SUPPORTED within the tested scope' if h3b['outage_runs'] > 0 and h3b['on
 
 ## Reproduction and provenance
 
-Command: `.venv/bin/python -m benchmarks.h3_witness_outage --manifest benchmarks/h3-witness-outage.v1.json --output benchmarks/results/h3-witness-outage-v1`
+Command (with the same import environment): `{environment['exact_command']}`
 
 Environment and source status are recorded in `environment.json`. Raw per-run event timing, checkpoint attempts, pending byte digests, receipt persistence, proxy counters, witness snapshots, verification stdout, stderr, reports, exit codes, and incomplete run errors are stored as JSON in `run-*.json`. SHA-256 digests are listed in `SHA256SUMS.txt`.
 
@@ -707,7 +709,8 @@ This is a single-host loopback functional fault experiment with one accept-and-d
     path.write_text(report)
 
 
-def _environment(manifest_path: Path, run_order: list[dict[str, Any]]) -> dict[str, Any]:
+def _environment(manifest_path: Path, run_order: list[dict[str, Any]],
+                 output: Path) -> dict[str, Any]:
     def command(argv: list[str]) -> str:
         try:
             return subprocess.run(argv, capture_output=True, text=True,
@@ -771,7 +774,9 @@ def _environment(manifest_path: Path, run_order: list[dict[str, Any]]) -> dict[s
         "filesystem_type": filesystem_type,
         "storage": storage,
         "memory": command(["sysctl", "-n", "hw.memsize"]),
-        "exact_command": ".venv/bin/python -m benchmarks.h3_witness_outage --manifest <frozen-manifest> --output <new-directory>",
+        "exact_command": shlex.join([
+            sys.executable, "-m", "benchmarks.h3_witness_outage",
+            "--manifest", str(manifest_path), "--output", str(output)]),
     }
 
 
@@ -802,7 +807,7 @@ def execute(manifest_path: Path, output: Path) -> None:
         print(f"{i + 1}/{len(order)} {item['configuration']} seed={item['seed']} "
               f"status={row['status']}", flush=True)
     _save_json(output / "run-order.json", order_rows)
-    environment = _environment(manifest_path, order_rows)
+    environment = _environment(manifest_path, order_rows, output)
     _save_json(output / "environment.json", environment)
     summary = {
         "experiment": manifest["experiment"], "status": "complete"
@@ -826,6 +831,8 @@ def execute(manifest_path: Path, output: Path) -> None:
         checksum_lines.append(f"{digest}  {item.relative_to(output)}")
     (output / "SHA256SUMS.txt").write_text("\n".join(checksum_lines) + "\n")
     print(json.dumps(summary, indent=2, sort_keys=True))
+    if summary["status"] != "complete":
+        raise SystemExit("incomplete experiment; retained results describe the failures")
 
 
 def main() -> None:

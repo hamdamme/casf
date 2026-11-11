@@ -125,6 +125,45 @@ def test_manifest_cli_honors_output_dir(tmp_path):
     assert run_manifest.main([]) == 2  # usage error
 
 
+@pytest.mark.parametrize("entrypoint", ["manifest", "matrix"])
+def test_experiment_preserves_existing_output(tmp_path, monkeypatch, entrypoint):
+    from benchmarks import attacks, run_manifest
+
+    out = tmp_path / "results"
+    out.mkdir()
+    prior = out / "report.md"
+    prior.write_bytes(b"historical evidence\n")
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(json.dumps({"name": "results"}))
+
+    def unexpected_run(*args, **kwargs):
+        pytest.fail("existing output must be rejected before measurements")
+
+    monkeypatch.setattr(runner, "run_config", unexpected_run)
+    monkeypatch.setattr(attacks, "run_case", unexpected_run)
+    with pytest.raises(SystemExit, match="refusing to overwrite"):
+        if entrypoint == "manifest":
+            run_manifest.main([str(manifest), str(out)])
+        else:
+            attacks.run_matrix(out)
+    assert prior.read_bytes() == b"historical evidence\n"
+    assert list(out.iterdir()) == [prior]
+
+
+def test_config_checks_all_output_paths_before_running(tmp_path, monkeypatch):
+    prior = tmp_path / "same-run-1.json"
+    prior.write_bytes(b"historical row\n")
+
+    def unexpected_run(*args, **kwargs):
+        pytest.fail("a collision must be found before running any seed")
+
+    monkeypatch.setattr(runner, "_run_once", unexpected_run)
+    with pytest.raises(FileExistsError, match="refusing to overwrite"):
+        runner.run_config({"name": "same", "runs": 2, "seeds": [7, 8]}, tmp_path)
+    assert prior.read_bytes() == b"historical row\n"
+    assert list(tmp_path.iterdir()) == [prior]
+
+
 def test_runner_http_witness_with_injected_delay(tmp_path):
     """RQ2 (SPEC §22): the witness may run over loopback HTTP with a
     controlled delay, so wide area cost is measured, not assumed."""

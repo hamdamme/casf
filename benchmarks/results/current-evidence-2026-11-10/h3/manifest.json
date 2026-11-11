@@ -1,0 +1,59 @@
+{
+  "experiment": "canonical-h3-witness-outage",
+  "version": 1,
+  "phase": "frozen measured configuration",
+  "purpose": "Measure canonical SPEC H3a and H3b under one controlled loopback HTTP witness outage.",
+  "fault_mode": "The loopback HTTP proxy accepts and reads each complete request body, then closes the client connection without forwarding while blocked. The witness process and SQLite database remain running and intact. Healthy requests use the same proxy and are forwarded.",
+  "configuration": {
+    "events_per_run": 32,
+    "batch_size": 8,
+    "event_target_bytes": 256,
+    "interarrival_seconds": 0.01,
+    "query_timeout_seconds": 0.5,
+    "submission_timeout_seconds": 0.5,
+    "retry_budget": 0,
+    "outage_seconds": 3.0,
+    "recovery_observation_deadline_seconds": 10.0,
+    "warmup": "The feasibility pilot is reported separately and excluded. Workload generation, key setup, database creation, manifest registration, and server startup occur before per-run measurement. Each measured run uses fresh writer, witness, and verifier state; protocol operations are not discarded as warmup.",
+    "checkpoint_policy": "Submit a checkpoint after each complete batch of eight records. Baseline records 1 through 16 are witnessed before the outage. In the outage configuration, record 24 is checkpointed and submitted once while blocked; record 32 is appended locally while that checkpoint is pending. After the fixed outage, explicitly retry the same pending checkpoint once, persist its receipt, then checkpoint and witness through record 32.",
+    "online_retry_policy": "The current online verifier makes one nonce-bound request and has no retry loop; retry budget is zero. The whole CLI verification is invoked while the proxy fault gate is active.",
+    "recovery_policy": "One explicit call to Writer.submit_pending after connectivity restoration; no automatic worker or repeated retry scheduler is claimed. Recovery observation deadline is 10 seconds from restoration."
+  },
+  "seeds": [81001, 81002, 81003, 81004, 81005, 81006, 81007, 81008, 81009, 81010],
+  "run_order_seed": 20261029,
+  "run_order": [
+    {"configuration": "healthy", "seed": 81007},
+    {"configuration": "healthy", "seed": 81001},
+    {"configuration": "outage", "seed": 81005},
+    {"configuration": "outage", "seed": 81002},
+    {"configuration": "healthy", "seed": 81005},
+    {"configuration": "outage", "seed": 81007},
+    {"configuration": "outage", "seed": 81003},
+    {"configuration": "outage", "seed": 81008},
+    {"configuration": "outage", "seed": 81001},
+    {"configuration": "healthy", "seed": 81004},
+    {"configuration": "outage", "seed": 81010},
+    {"configuration": "healthy", "seed": 81006},
+    {"configuration": "healthy", "seed": 81009},
+    {"configuration": "healthy", "seed": 81002},
+    {"configuration": "healthy", "seed": 81003},
+    {"configuration": "healthy", "seed": 81010},
+    {"configuration": "outage", "seed": 81006},
+    {"configuration": "outage", "seed": 81004},
+    {"configuration": "healthy", "seed": 81008},
+    {"configuration": "outage", "seed": 81009}
+  ],
+  "expected_outcome_matrix": {
+    "healthy_control": "Baseline and final online verification pass; checkpoints through records 8, 16, 24, and 32 receive persisted receipts.",
+    "outage_checkpoint": "One submission for the checkpoint through record 24 fails on the blocked HTTP path; the writer retains the same pending checkpoint bytes. Local appends continue through record 32.",
+    "freshness_during_outage": "Online verification of the already valid record-16 bundle is INCONCLUSIVE with FRESHNESS_INCONCLUSIVE and exit status 4; offline integrity verification of that bundle passes.",
+    "recovery": "The witness state remains at count 16 during the block. After restoration, one explicit retry of the same checkpoint receives and persists a valid receipt, then the record-32 checkpoint is accepted and final online verification passes."
+  },
+  "pilot": {
+    "manifest": "benchmarks/h3-witness-outage-pilot.v1.json",
+    "results": "benchmarks/results/h3-witness-outage-pilot-v1/",
+    "excluded_from_measured_analysis": true,
+    "feasibility_outcome": "One outage and one matched healthy run completed with the expected verification, pending checkpoint, recovery, and final state outcomes."
+  },
+  "scope_limit": "A controlled single-host loopback test of one accept-and-drop fault mode. It is not evidence for wide area deployment, other failure modes, or a maximum safe outage duration."
+}

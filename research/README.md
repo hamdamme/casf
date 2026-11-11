@@ -6,6 +6,12 @@ Original reports, raw measurements and the historical protocol retain their
 original labels and numbers. The [preprint](preprint/README.md) presents the
 research interpretation, not a performance certification of current software.
 
+The [10 November implementation follow-up](current-evidence-2026-11-10.md)
+reruns the affected local detection, rollback, batching and outage studies and
+refreshes RQ4 at an identified revision. Its [raw evidence](../benchmarks/results/current-evidence-2026-11-10/README.md)
+is separate from the historical records below. H1's primary expectation remains
+unmet; the historical WAN/Linux results and preprint are unchanged.
+
 ## Canonical questions and hypotheses
 
 | Label | Question or hypothesis | Evidence and outcome |

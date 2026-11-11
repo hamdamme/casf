@@ -27,7 +27,9 @@ def main(argv: list[str]) -> int:
     manifest = json.loads(manifest_path.read_text())
     out_root = (Path(argv[1]) if len(argv) == 2
                 else RESULTS / manifest["name"])
-    out_root.mkdir(parents=True, exist_ok=True)
+    if out_root.exists():
+        raise SystemExit(f"refusing to overwrite existing result directory: {out_root}")
+    out_root.mkdir(parents=True)
     sections = []
     for cfg in manifest["configs"]:
         start = time.time()
