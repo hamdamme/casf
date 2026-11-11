@@ -14,7 +14,7 @@ Retained per log: the immutable manifest, current count and head,
 current checkpoint index and digest, the receipt chain tip, the
 sealed flag, every accepted checkpoint and receipt, and the accepted
 record digests by sequence. Record bodies are discarded after
-validation and commit. HTTP transport arrives with C07 session 2.
+validation and commit. The optional HTTP adapter lives in casf.witness.http.
 """
 
 import sqlite3

@@ -2,7 +2,8 @@
 
 Manifest storage, transactional record append, verified local startup,
 bundle export/restore, and explicit checkpoint and receipt operations.
-Explicit fresh witness reconciliation is available; scheduling is separate work.
+Fresh witness reconciliation authorizes verified startup. Foreground scheduling
+and durable retries are provided by casf.writer.worker.
 
 Writers serialize through the database (BEGIN IMMEDIATE), never
 through a process mutex alone. Return success only after COMMIT; a
