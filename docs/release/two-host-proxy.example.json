@@ -1,0 +1,76 @@
+{
+  "admin": {
+    "disabled": true
+  },
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [
+            "TEST_LAN_IP:8443"
+          ],
+          "routes": [
+            {
+              "match": [
+                {
+                  "host": [
+                    "TEST_LAN_IP"
+                  ]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [
+                            {
+                              "dial": "127.0.0.1:8131"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "terminal": true
+            }
+          ],
+          "tls_connection_policies": [
+            {
+              "certificate_selection": {
+                "any_tag": [
+                  "cert0"
+                ]
+              }
+            }
+          ],
+          "automatic_https": {
+            "disable": true
+          },
+          "max_header_bytes": 16384,
+          "read_header_timeout": 3000000000,
+          "read_timeout": 3000000000,
+          "enable_full_duplex": true
+        }
+      }
+    },
+    "tls": {
+      "certificates": {
+        "load_files": [
+          {
+            "certificate": "/ABSOLUTE/TEST_ROOT/tls.pem",
+            "key": "/ABSOLUTE/TEST_ROOT/tls.key",
+            "tags": [
+              "cert0"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
