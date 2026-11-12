@@ -90,7 +90,8 @@ def test_submission_preserves_error_categories(pending, monkeypatch, capsys, err
 
 
 @pytest.mark.parametrize('kind,expected', [('json', 2), ('missing', 2), ('schema', 2), ('unknown_field', 2),
-                                         ('signature', 1), ('checkpoint', 1)])
+                                         ('signature', 1), ('checkpoint', 1), ('manifest', 1),
+    ('witness', 1), ('count', 1), ('head', 1), ('index', 1), ('previous', 1)])
 def test_invalid_success_receipt_retains_pending(pending, monkeypatch, capsys, kind, expected):
     _, path, cp, receipt = pending
     bad = json.loads(json.dumps(receipt))
@@ -106,7 +107,10 @@ def test_invalid_success_receipt_retains_pending(pending, monkeypatch, capsys, k
         elif kind == 'signature':
             bad['signature'] = crypto.b64url_encode(bytes(64))
         else:
-            bad['body']['checkpoint_hash'] = 'ab' * 32
+            field = {'checkpoint': 'checkpoint_hash', 'manifest': 'manifest_hash',
+                     'witness': 'witness_id', 'count': 'count', 'head': 'head_hash',
+                     'index': 'checkpoint_index', 'previous': 'previous_receipt_hash'}[kind]
+            bad['body'][field] = 9 if kind in ('count', 'index') else 'ab' * 32
             bad['receipt_hash'] = crypto.digest_receipt(bad['body'])
             bad['signature'] = crypto.sign_receipt(WIT, bad['body'])
         payload = canonicalize({'receipt': bad})

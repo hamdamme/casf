@@ -208,7 +208,8 @@
         "tests/unit/test_writer_reconciliation.py::test_requests_share_one_deadline",
         "tests/unit/test_latest_bindings.py::test_latest_rejects_signed_schema_and_binding_conflicts",
         "tests/unit/test_checkpoint_worker.py::test_retry_backoff_is_capped",
-        "tests/unit/test_checkpoint_worker.py::test_retry_deadline_and_identical_bytes_survive_restart"
+        "tests/unit/test_checkpoint_worker.py::test_retry_deadline_and_identical_bytes_survive_restart",
+        "tests/unit/test_audit_boundaries.py::test_latest_rejects_individually_signed_inconsistent_evidence"
       ],
       "remaining_review": ""
     },
@@ -466,7 +467,8 @@
         "tests/unit/test_submission_categories.py::test_submission_preserves_error_categories",
         "tests/unit/test_submission_categories.py::test_invalid_success_receipt_retains_pending",
         "tests/unit/test_submission_categories.py::test_real_wrong_token_is_trust_failure_and_retry_succeeds",
-        "tests/unit/test_audit_boundaries.py::test_online_error_does_not_echo_peer_code"
+        "tests/unit/test_audit_boundaries.py::test_online_error_does_not_echo_peer_code",
+        "tests/unit/test_submission_categories.py::test_receipt_schema_traceback_does_not_echo_peer_fields"
       ],
       "remaining_review": ""
     },

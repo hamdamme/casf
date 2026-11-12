@@ -14,7 +14,7 @@ These changes remain unreleased.
 | CASF-02 | Fixed. Permanent HTTP rejection, invalid receipt, trust failure and temporary unavailability have distinct documented categories. Exact pending bytes survive and can be retried. | `test_http_submission_categories`, `test_submission_preserves_error_categories`, `test_invalid_success_receipt_retains_pending`, `test_real_wrong_token_is_trust_failure_and_retry_succeeds` |
 | CASF-H01 | Fixed. One shared origin validator rejects paths other than `/`, query delimiters and fragments before connection; no prefix-routing feature was added. | `test_base_url_components_rejected_before_connection`, `test_transport_valid_origin_and_timeout` |
 | CASF-H02 | Fixed. Shared transport rejects Boolean/nonnumeric/nonfinite/nonpositive timeouts. Writer, typed handle, receipt recovery and reconciliation boundaries are checked. | `test_transport_invalid_timeout_rejected_before_connection`, `test_writer_timeout_boundaries`, `test_transport_valid_origin_and_timeout` |
-| CASF-H03 | Targeted adversarial tests added for the confirmed boundary/error/redaction gaps. Existing trust, cleanup, concurrency and recovery tests remain in the full matrix. Expanded state machines and coverage-guided fuzzing are separate work, not implied by line coverage. | New audit/submission modules and existing online transport, receipt recovery, writer reconciliation and process-crash tests. |
+| CASF-H03 | Targeted adversarial tests added for the confirmed boundary/error/redaction gaps. Signed-but-inconsistent latest evidence now directly exercises six previously uncovered binding/hash checks; signed receipt mutations exercise six more submission categories. Existing trust, cleanup, concurrency and recovery tests remain in the full matrix. Expanded state machines and coverage-guided fuzzing are separate work, not implied by line coverage. | New audit/submission modules and existing online transport, receipt recovery, writer reconciliation and process-crash tests. |
 | Additional redaction defects | Fixed. Online errors no longer echo arbitrary peer codes; receipt-schema messages and rendered exception chains do not echo peer field names. | `test_online_error_does_not_echo_peer_code`, `test_receipt_schema_traceback_does_not_echo_peer_fields`, malformed-receipt cases |
 
 Tests live in [audit boundaries](../../tests/unit/test_audit_boundaries.py),
@@ -23,10 +23,10 @@ Tests live in [audit boundaries](../../tests/unit/test_audit_boundaries.py),
 [bundle verification](../../tests/unit/test_verify_bundle.py).
 The [requirement map](../../tests/requirement_evidence.json) links T16/T17/T18.
 
-The original baseline runtime with the new tests produced **109 failures and
-87 passes**. Failing cases: Boolean direct/wrapper policies 53; URL components
+The original baseline runtime with the new tests produced **115 failures and
+93 passes**. Failing cases: Boolean direct/wrapper policies 53; URL components
 16; direct timeout types 3; writer timeout boundaries 17; HTTP categories 9;
-propagated error categories 2; invalid receipt cases 6; real wrong-token CLI 1;
+propagated error categories 2; invalid receipt cases 12; real wrong-token CLI 1;
 peer error-code redaction 1; receipt-schema traceback redaction 1. Existing valid/rejection controls passed and are
 not claimed as newly failing regressions. A separate regression proved the
 receipt-schema traceback leak before exception-chain suppression. Local before/
