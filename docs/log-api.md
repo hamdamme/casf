@@ -90,3 +90,12 @@ contracts. The [verifier API guide](verifier-api.md) covers complete bundle
 reads and incremental verification from explicit trusted checkpoints. This API
 change does not complete the experimental
 release or alter authenticated formats, storage schema or historical results.
+
+Submission errors follow [ADR-016](adr/ADR-016-submission-error-categories.md).
+`EvidenceError` identifies invalid receipt signatures/bindings or an HTTP 409
+conflict; `SchemaError`, `TrustError` and `InconclusiveError` remain distinct.
+These inherit `CasfError`, preserving broad exception handling. `submit_pending`
+and the typed handle reject invalid timeout configuration with `SchemaError`.
+Only finite, positive, non-Boolean int/float timeouts are accepted. Base URLs
+must be origins with at most a lone trailing slash. These checks do not change
+receipt authentication or pending-checkpoint identity.

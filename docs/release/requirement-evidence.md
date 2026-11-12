@@ -98,3 +98,10 @@ The [previous review page](https://github.com/hamdamme/casf/blob/93ba4325675c948
 [Session 3 record](session3-validation.md), and
 [streaming validation](streaming-validation.md) preserve the initial scopes,
 corrections and dated validation. No original experimental output was changed.
+
+## Team A remediation
+
+The [remediation record](team-a-remediation.md) links CASF-01/02 and H01/H02/H03
+to wrong-type, status/receipt, retry-identity, redaction and no-connection
+assertions. T16/T17/T18 mappings identify the new tests. Broader
+[production gates](production-readiness-gates.md) remain separate.
