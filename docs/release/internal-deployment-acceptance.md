@@ -8,7 +8,7 @@ No release or production rollout is authorized by this plan.
 
 | Session | Task | Acceptance | Status |
 | --- | --- | --- | --- |
-| 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; review pending |
+| 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
 | 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Deferred by operator |
 | 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Deferred by operator; procedure only |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Reviewer must be selected |

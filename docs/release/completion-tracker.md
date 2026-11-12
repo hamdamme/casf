@@ -18,8 +18,9 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Sessions 19–20 — recovery and generated adversarial tests**. Overall: **33/41 tasks accepted,
-eight remaining**. P01 has passed its cross-host checks and awaits review; other
+**Phase 8, Sessions 19–20 — recovery and generated adversarial tests**. Overall: **34/41 tasks accepted,
+seven remaining**. P01 was accepted by PR 59 at
+`c09d3970b86dd035f07e4ee3dfc23767b4246408`; other
 acceptance evidence remains open. Reboot and physical power-loss tasks P02/P03
 are deferred at the operator's request. No setup command or power interruption
 is required for the current work. No new release is authorized.
