@@ -105,3 +105,17 @@ The [remediation record](team-a-remediation.md) links CASF-01/02 and H01/H02/H03
 to wrong-type, status/receipt, retry-identity, redaction and no-connection
 assertions. T16/T17/T18 mappings identify the new tests. Broader
 [production gates](production-readiness-gates.md) remain separate.
+
+## Generated recovery sequences
+
+`tests/property/test_recovery_sequences.py::TestRecoverySequences::runTest`
+adds R04/R05/R09 evidence through generated operation sequences: idempotent
+events, exact pending bytes, lost witness replies, duplicate submissions, forged
+receipt rejection, writer/witness restarts and backup inspection. Independent
+model assertions compare committed records and accepted witness heads after each
+operation. The configured budget is 40 examples with at most 30 steps each, not
+a claim that 1,200 steps were executed. Actual Hypothesis results are recorded in
+validation output. This stateful unittest is listed here separately because the
+existing machine-readable traceability audit targets top-level pytest functions.
+The tests use explicit local-only mode; verified-startup and retained-state
+rollback protection remain covered by `tests/unit/test_recovery_drills.py`.
