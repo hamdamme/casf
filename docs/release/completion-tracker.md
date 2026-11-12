@@ -18,9 +18,11 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 16 — cross-host acceptance**. Overall: **33/41 tasks accepted,
+**Phase 8, Sessions 19–20 — recovery and generated adversarial tests**. Overall: **33/41 tasks accepted,
 eight remaining**. P01 has passed its cross-host checks and awaits review; other
-acceptance evidence remains open. No new release is authorized.
+acceptance evidence remains open. Reboot and physical power-loss tasks P02/P03
+are deferred at the operator's request. No setup command or power interruption
+is required for the current work. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
