@@ -1,0 +1,107 @@
+{
+  "synthetic": true,
+  "checks": [
+    {
+      "check": "verified startup over cross-host TLS",
+      "result": "PASS"
+    },
+    {
+      "check": "wrong token rejected without changing pending bytes",
+      "result": "PASS"
+    },
+    {
+      "check": "corrected-token retry accepted",
+      "result": "PASS"
+    },
+    {
+      "check": "supervised witness restart retains accepted history",
+      "result": "PASS"
+    },
+    {
+      "check": "service supervisor restarts killed witness without losing history",
+      "result": "PASS"
+    },
+    {
+      "check": "proxy outage remains inconclusive and preserves pending bytes",
+      "result": "PASS"
+    },
+    {
+      "check": "pending retry recovers after proxy restart",
+      "result": "PASS"
+    },
+    {
+      "check": "accepted-but-unrecorded reply recovers exact pending receipt",
+      "result": "PASS"
+    },
+    {
+      "check": "online public verification authenticates complete history",
+      "result": "PASS"
+    },
+    {
+      "check": "receipt reads require authentication",
+      "result": "PASS"
+    },
+    {
+      "check": "oversized body rejected from headers before upload",
+      "result": "PASS"
+    },
+    {
+      "check": "bounded inflight requests reject excess work",
+      "result": "PASS"
+    },
+    {
+      "check": "partial request body expires within configured deadline",
+      "result": "PASS"
+    },
+    {
+      "check": "wrong-host certificate rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "expired certificate rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "replacement valid certificate accepted",
+      "result": "PASS"
+    },
+    {
+      "check": "untrusted private CA rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "old token rejected after rotation",
+      "result": "PASS"
+    },
+    {
+      "check": "new token authenticates reads after rotation",
+      "result": "PASS"
+    },
+    {
+      "check": "signed revocation blocks verified writer startup",
+      "result": "PASS"
+    },
+    {
+      "check": "stale active status cannot erase retained revocation",
+      "result": "PASS"
+    },
+    {
+      "check": "service journals contain no synthetic credential markers",
+      "result": "PASS"
+    }
+  ],
+  "log_id": "4f6ec0a9-c003-40a2-baa9-e03cb8769ed7",
+  "same_administrator": true,
+  "physical_power_loss_tested": false,
+  "runtime_revision": "cb3febff53a7cf8274a4b871f5be1382ebaedd33",
+  "rehearsal_sha256": "c6d71cfa11b4234c5ad896b8cccb28c1d2d79a3e8af7877784e932db3d38cf48",
+  "client": "macOS arm64 / Python 3.12.14",
+  "server": "Ubuntu 26.04.1 x86_64 / Python 3.14.4 / ext4",
+  "proxy": "Caddy 2.11.9",
+  "proxy_archive_sha256": "5b8cb7faf8726a2028ad96a66e54e6e81e8f361bc6175e5d22bbd997cc5177fb",
+  "linux_baseline_tests": {
+    "passed": 1409,
+    "seconds": 86.86
+  },
+  "reboot_tested": false
+}

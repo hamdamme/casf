@@ -12,11 +12,15 @@ The original audit and release-preparation records remain historical.
 review and corrections. The original 28 tasks, 14 sessions and six phases are
 accepted. This is historical scope acceptance, not proof that no defects remain.
 
-The subsequent Team A audit opens five remediation tasks below, with a separate
-[remediation record](team-a-remediation.md) and [production gates](production-readiness-gates.md).
-Current work is **Phase 7, Session 15 — audit remediation**. Progress is
-**28/33 tasks accepted, 14/15 sessions and 6/7 phases closed**; five remediation
-tasks await validation and maintainer review. No new release is authorized.
+PR 58 merged at `cb3febff53a7cf8274a4b871f5be1382ebaedd33`, accepting
+A01–A05. The experimental plan has **33/33 tasks, 15/15 sessions and 7/7 phases
+accepted**. This does not close the production gates.
+
+The internal-deployment extension adds **eight tasks across Sessions 16–21** in
+Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
+**Phase 8, Session 16 — cross-host acceptance**. Overall: **33/41 tasks accepted,
+eight remaining**. P01 has passed its cross-host checks and awaits review; other
+acceptance evidence remains open. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -57,11 +61,11 @@ These counts describe this completion plan, not the proportion of all historical
 
 | Phase | Session | Task | Work | Status |
 | --- | --- | --- | --- | --- |
-| 7 | 15 | A01 | CASF-01: strict Boolean verifier policy and wrappers | Awaiting review |
-| 7 | 15 | A02 | CASF-02: submission error categories, pending bytes and redaction | Awaiting review |
-| 7 | 15 | A03 | CASF-H01: reject unsupported base-URL components | Awaiting review |
-| 7 | 15 | A04 | CASF-H02: strict transport timeout boundaries | Awaiting review |
-| 7 | 15 | A05 | CASF-H03: targeted adversarial coverage, validation and production-gate handoff | Awaiting review |
+| 7 | 15 | A01 | CASF-01: strict Boolean verifier policy and wrappers | Accepted in PR 58 |
+| 7 | 15 | A02 | CASF-02: submission error categories, pending bytes and redaction | Accepted in PR 58 |
+| 7 | 15 | A03 | CASF-H01: reject unsupported base-URL components | Accepted in PR 58 |
+| 7 | 15 | A04 | CASF-H02: strict transport timeout boundaries | Accepted in PR 58 |
+| 7 | 15 | A05 | CASF-H03: targeted adversarial coverage, validation and production-gate handoff | Accepted in PR 58 |
 
 ## Acceptance and reporting
 
@@ -76,8 +80,8 @@ After every completed task, report: task ID and changes; checks actually run and
   text/visual reviews. Runtime and benchmark fixes, corrected crash assertions,
   1,258 passing local tests and retained-data reconciliation are recorded in the
   [review report](line-review-2026-11-11.md). F19/F20/F28 were accepted by the PR 57 merge.
-- Team A remediation: five additional tasks await review; see the remediation
-  record for exact checks and limitations. Production gates remain separate.
+- Team A remediation: five tasks accepted in PR 58. Production gates remain
+  separate; internal-deployment acceptance now has an explicit eight-task plan.
 
 
 - F23–F24: advisory, license, native-component and release-preparation review accepted in PR 54.
