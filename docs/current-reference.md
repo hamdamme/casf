@@ -40,7 +40,7 @@ things. Validation records must name the exact source or artifact bytes.
 The [repository review](release/repository-review.md) accounts for tracked files
 and records retained historical material, corrections and verification limits.
 The [line-review continuation](release/line-review-2026-11-11.md) records additional
-source fixes and incomplete manual coverage. Those fixes are unreleased and are
+source fixes and the methods used for all tracked files. Those fixes are unreleased and are
 not included in the published `0.1.0rc2` downloads.
 
 The specification states intended requirements, not proof of complete
@@ -160,3 +160,7 @@ Research results remain tied to their original manifests, environments and
 source digests. Current code tests, historical measurements, limited external
 review and an exact package artifact approval are separate evidence. Use the
 [release checklist](release/checklist-v0.1.md) for their current disposition.
+
+The [Team A remediation](release/team-a-remediation.md) records subsequent API
+and submission hardening. See the separate [production gates](release/production-readiness-gates.md)
+for work that code tests cannot establish.

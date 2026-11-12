@@ -90,3 +90,17 @@ its checks.
 Before a stable 1.0 release, map every mandatory specification outcome to a
 passing automated test or a reviewed manual check. The scope of generated tests,
 fuzz targets and the bounded process crash matrix remains explicit.
+
+## Audit branch review
+
+The [Team A remediation](team-a-remediation.md) adds strict direct-API policy,
+HTTP status/receipt category, preserved pending-byte, no-connection configuration,
+and peer-diagnostic redaction assertions. Coverage inspection selected receipt
+manifest/witness/count/head/index/previous-receipt checks and latest-response
+hash/binding checks for direct tests with individually valid synthetic signatures.
+These assert the intended rejection branch rather than failing earlier at a
+bad digest. Existing concurrency, recovery and socket-cleanup cases remain in
+the required suite. Whole-runtime branch reports are retained with the PR
+validation outputs; percentages are review aids, not acceptance thresholds.
+Expanded state-machine generation and coverage-guided fuzzing remain separate
+work in the [production follow-up](production-readiness-gates.md).

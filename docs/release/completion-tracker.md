@@ -7,21 +7,16 @@ Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted a
 [0.1.0rc2 is published](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
 The original audit and release-preparation records remain historical.
 
-**Current position:** The tracked-file review and corrections are delivered in PR 57; acceptance is pending.
-The [line review](line-review-2026-11-11.md) found additional implementation defects
-and distinguishes manually reviewed files from structural checks. F19, F20 and
-F28 await review; earlier release and research evidence remains credited.
+**Current position:** PR 57 was merged at
+`e59fd64feed2d7136c0ee4ae543455ba90d3e572`, accepting the scoped tracked-file
+review and corrections. The original 28 tasks, 14 sessions and six phases are
+accepted. This is historical scope acceptance, not proof that no defects remain.
 
-Previously, the maintainer merged [PR 55](https://github.com/hamdamme/casf/pull/55)
-as `710fbe346598c05ab4989a3656c907eb0aa2c853`, accepting the repository
-reconciliation and final handoff. The [file-by-file review](repository-review.md)
-records the original findings, their corrections and verification limits.
-
-**Progress:** 25/28 tasks remain accepted; 12/14 sessions and 4/6 phases remain
-closed. Three tasks await PR 57 acceptance: the completed file review, validated
-corrections, and reconciled handoff. Current work is Phase 4, Session 10;
-Phase 6, Session 14 cannot close before that work is verified. The earlier 28/28
-acceptance is historical and must not be read as a current all-files guarantee.
+The subsequent Team A audit opens five remediation tasks below, with a separate
+[remediation record](team-a-remediation.md) and [production gates](production-readiness-gates.md).
+Current work is **Phase 7, Session 15 — audit remediation**. Progress is
+**28/33 tasks accepted, 14/15 sessions and 6/7 phases closed**; five remediation
+tasks await validation and maintainer review. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -47,8 +42,8 @@ These counts describe this completion plan, not the proportion of all historical
 | 3 | 8 — Crashes and full validation | F16 | Run supported validation matrix and update requirement evidence | Complete |
 | 4 | 9 — Research evidence | F17 | Rerun only experiments affected by source changes in new output locations | Complete |
 | 4 | 9 — Research evidence | F18 | Reconcile outcomes, limitations and historical/current evidence; preserve originals | Complete |
-| 4 | 10 — Documentation and review | F19 | Finish manual file review; preserve workflow and historical-document corrections already verified | Awaiting review |
-| 4 | 10 — Documentation and review | F20 | Validate and review newly reproduced runtime defects and regression fixes | Awaiting review |
+| 4 | 10 — Documentation and review | F19 | Finish manual file review; preserve workflow and historical-document corrections already verified | Complete |
+| 4 | 10 — Documentation and review | F20 | Validate and review newly reproduced runtime defects and regression fixes | Complete |
 | 5 | 11 — Build and install | F21 | Build exact packages from identified final source; verify developer import source | Complete |
 | 5 | 11 — Build and install | F22 | Clean-install exact packages and exercise documented flows | Complete |
 | 5 | 12 — Release evidence | F23 | Refresh advisories, license review and package contents | Complete |
@@ -56,7 +51,17 @@ These counts describe this completion plan, not the proportion of all historical
 | 6 | 13 — Publication | F25 | Present exact release for user approval; publish only after explicit approval | Complete |
 | 6 | 13 — Publication | F26 | Verify public downloads and installation | Complete |
 | 6 | 14 — Final handoff | F27 | Deliver operating guide, demonstration, maintenance checklist and limits | Complete |
-| 6 | 14 — Final handoff | F28 | Reconcile source/release distinctions and close only the verified scope | Awaiting review |
+| 6 | 14 — Final handoff | F28 | Reconcile source/release distinctions and close only the verified scope | Complete |
+
+## Team A remediation extension
+
+| Phase | Session | Task | Work | Status |
+| --- | --- | --- | --- | --- |
+| 7 | 15 | A01 | CASF-01: strict Boolean verifier policy and wrappers | Awaiting review |
+| 7 | 15 | A02 | CASF-02: submission error categories, pending bytes and redaction | Awaiting review |
+| 7 | 15 | A03 | CASF-H01: reject unsupported base-URL components | Awaiting review |
+| 7 | 15 | A04 | CASF-H02: strict transport timeout boundaries | Awaiting review |
+| 7 | 15 | A05 | CASF-H03: targeted adversarial coverage, validation and production-gate handoff | Awaiting review |
 
 ## Acceptance and reporting
 
@@ -70,7 +75,9 @@ After every completed task, report: task ID and changes; checks actually run and
   266 manually read text files, 243 structured-data reviews and three document
   text/visual reviews. Runtime and benchmark fixes, corrected crash assertions,
   1,258 passing local tests and retained-data reconciliation are recorded in the
-  [review report](line-review-2026-11-11.md). F19/F20/F28 await PR acceptance.
+  [review report](line-review-2026-11-11.md). F19/F20/F28 were accepted by the PR 57 merge.
+- Team A remediation: five additional tasks await review; see the remediation
+  record for exact checks and limitations. Production gates remain separate.
 
 
 - F23–F24: advisory, license, native-component and release-preparation review accepted in PR 54.

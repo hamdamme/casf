@@ -30,3 +30,6 @@ class InconclusiveError(CasfError):
 
 class NoCheckpointError(CasfError):
     """No accepted checkpoint yet (SPEC §14 NO_CHECKPOINT)."""
+
+class EvidenceError(CasfError):
+    """A peer supplied invalid authenticated evidence or a conflicting view."""

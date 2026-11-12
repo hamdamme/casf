@@ -6,6 +6,11 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Require actual Boolean unwitnessed-verification policy arguments.
+- Distinguish permanent witness rejection, invalid receipts and temporary submission failures.
+- Reject unsupported base-URL components and nonnumeric or Boolean transport timeouts.
+- Keep peer-controlled error codes and receipt field names out of diagnostics.
+
 - Enforce private key file permissions and publish complete key files atomically.
 - Enforce record and protocol body limits before verification and reject empty event fields.
 - Serialize retained status updates to prevent stale readers from replacing newer state.

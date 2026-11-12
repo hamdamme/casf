@@ -11,18 +11,16 @@ record.
 """
 
 import http.client
-import ipaddress
 import json
 import math
 import os
 from dataclasses import dataclass
-from urllib.parse import urlsplit
 
 from casf import crypto
 from casf.canonical.jcs import parse
 from casf.errors import CasfError, InconclusiveError, NoCheckpointError, SchemaError
 from casf.model.schema import validate_protocol_body
-from casf.transport import ResponseLimitError
+from casf.transport import ResponseLimitError, validate_base_url
 from casf.transport import request as http_request
 from casf.types import JsonObject
 
@@ -53,21 +51,9 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
         raise InconclusiveError("witness query time budget is exhausted")
     request = json.dumps({"nonce": crypto.b64url_encode(nonce)}).encode()
     try:
-        parts = urlsplit(base_url)
-        host, port = parts.hostname, parts.port
+        validate_base_url(base_url)
     except ValueError as e:
-        raise CasfError("invalid witness URL") from e
-    if not host or parts.scheme not in {"http", "https"}:
-        raise CasfError("witness URL requires an HTTP or HTTPS host")
-    if parts.username is not None or parts.password is not None or port == 0:
-        raise CasfError("witness URL must not contain credentials or port zero")
-    if parts.scheme == "http":
-        try:
-            loopback = ipaddress.ip_address(host).is_loopback
-        except ValueError:
-            loopback = False
-        if not loopback:
-            raise CasfError("HTTP requires a literal loopback address; use HTTPS")
+        raise CasfError(str(e)) from e
     try:
         status, payload = http_request(
             base_url, "POST", f"/v1/logs/{log_id}/latest", token,
@@ -84,7 +70,7 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
         if code == "NO_CHECKPOINT":
             raise NoCheckpointError(
                 "NO_CHECKPOINT: witness has no accepted checkpoint")
-        raise CasfError(f"witness query rejected: {code or status}")
+        raise CasfError(f"witness query rejected (HTTP {status})")
     if not isinstance(parsed, dict):
         raise CasfError("witness answer is not an object")
     return parsed, nonce

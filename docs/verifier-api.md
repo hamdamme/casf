@@ -123,3 +123,12 @@ The [incremental tests](../tests/unit/test_incremental_verification.py) and
 [bundle tests](../tests/unit/test_verify_bundle.py) cover these contracts.
 Historical performance measurements remain tied to their original revisions;
 this interface makes no new incremental performance claim.
+
+### Strict policy arguments
+
+`allow_unwitnessed` accepts only actual Python `True` or `False`. Direct `verify`
+and `verify_bundle` calls reject strings, integers and `None` with `ValueError`;
+values are never coerced. The core rejects the argument before consuming record
+iterators. `False` preserves `UNWITNESSED_SUFFIX`; `True` explicitly permits a
+valid unwitnessed suffix and discloses the partial anchor. Successful reports
+retain a Boolean in `assumptions["allow_unwitnessed"]`.

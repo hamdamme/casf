@@ -95,3 +95,24 @@ The [October 28 closeout](release/phase3-closeout-2026-10-28.md) records later
 platform and redistribution evidence. Use the [current checklist](release/checklist-v0.1.md)
 for current source validation and candidate requirements. The dated HTTP
 validation record is not a current release gate table.
+
+## Client configuration and submission failures
+
+Use an origin such as `https://witness.example.org` or, for local tests,
+`http://127.0.0.1:8000`. A lone trailing `/` is accepted. Prefix paths, queries
+and fragments (including empty `?`/`#`) are rejected before connection; prefix
+routing is not implemented. Bearer tokens belong in the configured environment
+variable, never in the URL. HTTPS validation and redirect refusal are unchanged.
+
+Transport timeouts must be finite, positive numbers; Booleans and strings are
+invalid. The online wrapper distinguishes invalid configuration from an already
+exhausted numeric query budget. Submission, receipt recovery and typed submission
+report invalid timeout configuration as `SchemaError`.
+
+`casf witness submit` uses the explicit [submission error contract](adr/ADR-016-submission-error-categories.md):
+400 → exit 2; 401/403 → exit 3; 409 → exit 1; 429/503 and network unavailability
+→ exit 4; other unexpected statuses, including 500/502/504 → exit 5.
+Malformed successful JSON/receipt schemas are exit 2; invalid receipt signatures
+or bindings are exit 1; independent trust failures remain exit 3.
+Errors never echo peer payloads. A failed submission retains its pending bytes;
+retry or receipt recovery can resolve uncertainty without a new checkpoint.

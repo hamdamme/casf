@@ -155,11 +155,8 @@ def _connected_socket(host: str, port: int, *, https: bool,
     raise OSError("witness host resolved to no stream addresses")
 
 
-def request(base_url: str, method: str, path: str, token: str, body: bytes,
-            *, timeout: float) -> tuple[int, bytes]:
-    """Perform one bounded witness request without following redirects."""
-    if not math.isfinite(timeout) or timeout <= 0:
-        raise ValueError("timeout must be positive and finite")
+def validate_base_url(base_url: str) -> tuple[str, int, bool]:
+    """Validate an origin before any DNS or network operation."""
     try:
         parts = urlsplit(base_url)
         host, port = parts.hostname, parts.port
@@ -169,6 +166,8 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
             or parts.username is not None or parts.password is not None
             or port == 0):
         raise ValueError("witness URL requires a valid HTTP or HTTPS host")
+    if parts.path not in ("", "/") or "?" in base_url or "#" in base_url:
+        raise ValueError("witness URL must be an origin without path, query or fragment")
     https = parts.scheme == "https"
     if not https:
         try:
@@ -179,6 +178,16 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
             raise ValueError("HTTP requires a literal loopback address; use HTTPS")
 
     port = port if port is not None else (443 if https else 80)
+    return host, port, https
+
+
+def request(base_url: str, method: str, path: str, token: str, body: bytes,
+            *, timeout: float) -> tuple[int, bytes]:
+    """Perform one bounded witness request without following redirects."""
+    if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) \
+            or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("timeout must be positive and finite")
+    host, port, https = validate_base_url(base_url)
     deadline = time.monotonic() + timeout
     sock = _connected_socket(host, port, https=https, deadline=deadline)
     conn: http.client.HTTPConnection | None = None

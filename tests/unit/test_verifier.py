@@ -1,5 +1,7 @@
 """R03 / R07 / T05/T12/T13 (SPEC §21): independent verifier, public trust only."""
 
+import pytest
+
 from casf import crypto
 from casf.verifier import (
     AnchorStatus,
@@ -304,3 +306,26 @@ def test_anchored_bad_receipt_signature_fails():
                     status_envelopes=[active_status(AUTH, env["manifest_hash"]) ])
     assert report.result == Result.FAIL
     assert "RECEIPT_SIGNATURE" in report.diagnostic_codes
+
+
+@pytest.mark.parametrize("value", ["false", "true", "", 0, 1, None, [], {}])
+@pytest.mark.parametrize("mode", list(Mode))
+def test_allow_unwitnessed_rejects_non_booleans(value, mode):
+    """CASF-01: only an explicit Boolean may relax witness coverage."""
+    env, records, cps, rcs = _anchored(3, 2)
+    with pytest.raises(ValueError, match="allow_unwitnessed must be boolean"):
+        verify(env, records, _pins(env["manifest_hash"]), mode=mode,
+               checkpoint_envelopes=cps, receipt_envelopes=rcs,
+               status_envelopes=[active_status(AUTH, env["manifest_hash"])],
+               allow_unwitnessed=value)
+
+
+@pytest.mark.parametrize("allowed, expected", [(False, Result.FAIL), (True, Result.PASS)])
+def test_allow_unwitnessed_boolean_policy(allowed, expected):
+    env, records, cps, rcs = _anchored(3, 2)
+    report = verify(env, records, _pins(env["manifest_hash"]), mode=Mode.ANCHORED,
+                    checkpoint_envelopes=cps, receipt_envelopes=rcs,
+                    status_envelopes=[active_status(AUTH, env["manifest_hash"])],
+                    allow_unwitnessed=allowed)
+    assert report.result == expected
+    assert report.assumptions["allow_unwitnessed"] is allowed

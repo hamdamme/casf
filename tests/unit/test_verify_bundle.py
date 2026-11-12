@@ -170,3 +170,12 @@ def test_incremental_bundle_budget_counts_prefix_too(tmp_path):
     path, _, anchor = setup_bundle(tmp_path)
     with pytest.raises(LimitError):
         verify_bundle(path, public_pins(path), Mode.ANCHORED, anchor=anchor, max_records=128)
+
+
+@pytest.mark.parametrize('value', ['false', 'true', '', 0, 1, None, [], {}])
+@pytest.mark.parametrize('mode', list(Mode))
+def test_bundle_rejects_non_boolean_unwitnessed_policy(tmp_path, value, mode):
+    """CASF-01: the public bundle wrapper must preserve strict policy validation."""
+    path, _, _ = setup_bundle(tmp_path, 2)
+    with pytest.raises(ValueError, match='allow_unwitnessed must be boolean'):
+        verify_bundle(path, public_pins(path), mode, allow_unwitnessed=value)

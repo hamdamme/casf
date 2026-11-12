@@ -120,6 +120,8 @@ def verify(manifest_envelope: JsonObject,
         raise ValueError("minimum_status_serial must be a positive integer")
     if type(max_records) is not int or max_records < 1:
         raise ValueError("max_records must be a positive integer")
+    if type(allow_unwitnessed) is not bool:
+        raise ValueError("allow_unwitnessed must be boolean")
     if type(retained_revoked) is not bool:
         raise ValueError("retained_revoked must be boolean")
     revoked = retained_revoked

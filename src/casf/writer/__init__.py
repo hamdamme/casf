@@ -34,7 +34,14 @@ from casf.canonical.limits import (
     MAX_CHECKPOINT_BATCH,
     SAFE_INT_MAX,
 )
-from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
+from casf.errors import (
+    CasfError,
+    EvidenceError,
+    InconclusiveError,
+    LimitError,
+    SchemaError,
+    TrustError,
+)
 from casf.filesystem import rename_directory_exclusive, sync_directory
 from casf.model.api import AppendResult, EventRequest, WitnessState
 from casf.model.operations import ExportResult, Manifest, WitnessResult
@@ -906,7 +913,10 @@ class Writer:
         The outbox entry clears and the checkpoint becomes accepted in
         the same transaction (SPEC §12).
         """
-        receipt = WitnessResult(receipt).receipt
+        try:
+            receipt = WitnessResult(receipt).receipt
+        except SchemaError:
+            raise SchemaError("witness receipt has invalid schema") from None
         if set(receipt) != {"body", "receipt_hash", "signature"}:
             raise SchemaError("receipt envelope must be exactly "
                               "body, receipt_hash, signature")
@@ -924,14 +934,17 @@ class Writer:
             raise CasfError("stored manifest is corrupt")
         if body["log_id"] != log_id \
                 or body["witness_id"] != manifest["witness_id"]:
-            raise CasfError("receipt does not belong to this log")
+            raise EvidenceError("receipt does not belong to this log")
         if body["manifest_hash"] != self._manifest_hash(log_id):
-            raise CasfError("receipt manifest binding is invalid")
+            raise EvidenceError("receipt manifest binding is invalid")
         witness_key = manifest["witness_public_key"]
         if not isinstance(witness_key, str):
             raise CasfError("stored manifest is corrupt")
-        crypto.verify_receipt(crypto.b64url_decode(witness_key), body,
-                              signature)
+        witness_pub = crypto.b64url_decode(witness_key)
+        try:
+            crypto.verify_receipt(witness_pub, body, signature)
+        except CasfError as exc:
+            raise EvidenceError("receipt signature is invalid") from exc
         con = self._db.connection
         con.execute("BEGIN IMMEDIATE")
         try:
@@ -941,7 +954,7 @@ class Writer:
             if pending is None:
                 raise CasfError("no pending checkpoint for this receipt")
             if body["checkpoint_hash"] != pending[0]:
-                raise CasfError("receipt names a different checkpoint")
+                raise EvidenceError("receipt names a different checkpoint")
             stored = con.execute(
                 "SELECT envelope FROM checkpoints "
                 "WHERE checkpoint_hash = ?", (pending[0],)).fetchone()
@@ -956,7 +969,7 @@ class Writer:
             if body["count"] != cp_body["count"] \
                     or body["head_hash"] != cp_body["head_hash"] \
                     or body["checkpoint_index"] != cp_body["index"]:
-                raise CasfError("receipt view disagrees with the pending "
+                raise EvidenceError("receipt view disagrees with the pending "
                                 "checkpoint")
             previous_digest = ZERO_HASH
             index = cp_body["index"]
@@ -975,7 +988,7 @@ class Writer:
                     raise CasfError("stored previous receipt hash is invalid")
                 previous_digest = digest
             if body["previous_receipt_hash"] != previous_digest:
-                raise CasfError("receipt chain disagrees with the previous receipt")
+                raise EvidenceError("receipt chain disagrees with the previous receipt")
             con.execute("INSERT INTO receipts VALUES (?, ?)",
                         (pending[0], canonicalize(receipt)))
             con.execute(
@@ -1041,22 +1054,28 @@ class Writer:
                 "bytes for retry") from e
         except ValueError as e:
             if str(e) == "HTTP requires a literal loopback address; use HTTPS":
-                raise CasfError("HTTP requires a literal loopback address; use HTTPS") from e
-            raise CasfError("invalid witness request configuration") from e
+                raise SchemaError("HTTP requires a literal loopback address; use HTTPS") from e
+            raise SchemaError("invalid witness request configuration") from e
         if status in (429, 503):
             raise InconclusiveError("witness temporarily unavailable; pending bytes are retained")
+        if status == 400:
+            raise SchemaError("witness rejected the submission (HTTP 400)")
+        if status in (401, 403):
+            raise TrustError(f"witness refused submission authorization (HTTP {status})")
+        if status == 409:
+            raise EvidenceError("witness reported a submission conflict (HTTP 409)")
         if status not in (200, 201):
             raise CasfError(f"witness rejected the submission (HTTP {status})")
         try:
             data = parse(payload)
         except CasfError as e:
-            raise CasfError("witness answer was not valid JSON") from e
+            raise SchemaError("witness answer was not valid JSON") from e
         if not isinstance(data, dict) \
                 or not isinstance(data.get("receipt"), dict):
-            raise CasfError("witness answer carried no receipt object")
+            raise SchemaError("witness answer carried no receipt object")
         receipt = data["receipt"]
         if not isinstance(receipt, dict):
-            raise CasfError("witness answer carried no receipt object")
+            raise SchemaError("witness answer carried no receipt object")
         self.record_receipt(log_id, receipt)
         return receipt
 

@@ -28,7 +28,14 @@ from casf import crypto
 from casf.bundle import BundleReadError, StreamingBundle, open_bundle
 from casf.canonical.jcs import parse, parse_config
 from casf.canonical.limits import SAFE_INT_MAX
-from casf.errors import CasfError, InconclusiveError, LimitError, SchemaError, TrustError
+from casf.errors import (
+    CasfError,
+    EvidenceError,
+    InconclusiveError,
+    LimitError,
+    SchemaError,
+    TrustError,
+)
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
 from casf.model.api import EventRequest
@@ -483,11 +490,7 @@ def _cmd_witness_submit(args: argparse.Namespace) -> int:
             writer.close()
             return 4
         token = _secret(args.token_env).decode()
-        try:
-            receipt = writer.submit_pending(log_id, args.url, token)
-        except CasfError as e:
-            print(f"error: {e}", file=sys.stderr)
-            return 4  # pending or unavailable; identical bytes await retry
+        receipt = writer.submit_pending(log_id, args.url, token)
         count = _count_of(receipt)
         _print(args, {"accepted": True, "count": count},
                f"receipt accepted through count {count}")
@@ -1078,6 +1081,9 @@ def main(argv: list[str] | None = None) -> int:
         return int(e.code) if isinstance(e.code, int) else 2
     try:
         result = args.func(args)
+    except EvidenceError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
     except (SchemaError, LimitError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
