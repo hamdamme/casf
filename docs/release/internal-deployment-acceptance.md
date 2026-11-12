@@ -8,13 +8,13 @@ No release or production rollout is authorized by this plan.
 
 | Session | Task | Acceptance | Status |
 | --- | --- | --- | --- |
-| 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; review pending |
-| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Awaiting operator setup and reboot |
-| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Procedure below; not executed |
+| 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
+| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Deferred by operator |
+| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Deferred by operator; procedure only |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Reviewer must be selected |
-| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Operator roles and independent storage required |
+| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Decisions below required |
-| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Not yet implemented |
+| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Generated recovery sequences added; coverage-guided campaign still pending |
 | 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Publication requires separate approval |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
@@ -23,6 +23,9 @@ H1 remains unchanged: WITNESS_AHEAD is INCONCLUSIVE without retained conflicting
 state; retained conflict is WITNESS_STATE_CONFLICT. No protocol redesign is proposed.
 
 ## Reboot acceptance
+
+Deferred at the operator's request. Do not enable lingering or reboot as part of
+the current work. The following procedure is retained for later acceptance.
 
 The test account's user services currently run under systemd. Enable lingering
 with `sudo loginctl enable-linger northern`, then enable only the two rehearsal
@@ -98,3 +101,41 @@ Before real data, the operator must identify:
 
 Until these are decided, continue with synthetic records. New published artifacts
 must use a new version and fresh hashes; never replace 0.1.0rc2 assets.
+
+## Recovery sequence validation
+
+The generated model in `tests/property/test_recovery_sequences.py` exercises
+append/idempotency, checkpoint creation, witness acceptance without recording the
+reply, repeated acceptance, rejected forged receipts, receipt retrieval, writer
+and witness reopening, and backup inspection. Each transition checks canonical
+record/outbox bytes and the witness head against independently tracked model
+values. It uses real SQLite and signing operations with synthetic keys.
+
+Targeted command:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m pytest tests/property/test_recovery_sequences.py tests/unit/test_recovery_drills.py -q --hypothesis-show-statistics
+```
+
+Result: 9 passed in 5.68 seconds on macOS arm64/Python 3.12.14. Hypothesis
+reported 40 passing generated examples; configured maximum length is 30 steps,
+not an executed-step count. Existing backup drills retain the external state
+during corrupted backup, simultaneous writer/witness rollback, missing record,
+lost signing key, full storage and uncertain submission scenarios.
+
+An initial test-helper mistake tried to register the same manifest again during
+a witness restart; reopening the existing store without registration corrected
+the harness. A restricted execution attempt could not bind a loopback socket;
+the successful run allowed the existing local HTTP fixture. Neither was counted
+as a passing run or reported as a confirmed runtime defect. Runtime source is
+unchanged. Coverage-guided fuzzing and operational custody remain separate work.
+
+A separate reproducible run with `--hypothesis-seed=20261111` passed in
+4.64 seconds. PR 59's preceding revision `c53e9c27cab84611b2fa7a0ef606a2860c111cc3`
+passed all 12 Linux/macOS Python 3.12–3.14 locked/minimum jobs in
+[run 43144281252](https://github.com/hamdamme/casf/actions/runs/43144281252).
+That run predates the generated test and does not validate the later revision.
+
+Final local suite: `PYTHONPATH=src .venv/bin/python -m pytest -q` —
+1,412 passed in 102.08 seconds. Ruff, strict mypy and repository/link validation
+also passed. No runtime source or dependency changes were made.
