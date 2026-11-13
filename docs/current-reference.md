@@ -25,6 +25,8 @@ things. Validation records must name the exact source or artifact bytes.
 | Release preparation and advisory scope | [Release notes](release/notes-0.1.0rc2.md), [dependency review](release/dependency-review-0.1.0rc2.md) and [approval proposal](release/approval-0.1.0rc2.md) |
 | Candidate state and validation | [Release checklist](release/checklist-v0.1.md) |
 | Current workflow and scoped code review | [Review record](release/workflow-review-2026-11-10.md) |
+| Independent security assessment preparation | [Review brief](release/independent-review-brief.md) |
+| Internal deployment decisions and acceptance | [Operations worksheet](release/internal-operations-worksheet.md) |
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |

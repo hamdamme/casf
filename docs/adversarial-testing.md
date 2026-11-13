@@ -13,12 +13,14 @@ From the repository root:
 ```bash
 PYTHONPATH=src .venv/bin/python -m pytest tests/property tests/fuzz -v --hypothesis-show-statistics
 PYTHONPATH=src .venv/bin/python -m tests.fuzz --seed 20261110 --cases 2000 --failures /tmp/casf-fuzz
+PYTHONPATH=src .venv/bin/python -m tests.fuzz --guided --seed 20261112 --cases 2000 --failures /tmp/casf-guided
 ```
 
 All 12 Ubuntu/macOS CI jobs execute the properties and corpus replays. Each job
 also runs three mutation campaigns with seeds `20261110`, `47` and
 `9007199254740991`, each containing 2000 mutations plus the 25 seed cases.
-The minimum-runtime jobs use the same fixed Hypothesis tooling version as the
+The six locked-dependency jobs also run a guided campaign with seed `20261112`,
+2,000 mutations and 25 seed cases. The minimum-runtime jobs use the same fixed Hypothesis tooling version as the
 lockfile; they still resolve the lowest supported direct runtime dependencies.
 
 ## Property coverage
@@ -28,6 +30,7 @@ lockfile; they still resolve the lowest supported direct runtime dependencies.
 | Canonical JSON | Nested values, Unicode names, insertion-order permutations, safe integers, escaped duplicate names, forbidden numeric forms, lone surrogates, exact container depth and UTF-8 byte limits. Canonical output roundtrips and agrees with the standard JSON decoder. |
 | Record histories | Synthetic signed histories of 1–12 records with generated payloads. Delete, duplicate, swap, body/digest/signature mutation and signed bad linkage must produce the expected failure code and absolute position. |
 | Trusted prefixes | Full and incremental checks agree on checkpoint identity and coverage; the incremental range excludes the trusted prefix. Truncation can pass integrity but fails against a newer authenticated checkpoint. |
+| Writer/witness recovery | Forty generated operation sequences with at most 30 steps each: append retries, pending checkpoints, lost/duplicate replies, forged receipts, restarts and backup inspection. The model compares record bytes, pending bytes and accepted witness heads after each step. |
 | Work budgets | Record iteration consumes at most the configured count plus one sentinel and never reports a complete pass after budget exhaustion. |
 
 The [shared settings](../tests/property/strategies.py) request up to 100
@@ -40,8 +43,8 @@ These choices follow the [Hypothesis settings contract](https://hypothesis.readt
 
 The standard JSON decoder comparison checks interpretation, not independent
 RFC 8785 certification. Frozen byte/signature vectors remain separate checks.
-The properties are at the public verifier and canonicalization boundaries;
-they do not generate a complete writer/witness state machine or process crash
+Verifier/canonicalization properties and the separate recovery state machine
+cover selected transitions, not every writer/witness protocol state or crash
 schedule. The separate [process matrix](process-crash-testing.md) exercises
 named crash boundaries with parent-controlled kills.
 
@@ -58,7 +61,7 @@ bytes. Each parser input is capped at 128 KiB. A campaign accepts at most
 100000 mutations and a configurable 1–3600 second cooperative deadline
 (default 60 seconds); it fails as incomplete if the deadline prevents the
 requested count. CI additionally enforces a two-minute timeout on each job's
-three-campaign step. The local deadline is checked between cases and shrink
+campaign step. The local deadline is checked between cases and shrink
 attempts; it cannot interrupt a single hung parser call.
 
 Only documented `CasfError` rejections are ordinary outcomes. Unexpected
@@ -102,7 +105,12 @@ now enforces the key limit, rejects oversized integers before conversion,
 normalizes parser recursion failures to LimitError, and omits input from those
 diagnostics. Valid casf-v1 bytes and frozen vectors are unchanged.
 
-This is deterministic mutation fuzzing, not coverage-guided fuzzing. It does
-not fuzz HTTP framing, SQLite files, cryptographic library internals or every
-protocol state transition. The [coverage status](release/test-coverage-status.md)
+The default campaign uses deterministic mutation. `--guided` adds Python
+line-edge feedback within CASF modules and retains mutations that reach new
+paths, with at most 256 retained inputs. It restores the previous tracing state
+even after failure and refuses optimized Python execution. Its summary records
+actual edge, discovery and retained-input counts. See the
+[recorded campaign](release/guided-fuzz-2026-11-12.json). Neither runner fuzzes
+HTTP framing, SQLite files, native cryptographic internals or every protocol
+state transition. The [coverage status](release/test-coverage-status.md)
 and [completion tracker](release/completion-tracker.md) retain those boundaries.
