@@ -21,10 +21,13 @@ The published `0.1.0rc2` build is
 remediation changes. No PyPI upload is part of this work. The
 [publication record](publication-0.1.0rc2.md) remains the historical authority.
 
-PR 60 added generated recovery sequences; PR 61 added bounded Python-edge-guided
-parser campaigns. Both passed their CI matrices. See [adversarial testing](../adversarial-testing.md)
-for commands and scope. These campaigns and process-crash tests do not exhaust
-all protocol states or failure schedules. P02/P03 hardware work remains deferred;
+PR 60 added generated writer/witness recovery sequences; PR 61 added bounded
+Python-line-edge-guided JSON parser campaigns. The six locked-dependency CI jobs
+each run 2,000 guided mutations plus 25 seed cases. Both PRs passed their CI
+matrices. See [adversarial testing](../adversarial-testing.md) for commands and scope. These campaigns and process-crash tests do not exhaust
+all protocol states or crash schedules. The fuzz targets exclude HTTP framing,
+SQLite files and native cryptographic internals. Physical power-loss testing is
+not covered. P02/P03 hardware work remains deferred;
 use the [acceptance tracker](internal-deployment-acceptance.md) for current status.
 The [review brief](independent-review-brief.md) and
 [operations worksheet](internal-operations-worksheet.md) prepare the open review

@@ -56,6 +56,10 @@ its checks.
   campaigns per CI job. Generated scenarios cover serialization, record edits,
   truncation, trusted suffixes and work budgets. Unexpected parser failures
   produce replay artifacts; reviewed findings are committed as regressions.
+  PR 60 added generated writer/witness recovery sequences for selected retries,
+  lost replies, forged receipts, restarts and backup operations. PR 61 added
+  bounded Python-line-edge-guided JSON parser campaigns; the six locked-dependency
+  CI jobs each run 2,000 guided mutations plus 25 seed cases.
 - [Process crash tests](../process-crash-testing.md) add 27 parameterized
   cases with parent-controlled SIGKILL at append, checkpoint, witness and
   state-file boundaries. They cover competing processes, exact HTTP receipt
@@ -74,10 +78,11 @@ its checks.
 
 ## Coverage still absent or limited
 
-- Generated properties cover selected serialization and verifier contracts,
-  not every protocol rule or a complete writer/witness state machine.
-- Fuzzing is bounded, deterministic byte mutation against wire/config JSON.
-  There is no coverage-guided campaign over transport, storage or crypto internals.
+- Generated properties and writer/witness recovery sequences cover selected
+  contracts and transitions, not exhaustive protocol states or crash schedules.
+- Deterministic and Python-line-edge-guided fuzz campaigns target wire/config
+  JSON parsers only. They do not include HTTP-framing fuzzing, SQLite-file fuzzing
+  or native cryptographic internals.
 - The process crash matrix covers named transaction and replacement boundaries.
   It does not cover every instruction, host reboot, torn writes or physical
   power loss. Exact supported-platform results are reviewed against the
@@ -102,5 +107,7 @@ These assert the intended rejection branch rather than failing earlier at a
 bad digest. Existing concurrency, recovery and socket-cleanup cases remain in
 the required suite. Whole-runtime branch reports are retained with the PR
 validation outputs; percentages are review aids, not acceptance thresholds.
-Expanded state-machine generation and coverage-guided fuzzing remain separate
-work in the [production follow-up](production-readiness-gates.md).
+The later PR 60/61 recovery sequences and guided JSON parser campaigns are
+included above. They do not establish exhaustive state-machine coverage,
+production readiness or physical power-loss durability; remaining deployment
+work is tracked in the [production follow-up](production-readiness-gates.md).

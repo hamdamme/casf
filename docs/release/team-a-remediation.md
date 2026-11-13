@@ -6,6 +6,12 @@ was rechecked against that baseline. Prior PR 57 findings are not counted again.
 The final source revision and hosted job results are recorded in the PR checks.
 These changes remain unreleased.
 
+Subsequent validation: PR 60 added generated writer/witness recovery sequences;
+PR 61 added bounded Python-line-edge-guided JSON parser campaigns. References
+below to separately scoped work describe this remediation's historical scope,
+not the absence of those later tests. See the current
+[coverage status](test-coverage-status.md) for implemented coverage and exclusions.
+
 ## Findings and regression evidence
 
 | Finding | Disposition | Regression identifiers |
