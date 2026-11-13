@@ -100,6 +100,10 @@ casf admin status install --status-file revoked.json --log-id LOG_UUID \
   --db witness.db
 ```
 
+Witness status installation accepts only `active` or `revoked`. Unsupported
+values raise `SchemaError` (CLI exit 2) before a database transaction begins;
+the previously retained status is unchanged and the value is not echoed.
+
 An active statement does not establish that the authority has no newer
 revocation statement elsewhere.
 
