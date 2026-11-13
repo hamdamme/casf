@@ -16,7 +16,7 @@ protocols or new trust rules as implicit prerequisites to this reference project
 | --- | --- | --- |
 | First event source | Business transactions; application/system, authenticated producer, event schema and stable retry ID | Record category confirmed; source application pending |
 | Data classification | Fields permitted in records; prohibited secrets/personal data; payload access owner | Awaiting operator |
-| Readers and writers | Named service identities and human roles; who may append/export/read receipts | Awaiting operator |
+| Readers and writers | Readers must be authorized users; name the approving owner, roles and append/export/receipt permissions | Reader restriction confirmed; identities and enforcement pending |
 | Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Awaiting operator |
 | Trust distribution | Authenticated public-pin/status channel and independent identity confirmation | Awaiting operator |
 | Retention | Record/backup/log lifetime, approved deletion procedure and policy owner | Awaiting operator |
