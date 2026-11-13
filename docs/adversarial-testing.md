@@ -105,12 +105,15 @@ now enforces the key limit, rejects oversized integers before conversion,
 normalizes parser recursion failures to LimitError, and omits input from those
 diagnostics. Valid casf-v1 bytes and frozen vectors are unchanged.
 
-The default campaign uses deterministic mutation. `--guided` adds Python
-line-edge feedback within CASF modules and retains mutations that reach new
-paths, with at most 256 retained inputs. It restores the previous tracing state
+The default campaign uses deterministic mutation. `--guided` runs bounded
+Python-line-edge-guided JSON parser campaigns. It uses feedback within CASF
+modules to retain mutations that reach new paths, with at most 256 retained inputs. It restores the previous tracing state
 even after failure and refuses optimized Python execution. Its summary records
 actual edge, discovery and retained-input counts. See the
 [recorded campaign](release/guided-fuzz-2026-11-12.json). Neither runner fuzzes
 HTTP framing, SQLite files, native cryptographic internals or every protocol
-state transition. The [coverage status](release/test-coverage-status.md)
+state transition or crash schedule. Generated recovery sequences are selected
+state-machine coverage, not complete coverage. Neither the campaigns nor process
+crash tests establish physical power-loss durability or production readiness.
+The [coverage status](release/test-coverage-status.md)
 and [completion tracker](release/completion-tracker.md) retain those boundaries.
