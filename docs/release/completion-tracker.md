@@ -1,6 +1,6 @@
 # CASF completion tracker
 
-Updated 11 November 2026. Target: experimental v0.1 for research and evaluation.
+Updated 12 November 2026. Target: experimental v0.1 for research and evaluation.
 
 Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
 `ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
@@ -18,8 +18,8 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 20 — coverage-guided parser testing**. Overall: **34/41 tasks accepted,
-seven remaining**. P01 was accepted by PR 59 at
+**Phase 8, Sessions 18–19 — independent review and operations preparation**. Overall: **35/41 tasks accepted,
+six remaining**. P01 was accepted by PR 59 at
 `c09d3970b86dd035f07e4ee3dfc23767b4246408`; other
 acceptance evidence remains open. Reboot and physical power-loss tasks P02/P03
 are deferred at the operator's request. No setup command or power interruption
@@ -140,3 +140,8 @@ The original 9 November audit and inventory describe the baseline. The [reposito
 - PR 60 accepted the generated recovery sequences at
   `aadcc190897ddfe884e97bc21c6a3a2795fe9430`; all 12 CI jobs passed. P07 remains
   open until the guided campaign is reviewed. P02/P03 remain deferred.
+
+- PR 61 accepted P07 at `c263d6e0ca8ec29e2edd6cbc6c593ae087fe9021`.
+  All 12 CI jobs passed. The independent review brief and internal operations
+  worksheet prepare P04–P06; those tasks remain open pending actual review,
+  assigned operators and deployment acceptance evidence.
