@@ -76,6 +76,10 @@ the generated trust pins. The trust command checks the manifest signature;
 it does not establish that the key belongs to the person or service you
 intended.
 
+The trust creation command requires `--timeout` to be positive and finite.
+Zero, negative values, NaN and infinities return CLI exit 2 before publishing
+a trust file. Creation and loading use the same timeout validation rule.
+
 Trust settings are checked before use. `allow_unwitnessed` must be a JSON
 boolean, not a string or number. Mode must be `integrity`, `anchored` or
 `online`; chain budgets and minimum status serials must be positive safe
