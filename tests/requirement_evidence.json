@@ -281,7 +281,9 @@
         "tests/unit/test_status_book_safety.py::test_stale_instance_cannot_overwrite_newer_status",
         "tests/unit/test_status_book_safety.py::test_stale_instance_preserves_revocation",
         "tests/unit/test_status_book_safety.py::test_out_of_order_revocation_is_terminal",
-        "tests/unit/test_status_book_safety.py::test_signed_invalid_status_is_not_persisted"
+        "tests/unit/test_status_book_safety.py::test_signed_invalid_status_is_not_persisted",
+        "tests/unit/test_witness_status_validation.py::test_unsupported_status_rejected_before_transaction",
+        "tests/unit/test_witness_status_validation.py::test_valid_transitions_keep_serial_and_terminal_revocation_rules"
       ],
       "remaining_review": ""
     },
@@ -471,7 +473,8 @@
         "tests/unit/test_submission_categories.py::test_invalid_success_receipt_retains_pending",
         "tests/unit/test_submission_categories.py::test_real_wrong_token_is_trust_failure_and_retry_succeeds",
         "tests/unit/test_audit_boundaries.py::test_online_error_does_not_echo_peer_code",
-        "tests/unit/test_submission_categories.py::test_receipt_schema_traceback_does_not_echo_peer_fields"
+        "tests/unit/test_submission_categories.py::test_receipt_schema_traceback_does_not_echo_peer_fields",
+        "tests/unit/test_witness_status_validation.py::test_cli_unsupported_status_returns_schema_category"
       ],
       "remaining_review": ""
     },

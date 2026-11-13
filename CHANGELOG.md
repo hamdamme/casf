@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Reject unsupported witness status values as schema errors before opening a transaction.
+
 - Require actual Boolean unwitnessed-verification policy arguments.
 - Distinguish permanent witness rejection, invalid receipts and temporary submission failures.
 - Reject unsupported base-URL components and nonnumeric or Boolean transport timeouts.

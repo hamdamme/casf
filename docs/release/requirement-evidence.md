@@ -119,3 +119,19 @@ validation output. This stateful unittest is listed here separately because the
 existing machine-readable traceability audit targets top-level pytest functions.
 The tests use explicit local-only mode; verified-startup and retained-state
 rollback protection remain covered by `tests/unit/test_recovery_drills.py`.
+
+## Unsupported witness status regression
+
+The finding reported at `517aa3b6a962bdf82cefbe48c47d982c4bec4918` was
+reproduced on main `79ed8d9cf8102ac2d30365af396d4f5df033e28b`. Correctly
+signed serial-2 `unknown`, `ACTIVE` and empty-string statements produced raw
+SQLite errors and CLI exit 5. New API/CLI regressions initially gave six failures
+and three passes; the longer synthetic marker already failed generic length
+validation, and valid transitions already passed.
+
+The enum check now raises SchemaError before BEGIN IMMEDIATE, after the existing
+signature/issuer checks. The targeted witness suite passed 32 tests after the fix.
+Assertions check no transaction starts, active serial 1 survives reopening,
+untrusted values/passphrases are absent from diagnostics, and active serial
+advancement plus terminal revocation still work. T13/T17 map the exact tests.
+No CLI catch, protocol schema, wire bytes or database constraint was changed.
