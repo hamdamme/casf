@@ -2,7 +2,7 @@
 
 Status: prepared for reviewer selection; no independent assessment has been
 performed or commissioned by this document. No external outreach is authorized.
-The intended deployment is internal use with real audit records; validation data
+The intended deployment is internal business-transaction audit records; validation data
 must remain synthetic until deployment acceptance is approved.
 
 ## Exact review subject
@@ -81,8 +81,8 @@ place real records, credentials or keys in public issues or patches.
 Close P04 only when an identified independent reviewer supplies a signed or
 otherwise attributable report with scope, source hashes, methods, findings and
 unresolved items, and the maintainer records resolution or explicit disposition
-of each finding. Reviewer identity, engagement scope, timing and report location
-are currently **unassigned**. A prepared brief or a green CI run does not close P04.
+of each finding. The operator has no reviewer selected and requested a handoff package. Reviewer
+identity, engagement scope, timing and report location remain **unassigned**. A prepared brief or a green CI run does not close P04.
 
 ## Deployment questions that remain open
 

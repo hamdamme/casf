@@ -1,7 +1,7 @@
 # Internal operations acceptance worksheet
 
 Status: proposed acceptance requirements, not a deployed configuration. Intended
-use is internal real audit records. Source system, event classification, readers,
+use is internal business-transaction audit records. Source system, event classification, readers,
 operators and recovery targets await operator decisions. Keep synthetic data in
 the existing rehearsal. Completing this worksheet does not itself pass P05/P06.
 
@@ -14,7 +14,7 @@ protocols or new trust rules as implicit prerequisites to this reference project
 
 | Decision | Required answer | Current state |
 | --- | --- | --- |
-| First event source | Application/system, authenticated producer, event schema and stable retry ID | Awaiting operator |
+| First event source | Business transactions; application/system, authenticated producer, event schema and stable retry ID | Record category confirmed; source application pending |
 | Data classification | Fields permitted in records; prohibited secrets/personal data; payload access owner | Awaiting operator |
 | Readers and writers | Named service identities and human roles; who may append/export/read receipts | Awaiting operator |
 | Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Awaiting operator |
@@ -27,6 +27,37 @@ protocols or new trust rules as implicit prerequisites to this reference project
 No retention period, legal basis, recovery guarantee or named owner is inferred.
 The source-system owner must decide which events are authoritative and whether
 omissions can be detected; a valid CASF signature does not prove an event occurred.
+
+## Business-transaction integration acceptance
+
+The operator selected business transactions as the first record category. The
+following are proposed integration checks, not an implemented accounting system
+or a finalized event schema:
+
+- Identify the authoritative transaction ID and event ID separately. A retry of
+  one event must reuse its event ID; a later correction/refund is a distinct event
+  linked to the original transaction rather than an edit to signed history.
+- Define which transitions are recorded (for example created, approved, posted,
+  reversed) with the source owner. Do not infer business completion from a locally
+  appended CASF event or from a witness receipt.
+- If amounts are included, agree currency and exact integer-unit or canonical
+  string representation before integration. CASF wire JSON rejects floating-point
+  numbers; do not silently round amounts or assume all currencies use two decimals.
+- Use synthetic transaction identifiers for testing. Exclude passwords, access
+  tokens and payment credentials; decide explicitly which customer/account fields
+  are needed and who may read/export them. Payload confidentiality requires
+  deployment controls outside CASF's signatures.
+- Reconcile source transaction/event counts and identifiers with CASF records.
+  Exercise missing events, duplicate delivery, out-of-order delivery, source
+  outages, replay after restart and corrections. Signing cannot detect an event
+  that was never supplied without an independent completeness check.
+- Document the boundary between the business database commit and the CASF append.
+  Do not claim they form one atomic transaction. Select and test the application's
+  durable delivery/retry mechanism before using real transactions.
+
+Source application, reader roles, accepted schema, delivery design and expected
+volume are still unassigned. No source-system integration is authorized by this
+worksheet alone; its implementation must follow the confirmed application scope.
 
 ## Access and custody acceptance
 
