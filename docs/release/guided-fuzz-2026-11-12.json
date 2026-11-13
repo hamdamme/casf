@@ -1,0 +1,28 @@
+{
+  "completed_cases": 20025,
+  "corpus_cases": 25,
+  "max_input_bytes": 131072,
+  "max_retained_inputs": 256,
+  "mutation_cases": 20000,
+  "novel_mutations": 11,
+  "outcomes": {
+    "config:DuplicateKeyError": 160,
+    "config:NumericError": 1178,
+    "config:SchemaError": 4700,
+    "config:accepted": 674,
+    "wire:DuplicateKeyError": 464,
+    "wire:LimitError": 1300,
+    "wire:NumericError": 1839,
+    "wire:SchemaError": 7545,
+    "wire:UnicodeError_": 249,
+    "wire:accepted": 1916
+  },
+  "python_edges": 175,
+  "result": "PASS",
+  "retained_inputs": 36,
+  "seed": 20261112,
+  "runtime_revision": "aadcc190897ddfe884e97bc21c6a3a2795fe9430",
+  "python": "3.12.11",
+  "platform": "macOS-15.6.1-arm64-arm-64bit",
+  "harness_sha256": "9af524ba9e13a998d9c12e13983f1e9c64bfbeb0208a9046d132bca6534f93bc"
+}

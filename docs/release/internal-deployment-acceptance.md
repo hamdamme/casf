@@ -14,7 +14,7 @@ No release or production rollout is authorized by this plan.
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Reviewer must be selected |
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Decisions below required |
-| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Generated recovery sequences added; coverage-guided campaign still pending |
+| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Generated sequences accepted in PR 60; guided campaign passed locally, awaiting CI/review |
 | 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Publication requires separate approval |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
@@ -139,3 +139,33 @@ That run predates the generated test and does not validate the later revision.
 Final local suite: `PYTHONPATH=src .venv/bin/python -m pytest -q` —
 1,412 passed in 102.08 seconds. Ruff, strict mypy and repository/link validation
 also passed. No runtime source or dependency changes were made.
+
+## Guided parser campaign
+
+PR 60 merged at `aadcc190897ddfe884e97bc21c6a3a2795fe9430` after all 12 CI
+jobs passed. The next test-only change adds feedback-guided mutation using
+Python line-to-line execution edges in CASF modules. Newly reached edges retain
+inputs for future mutation. Native code, other threads, and stateful protocol
+operations are not instrumented; this complements the generated recovery model.
+
+The [recorded synthetic campaign](guided-fuzz-2026-11-12.json) on macOS arm64/Python 3.12.14 completed 20,025 inputs
+(seed 20261112): 25 corpus cases and 20,000 mutations, 175 observed Python edges,
+11 novel-path mutations and 36 retained inputs. No unexpected exception or
+round-trip failure was found. Edge counts describe this run, not a coverage
+percentage or a security guarantee. Existing documented parser rejections are
+expected results.
+
+```sh
+PYTHONPATH=src .venv/bin/python -m tests.fuzz --guided --seed 20261112 --cases 20000 --failures /tmp/casf-guided-failures
+```
+
+Inputs remain capped at 131,072 bytes, the retained pool at 256 entries, and the
+campaign at its case/time budget. Deadline exhaustion reports INCOMPLETE, never
+PASS. A deadline is checked between calls; the CI job timeout provides an outer
+process bound. Unexpected failures use the existing minimized replay artifact
+format and `python -m tests.fuzz --replay PATH`. Only synthetic corpus inputs
+are appropriate. Run without Python optimization so assertion oracles remain
+active. Fixed-seed reproduction requires the same code and Python version.
+
+Locked CI jobs run 2,025 guided inputs each, alongside the existing deterministic
+campaigns. The package has no new dependency and runtime behavior is unchanged.
