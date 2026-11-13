@@ -9,6 +9,7 @@ from tests.fuzz.runner import CampaignFailure, exercise, run_campaign
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--guided', action='store_true', help='retain Python-edge discoveries')
     parser.add_argument('--seed', type=int, default=20261110)
     parser.add_argument('--cases', type=int, default=2000)
     parser.add_argument('--seconds', type=int, default=60)
@@ -21,7 +22,9 @@ def main(argv=None):
             result = {'target': artifact['target'],
                       'outcome': exercise(artifact['target'], bytes.fromhex(artifact['data_hex']))}
         else:
-            result = run_campaign(seed=args.seed, cases=args.cases,
+            from tests.fuzz.guided import run_guided
+            campaign = run_guided if args.guided else run_campaign
+            result = campaign(seed=args.seed, cases=args.cases,
                                   seconds=args.seconds, failures=args.failures)
     except CampaignFailure as exc:
         print(json.dumps({'result': 'FAIL', 'failure': exc.category, 'replay': str(exc.artifact)}))

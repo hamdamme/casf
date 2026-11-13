@@ -72,6 +72,7 @@ jobs:
           for seed in 20261110 47 9007199254740991; do
             .venv/bin/python -m tests.fuzz --seed "$seed" --cases 2000 --failures "$RUNNER_TEMP/casf-fuzz" | tee -a "$RUNNER_TEMP/casf-fuzz/summary.jsonl"
           done
+          .venv/bin/python -m tests.fuzz --guided --seed 20261112 --cases 2000 --failures "$RUNNER_TEMP/casf-fuzz" | tee -a "$RUNNER_TEMP/casf-fuzz/summary.jsonl"
       - name: Preserve parser fuzz evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -18,7 +18,7 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Sessions 19–20 — recovery and generated adversarial tests**. Overall: **34/41 tasks accepted,
+**Phase 8, Session 20 — coverage-guided parser testing**. Overall: **34/41 tasks accepted,
 seven remaining**. P01 was accepted by PR 59 at
 `c09d3970b86dd035f07e4ee3dfc23767b4246408`; other
 acceptance evidence remains open. Reboot and physical power-loss tasks P02/P03
@@ -136,3 +136,7 @@ After every completed task, report: task ID and changes; checks actually run and
 - [Coverage status](test-coverage-status.md)
 
 The original 9 November audit and inventory describe the baseline. The [repository review](repository-review.md) reuses their findings and records every tracked path, corrections, retained evidence and verification limits for this revision.
+
+- PR 60 accepted the generated recovery sequences at
+  `aadcc190897ddfe884e97bc21c6a3a2795fe9430`; all 12 CI jobs passed. P07 remains
+  open until the guided campaign is reviewed. P02/P03 remain deferred.
