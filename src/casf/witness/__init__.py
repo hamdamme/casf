@@ -265,6 +265,8 @@ class Witness:
             if manifest["issuer_id"] != issuer:
                 raise CasfError("status issuer differs from manifest authority")
             serial, status = body["serial"], body["status"]
+            if status not in ("active", "revoked"):
+                raise SchemaError("status must be active or revoked")
             con = self._db.connection
             con.execute("BEGIN IMMEDIATE")
             try:
