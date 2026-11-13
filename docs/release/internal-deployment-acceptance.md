@@ -11,10 +11,10 @@ No release or production rollout is authorized by this plan.
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
 | 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Deferred by operator |
 | 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Deferred by operator; procedure only |
-| 18 | P04 | Independent security assessment with source hashes and resolved findings | Reviewer must be selected |
+| 18 | P04 | Independent security assessment with source hashes and resolved findings | Review brief prepared; independent reviewer required |
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
-| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Decisions below required |
-| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Generated sequences accepted in PR 60; guided campaign passed locally, awaiting CI/review |
+| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Operations worksheet prepared; operator decisions and evidence required |
+| 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
 | 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Publication requires separate approval |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
@@ -169,3 +169,10 @@ active. Fixed-seed reproduction requires the same code and Python version.
 
 Locked CI jobs run 2,025 guided inputs each, alongside the existing deterministic
 campaigns. The package has no new dependency and runtime behavior is unchanged.
+
+## Review and operations handoff
+
+Use the [independent review brief](independent-review-brief.md) for P04 and the
+[internal operations worksheet](internal-operations-worksheet.md) for P05/P06.
+These documents specify the source baseline, questions and acceptance evidence.
+They do not assign an external reviewer or claim an operational deployment.
