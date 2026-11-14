@@ -54,6 +54,7 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
         validate_base_url(base_url)
     except ValueError as e:
         raise CasfError(str(e)) from e
+    invalid_configuration = False
     try:
         status, payload = http_request(
             base_url, "POST", f"/v1/logs/{log_id}/latest", token,
@@ -61,6 +62,10 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
     except (OSError, http.client.HTTPException, ResponseLimitError) as e:
         raise InconclusiveError(
             "witness unreachable within the time budget") from e
+    except ValueError:
+        invalid_configuration = True
+    if invalid_configuration:
+        raise ValueError("invalid witness request configuration") from None
     try:
         parsed = parse(payload)
     except CasfError as e:
