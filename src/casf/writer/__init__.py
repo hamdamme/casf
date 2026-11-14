@@ -1044,6 +1044,7 @@ class Writer:
         except BaseException:
             con.rollback()
             raise
+        configuration_error: str | None = None
         try:
             status, payload = http_request(
                 base_url, "POST", f"/v1/logs/{log_id}/checkpoints", token,
@@ -1053,9 +1054,11 @@ class Writer:
                 "witness unreachable; the pending checkpoint keeps its "
                 "bytes for retry") from e
         except ValueError as e:
+            configuration_error = "invalid witness request configuration"
             if str(e) == "HTTP requires a literal loopback address; use HTTPS":
-                raise SchemaError("HTTP requires a literal loopback address; use HTTPS") from e
-            raise SchemaError("invalid witness request configuration") from e
+                configuration_error = "HTTP requires a literal loopback address; use HTTPS"
+        if configuration_error is not None:
+            raise SchemaError(configuration_error) from None
         if status in (429, 503):
             raise InconclusiveError("witness temporarily unavailable; pending bytes are retained")
         if status == 400:
@@ -1108,14 +1111,17 @@ class Writer:
         if pending is None:
             raise InconclusiveError("no pending checkpoint for receipt recovery")
         checkpoint = pending[0]
+        configuration_error: str | None = None
         try:
             status, payload = http_request(
                 base_url, "GET", f"/v1/logs/{log_id}/receipts/{checkpoint['checkpoint_hash']}",
                 token, b"", timeout=timeout)
         except (OSError, http.client.HTTPException, ResponseLimitError) as exc:
             raise InconclusiveError("receipt lookup unavailable; pending checkpoint unchanged") from exc
-        except ValueError as exc:
-            raise SchemaError("invalid witness request configuration") from exc
+        except ValueError:
+            configuration_error = "invalid witness request configuration"
+        if configuration_error is not None:
+            raise SchemaError(configuration_error) from None
         if status != 200:
             raise InconclusiveError("receipt unavailable; pending checkpoint unchanged")
         data = parse(payload)

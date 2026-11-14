@@ -187,6 +187,9 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) \
             or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("timeout must be positive and finite")
+    if not isinstance(token, str) or any(ord(char) < 32 or ord(char) == 127
+                                         or ord(char) > 255 for char in token):
+        raise ValueError("invalid bearer credential") from None
     host, port, https = validate_base_url(base_url)
     deadline = time.monotonic() + timeout
     sock = _connected_socket(host, port, https=https, deadline=deadline)
@@ -200,10 +203,17 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
         timer = threading.Timer(_remaining(deadline), _interrupt, args=(sock,))
         timer.daemon = True
         timer.start()
-        conn.request(method, path, body=body,
-                     headers={"Content-Type": "application/json",
-                              "Authorization": f"Bearer {token}",
-                              "Connection": "close"})
+        invalid_request = False
+        try:
+            conn.request(method, path, body=body,
+                         headers={"Content-Type": "application/json",
+                                  "Authorization": f"Bearer {token}",
+                                  "Connection": "close"})
+        except ValueError:
+            invalid_request = True
+        # Raise outside the handler: from None alone would retain __context__.
+        if invalid_request:
+            raise ValueError("invalid witness request configuration") from None
         response = conn.getresponse()
         if response.getheader("Transfer-Encoding") is not None:
             raise http.client.HTTPException(

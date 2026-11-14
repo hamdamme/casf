@@ -158,3 +158,19 @@ source rows and existing artifacts, exercise writer/witness migrations, and
 compare clean backup/migration rows with the source. All 137 targeted backup,
 migration, recovery and process-crash tests passed after the fix. T15 lists the
 new tests; no schema, signed bytes, trust rules or live-source WAL mode changed.
+
+## Bearer exception-chain redaction
+
+The report against `517aa3b6a962bdf82cefbe48c47d982c4bec4918` was reproduced
+on main `faebcff39bc1ba93fbaaf1804cd18caf61759f37`. All 22 new cases failed
+before the fix: newline/CRLF/embedded-newline and non-Latin-1 tokens across direct
+transport, online fetch, submission and receipt recovery; injected unsafe
+ValueError chains; and corrected-token loopback retries. Afterward, the new
+cases plus the existing submission retry tests passed (31 tests).
+
+Assertions render complete exceptions with `traceback.format_exception`, inspect
+`__cause__` and `__context__`, prohibit connection attempts/request bytes for
+malformed credentials, and compare canonical pending bytes before retry. Valid
+retries record the authentic receipt; direct receipt reads and online queries
+still succeed. Only synthetic credentials are used. T17/T22 identify the tests.
+The change preserves protocol bytes, trust rules and existing error categories.
