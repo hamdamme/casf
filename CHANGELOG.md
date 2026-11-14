@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Reject invalid administrative trust timeouts with the same rule used when loading trust files.
+
 - Reject unsupported witness status values as schema errors before opening a transaction.
 
 - Require actual Boolean unwitnessed-verification policy arguments.

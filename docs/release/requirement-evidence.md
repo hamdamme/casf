@@ -135,3 +135,13 @@ Assertions check no transaction starts, active serial 1 survives reopening,
 untrusted values/passphrases are absent from diagnostics, and active serial
 advancement plus terminal revocation still work. T13/T17 map the exact tests.
 No CLI catch, protocol schema, wire bytes or database constraint was changed.
+
+## Administrative trust timeout regression
+
+On baseline `587ab06361d12e2d1dd4095109d0416b5362ca45`, timeout 0/-1
+created unusable trust files, and nan/inf/-inf raised an uncaught JSON ValueError.
+The five invalid-value regressions failed before the fix; eight valid-value and
+loader cases already passed. All 13 pass with a shared validation helper used
+by trust creation and loading. Assertions cover exit 2, no output file or success
+message, no traceback, and accepted-file roundtrips for 0.5, 1 and 10 seconds.
+The existing reader rule and trust format are unchanged; T16 names the tests.

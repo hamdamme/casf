@@ -304,6 +304,7 @@ def _cmd_admin_status_install(args: argparse.Namespace) -> int:
 
 
 def _cmd_admin_trust(args: argparse.Namespace) -> int:
+    _validate_query_timeout(args.timeout)
     manifest = _read_json_file(args.manifest)
     body = _body_of(manifest)
     authority_pub = _public_key(args.authority_public_key)
@@ -660,6 +661,12 @@ _TRUST_POLICY_FIELDS = {"mode", "allow_unwitnessed",
                         "query_timeout_seconds", "max_chain_steps"}
 
 
+def _validate_query_timeout(timeout: object) -> None:
+    if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
+            or not math.isfinite(timeout) or timeout <= 0):
+        raise SchemaError("query_timeout_seconds must be positive and finite")
+
+
 def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
                                                  JsonObject, JsonObject]:
     trust = _read_json_file(path, configuration=True)
@@ -683,10 +690,7 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
     steps = policy["max_chain_steps"]
     if type(steps) is not int or not 1 <= steps <= SAFE_INT_MAX:
         raise SchemaError("max_chain_steps must be a positive safe integer")
-    timeout = policy["query_timeout_seconds"]
-    if (isinstance(timeout, bool) or not isinstance(timeout, (int, float))
-            or not math.isfinite(timeout) or timeout <= 0):
-        raise SchemaError("query_timeout_seconds must be positive and finite")
+    _validate_query_timeout(policy["query_timeout_seconds"])
     keys: dict[str, bytes] = {}
     for issuer, encoded in authorities.items():
         if not isinstance(encoded, str):
