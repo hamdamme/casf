@@ -24,7 +24,10 @@ Construct `WitnessService` with the database path, witness signing key,
 bearer credential, and authority keys. Provision registered logs through the
 existing witness API. Call `make_server(service, host, port)` and then
 `serve_forever()`. Obtain credentials from a protected configuration source;
-never place them in command line arguments or URLs.
+never place them in command line arguments or URLs. Client transport rejects
+malformed bearer credentials before connecting; do not append newline characters
+when loading a token. Configuration errors use fixed messages and discard unsafe
+exception chains rather than exposing a credential in a rendered traceback.
 
 For a background serving thread, call `shutdown()` from another thread,
 join the serving thread, then call `server_close()` and `service.close()`.

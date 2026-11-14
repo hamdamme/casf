@@ -43,3 +43,21 @@ at submission/receipt-recovery boundaries. The online wrapper retains CasfError
 for wrong types/nonfinite values and InconclusiveError for exhausted numeric
 budgets. Reconciliation retains its SchemaError validation. Total monotonic
 network deadlines and socket cleanup are unchanged.
+
+## Bearer configuration exception redaction
+
+The shared transport rejects non-string bearer credentials, ASCII control
+characters (including CR/LF and DEL), and characters outside the HTTP header's
+Latin-1 encoding before connecting. It does not trim or otherwise change a
+credential. A defensive boundary also replaces header-construction ValueError
+exceptions with a fixed message.
+
+Submission and receipt recovery retain SchemaError for invalid configuration;
+direct transport and online fetch retain ValueError for this transport error.
+Sanitized exceptions are raised after leaving the unsafe handler, with
+`from None`, so neither an explicit cause nor implicit context retains that
+exception. Using `from None` inside the handler alone would only hide the
+context when rendered. Network/TLS failure categories and socket cleanup remain
+unchanged. Pending canonical bytes survive and a corrected credential can retry.
+The regression checks ordinary complete traceback rendering and exception-chain
+attributes; applications must also avoid logging credentials or capturing locals.
