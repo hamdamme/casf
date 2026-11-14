@@ -390,7 +390,13 @@
         "tests/process/test_submission_crashes.py::test_killed_submission_reconciles_receipt_and_retained_state",
         "tests/process/test_state_crashes.py::test_killed_state_save_preserves_complete_history_and_other_manifests",
         "tests/unit/test_key_files.py::test_failed_flush_does_not_publish_partial_key",
-        "tests/unit/test_key_files.py::test_existing_key_survives_failed_overwrite"
+        "tests/unit/test_key_files.py::test_existing_key_survives_failed_overwrite",
+        "tests/unit/test_backup_sidecars.py::test_destination_artifacts_are_preserved",
+        "tests/unit/test_backup_sidecars.py::test_valid_stale_wal_is_rejected_before_backup_publication",
+        "tests/unit/test_backup_sidecars.py::test_migration_refuses_populated_destination_wal",
+        "tests/unit/test_backup_sidecars.py::test_sidecar_created_during_copy_prevents_publication",
+        "tests/unit/test_backup_sidecars.py::test_sidecar_publication_race_cannot_report_success",
+        "tests/unit/test_backup_sidecars.py::test_clean_destination_preserves_exact_source_rows"
       ],
       "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Platform and published-release results apply only to the revisions in docs/release/validation-matrix.md and docs/release/publication-0.1.0rc2.md. Later source fixes require separate validation; physical power-loss recovery is not established."
     },

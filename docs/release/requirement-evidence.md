@@ -146,6 +146,19 @@ by trust creation and loading. Assertions cover exit 2, no output file or succes
 message, no traceback, and accepted-file roundtrips for 0.5, 1 and 10 seconds.
 The existing reader rule and trust format are unchanged; T16 names the tests.
 
+## Backup destination sidecars
+
+The report against `517aa3b6a962bdf82cefbe48c47d982c4bec4918` was reproduced
+on main `faebcff39bc1ba93fbaaf1804cd18caf61759f37`: source payload 1, published
+backup payload 2 from a preserved WAL, and local integrity PASS. Before the fix,
+29 new regression cases failed and nine controls passed. The guards reject
+preexisting main/WAL/SHM paths (including dangling symlinks), sidecars created
+during copy, and collisions at publication or directory sync. Tests retain
+source rows and existing artifacts, exercise writer/witness migrations, and
+compare clean backup/migration rows with the source. All 137 targeted backup,
+migration, recovery and process-crash tests passed after the fix. T15 lists the
+new tests; no schema, signed bytes, trust rules or live-source WAL mode changed.
+
 ## Bearer exception-chain redaction
 
 The report against `517aa3b6a962bdf82cefbe48c47d982c4bec4918` was reproduced

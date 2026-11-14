@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Refuse backup and migration destinations with SQLite WAL/SHM sidecars, including publication races.
+
 - Reject malformed bearer credentials before connecting and remove unsafe configuration exception chains.
 
 - Reject invalid administrative trust timeouts with the same rule used when loading trust files.

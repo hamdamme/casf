@@ -19,6 +19,15 @@ from casf.storage.versioning import initialize, validate_schema
 __all__ = ["Database", "migrate_database"]
 
 
+def _refuse_destination_artifacts(dest: Path, operation: str, *,
+                                  include_main: bool = True) -> None:
+    if include_main and os.path.lexists(dest):
+        raise CasfError(f"{operation} destination already exists")
+    paths = [Path(str(dest) + suffix) for suffix in ("-wal", "-shm")]
+    if any(os.path.lexists(path) for path in paths):
+        raise CasfError(f"{operation} destination SQLite sidecar already exists")
+
+
 class Database:
     """One SQLite connection with the SPEC §17 settings verified."""
 
@@ -59,8 +68,7 @@ class Database:
     def backup(self, destination: str | Path) -> None:
         """Publish a complete, flushed backup without replacing an existing path."""
         dest = Path(destination).absolute()
-        if os.path.lexists(dest):
-            raise CasfError("backup destination already exists")
+        _refuse_destination_artifacts(dest, "backup")
         directory = os.open(dest.parent, os.O_RDONLY | os.O_DIRECTORY)
         try:
             with tempfile.TemporaryDirectory(prefix=".casf-backup-", dir=dest.parent) as staging:
@@ -75,6 +83,7 @@ class Database:
                     os.fsync(fd)
                 finally:
                     os.close(fd)
+                _refuse_destination_artifacts(dest, "backup")
                 try:
                     # A hard link publishes atomically and refuses every existing
                     # destination, including one created while the copy was running.
@@ -82,6 +91,9 @@ class Database:
                 except FileExistsError as exc:
                     raise CasfError("backup destination already exists") from exc
             os.fsync(directory)
+            # A sidecar arriving during publication must not turn failure into
+            # success. Leave all published artifacts intact for inspection.
+            _refuse_destination_artifacts(dest, "backup", include_main=False)
         finally:
             os.close(directory)
 
@@ -99,8 +111,7 @@ def migrate_database(source: str | Path, destination: str | Path, *, kind: str) 
         raise CasfError("storage kind must be writer or witness")
     schema = WRITER if kind == "writer" else WITNESS
     dest = Path(destination).absolute()
-    if os.path.lexists(dest):
-        raise CasfError("migration destination already exists")
+    _refuse_destination_artifacts(dest, "migration")
     with tempfile.TemporaryDirectory(prefix=".casf-migrate-", dir=dest.parent) as staging:
         snapshot = sqlite3.connect(Path(staging) / "snapshot.db")
         try:
