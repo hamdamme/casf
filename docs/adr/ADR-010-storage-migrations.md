@@ -49,3 +49,24 @@ layouts, byte preservation, state and retry preservation, invalid relationships,
 unknown schemas, interruptions and publication failures. Historical research
 outputs and cryptographic vectors are unchanged; later experiment reruns use
 new output locations.
+
+## Destination sidecar publication checks
+
+A stale destination WAL can replace the effective history of a newly published
+main database with different, independently valid records. Local integrity
+verification is not sufficient to prove that a backup matches its source.
+
+Backup and migration refuse an existing main file, `-wal`, or `-shm`, including
+dangling symlinks, without deleting any artifact. Backup rechecks after copying,
+before the exclusive hard link, and checks sidecars again after publication and
+directory synchronization before acknowledging success. Migration uses the same
+publication path and also checks before reading/copying its source. The live
+source retains WAL mode; its SQLite backup snapshot procedure is unchanged.
+
+A sidecar collision discovered after publication is an explicit failure. The
+new main file and colliding artifacts remain for investigation; they must not be
+promoted based only on local integrity checks. Retry at a genuinely unused path.
+As with service cutover, operators must keep the destination under exclusive
+control through completion: these checks do not lock out unrelated processes
+that open or modify the destination. Main-file nonreplacement remains atomic;
+no multi-file filesystem transaction or live-service replacement is claimed.

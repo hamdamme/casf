@@ -65,7 +65,16 @@ Migration uses a private disk snapshot through SQLite's
 A failed constraint, unsupported schema, disk error or interrupted copy cannot
 partially upgrade the source. Rows enter the destination schema in one
 transaction. Publication refuses an existing file, directory or symlink,
-including a destination created during the copy.
+including a destination created during the copy. The main file and its `-wal`
+and `-shm` names must all be unused; dangling symlinks also cause refusal.
+Backup rechecks before publication and after directory synchronization, and
+never deletes an existing sidecar. Keep other processes away from the destination
+until the operation finishes.
+
+A sidecar arriving during publication causes failure even if the new main file
+is already visible. Preserve those artifacts and retry at a genuinely unused
+path; do not delete a sidecar or trust the published copy merely because local
+integrity passes. Stale WAL can contain different but correctly signed history.
 
 On failure, leave the source and external state intact and inspect the error.
 Do not drop constraints or edit signed envelopes to make migration succeed.

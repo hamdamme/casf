@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Refuse backup and migration destinations with SQLite WAL/SHM sidecars, including publication races.
+
 - Reject invalid administrative trust timeouts with the same rule used when loading trust files.
 
 - Reject unsupported witness status values as schema errors before opening a transaction.
