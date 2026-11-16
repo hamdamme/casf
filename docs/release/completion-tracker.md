@@ -18,12 +18,13 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 16 — reboot acceptance review**. Overall: **35/41 tasks accepted,
-one passed and awaiting review (P02), five other tasks remaining**. Accepting this
-reboot evidence would bring the total to 36/41. P01 was accepted by PR 59 at
-`c09d3970b86dd035f07e4ee3dfc23767b4246408`. P02's normal reboot checks passed on
-16 November; see the [revision-specific record](reboot-2026-11-16.md).
-P03 physical power-loss testing remains deferred. P04–P06 and P08 remain open.
+**Phase 8, Session 17 — USB interruption evidence review**. Overall:
+**36/41 tasks accepted; four active tasks remain (P04–P06, P08), and one task
+(P03) is unscheduled and unverified for whole-machine power loss**. P02 was
+accepted in PR 69 at `1142ecc8265e87edff25b684244413724f97071a`.
+The [USB interruption result](usb-interruption-2026-11-16.md) passed its scoped
+checks and awaits review; it does not close P03. Whole-machine testing is not
+required for the current work and will not be scheduled without a new request.
 No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
