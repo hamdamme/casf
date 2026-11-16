@@ -62,6 +62,9 @@ def verify_bundle(source: str | Path, pins: TrustPins, mode: Mode = Mode.INTEGRI
     """
     from casf.verifier import verify
 
+    if not isinstance(mode, Mode):
+        raise ValueError("mode must be a Mode member")  # noqa: TRY004 - public argument contract
+
     with open_bundle(source, max_line_bytes=max_line_bytes, max_records=max_records,
                      max_evidence_objects=max_evidence_objects,
                      max_total_bytes=max_total_bytes) as bundle:
