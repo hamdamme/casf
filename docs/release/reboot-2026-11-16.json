@@ -1,0 +1,79 @@
+{
+  "summary": {
+    "result": "PASS",
+    "scope": "normal reboot of existing rehearsal revision cb3febff53a7cf8274a4b871f5be1382ebaedd33",
+    "checks": [
+      "boot ID changed",
+      "services started without desktop login",
+      "SQLite integrity ok",
+      "all six table row counts and fingerprints unchanged",
+      "authenticated TLS fresh signed checkpoint unchanged",
+      "retained revocation still rejects acceptance"
+    ],
+    "observation": "Proxy retried three times because LAN address was not yet available, then started automatically; no further restarts observed.",
+    "physical_power_loss_tested": false,
+    "latest_main_deployment_tested": false
+  },
+  "before": {
+    "boot_id": "4446a426-168e-47e3-8266-2acc959126e4",
+    "source": "cb3febff53a7cf8274a4b871f5be1382ebaedd33",
+    "integrity": "ok",
+    "row_counts": {
+      "manifests": 1,
+      "w_checkpoints": 4,
+      "w_receipts": 4,
+      "w_record_digests": 3,
+      "w_state": 1,
+      "w_status": 1
+    },
+    "row_digests": {
+      "manifests": "da7d6ba5390e7450aeea7efcc1a977e5bfb670ccddad8690e01c4e00b66066d7",
+      "w_checkpoints": "b997d89da06d389bafe570a9340ba05df021f858c4c36877d074bce57c2b977f",
+      "w_receipts": "39c74cf7e5b9cbe297c0a264777d11599bbd7c54a57140ae7c3d6b29426628a6",
+      "w_record_digests": "8564f1fbb815eae29af31bd2bfbe6e004f77f06c09d0a8901c3f3253efdcba98",
+      "w_state": "8e6a839d500d2d2b699943ba12447a55bf940a3b0e65b846df168f6c6ad75e42",
+      "w_status": "54aac35da4fd7fd7858e7d505ba9d5fdb84143f8d34803f6023cc6b0b43c5720"
+    }
+  },
+  "after": {
+    "boot_id": "329200a4-cc08-4768-abee-a065f7b953ac",
+    "source": "cb3febff53a7cf8274a4b871f5be1382ebaedd33",
+    "integrity": "ok",
+    "row_counts": {
+      "manifests": 1,
+      "w_checkpoints": 4,
+      "w_receipts": 4,
+      "w_record_digests": 3,
+      "w_state": 1,
+      "w_status": 1
+    },
+    "row_digests": {
+      "manifests": "da7d6ba5390e7450aeea7efcc1a977e5bfb670ccddad8690e01c4e00b66066d7",
+      "w_checkpoints": "b997d89da06d389bafe570a9340ba05df021f858c4c36877d074bce57c2b977f",
+      "w_receipts": "39c74cf7e5b9cbe297c0a264777d11599bbd7c54a57140ae7c3d6b29426628a6",
+      "w_record_digests": "8564f1fbb815eae29af31bd2bfbe6e004f77f06c09d0a8901c3f3253efdcba98",
+      "w_state": "8e6a839d500d2d2b699943ba12447a55bf940a3b0e65b846df168f6c6ad75e42",
+      "w_status": "54aac35da4fd7fd7858e7d505ba9d5fdb84143f8d34803f6023cc6b0b43c5720"
+    }
+  },
+  "online-before": {
+    "historical_evidence": "PASS",
+    "freshness": "FRESH_WITNESS_VIEW",
+    "checkpoint": [
+      3,
+      "cbf9384cfaa7fe58e3904fc2aaba54ac704c2596ddb9eb5bad69930ae9d6da41"
+    ],
+    "retained_revocation": "FAIL",
+    "revoked_writer_reauthorized": false
+  },
+  "online-after": {
+    "historical_evidence": "PASS",
+    "freshness": "FRESH_WITNESS_VIEW",
+    "checkpoint": [
+      3,
+      "cbf9384cfaa7fe58e3904fc2aaba54ac704c2596ddb9eb5bad69930ae9d6da41"
+    ],
+    "retained_revocation": "FAIL",
+    "revoked_writer_reauthorized": false
+  }
+}
