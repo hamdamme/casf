@@ -1,6 +1,6 @@
 # CASF completion tracker
 
-Updated 12 November 2026. Target: experimental v0.1 for research and evaluation.
+Updated 16 November 2026. Target: experimental v0.1 for research and evaluation.
 
 Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
 `ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
@@ -18,12 +18,13 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Sessions 18–19 — independent review and operations preparation**. Overall: **35/41 tasks accepted,
-six remaining**. P01 was accepted by PR 59 at
-`c09d3970b86dd035f07e4ee3dfc23767b4246408`; other
-acceptance evidence remains open. Reboot and physical power-loss tasks P02/P03
-are deferred at the operator's request. No setup command or power interruption
-is required for the current work. No new release is authorized.
+**Phase 8, Session 16 — reboot acceptance review**. Overall: **35/41 tasks accepted,
+one passed and awaiting review (P02), five other tasks remaining**. Accepting this
+reboot evidence would bring the total to 36/41. P01 was accepted by PR 59 at
+`c09d3970b86dd035f07e4ee3dfc23767b4246408`. P02's normal reboot checks passed on
+16 November; see the [revision-specific record](reboot-2026-11-16.md).
+P03 physical power-loss testing remains deferred. P04–P06 and P08 remain open.
+No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 

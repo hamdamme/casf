@@ -86,7 +86,8 @@ identity, engagement scope, timing and report location remain **unassigned**. A 
 
 ## Deployment questions that remain open
 
-Reboot and physical power-loss validation are deferred. The two-host rehearsal
+Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and awaits
+review. Physical power-loss validation remains deferred. The two-host rehearsal
 used one administrator; it does not establish administrative independence.
 The [operating worksheet](internal-operations-worksheet.md) still needs real
 owners and acceptance evidence. Canonical H1 retains its unmet primary result:

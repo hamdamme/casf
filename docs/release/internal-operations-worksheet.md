@@ -99,8 +99,9 @@ retained checkpoint/status serial, commands, outputs and elapsed time.
 
 Existing automated backup/rollback drills provide software evidence. They do
 not demonstrate the organization's encrypted backup system, access controls or
-independent custody. Physical power-loss and reboot tests remain deferred and
-must not be silently replaced by these restore checks.
+independent custody. Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and awaits
+review. Physical power-loss testing remains deferred and must not be silently
+replaced by these restore checks.
 
 ## Monitoring and incident acceptance
 

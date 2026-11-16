@@ -9,7 +9,7 @@ No release or production rollout is authorized by this plan.
 | Session | Task | Acceptance | Status |
 | --- | --- | --- | --- |
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
-| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Deferred by operator |
+| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Passed 16 November; [evidence awaiting review](reboot-2026-11-16.md) |
 | 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Deferred by operator; procedure only |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Review brief prepared; independent reviewer required |
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
@@ -24,8 +24,9 @@ state; retained conflict is WITNESS_STATE_CONFLICT. No protocol redesign is prop
 
 ## Reboot acceptance
 
-Deferred at the operator's request. Do not enable lingering or reboot as part of
-the current work. The following procedure is retained for later acceptance.
+Resumed with operator approval on 16 November 2026. The normal reboot checks
+passed on the existing rehearsal revision; [evidence](reboot-2026-11-16.md) is
+awaiting review. The procedure below remains available for future rehearsals.
 
 The test account's user services currently run under systemd. Enable lingering
 with `sudo loginctl enable-linger northern`, then enable only the two rehearsal
