@@ -9,8 +9,8 @@ No release or production rollout is authorized by this plan.
 | Session | Task | Acceptance | Status |
 | --- | --- | --- | --- |
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
-| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Passed 16 November; [evidence awaiting review](reboot-2026-11-16.md) |
-| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Deferred by operator; procedure only |
+| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reboot-2026-11-16.md) |
+| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | [USB interruption passed](usb-interruption-2026-11-16.md), awaiting review; whole-machine testing unscheduled and unverified |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Review brief prepared; independent reviewer required |
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Operations worksheet prepared; operator decisions and evidence required |
@@ -26,7 +26,7 @@ state; retained conflict is WITNESS_STATE_CONFLICT. No protocol redesign is prop
 
 Resumed with operator approval on 16 November 2026. The normal reboot checks
 passed on the existing rehearsal revision; [evidence](reboot-2026-11-16.md) is
-awaiting review. The procedure below remains available for future rehearsals.
+accepted in PR 69. The procedure below remains available for future rehearsals.
 
 The test account's user services currently run under systemd. Enable lingering
 with `sudo loginctl enable-linger northern`, then enable only the two rehearsal
@@ -38,7 +38,11 @@ login, authenticated fresh witness response, unchanged accepted head and success
 verification. Record boot journal errors and elapsed recovery time. A graceful
 reboot is not a physical power-loss test.
 
-## Physical power-loss procedure: preparation only
+## Physical power-loss procedure: unscheduled reference
+
+Whole-machine testing is not needed for the current work, at the operator's request.
+Do not schedule or execute the procedure below without a new request. The
+[USB-only test](usb-interruption-2026-11-16.md) does not establish this broader gate.
 
 Observed hardware: Dell XPS 15 9520 with BAT0; Linux root uses ext4 on NVMe.
 Disconnecting its charger leaves battery power and is not this test. Do not open

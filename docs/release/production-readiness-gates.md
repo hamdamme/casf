@@ -9,8 +9,8 @@ protocol redesign is included in the remediation PR.
 | Gate | Required owner and evidence | Status |
 | --- | --- | --- |
 | Independent cryptographic/security assessment | Independent reviewers: source hashes, canonicalization/domain separation, keys, epoch/trust/status, receipt binding, rollback, parsers, HTTP, SQLite and recovery; tracked unresolved findings. | Open |
-| Physical power-loss/filesystem durability | Deployment operator: predefined data-loss/recovery criteria; actual hardware, filesystem/mount/cache settings and Python/SQLite/OpenSSL versions; sudden power loss around commits, WAL, exports, state replacement and directory sync. SIGKILL is insufficient. | Deferred by operator |
-| Persistent cross-host TLS rehearsal | Operations/security: separate writer/witness hosts, supervised service, CA/hostname checks, private CA or proxy mTLS where chosen; credential/certificate rotation and expiry, restarts, failure, concurrency/limits, monitoring/redaction. | 22 cross-host checks accepted; normal reboot passed on the rehearsal revision (awaiting review); operating acceptance still open |
+| Physical power-loss/filesystem durability | Deployment operator: predefined data-loss/recovery criteria; actual hardware, filesystem/mount/cache settings and Python/SQLite/OpenSSL versions; sudden power loss around commits, WAL, exports, state replacement and directory sync. SIGKILL is insufficient. | USB-only interruption passed; whole-machine testing unscheduled and unverified |
+| Persistent cross-host TLS rehearsal | Operations/security: separate writer/witness hosts, supervised service, CA/hostname checks, private CA or proxy mTLS where chosen; credential/certificate rotation and expiry, restarts, failure, concurrency/limits, monitoring/redaction. | 22 cross-host checks accepted; normal reboot passed on the rehearsal revision (accepted in PR 69); operating acceptance still open |
 | Administrative separation and retained state | Security/operator: independent authority/writer/witness/verifier/backup domains, authenticated pins/status distribution, separate high-water/revocation storage; compromise, stale state, lost-key and restoration drills. Never delete state to make verification pass. | Open |
 | Deployment/access/data governance | Product/operator: tenant/log authorization, least privilege, keys, event provenance, privacy, retention/deletion/legal review, clocks, encrypted backups, restore authorization, migration/rollback, capacity and incident ownership; representative workload testing before real data. Witness hashes cannot restore lost records. | Open |
 | Research claims | Research owner: preserve canonical H1's unmet primary expectation. Without a retained client checkpoint, WITNESS_AHEAD is INCONCLUSIVE rather than the predeclared FAIL; retained conflicts yield WITNESS_STATE_CONFLICT. Changing semantics requires a separate ADR/protocol review. | Limitation retained |
@@ -26,9 +26,10 @@ Python-line-edge-guided JSON parser campaigns. The six locked-dependency CI jobs
 each run 2,000 guided mutations plus 25 seed cases. Both PRs passed their CI
 matrices. See [adversarial testing](../adversarial-testing.md) for commands and scope. These campaigns and process-crash tests do not exhaust
 all protocol states or crash schedules. The fuzz targets exclude HTTP framing,
-SQLite files and native cryptographic internals. Physical power-loss testing is
-not covered. P02 normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and awaits review;
-P03 physical power-loss work remains deferred;
+SQLite files and native cryptographic internals. Whole-machine power-loss testing remains unverified and unscheduled.
+P02 normal reboot [was accepted in PR 69](reboot-2026-11-16.md).
+The [USB interruption test](usb-interruption-2026-11-16.md) passed its scoped
+checks but does not close P03;
 use the [acceptance tracker](internal-deployment-acceptance.md) for current status.
 The [review brief](independent-review-brief.md) and
 [operations worksheet](internal-operations-worksheet.md) prepare the open review

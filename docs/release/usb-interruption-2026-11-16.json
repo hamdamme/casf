@@ -1,0 +1,44 @@
+{
+  "source_revision": "0923c8e5203a00b7e9678899f747d80c22fd51a2",
+  "test": "single sudden USB removal during synthetic appends",
+  "hardware": "SanDisk 3.2Gen1, approximately 16 GB",
+  "filesystem": "ext4",
+  "mount_options": "rw,nosuid,nodev,noexec,relatime",
+  "kernel": "Linux 7.0.0-43-generic",
+  "python": "3.14.4",
+  "sqlite": "3.46.1",
+  "openssl": "3.5.5",
+  "journal_mode": "wal",
+  "synchronous": 2,
+  "writer_stop": "OperationalError",
+  "comparison": {
+    "acknowledged_count": 638,
+    "recovered_count": 638,
+    "missing": [],
+    "changed": [],
+    "contiguous": true,
+    "sqlite_integrity": [
+      "ok"
+    ],
+    "verification_result": "PASS",
+    "recovery_error_type": null,
+    "additional_unacknowledged_sequences": [],
+    "passed": true
+  },
+  "preserved_artifacts": {
+    "writer.db": {
+      "size": 782336,
+      "sha256": "abef75cb1accfb9f7f0677c25fa022cc2ab2a0820aea4943620da55570c1fabc"
+    },
+    "writer.db-shm": {
+      "size": 3,
+      "sha256": "709e80c88487a2411e1ee4dfb9f22a861492d20c4765150c0c794abd70f8147c"
+    },
+    "writer.db-wal": {
+      "size": 4128272,
+      "sha256": "e3f4f05d0b9b93dd999a4de0b16318093fff2e9acc8c72c112adc72ce359f9b1"
+    }
+  },
+  "original_partition_image_sha256": "1cf0951c177e7e635faa25c00dbbdf376aa6f4f48fe9999d47e6dbdf922bee62",
+  "whole_machine_power_loss_tested": false
+}
