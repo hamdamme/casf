@@ -126,6 +126,14 @@ this interface makes no new incremental performance claim.
 
 ### Strict policy arguments
 
+`mode` must be a `Mode.INTEGRITY`, `Mode.ANCHORED` or `Mode.ONLINE` member.
+Both `verify` and `verify_bundle` reject raw strings (including `"online"`),
+integers, `None` and other invalid types with `ValueError` before consuming
+evidence; `verify_bundle` also rejects them before opening the bundle. Values
+are not coerced. Applications accepting mode text must explicitly convert it
+with `Mode(text)` before calling either API. Valid online verification still
+requires a caller-supplied freshness query, and reports retain the enum member.
+
 `allow_unwitnessed` accepts only actual Python `True` or `False`. Direct `verify`
 and `verify_bundle` calls reject strings, integers and `None` with `ValueError`;
 values are never coerced. The core rejects the argument before consuming record

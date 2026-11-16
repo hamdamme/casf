@@ -112,6 +112,8 @@ def verify(manifest_envelope: JsonObject,
     only the digests at their requested record counts. Iterator exceptions
     propagate, and checkpoint iterators must be independent of record iteration.
     """
+    if not isinstance(mode, Mode):
+        raise ValueError("mode must be a Mode member")  # noqa: TRY004 - public argument contract
     if anchor is not None and not isinstance(anchor, VerificationAnchor):
         raise SchemaError("anchor requires a VerificationAnchor")
     if type(max_chain_steps) is not int or max_chain_steps < 1:

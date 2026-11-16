@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Reject invalid verifier modes before evidence access so raw strings cannot skip online freshness checks.
+
 - Refuse backup and migration destinations with SQLite WAL/SHM sidecars, including publication races.
 
 - Reject malformed bearer credentials before connecting and remove unsafe configuration exception chains.

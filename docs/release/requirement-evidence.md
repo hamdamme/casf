@@ -174,3 +174,19 @@ malformed credentials, and compare canonical pending bytes before retry. Valid
 retries record the authentic receipt; direct receipt reads and online queries
 still succeed. Only synthetic credentials are used. T17/T22 identify the tests.
 The change preserves protocol bytes, trust rules and existing error categories.
+
+## Verifier mode validation
+
+On baseline `d9f5473949b99e1cacb4708b45116a8f57fb507f`, a direct call with
+`mode="online"` returned PASS with NOT_REQUESTED freshness without invoking
+the supplied callback. The new mode tests produced 17 failures and eight
+passing controls before the fix. Both public verifier entry points now reject
+non-Mode arguments with ValueError before evidence access or bundle I/O.
+T12 links the invalid-input, callback, valid-mode and serialization tests.
+
+Focused validation used `PYTHONPATH=src .venv/bin/python -m pytest
+tests/unit/test_verifier_mode.py tests/unit/test_verifier.py
+tests/unit/test_incremental_verification.py tests/unit/test_verify_bundle.py -q`:
+192 tests passed on macOS arm64 with Python 3.12.14. Protocol bytes, trust rules
+and valid-mode failure precedence are unchanged. Full platform validation runs
+in the existing CI matrix; prior fixes reuse their existing regression tests.
