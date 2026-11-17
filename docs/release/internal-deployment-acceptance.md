@@ -12,10 +12,10 @@ No release or production rollout is authorized by this plan.
 | 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reboot-2026-11-16.md) |
 | 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | [USB interruption accepted in PR 70](usb-interruption-2026-11-16.md); whole-machine testing unscheduled and unverified |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Outside current queue by operator request; assessment unperformed |
-| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) awaits review; operational provisioning incomplete |
-| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Daily manual backup policy agreed; synthetic restore passed; remaining operating decisions/evidence required |
+| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) accepted in PR 71; operational provisioning incomplete |
+| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Research-demo rules adopted; PR 72 demo and CI accepted; production acceptance incomplete |
 | 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
-| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Publication requires separate approval |
+| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Unpublished rc3 preparation; publication and download validation still require separate approval |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
 rehearsal does not close the independent assessment or hardware gates. Canonical
@@ -181,3 +181,9 @@ Use the [independent review brief](independent-review-brief.md) for P04 and the
 [internal operations worksheet](internal-operations-worksheet.md) for P05/P06.
 These documents specify the source baseline, questions and acceptance evidence.
 They do not assign an external reviewer or claim an operational deployment.
+
+## Research-demo closeout
+
+The [operating decisions and accepted evidence](research-demo-closeout.md) close
+the agreed synthetic demonstration scope. They do not close P05/P06 production
+gates or P08 publication. No additional application or deployment is required here.

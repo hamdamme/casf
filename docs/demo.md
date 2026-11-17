@@ -22,8 +22,9 @@ requires a new output directory. Existing output is never overwritten.
 The [example](../examples/verified_workflow.py) calls the public CLI entry point
 for its commands and the witness server API to start a temporary service.
 The full test suite runs the same example against both source and installed
-package configurations. Examples are checkout material, not an installed CLI
-subcommand or an approved release artifact.
+package configurations. Examples are checkout/source-archive material, not installed CLI subcommands.
+The source archive includes the workflow and transaction entry examples; candidate
+publication remains subject to explicit approval.
 
 ## What it checks
 

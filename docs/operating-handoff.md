@@ -67,12 +67,14 @@ using synthetic reproduction data. [SECURITY.md](../SECURITY.md) states best-eff
 
 ## What completion means
 
-The experimental v0.1 release is published; the [tracker](release/completion-tracker.md)
-records the accepted experimental plan and its evidence. It does not establish a production
-service. The original repository review has [reopened work](release/line-review-2026-11-11.md)
-and unreleased fixes; earlier acceptance does not establish that every file has
-been manually reviewed. The published prerelease does not establish a stable 1.0
-contract. Persistent Linux/HTTPS operation, independently administered
-witnesses, cloud deployment, physical power-loss testing and broader external review need
-separate scope and acceptance. The research H1 primary expectation remains unmet.
-No AWS server is needed merely to install, demonstrate or evaluate the published package.
+The experimental rc2 release remains published and unchanged. The scoped PR 57
+review was accepted at `e59fd64`; later changes carry their own tests and review
+history, including PR 72's accepted synthetic transaction demonstration. See the
+[research-demo closeout](release/research-demo-closeout.md) for current operating
+rules and the [candidate checklist](release/checklist-v0.1.md) for rc3 preparation.
+The original review is not a claim that every later file was manually reviewed.
+P05/P06 production provisioning and real-use acceptance remain incomplete; P08
+requires separately approved publication and public-download verification.
+Independent security review and whole-machine power-loss testing are outside
+this work queue and remain unperformed. Canonical H1's primary expectation remains
+unmet. No AWS deployment or production keys are required for this research demo.
