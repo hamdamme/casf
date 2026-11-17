@@ -30,6 +30,7 @@ things. Validation records must name the exact source or artifact bytes.
 | Completion phases and current task status | [Completion tracker](release/completion-tracker.md) |
 | Local startup checks, backup and restore | [Writer recovery](writer-recovery.md) |
 | Recovery failure cases and operating steps | [Recovery drills](recovery-drills.md) |
+| Synthetic transaction-entry example | [Transaction CLI](synthetic-transactions.md) |
 | Typed log, checkpoint, witness and export operations | [Log API](log-api.md) |
 | Immutable append requests and results | [Append API](append-api.md) |
 | Prefix exports and machine diagnostics | [Export and reports](export-and-reports.md) |
