@@ -1,0 +1,977 @@
+{
+  "artifacts": {
+    "casf-0.1.0rc3-py3-none-any.whl": {
+      "members_sha256": {
+        "casf-0.1.0rc3.dist-info/METADATA": "c7deec6170439cbaea95ddaca276eca3d0da2bd39ef1293e21a4951bd52040ef",
+        "casf-0.1.0rc3.dist-info/RECORD": "989880d76456ce438ca3d376427ac9cf7767ca5a77b91e5013969060ebe3bb1a",
+        "casf-0.1.0rc3.dist-info/WHEEL": "98e75747d0b7c0c568bfb71263c3d8f970b3a374a6996087bc642be5cb09a1aa",
+        "casf-0.1.0rc3.dist-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "casf-0.1.0rc3.dist-info/licenses/LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "casf-0.1.0rc3.dist-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "casf/__init__.py": "5382268003f6de9f041c4289dcc86d701e6baa3932a173501bb78f1c216f421e",
+        "casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "casf/bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "casf/cli/__init__.py": "79b8e31ab10e99f4ef027da6893729c0e1664d89889b769639d032ca6063f7cc",
+        "casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "casf/errors.py": "0ff72410d85cb11fac9c95b12bfc095ed6eebe2384f6a08f145e0d7bcd171563",
+        "casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "casf/keys.py": "81ca8aabb1d0a6f93a1689f8a545272e234ac3e5251c5ce8cab322e05569cb0f",
+        "casf/lifecycle.py": "881bd6c23beb023bfc5871ee631c613a67f0a264ecc50abef54b57fce4359021",
+        "casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "casf/model/schema.py": "36eba5a55f84984a43b29402bcc26655bf2a585d9acadadb3329c0f185c9f07c",
+        "casf/online.py": "ad13bdc757180e917617b83dc4e4d5bcb3dd555ffa2f9b52f77ace3b7b806e75",
+        "casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "casf/storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+        "casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "casf/storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+        "casf/transport.py": "89a5cbb1efb1493d1888273fe371a82147198bf308741b84d646ddf2508baa7d",
+        "casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "casf/trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+        "casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "casf/verifier/__init__.py": "7406945239ec84d4246564fc9c98d0f40ecdc0a0aa8461c4956a77c584135222",
+        "casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "casf/writer/__init__.py": "0dea6835d369da7f1932f66af4948b53ed4646fab002698922f1d1081daf24dd",
+        "casf/writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+        "casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+      },
+      "sha256": "ef05e5ee702bc1fd7aa792e48c584afafcf6fb080cfd88c192c8d37807fdbbd3",
+      "size": 109031
+    },
+    "casf-0.1.0rc3.tar.gz": {
+      "members_sha256": {
+        "LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "MANIFEST.in": "903697d1eab4b918a5fba0e9cd7b69d5f8b01229ed38b9b4e6fe436726656bca",
+        "PKG-INFO": "c7deec6170439cbaea95ddaca276eca3d0da2bd39ef1293e21a4951bd52040ef",
+        "README.md": "b09e455a6c0f8361946a57a5fbaa49fdc57f58a2eb820a450ffd515ae5c712eb",
+        "examples/__init__.py": "a34382bbd0a2cdbc5a4fcfed31f3ebaa7b405a6987959ef5b207855a5574265d",
+        "examples/transactions.py": "f6c7f26caa75e1dec4f15d701294adcbbb3af8a5cd92f1fe90e7d0b0f655cdb3",
+        "examples/verified_workflow.py": "c351c898662e4847d3188fa9f14b559d7be4cafbff9718aa2d3ce80142e5b10a",
+        "pyproject.toml": "ceca93f2ab9aab35b7cd479d3acaa2d3e299365760d6d54ec1d4a4a75eef6f93",
+        "setup.cfg": "1c473cbaee8da5fc46e7f0158794af5cea4414c34a3cf3f180c2001f5e38bd3e",
+        "src/casf.egg-info/PKG-INFO": "c7deec6170439cbaea95ddaca276eca3d0da2bd39ef1293e21a4951bd52040ef",
+        "src/casf.egg-info/SOURCES.txt": "b958e06a12bab28c4010e1c23b38b281d067a1d7b824104475011a3117ed4a0e",
+        "src/casf.egg-info/dependency_links.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf.egg-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "src/casf.egg-info/requires.txt": "a4402cae8da8c6ed5d260fe589f9166bd1917c838e3abfd3bd6f6479a6a3d98a",
+        "src/casf.egg-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "src/casf/__init__.py": "5382268003f6de9f041c4289dcc86d701e6baa3932a173501bb78f1c216f421e",
+        "src/casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "src/casf/bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "src/casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "src/casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "src/casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "src/casf/cli/__init__.py": "79b8e31ab10e99f4ef027da6893729c0e1664d89889b769639d032ca6063f7cc",
+        "src/casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "src/casf/errors.py": "0ff72410d85cb11fac9c95b12bfc095ed6eebe2384f6a08f145e0d7bcd171563",
+        "src/casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "src/casf/keys.py": "81ca8aabb1d0a6f93a1689f8a545272e234ac3e5251c5ce8cab322e05569cb0f",
+        "src/casf/lifecycle.py": "881bd6c23beb023bfc5871ee631c613a67f0a264ecc50abef54b57fce4359021",
+        "src/casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "src/casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "src/casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "src/casf/model/schema.py": "36eba5a55f84984a43b29402bcc26655bf2a585d9acadadb3329c0f185c9f07c",
+        "src/casf/online.py": "ad13bdc757180e917617b83dc4e4d5bcb3dd555ffa2f9b52f77ace3b7b806e75",
+        "src/casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf/storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+        "src/casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "src/casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "src/casf/storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+        "src/casf/transport.py": "89a5cbb1efb1493d1888273fe371a82147198bf308741b84d646ddf2508baa7d",
+        "src/casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "src/casf/trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+        "src/casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "src/casf/verifier/__init__.py": "7406945239ec84d4246564fc9c98d0f40ecdc0a0aa8461c4956a77c584135222",
+        "src/casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "src/casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "src/casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "src/casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "src/casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "src/casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "src/casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "src/casf/writer/__init__.py": "0dea6835d369da7f1932f66af4948b53ed4646fab002698922f1d1081daf24dd",
+        "src/casf/writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+        "src/casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "src/casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "src/casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011",
+        "uv.lock": "5ec6e1b58622a4f0c2c33aede62a0aa64811da00c2be44a9d813b2850766eee7"
+      },
+      "sha256": "4a5343e5d63a29a3b9acc16ea3f0992154e868fe7a3064bda4aa34b7199c0de3",
+      "size": 146540
+    }
+  },
+  "environments": {
+    "linux_sdist": {
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "packages": {
+        "casf": "0.1.0rc3",
+        "cffi": "2.1.1",
+        "click": "8.5.0",
+        "cryptography": "50.0.2",
+        "h11": "0.16.0",
+        "pycparser": "3.12",
+        "uvicorn": "0.54.0"
+      },
+      "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+      "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "python_tls": "OpenSSL 3.5.5 27 Jan 2026",
+      "runtime_files": 39,
+      "sqlite": "3.46.1",
+      "version": "0.1.0rc3"
+    },
+    "linux_wheel": {
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "packages": {
+        "casf": "0.1.0rc3",
+        "cffi": "2.1.1",
+        "click": "8.5.0",
+        "cryptography": "50.0.2",
+        "h11": "0.16.0",
+        "pycparser": "3.12",
+        "uvicorn": "0.54.0"
+      },
+      "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+      "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "python_tls": "OpenSSL 3.5.5 27 Jan 2026",
+      "runtime_files": 39,
+      "sqlite": "3.46.1",
+      "version": "0.1.0rc3"
+    },
+    "macos_base": {
+      "architecture": "arm64",
+      "casf": {
+        "files_sha256": {
+          "__init__.py": "5382268003f6de9f041c4289dcc86d701e6baa3932a173501bb78f1c216f421e",
+          "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+          "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+          "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+          "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+          "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+          "cli/__init__.py": "79b8e31ab10e99f4ef027da6893729c0e1664d89889b769639d032ca6063f7cc",
+          "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+          "errors.py": "0ff72410d85cb11fac9c95b12bfc095ed6eebe2384f6a08f145e0d7bcd171563",
+          "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+          "keys.py": "81ca8aabb1d0a6f93a1689f8a545272e234ac3e5251c5ce8cab322e05569cb0f",
+          "lifecycle.py": "881bd6c23beb023bfc5871ee631c613a67f0a264ecc50abef54b57fce4359021",
+          "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+          "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+          "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+          "model/schema.py": "36eba5a55f84984a43b29402bcc26655bf2a585d9acadadb3329c0f185c9f07c",
+          "online.py": "ad13bdc757180e917617b83dc4e4d5bcb3dd555ffa2f9b52f77ace3b7b806e75",
+          "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+          "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+          "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+          "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+          "storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+          "transport.py": "89a5cbb1efb1493d1888273fe371a82147198bf308741b84d646ddf2508baa7d",
+          "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+          "trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+          "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+          "verifier/__init__.py": "7406945239ec84d4246564fc9c98d0f40ecdc0a0aa8461c4956a77c584135222",
+          "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+          "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+          "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+          "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+          "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+          "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+          "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+          "writer/__init__.py": "0dea6835d369da7f1932f66af4948b53ed4646fab002698922f1d1081daf24dd",
+          "writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+          "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+          "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+          "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+        },
+        "mode": "wheel"
+      },
+      "context": {},
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "packages": {
+        "casf": "0.1.0rc3",
+        "cffi": "2.1.1",
+        "cryptography": "50.0.2",
+        "pycparser": "3.12"
+      },
+      "platform": "macOS-15.6.1-arm64-arm-64bit",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+      "recorded_at": "2026-11-17T04:23:03.504524+00:00",
+      "schema_version": 1,
+      "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48",
+      "sqlite": "3.53.1",
+      "worktree_clean": true
+    },
+    "macos_sdist": {
+      "architecture": "arm64",
+      "casf": {
+        "files_sha256": {
+          "__init__.py": "5382268003f6de9f041c4289dcc86d701e6baa3932a173501bb78f1c216f421e",
+          "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+          "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+          "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+          "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+          "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+          "cli/__init__.py": "79b8e31ab10e99f4ef027da6893729c0e1664d89889b769639d032ca6063f7cc",
+          "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+          "errors.py": "0ff72410d85cb11fac9c95b12bfc095ed6eebe2384f6a08f145e0d7bcd171563",
+          "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+          "keys.py": "81ca8aabb1d0a6f93a1689f8a545272e234ac3e5251c5ce8cab322e05569cb0f",
+          "lifecycle.py": "881bd6c23beb023bfc5871ee631c613a67f0a264ecc50abef54b57fce4359021",
+          "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+          "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+          "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+          "model/schema.py": "36eba5a55f84984a43b29402bcc26655bf2a585d9acadadb3329c0f185c9f07c",
+          "online.py": "ad13bdc757180e917617b83dc4e4d5bcb3dd555ffa2f9b52f77ace3b7b806e75",
+          "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+          "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+          "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+          "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+          "storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+          "transport.py": "89a5cbb1efb1493d1888273fe371a82147198bf308741b84d646ddf2508baa7d",
+          "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+          "trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+          "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+          "verifier/__init__.py": "7406945239ec84d4246564fc9c98d0f40ecdc0a0aa8461c4956a77c584135222",
+          "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+          "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+          "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+          "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+          "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+          "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+          "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+          "writer/__init__.py": "0dea6835d369da7f1932f66af4948b53ed4646fab002698922f1d1081daf24dd",
+          "writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+          "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+          "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+          "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+        },
+        "mode": "wheel"
+      },
+      "context": {},
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "packages": {
+        "casf": "0.1.0rc3",
+        "cffi": "2.1.1",
+        "click": "8.5.0",
+        "cryptography": "50.0.2",
+        "h11": "0.16.0",
+        "pycparser": "3.12",
+        "uvicorn": "0.54.0"
+      },
+      "platform": "macOS-15.6.1-arm64-arm-64bit",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+      "recorded_at": "2026-11-17T04:23:09.520207+00:00",
+      "schema_version": 1,
+      "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48",
+      "sqlite": "3.53.1",
+      "worktree_clean": true
+    },
+    "macos_witness": {
+      "architecture": "arm64",
+      "casf": {
+        "files_sha256": {
+          "__init__.py": "5382268003f6de9f041c4289dcc86d701e6baa3932a173501bb78f1c216f421e",
+          "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+          "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+          "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+          "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+          "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+          "cli/__init__.py": "79b8e31ab10e99f4ef027da6893729c0e1664d89889b769639d032ca6063f7cc",
+          "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+          "errors.py": "0ff72410d85cb11fac9c95b12bfc095ed6eebe2384f6a08f145e0d7bcd171563",
+          "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+          "keys.py": "81ca8aabb1d0a6f93a1689f8a545272e234ac3e5251c5ce8cab322e05569cb0f",
+          "lifecycle.py": "881bd6c23beb023bfc5871ee631c613a67f0a264ecc50abef54b57fce4359021",
+          "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+          "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+          "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+          "model/schema.py": "36eba5a55f84984a43b29402bcc26655bf2a585d9acadadb3329c0f185c9f07c",
+          "online.py": "ad13bdc757180e917617b83dc4e4d5bcb3dd555ffa2f9b52f77ace3b7b806e75",
+          "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+          "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+          "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+          "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+          "storage/versioning.py": "c373a393cc690567ad754f8eef40db28cabd5172c227d4379c48c6d2f745d51c",
+          "transport.py": "89a5cbb1efb1493d1888273fe371a82147198bf308741b84d646ddf2508baa7d",
+          "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+          "trust/state.py": "2326e341f020932c3049fd7b438a6406d5a7427856ca5d77dfbba04e969e247d",
+          "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+          "verifier/__init__.py": "7406945239ec84d4246564fc9c98d0f40ecdc0a0aa8461c4956a77c584135222",
+          "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+          "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+          "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+          "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+          "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+          "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+          "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+          "writer/__init__.py": "0dea6835d369da7f1932f66af4948b53ed4646fab002698922f1d1081daf24dd",
+          "writer/recovery.py": "4cb40b08db356e2f67759a5b046e907b7f46de667939cd198e5f224f07f526b7",
+          "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+          "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+          "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+        },
+        "mode": "wheel"
+      },
+      "context": {},
+      "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+      "packages": {
+        "casf": "0.1.0rc3",
+        "cffi": "2.1.1",
+        "click": "8.5.0",
+        "cryptography": "50.0.2",
+        "h11": "0.16.0",
+        "pycparser": "3.12",
+        "uvicorn": "0.54.0"
+      },
+      "platform": "macOS-15.6.1-arm64-arm-64bit",
+      "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+      "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+      "recorded_at": "2026-11-17T04:23:05.399792+00:00",
+      "schema_version": 1,
+      "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48",
+      "sqlite": "3.53.1",
+      "worktree_clean": true
+    }
+  },
+  "linux_artifact_sha256": {
+    "casf-0.1.0rc3-py3-none-any.whl": "ef05e5ee702bc1fd7aa792e48c584afafcf6fb080cfd88c192c8d37807fdbbd3",
+    "casf-0.1.0rc3.tar.gz": "4a5343e5d63a29a3b9acc16ea3f0992154e868fe7a3064bda4aa34b7199c0de3"
+  },
+  "linux_installation_checks": [
+    {
+      "check": "wheel-create",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-install",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-consistency",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-transactions",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-create",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-install",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-consistency",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-transactions",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-environment",
+      "exit_code": 0
+    }
+  ],
+  "macos_installation_checks": [
+    {
+      "check": "base-export",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-export",
+      "exit_code": 0
+    },
+    {
+      "check": "base-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "base-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "base-install",
+      "exit_code": 0
+    },
+    {
+      "check": "base-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "base-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "base-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "base-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "base-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "base-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-install",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-transaction-help",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-install",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-transaction-help",
+      "exit_code": 0
+    }
+  ],
+  "post_merge_ci": {
+    "jobs": [
+      {
+        "demo": true,
+        "job_id": 133814978389,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:21:16.2750951Z ======================= 1543 passed in 116.41s (0:01:56) ======================="
+        ],
+        "python": "3.12.16 (main, Oct 26 2026, 02:48:44) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978593,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pytest": [
+          "2026-11-17T04:22:08.9599700Z ======================= 1543 passed in 178.82s (0:02:58) ======================="
+        ],
+        "python": "3.13.17 (v3.13.17:64e080d3815, Oct 21 2026, 07:24:09) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978646,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:21:11.8816158Z ======================= 1543 passed in 113.04s (0:01:53) ======================="
+        ],
+        "python": "3.14.10 (main, Oct 26 2026, 14:17:03) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978666,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "pytest": [
+          "2026-11-17T04:22:46.2003010Z ======================= 1543 passed in 207.12s (0:03:27) ======================="
+        ],
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978689,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "pytest": [
+          "2026-11-17T04:22:40.1619790Z ======================= 1543 passed in 204.01s (0:03:24) ======================="
+        ],
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978700,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pytest": [
+          "2026-11-17T04:22:37.9198460Z ======================= 1543 passed in 197.00s (0:03:17) ======================="
+        ],
+        "python": "3.14.10 (v3.14.10:b703b2c5e70, Oct 25 2026, 14:17:53) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978712,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:21:47.3096397Z ======================= 1543 passed in 152.82s (0:02:32) ======================="
+        ],
+        "python": "3.13.18 (main, Oct 26 2026, 14:19:33) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978733,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:22:01.7621322Z ======================= 1543 passed in 169.70s (0:02:49) ======================="
+        ],
+        "python": "3.12.16 (main, Oct 26 2026, 02:48:44) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978754,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pytest": [
+          "2026-11-17T04:22:48.5628930Z ======================= 1543 passed in 211.62s (0:03:31) ======================="
+        ],
+        "python": "3.13.17 (v3.13.17:64e080d3815, Oct 21 2026, 07:24:09) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978803,
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:22:09.7589068Z ======================= 1543 passed in 177.49s (0:02:57) ======================="
+        ],
+        "python": "3.13.18 (main, Oct 26 2026, 14:19:33) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978858,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+        "pytest": [
+          "2026-11-17T04:21:32.2653816Z ======================= 1543 passed in 140.76s (0:02:20) ======================="
+        ],
+        "python": "3.14.10 (main, Oct 26 2026, 14:17:03) [GCC 15.2.0]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      },
+      {
+        "demo": true,
+        "job_id": 133814978872,
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc3",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pytest": [
+          "2026-11-17T04:25:35.3316510Z ======================= 1543 passed in 177.00s (0:02:56) ======================="
+        ],
+        "python": "3.14.10 (v3.14.10:b703b2c5e70, Oct 25 2026, 14:17:53) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48"
+      }
+    ],
+    "run_id": 44016310435
+  },
+  "previous_build": "a0ac1bfa61d3406c99b6bf758c62f6e840b633f3",
+  "runtime_files": 39,
+  "source_commit": "c38bf821af013eaa4efa96a799577dab60250b48",
+  "source_date_epoch": 1794889130,
+  "status": "unpublished; review required",
+  "version": "0.1.0rc3",
+  "worktree_clean": true
+}

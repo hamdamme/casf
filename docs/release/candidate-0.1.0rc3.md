@@ -1,4 +1,7 @@
-# Experimental 0.1.0rc3 candidate record
+# Initial experimental 0.1.0rc3 candidate record
+
+**Superseded for current artifact review by the [c38bf82 refresh](candidate-0.1.0rc3-c38bf82.md).**
+The original build evidence below remains historical.
 
 Prepared 16 November 2026 (17 November UTC), **unpublished and awaiting review**.
 Baseline main was PR 72 merge `40382b1ed5355fef9b7716919a7c141037528455`;
@@ -19,7 +22,7 @@ separate approval of the exact files and notes.
 | `casf-0.1.0rc3-py3-none-any.whl` | 108894 | `0cab3373d92476d46ea99bdce4cca4b37c9053e03d374c58de6ca3b276c331a6` |
 | `casf-0.1.0rc3.tar.gz` | 146253 | `a5c7afd71a93a31ed74736f150108352fa49807ba422a6cfe911e48d2173b82b` |
 
-[Checksums](SHA256SUMS-0.1.0rc3.txt) and the [machine-readable record](candidate-0.1.0rc3.json)
+[Original checksums](SHA256SUMS-0.1.0rc3-a0ac1bf.txt) and the [machine-readable record](candidate-0.1.0rc3.json)
 retain every artifact member hash, runtime inventory and installation check.
 The wheel contains 45 files; the source archive contains 55 regular files,
 including both Python examples. All 39 runtime files match the build revision.
