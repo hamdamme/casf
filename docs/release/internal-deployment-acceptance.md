@@ -187,3 +187,7 @@ They do not assign an external reviewer or claim an operational deployment.
 The [operating decisions and accepted evidence](research-demo-closeout.md) close
 the agreed synthetic demonstration scope. They do not close P05/P06 production
 gates or P08 publication. No additional application or deployment is required here.
+
+The [unpublished rc3 candidate](candidate-0.1.0rc3.md) contains the merged fixes
+and example with new artifact hashes. Synthetic candidate checks support release
+review, not P05/P06 real-use acceptance or P08 publication completion.

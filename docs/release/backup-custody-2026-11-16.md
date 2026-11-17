@@ -1,5 +1,10 @@
 # Backup and custody rehearsal — 16 November 2026
 
+This rehearsal was accepted by merged PR 71. Decisions described below reflect
+that rehearsal; the later [research-demo closeout](research-demo-closeout.md)
+adopts a Mac writer and demo recovery targets. Production placement/provisioning
+and real-use recovery acceptance remain separate.
+
 ## Agreed operating model
 
 One administrator initially controls the deployment. Authority administration

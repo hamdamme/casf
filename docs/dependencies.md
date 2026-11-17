@@ -83,8 +83,9 @@ license compliance or artifact acceptance.
 
 ## Current review record
 
-The [0.1.0rc2 review](release/dependency-review-0.1.0rc2.md) records the latest
-exact-version queries, distribution licenses and native-library findings.
+The [0.1.0rc3 review](release/dependency-review-0.1.0rc3.md) records the latest
+exact-version package queries and current runtime inventories. It distinguishes
+retained license evidence and dated native findings from refreshed package queries.
 The earlier dated records below are preserved as history.
 
 The [locked dependency review](release/dependency-review.md) records the full
