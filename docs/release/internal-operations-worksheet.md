@@ -103,7 +103,7 @@ retained checkpoint/status serial, commands, outputs and elapsed time.
 Existing automated backup/rollback drills provide software evidence. They do
 not demonstrate the organization's encrypted backup system, access controls or
 independent custody. Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and was
-accepted in PR 69. Whole-machine power-loss testing is unscheduled and unverified.
+accepted in PR 69. Whole-machine power-loss testing remains incomplete, pending future validation (P03).
 The [USB-only interruption result](usb-interruption-2026-11-16.md) and these
 restore checks do not establish whole-machine durability.
 

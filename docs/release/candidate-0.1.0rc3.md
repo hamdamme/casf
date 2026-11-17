@@ -119,5 +119,12 @@ checks rather than reusing this approval or overwriting rc2.
 
 The [research-demo operating rules](research-demo-closeout.md) are the agreed
 scope. P05/P06 production provisioning and real-use acceptance remain partial.
-Independent assessment and whole-machine power-loss testing are outside this
-queue and are not completed. H1's primary research expectation remains unmet.
+P03 whole-machine power-loss testing is pending future validation; P04 independent
+security review is pending independent evaluation. Both remain incomplete for
+future production-readiness evaluation and neither blocks experimental research
+publication. H1's primary research expectation remains unmet.
+
+The later P03/P04 status clarification, including README wording, does not change
+the recorded artifact bytes or validation results. Those files retain their
+identified build revision. Including later packaged documentation in a candidate
+requires a new build, hashes and installation checks before publication.

@@ -1,6 +1,7 @@
 # Independent security review brief
 
-Status: prepared for reviewer selection; no independent assessment has been
+Status: P04 — Pending independent evaluation; incomplete. Prepared for reviewer
+selection; no independent assessment has been
 performed or commissioned by this document. No external outreach is authorized.
 The intended deployment is internal business-transaction audit records; validation data
 must remain synthetic until deployment acceptance is approved.
@@ -87,8 +88,8 @@ identity, engagement scope, timing and report location remain **unassigned**. A 
 ## Deployment questions that remain open
 
 Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and was
-accepted in PR 69. Whole-machine power-loss validation is unscheduled and
-unverified; the [USB-only result](usb-interruption-2026-11-16.md) does not close it. The two-host rehearsal
+accepted in PR 69. Whole-machine power-loss testing is pending future validation
+and remains incomplete (P03); the [USB-only result](usb-interruption-2026-11-16.md) does not close it. The two-host rehearsal
 used one administrator; it does not establish administrative independence.
 The [operating worksheet](internal-operations-worksheet.md) still needs real
 owners and acceptance evidence. Canonical H1 retains its unmet primary result:

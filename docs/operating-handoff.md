@@ -75,6 +75,8 @@ rules and the [candidate checklist](release/checklist-v0.1.md) for rc3 preparati
 The original review is not a claim that every later file was manually reviewed.
 P05/P06 production provisioning and real-use acceptance remain incomplete; P08
 requires separately approved publication and public-download verification.
-Independent security review and whole-machine power-loss testing are outside
-this work queue and remain unperformed. Canonical H1's primary expectation remains
+P03 whole-machine power-loss testing is pending future validation; P04 independent
+security review is pending independent evaluation. Both remain incomplete and
+relevant to future production-readiness evaluation; neither blocks publication
+of the experimental research release. Canonical H1's primary expectation remains
 unmet. No AWS deployment or production keys are required for this research demo.

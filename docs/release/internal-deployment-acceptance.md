@@ -10,8 +10,8 @@ No release or production rollout is authorized by this plan.
 | --- | --- | --- | --- |
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
 | 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reboot-2026-11-16.md) |
-| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | [USB interruption accepted in PR 70](usb-interruption-2026-11-16.md); whole-machine testing unscheduled and unverified |
-| 18 | P04 | Independent security assessment with source hashes and resolved findings | Outside current queue by operator request; assessment unperformed |
+| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Pending future validation; incomplete. [USB interruption accepted in PR 70](usb-interruption-2026-11-16.md) does not close whole-machine testing |
+| 18 | P04 | Independent security assessment with source hashes and resolved findings | Pending independent evaluation; incomplete |
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) accepted in PR 71; operational provisioning incomplete |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Research-demo rules adopted; PR 72 demo and CI accepted; production acceptance incomplete |
 | 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
@@ -21,6 +21,12 @@ These eight tasks extend the accepted 33-task experimental plan. A passing
 rehearsal does not close the independent assessment or hardware gates. Canonical
 H1 remains unchanged: WITNESS_AHEAD is INCONCLUSIVE without retained conflicting
 state; retained conflict is WITNESS_STATE_CONFLICT. No protocol redesign is proposed.
+
+P03 (whole-machine power-loss testing) is **Pending future validation**. P04
+(independent security review) is **Pending independent evaluation**. Both remain
+incomplete and relevant to future production-readiness evaluation. Neither blocks
+publication of the experimental research release; separate publication approval
+and artifact validation are still required.
 
 ## Reboot acceptance
 
@@ -38,10 +44,11 @@ login, authenticated fresh witness response, unchanged accepted head and success
 verification. Record boot journal errors and elapsed recovery time. A graceful
 reboot is not a physical power-loss test.
 
-## Physical power-loss procedure: unscheduled reference
+## Physical power-loss procedure: future validation
 
-Whole-machine testing is not needed for the current work, at the operator's request.
-Do not schedule or execute the procedure below without a new request. The
+P03 remains pending future validation. The procedure is a reference, not
+authorization to interrupt hardware. Confirm the test equipment and procedure
+before execution. The
 [USB-only test](usb-interruption-2026-11-16.md) does not establish this broader gate.
 
 Observed hardware: Dell XPS 15 9520 with BAT0; Linux root uses ext4 on NVMe.
