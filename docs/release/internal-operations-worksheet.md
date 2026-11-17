@@ -2,7 +2,8 @@
 
 Status: proposed acceptance requirements, not a deployed configuration. Intended
 use is internal business-transaction audit records. Source system, event classification, readers,
-operators and recovery targets await operator decisions. Keep synthetic data in
+recovery targets and detailed access roles await operator decisions. One administrator
+will initially manage all roles; see [custody and backup evidence](backup-custody-2026-11-16.md). Keep synthetic data in
 the existing rehearsal. Completing this worksheet does not itself pass P05/P06.
 
 Use [administration](../administration.md), [writer recovery](../writer-recovery.md),
@@ -17,14 +18,14 @@ protocols or new trust rules as implicit prerequisites to this reference project
 | First event source | Business transactions; application/system, authenticated producer, event schema and stable retry ID | Record category confirmed; source application pending |
 | Data classification | Fields permitted in records; prohibited secrets/personal data; payload access owner | Awaiting operator |
 | Readers and writers | Readers must be authorized users; name the approving owner, roles and append/export/receipt permissions | Reader restriction confirmed; identities and enforcement pending |
-| Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Awaiting operator |
+| Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Single administrator; Mac authority/state, Linux witness, Proton backups; writer placement and operational provisioning pending |
 | Trust distribution | Authenticated public-pin/status channel and independent identity confirmation | Awaiting operator |
-| Retention | Record/backup/log lifetime, approved deletion procedure and policy owner | Awaiting operator |
-| Recovery | Maximum acceptable loss, maximum recovery time, backup frequency and restore approver | Awaiting operator |
+| Retention | Record/backup/log lifetime, approved deletion procedure and policy owner | Backups: 7 daily, 4 weekly, 3 monthly; record/log policy and deletion procedure pending |
+| Recovery | Maximum acceptable loss, maximum recovery time, backup frequency and restore approver | Daily manual backups, monthly restore test agreed; synthetic restore passed; recovery targets pending; no automation/reminder configured |
 | Capacity | Expected peak events/second, record size, daily volume, outage duration and available storage | Awaiting operator |
 | Alerts and incidents | Recipient, response target, escalation and maintenance owner | Awaiting operator |
 
-No retention period, legal basis, recovery guarantee or named owner is inferred.
+No record retention period, legal basis or recovery guarantee is inferred.
 The source-system owner must decide which events are authoritative and whether
 omissions can be detected; a valid CASF signature does not prove an event occurred.
 

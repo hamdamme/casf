@@ -8,11 +8,11 @@ protocol redesign is included in the remediation PR.
 
 | Gate | Required owner and evidence | Status |
 | --- | --- | --- |
-| Independent cryptographic/security assessment | Independent reviewers: source hashes, canonicalization/domain separation, keys, epoch/trust/status, receipt binding, rollback, parsers, HTTP, SQLite and recovery; tracked unresolved findings. | Open |
+| Independent cryptographic/security assessment | Independent reviewers: source hashes, canonicalization/domain separation, keys, epoch/trust/status, receipt binding, rollback, parsers, HTTP, SQLite and recovery; tracked unresolved findings. | Unperformed; outside current queue by operator request |
 | Physical power-loss/filesystem durability | Deployment operator: predefined data-loss/recovery criteria; actual hardware, filesystem/mount/cache settings and Python/SQLite/OpenSSL versions; sudden power loss around commits, WAL, exports, state replacement and directory sync. SIGKILL is insufficient. | USB-only interruption passed; whole-machine testing unscheduled and unverified |
 | Persistent cross-host TLS rehearsal | Operations/security: separate writer/witness hosts, supervised service, CA/hostname checks, private CA or proxy mTLS where chosen; credential/certificate rotation and expiry, restarts, failure, concurrency/limits, monitoring/redaction. | 22 cross-host checks accepted; normal reboot passed on the rehearsal revision (accepted in PR 69); operating acceptance still open |
-| Administrative separation and retained state | Security/operator: independent authority/writer/witness/verifier/backup domains, authenticated pins/status distribution, separate high-water/revocation storage; compromise, stale state, lost-key and restoration drills. Never delete state to make verification pass. | Open |
-| Deployment/access/data governance | Product/operator: tenant/log authorization, least privilege, keys, event provenance, privacy, retention/deletion/legal review, clocks, encrypted backups, restore authorization, migration/rollback, capacity and incident ownership; representative workload testing before real data. Witness hashes cannot restore lost records. | Open |
+| Administrative separation and retained state | Security/operator: independent authority/writer/witness/verifier/backup domains, authenticated pins/status distribution, separate high-water/revocation storage; compromise, stale state, lost-key and restoration drills. Never delete state to make verification pass. | Single-administrator model selected; synthetic permissions/restore checks recorded; operational provisioning incomplete |
+| Deployment/access/data governance | Product/operator: tenant/log authorization, least privilege, keys, event provenance, privacy, retention/deletion/legal review, clocks, encrypted backups, restore authorization, migration/rollback, capacity and incident ownership; representative workload testing before real data. Witness hashes cannot restore lost records. | Daily manual backup policy selected; other operating acceptance remains open |
 | Research claims | Research owner: preserve canonical H1's unmet primary expectation. Without a retained client checkpoint, WITNESS_AHEAD is INCONCLUSIVE rather than the predeclared FAIL; retained conflicts yield WITNESS_STATE_CONFLICT. Changing semantics requires a separate ADR/protocol review. | Limitation retained |
 | New release and provenance | Maintainer: separately approve a new version, fresh advisories, inspected packages, exact hashes, download and fresh-install checks. Never replace existing rc2 assets. | Open; not authorized here |
 
@@ -34,3 +34,6 @@ use the [acceptance tracker](internal-deployment-acceptance.md) for current stat
 The [review brief](independent-review-brief.md) and
 [operations worksheet](internal-operations-worksheet.md) prepare the open review
 and deployment gates without claiming they have passed.
+
+The [custody and backup record](backup-custody-2026-11-16.md) distinguishes
+operator-reported cloud settings, measured restore results and unconfigured automation.

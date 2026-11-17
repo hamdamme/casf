@@ -1,0 +1,21 @@
+{
+  "download_sha256": "78122a5e8ff8d3da5f25ec2b9bed6b9ab13ca72f42857b168615a78d28f72011",
+  "archive_matches": true,
+  "all_packaged_file_hashes_match": true,
+  "restored_backup": {
+    "sqlite_integrity": "ok",
+    "casf_result": "PASS",
+    "record_count": 20,
+    "matches_independent_history": true
+  },
+  "older_snapshot_control": {
+    "sqlite_integrity": "ok",
+    "casf_result": "PASS",
+    "record_count": 10,
+    "matches_independent_history": false
+  },
+  "older_snapshot_accepted_by_comparison": false,
+  "scope": "Synthetic manual cloud roundtrip; offline integrity plus separately retained exact-history comparison. No online freshness, operational key recovery, automation or provider encryption audit.",
+  "source_revision": "792e461f7cd27b1b16413d648c74f571333a7f52",
+  "transport_observation": "Operator reported Proton upload and download; the downloaded archive was checked locally."
+}
