@@ -1,5 +1,8 @@
 # Initial experimental 0.1.0rc3 candidate record
 
+> Historical preparation record. Subsequent publication and download verification
+> are recorded in the [rc3 publication closeout](publication-0.1.0rc3.md).
+
 **Superseded for current artifact review by the [c38bf82 refresh](candidate-0.1.0rc3-c38bf82.md).**
 The original build evidence below remains historical.
 

@@ -21,7 +21,7 @@ The protocol specification remains a design review document. The project has not
 Start with the [operating and maintenance handoff](docs/operating-handoff.md). The
 [rc2 publication record](docs/release/publication-0.1.0rc2.md) retains the earlier release
 files and download evidence. The [rc3 release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3)
-provides the current experimental artifacts; its source distribution is also
+provides the current experimental artifacts with [publication and installation evidence](docs/release/publication-0.1.0rc3.md); its source distribution is also
 [archived on Zenodo](https://doi.org/10.5281/zenodo.24321232). No PyPI release has been published.
 
 The scoped [tracked-file review](docs/release/line-review-2026-11-11.md) and corrections

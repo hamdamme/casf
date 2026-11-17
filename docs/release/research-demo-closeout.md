@@ -49,7 +49,7 @@ alerts, operational recovery and real-use acceptance are outside this scope.
 P03 whole-machine power-loss testing is pending future validation; P04 independent
 security review is pending independent evaluation. Both remain incomplete and
 relevant to future production-readiness evaluation. Neither blocks publication
-of the experimental research release. P08 stays open until an approved new release is published
+of the experimental research release. P08 is now complete: the [rc3 publication record](publication-0.1.0rc3.md) confirms an approved release was published
 and its downloaded files are validated. Published rc2 assets must not be replaced.
 Canonical H1 remains unmet: without retained conflicting state, WITNESS_AHEAD is
 INCONCLUSIVE rather than the predeclared FAIL. No protocol change is proposed.

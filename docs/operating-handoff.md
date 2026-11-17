@@ -71,10 +71,10 @@ The experimental rc2 release remains published and unchanged. The scoped PR 57
 review was accepted at `e59fd64`; later changes carry their own tests and review
 history, including PR 72's accepted synthetic transaction demonstration. See the
 [research-demo closeout](release/research-demo-closeout.md) for current operating
-rules and the [candidate checklist](release/checklist-v0.1.md) for rc3 preparation.
+rules and the [publication record](release/publication-0.1.0rc3.md) for rc3 verification.
 The original review is not a claim that every later file was manually reviewed.
 P05/P06 production provisioning and real-use acceptance remain incomplete; P08
-requires separately approved publication and public-download verification.
+is complete following approved rc3 publication and public-download verification.
 P03 whole-machine power-loss testing is pending future validation; P04 independent
 security review is pending independent evaluation. Both remain incomplete and
 relevant to future production-readiness evaluation; neither blocks publication

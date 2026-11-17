@@ -1,14 +1,14 @@
 # Current CASF implementation reference
 
-The experimental 0.1.0rc2 GitHub prerelease is published. The
-[publication record](release/publication-0.1.0rc2.md) distinguishes the build commit,
+The experimental 0.1.0rc3 GitHub prerelease is published. The
+[publication record](release/publication-0.1.0rc3.md) distinguishes the build commit,
 accepted review revision, Linux validation and public-installation evidence.
 Start with the [operating handoff](operating-handoff.md). The separate
 [research follow-up](../research/current-evidence-2026-11-10.md) identifies its
 measurement revision and preserves the historical results.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
 work from remaining validation, research and release gates. Package metadata is
-`0.1.0rc3` (unpublished); the proposed wire profile is `casf-v1`. These identify different
+`0.1.0rc3` (published experimental prerelease); the proposed wire profile is `casf-v1`. These identify different
 things. Validation records must name the exact source or artifact bytes.
 
 The [research-demo closeout](release/research-demo-closeout.md) records accepted
@@ -46,7 +46,7 @@ PR 71/72 evidence and adopted synthetic-only operating rules.
 The [repository review](release/repository-review.md) accounts for tracked files
 and records retained historical material, corrections and verification limits.
 The [line-review continuation](release/line-review-2026-11-11.md) records additional
-source fixes and the methods used for all tracked files. Those fixes are unreleased and are
+source fixes and the methods used for all tracked files. Those fixes are included in rc3, but are
 not included in the published `0.1.0rc2` downloads.
 
 The specification states intended requirements, not proof of complete

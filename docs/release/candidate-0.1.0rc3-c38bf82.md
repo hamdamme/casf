@@ -1,5 +1,8 @@
 # Refreshed experimental 0.1.0rc3 candidate
 
+> Historical preparation record. Subsequent publication and download verification
+> are recorded in the [rc3 publication closeout](publication-0.1.0rc3.md).
+
 Prepared 17 November 2026 UTC from merged PR 74 revision
 `c38bf821af013eaa4efa96a799577dab60250b48`. **Unpublished; review and separate
 publication approval required.** No tag, release, deployment or PyPI upload was
