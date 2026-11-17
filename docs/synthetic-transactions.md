@@ -72,3 +72,14 @@ occurred or that the application supplied every event.
 This example supports synthetic integration acceptance only. Production source
 selection, access control, durable source-to-CASF delivery, monitoring, operating
 keys and backup automation remain separate decisions.
+
+## Recorded demonstration
+
+On 16 November 2026, a Mac writer and isolated Linux witness completed the
+[six-check demonstration](release/transactions-2026-11-16.json): verified
+initialization, creation, identical retry, refund, conflicting retry rejection,
+and online verification. Exactly two records remained and freshness was
+FRESH_WITNESS_VIEW. HTTP stayed on loopback inside an authenticated SSH tunnel;
+this was not a new TLS validation. The temporary witness/tunnel were stopped
+afterward. Existing rehearsal services were not changed. This is a completed
+synthetic demonstration, not an always-running transaction application.
