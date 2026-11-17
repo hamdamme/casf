@@ -115,7 +115,7 @@ jobs:
 
   minimum:
     name: ${{ matrix.check-name }} (${{ matrix.python-version }})
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runner || matrix.os }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -127,6 +127,10 @@ jobs:
             check-name: minimum
           - os: macos-15
             check-name: minimum macos
+          # Keep arm64 coverage while avoiding the saturated macOS 15 pool.
+          - os: macos-15
+            python-version: "3.13"
+            runner: macos-26
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -194,7 +198,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: parser-fuzz-minimum-${{ matrix.os }}-${{ matrix.python-version }}
+          name: parser-fuzz-minimum-${{ matrix.runner || matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-fuzz/
           if-no-files-found: ignore
           retention-days: 14
@@ -202,7 +206,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: validation-minimum-${{ matrix.os }}-${{ matrix.python-version }}
+          name: validation-minimum-${{ matrix.runner || matrix.os }}-${{ matrix.python-version }}
           path: ${{ runner.temp }}/casf-validation/
           if-no-files-found: error
           retention-days: 14
