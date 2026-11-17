@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use CASF in research, please cite this archived software version."
+type: software
+title: "CASF: Cryptographic Audit and Signing Framework (0.1.0rc3)"
+authors:
+  - family-names: Aynazarov
+    given-names: Hamdam
+    affiliation: Independent researcher
+    orcid: "https://orcid.org/0009-0009-0905-2628"
+version: 0.1.0rc3
+date-released: 2026-11-16
+doi: 10.5281/zenodo.24321232
+url: "https://zenodo.org/records/24321232"
+repository-code: "https://github.com/hamdamme/casf"
+license: Apache-2.0
