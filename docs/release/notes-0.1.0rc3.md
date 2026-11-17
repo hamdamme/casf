@@ -42,7 +42,9 @@ checkpoints produce WITNESS_STATE_CONFLICT. Neither the wording nor protocol is
 changed to hide that result.
 
 Synthetic tests do not establish production provisioning, independent administration,
-real-event provenance or physical power-loss durability. Independent security review
-and whole-machine power-loss work remain unperformed and outside this queue.
+real-event provenance or physical power-loss durability. P03 whole-machine power-loss testing is pending future validation; P04
+independent security review is pending independent evaluation. Both remain
+incomplete and relevant to future production-readiness evaluation, but neither
+blocks publication of this experimental research release.
 [Production gates](production-readiness-gates.md) and [native-component advisory scope](dependency-review-0.1.0rc3.md)
 remain separate. Passing the recorded assertions does not establish absence of all defects.

@@ -29,6 +29,12 @@ The [research-demo closeout](docs/release/research-demo-closeout.md) records the
 accepted evidence and operating rules. Published rc2 downloads predate these fixes.
 The next candidate is prepared for review only; no new publication is authorized.
 
+P03 (whole-machine power-loss testing) is **Pending future validation**. P04
+(independent security review) is **Pending independent evaluation**. Both remain
+incomplete and relevant to future production-readiness evaluation. Neither blocks
+publication of the experimental research release; separate publication approval
+and artifact validation are still required.
+
 ## Capabilities
 
 - **Signed records:** Bind each record to its log, sequence, predecessor, and signing key using Ed25519 and SHA-256.

@@ -49,6 +49,8 @@ This is one interruption at an uncontrolled write timing on this USB and filesys
 It does not establish exhaustive crash schedules, checkpoint/submission recovery,
 internal-SSD durability, or sudden whole-machine electrical power loss. No new
 software regression suite or release was required for this operational test.
-Whole-machine power-loss and forced-shutdown testing are unscheduled at the
-operator's request and are not prerequisites for the current work. The broader
-physical durability gate remains unverified; the USB result does not close it.
+Current status: P03 whole-machine power-loss testing is pending future validation
+and remains incomplete. It does not block experimental research publication but
+remains relevant to future production-readiness evaluation. The USB result does
+not close it. The [status decision record](completion-tracker.md#production-evaluation-status-decision)
+preserves the earlier scheduling decision; the measured results above are unchanged.

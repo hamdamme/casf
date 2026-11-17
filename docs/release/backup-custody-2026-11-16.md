@@ -97,6 +97,9 @@ The successful synthetic restore and permissions inspection do not close all
 custody or operations requirements. Remaining work includes operational key and
 pin provisioning, writer placement, real event-source integration, recovery targets,
 access/alert decisions and evidence that the agreed backup procedure is operated.
-Independent external review is outside the current queue at the operator's request
-and remains unperformed. Whole-machine power-loss testing remains unscheduled.
+Current status: P03 whole-machine power-loss testing is pending future validation;
+P04 independent security review is pending independent evaluation. Both remain
+incomplete future production-readiness evaluations, not experimental release
+publication blockers. The [status decision record](completion-tracker.md#production-evaluation-status-decision)
+preserves the earlier scheduling decision separately from these test results.
 No release or real-data rollout is authorized by this record.

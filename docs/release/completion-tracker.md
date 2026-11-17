@@ -21,8 +21,11 @@ Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current posit
 **Phase 8, Session 21 — research-demo closeout and unpublished candidate review**. Overall:
 **36/41 tasks accepted; P08 candidate preparation is delivered for review, with publication still open.**
 P05/P06 remain partial production gates, outside this research-demo closeout.
-P03 whole-machine power-loss testing is unscheduled and unverified. P04 independent
-review is outside the current queue at the operator's request and remains unperformed.
+**P03: Whole-machine power-loss testing — Pending future validation.**
+**P04: Independent security review — Pending independent evaluation.**
+Both tasks remain explicitly incomplete and relevant to future production-readiness
+evaluation. Neither blocks publication of the experimental research release;
+artifact review, publication approval and download validation remain required.
 Neither is counted as complete. P02 was accepted in PR 69; the scoped USB result
 was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without closing P03.
 [Permissions, backup roundtrip and daily policy evidence](backup-custody-2026-11-16.md)
@@ -145,8 +148,9 @@ After every completed task, report: task ID and changes; checks actually run and
 The original 9 November audit and inventory describe the baseline. The [repository review](repository-review.md) reuses their findings and records every tracked path, corrections, retained evidence and verification limits for this revision.
 
 - PR 60 accepted the generated recovery sequences at
-  `aadcc190897ddfe884e97bc21c6a3a2795fe9430`; all 12 CI jobs passed. P07 remains
-  open until the guided campaign is reviewed. P02/P03 remain deferred.
+  `aadcc190897ddfe884e97bc21c6a3a2795fe9430`; all 12 CI jobs passed. At that revision, P07 remained
+  open until guided-campaign review, and P02/P03 had not been scheduled. This is
+  historical status; the current task dispositions above supersede it.
 
 - PR 61 accepted P07 at `c263d6e0ca8ec29e2edd6cbc6c593ae087fe9021`.
   All 12 CI jobs passed. The independent review brief and internal operations
@@ -162,5 +166,20 @@ Build revision `a0ac1bfa61d3406c99b6bf758c62f6e840b633f3` passed 1543 local sour
 tests, 8100 parser inputs, 33 Mac installation checks and 20 Linux checks of the
 same artifact bytes. Final PR CI is a separate revision-specific acceptance step.
 P08 remains open for review, separate publication approval and downloaded-artifact
-validation. P03/P04 are outside the current queue, not completed; P05/P06 remain
+validation. P03 is pending future validation and P04 is pending independent
+evaluation; both remain incomplete without blocking experimental publication. P05/P06 remain
 partial production gates. No completed-task count is increased by preparation.
+
+## Production evaluation status decision
+
+The current decision keeps P03 **Pending future validation** and P04 **Pending
+independent evaluation**. Both are incomplete future production-readiness
+evaluations, not experimental research release publication blockers. This changes
+status wording and release scope, not test results or completed-task counts.
+
+Historically, the operator chose not to schedule whole-machine interruption tests
+and postponed commissioning an independent review during the synthetic rehearsal.
+The [pre-change records at PR 73's merge](https://github.com/hamdamme/casf/tree/d77daf31e3324ab75180bbfacc1457f49a1383cb/docs/release)
+retain those earlier decisions. The current pending statuses supersede that
+scheduling language. USB/reboot results, source revisions, artifact checksums and
+all recorded validation outcomes remain unchanged.

@@ -46,8 +46,10 @@ The research demo and its operating decisions are recorded. Release candidate
 preparation and review remain separate from publication. P05/P06 stay partial:
 production access, key/pin provisioning, event provenance, representative workloads,
 alerts, operational recovery and real-use acceptance are outside this scope.
-Independent assessment and whole-machine power-loss work remain unscheduled and
-unperformed, not completed. P08 stays open until an approved new release is published
+P03 whole-machine power-loss testing is pending future validation; P04 independent
+security review is pending independent evaluation. Both remain incomplete and
+relevant to future production-readiness evaluation. Neither blocks publication
+of the experimental research release. P08 stays open until an approved new release is published
 and its downloaded files are validated. Published rc2 assets must not be replaced.
 Canonical H1 remains unmet: without retained conflicting state, WITNESS_AHEAD is
 INCONCLUSIVE rather than the predeclared FAIL. No protocol change is proposed.
