@@ -6,6 +6,8 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Add a synthetic transaction-entry example using verified append and witness submission.
+
 - Reject invalid verifier modes before evidence access so raw strings cannot skip online freshness checks.
 
 - Refuse backup and migration destinations with SQLite WAL/SHM sidecars, including publication races.

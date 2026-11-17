@@ -15,7 +15,7 @@ protocols or new trust rules as implicit prerequisites to this reference project
 
 | Decision | Required answer | Current state |
 | --- | --- | --- |
-| First event source | Business transactions; application/system, authenticated producer, event schema and stable retry ID | Record category confirmed; source application pending |
+| First event source | Business transactions; application/system, authenticated producer, event schema and stable retry ID | Synthetic transaction CLI selected for the first demonstration; production source application pending |
 | Data classification | Fields permitted in records; prohibited secrets/personal data; payload access owner | Awaiting operator |
 | Readers and writers | Readers must be authorized users; name the approving owner, roles and append/export/receipt permissions | Reader restriction confirmed; identities and enforcement pending |
 | Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Single administrator; Mac authority/state, Linux witness, Proton backups; writer placement and operational provisioning pending |
@@ -56,8 +56,9 @@ or a finalized event schema:
   Do not claim they form one atomic transaction. Select and test the application's
   durable delivery/retry mechanism before using real transactions.
 
-Source application, reader roles, accepted schema, delivery design and expected
-volume are still unassigned. No source-system integration is authorized by this
+The [synthetic transaction CLI](../synthetic-transactions.md) is the first demonstration
+source. Production application, reader roles, accepted business schema, delivery
+design and expected volume remain unassigned. No source-system integration is authorized by this
 worksheet alone; its implementation must follow the confirmed application scope.
 
 ## Access and custody acceptance

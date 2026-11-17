@@ -1,0 +1,36 @@
+{
+  "source_revision": "b3e35d8c0a3b7dc564d5f8020f7f6923bca6bd09",
+  "synthetic": true,
+  "writer_host": "macOS",
+  "witness_host": "Linux",
+  "transport": "loopback HTTP carried through authenticated SSH tunnel; not a TLS test",
+  "records": 2,
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "verified initialization",
+      "exit_code": 0
+    },
+    {
+      "check": "create and witness transaction",
+      "exit_code": 0
+    },
+    {
+      "check": "identical retry",
+      "exit_code": 0
+    },
+    {
+      "check": "append and witness refund",
+      "exit_code": 0
+    },
+    {
+      "check": "conflicting retry rejected",
+      "exit_code": 5
+    },
+    {
+      "check": "online verification",
+      "exit_code": 0
+    }
+  ],
+  "freshness": "FRESH_WITNESS_VIEW"
+}

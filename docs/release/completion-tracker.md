@@ -25,7 +25,9 @@ review is outside the current queue at the operator's request and remains unperf
 Neither is counted as complete. P02 was accepted in PR 69; the scoped USB result
 was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without closing P03.
 [Permissions, backup roundtrip and daily policy evidence](backup-custody-2026-11-16.md)
-await review. P05/P06 remain partial: operational keys, trust provisioning and
+were accepted in PR 71. The [synthetic transaction CLI](../synthetic-transactions.md)
+is the next integration demonstration; its acceptance does not establish a production
+event source. P05/P06 remain partial: operational keys, trust provisioning and
 real-use acceptance are not established by synthetic tests. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
