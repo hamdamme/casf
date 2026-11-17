@@ -18,14 +18,15 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 17 — USB interruption evidence review**. Overall:
-**36/41 tasks accepted; four active tasks remain (P04–P06, P08), and one task
-(P03) is unscheduled and unverified for whole-machine power loss**. P02 was
-accepted in PR 69 at `1142ecc8265e87edff25b684244413724f97071a`.
-The [USB interruption result](usb-interruption-2026-11-16.md) passed its scoped
-checks and awaits review; it does not close P03. Whole-machine testing is not
-required for the current work and will not be scheduled without a new request.
-No new release is authorized.
+**Phase 8, Session 19 — custody and backup rehearsal review**. Overall:
+**36/41 tasks accepted; three active tasks remain (P05, P06, P08)**.
+P03 whole-machine power-loss testing is unscheduled and unverified. P04 independent
+review is outside the current queue at the operator's request and remains unperformed.
+Neither is counted as complete. P02 was accepted in PR 69; the scoped USB result
+was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without closing P03.
+[Permissions, backup roundtrip and daily policy evidence](backup-custody-2026-11-16.md)
+await review. P05/P06 remain partial: operational keys, trust provisioning and
+real-use acceptance are not established by synthetic tests. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 

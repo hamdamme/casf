@@ -10,10 +10,10 @@ No release or production rollout is authorized by this plan.
 | --- | --- | --- | --- |
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
 | 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reboot-2026-11-16.md) |
-| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | [USB interruption passed](usb-interruption-2026-11-16.md), awaiting review; whole-machine testing unscheduled and unverified |
-| 18 | P04 | Independent security assessment with source hashes and resolved findings | Review brief prepared; independent reviewer required |
-| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Existing rollback/backup drills rerun; administrative custody still required |
-| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Operations worksheet prepared; operator decisions and evidence required |
+| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | [USB interruption accepted in PR 70](usb-interruption-2026-11-16.md); whole-machine testing unscheduled and unverified |
+| 18 | P04 | Independent security assessment with source hashes and resolved findings | Outside current queue by operator request; assessment unperformed |
+| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) awaits review; operational provisioning incomplete |
+| 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Daily manual backup policy agreed; synthetic restore passed; remaining operating decisions/evidence required |
 | 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
 | 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Publication requires separate approval |
 
