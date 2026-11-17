@@ -3,6 +3,7 @@
 **Cryptographic Audit and Signing Framework**
 
 [![CI](https://github.com/hamdamme/casf/actions/workflows/ci.yml/badge.svg)](https://github.com/hamdamme/casf/actions/workflows/ci.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24321232.svg)](https://doi.org/10.5281/zenodo.24321232)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 CASF is an experimental Python framework for creating cryptographically verifiable audit records. It combines Ed25519 signatures, SHA-256 hash chaining, canonical JSON based on RFC 8785, and an independent witness that retains authenticated checkpoints.
@@ -11,15 +12,17 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Source candidate:** `0.1.0rc3` (unpublished) · **Protocol:** proposed `casf-v1` profile · **Latest published release:** [0.1.0rc2 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
+**Latest published release:** [0.1.0rc3 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3) · **Protocol:** proposed `casf-v1` profile
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
 The protocol specification remains a design review document. The project has not undergone an independent security audit and should not be treated as production ready security infrastructure.
 
 Start with the [operating and maintenance handoff](docs/operating-handoff.md). The
-[publication record](docs/release/publication-0.1.0rc2.md) identifies the exact release
-files and verified downloads. No PyPI release has been published.
+[rc2 publication record](docs/release/publication-0.1.0rc2.md) retains the earlier release
+files and download evidence. The [rc3 release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3)
+provides the current experimental artifacts; its source distribution is also
+[archived on Zenodo](https://doi.org/10.5281/zenodo.24321232). No PyPI release has been published.
 
 The scoped [tracked-file review](docs/release/line-review-2026-11-11.md) and corrections
 were accepted in PR 57 at `e59fd64`; that review does not cover every later change.
@@ -27,13 +30,13 @@ Subsequent fixes and the [synthetic transaction demo](docs/synthetic-transaction
 were accepted through PR 72 at `40382b1`, whose post-merge CI passed.
 The [research-demo closeout](docs/release/research-demo-closeout.md) records the
 accepted evidence and operating rules. Published rc2 downloads predate these fixes.
-The next candidate is prepared for review only; no new publication is authorized.
+The rc3 experimental release includes these fixes and the synthetic demo.
 
 P03 (whole-machine power-loss testing) is **Pending future validation**. P04
 (independent security review) is **Pending independent evaluation**. Both remain
 incomplete and relevant to future production-readiness evaluation. Neither blocks
-publication of the experimental research release; separate publication approval
-and artifact validation are still required.
+publication of experimental research releases; future releases still require
+separate publication approval and artifact validation.
 
 ## Capabilities
 
@@ -62,7 +65,7 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/
 
 This checks out the development source and runs its tests. It is **not** a production deployment guide. For implemented behavior and specification differences, start with the [current implementation reference](docs/current-reference.md). The [project specification](docs/specification/CASF_SPEC_001.md) defines the intended protocol requirements. The [historical archive](docs/historical/README.md) preserves the original Word document and prototype manuals; their examples are not current instructions.
 
-For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). The `0.1.0rc2` candidate is not published to a package index. Do not install it with a package index command yet.
+For user installation and verification instructions, see the [installation and usage guide](docs/installation.md). CASF is not published to a package index; use the GitHub release artifacts.
 
 For a complete local walkthrough, run the [verified synthetic demo](docs/demo.md).
 It provisions temporary keys and a loopback witness, verifies exported evidence,
@@ -138,3 +141,15 @@ Do not describe CASF as tamper proof, formally verified, independently audited, 
 The software is licensed under the [Apache License 2.0](LICENSE). The
 [research manuscript](research/preprint/README.md) has a separate publication
 license decision pending; no manuscript deposit or DOI is claimed.
+
+## Citation
+
+If you use CASF in research, cite the archived software version:
+
+> Aynazarov, H. (2026). CASF: Cryptographic Audit and Signing Framework (0.1.0rc3)
+> (Version 0.1.0rc3) [Computer software]. Zenodo.
+> https://doi.org/10.5281/zenodo.24321232
+
+Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
+This DOI identifies the rc3 software archive, not the separate research manuscript
+or later changes on `main`.

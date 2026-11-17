@@ -97,8 +97,9 @@ the scope of its dated platform checks. The package license uses the SPDX expres
 
 ## Minimum dependency compatibility
 
-The separate `minimum` CI matrix uses Python 3.12, 3.13, and 3.14 on both
-platforms. It reads the
+The separate `minimum` CI matrix uses Python 3.12, 3.13, and 3.14 on
+Ubuntu, and Python 3.12 on macOS. The macOS 3.13 and 3.14 combinations
+remain covered by the locked-dependency jobs. It reads the
 base and witness requirements from pyproject.toml and uses uv's
 `lowest-direct` resolution in a fresh environment. The build backend minimum
 is also read from the declared build requirements. Transitive dependencies
