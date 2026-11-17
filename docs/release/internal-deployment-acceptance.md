@@ -15,7 +15,7 @@ No release or production rollout is authorized by this plan.
 | 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) accepted in PR 71; operational provisioning incomplete |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Research-demo rules adopted; PR 72 demo and CI accepted; production acceptance incomplete |
 | 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
-| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Unpublished rc3 preparation; publication and download validation still require separate approval |
+| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Complete; [approved rc3 publication and public-download validation](publication-0.1.0rc3.md) |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
 rehearsal does not close the independent assessment or hardware gates. Canonical
@@ -193,8 +193,8 @@ They do not assign an external reviewer or claim an operational deployment.
 
 The [operating decisions and accepted evidence](research-demo-closeout.md) close
 the agreed synthetic demonstration scope. They do not close P05/P06 production
-gates or P08 publication. No additional application or deployment is required here.
+gates. P08 is closed by the [publication evidence](publication-0.1.0rc3.md). No additional application or deployment is required here.
 
-The [unpublished rc3 candidate](candidate-0.1.0rc3.md) contains the merged fixes
-and example with new artifact hashes. Synthetic candidate checks support release
-review, not P05/P06 real-use acceptance or P08 publication completion.
+The [published rc3 build](candidate-0.1.0rc3-c38bf82.md) contains the merged fixes
+and example with identified artifact hashes. Its approved publication and public
+installation checks close P08, not P05/P06 real-use acceptance.

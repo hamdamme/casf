@@ -1,6 +1,7 @@
-# CASF 0.1.0rc3 — experimental candidate notes
+# CASF 0.1.0rc3 — experimental release notes
 
-Unpublished review candidate for synthetic research and evaluation. This is not
+Published experimental prerelease for synthetic research and evaluation. See the
+[publication closeout](publication-0.1.0rc3.md). This is not
 production deployment approval. The [candidate record](candidate-0.1.0rc3-c38bf82.md)
 identifies the exact build revision, hashes and executed checks.
 

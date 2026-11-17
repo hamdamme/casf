@@ -1,0 +1,782 @@
+{
+  "release_url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3",
+  "published_at": "2026-11-17T04:41:37Z",
+  "tag": "v0.1.0rc3",
+  "build_commit": "c38bf821af013eaa4efa96a799577dab60250b48",
+  "review_commit": "90c84d02ad3775e685f3dd6c69b939adc71148d9",
+  "prerelease": true,
+  "pypi_upload": false,
+  "rc2_unchanged": true,
+  "assets": [
+    {
+      "name": "casf-0.1.0rc3-py3-none-any.whl",
+      "size": 109031,
+      "digest": "sha256:ef05e5ee702bc1fd7aa792e48c584afafcf6fb080cfd88c192c8d37807fdbbd3",
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3-py3-none-any.whl"
+    },
+    {
+      "name": "casf-0.1.0rc3.tar.gz",
+      "size": 146540,
+      "digest": "sha256:4a5343e5d63a29a3b9acc16ea3f0992154e868fe7a3064bda4aa34b7199c0de3",
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3.tar.gz"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 184,
+      "digest": "sha256:ea00278905bd025afe1dd799b6cd1395f72883b1897c4d6016cfb25dbf07f685",
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/SHA256SUMS.txt"
+    }
+  ],
+  "post_merge_ci_run": 44018097812,
+  "ci_jobs_passed": 12,
+  "mac_downloads": [
+    {
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3.tar.gz",
+      "name": "casf-0.1.0rc3.tar.gz",
+      "sha256": "4a5343e5d63a29a3b9acc16ea3f0992154e868fe7a3064bda4aa34b7199c0de3",
+      "size": 146540,
+      "authenticated": false
+    },
+    {
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3-py3-none-any.whl",
+      "name": "casf-0.1.0rc3-py3-none-any.whl",
+      "sha256": "ef05e5ee702bc1fd7aa792e48c584afafcf6fb080cfd88c192c8d37807fdbbd3",
+      "size": 109031,
+      "authenticated": false
+    },
+    {
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/SHA256SUMS.txt",
+      "name": "SHA256SUMS.txt",
+      "sha256": "ea00278905bd025afe1dd799b6cd1395f72883b1897c4d6016cfb25dbf07f685",
+      "size": 184,
+      "authenticated": false
+    }
+  ],
+  "linux_downloads": [
+    {
+      "name": "casf-0.1.0rc3.tar.gz",
+      "sha256": "4a5343e5d63a29a3b9acc16ea3f0992154e868fe7a3064bda4aa34b7199c0de3",
+      "size": 146540,
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3.tar.gz",
+      "authenticated": false
+    },
+    {
+      "name": "casf-0.1.0rc3-py3-none-any.whl",
+      "sha256": "ef05e5ee702bc1fd7aa792e48c584afafcf6fb080cfd88c192c8d37807fdbbd3",
+      "size": 109031,
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/casf-0.1.0rc3-py3-none-any.whl",
+      "authenticated": false
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "sha256": "ea00278905bd025afe1dd799b6cd1395f72883b1897c4d6016cfb25dbf07f685",
+      "size": 184,
+      "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc3/SHA256SUMS.txt",
+      "authenticated": false
+    }
+  ],
+  "mac_install_checks": [
+    {
+      "check": "base-export",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-export",
+      "exit_code": 0
+    },
+    {
+      "check": "base-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "base-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "base-install",
+      "exit_code": 0
+    },
+    {
+      "check": "base-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "base-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "base-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "base-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "base-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "base-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-install",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "witness-transaction-help",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-venv",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-install",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-consistent",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-cli",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-transaction-help",
+      "exit_code": 0
+    }
+  ],
+  "linux_install_checks": [
+    {
+      "check": "wheel-create",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-install",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-consistency",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-transactions",
+      "exit_code": 0
+    },
+    {
+      "check": "wheel-environment",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-create",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-deps",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-install",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-consistency",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-smoke",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-fixture",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-public-verify",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-transactions",
+      "exit_code": 0
+    },
+    {
+      "check": "sdist-environment",
+      "exit_code": 0
+    }
+  ],
+  "zenodo": {
+    "doi": "10.5281/zenodo.24321232",
+    "url": "https://zenodo.org/records/24321232",
+    "archive_sha256": "1ab5cfa6f5267fe720cae3e7acce7dea23e9c7a16f90c63b7c8f19c61a4ab552",
+    "regular_files": 55,
+    "download_verified": "2026-11-17"
+  },
+  "prepublication_advisories": {
+    "queried_at_utc": "2026-11-17T04:37:08.613626+00:00",
+    "lock_sha256": "5ec6e1b58622a4f0c2c33aede62a0aa64811da00c2be44a9d813b2850766eee7",
+    "packages": [
+      {
+        "name": "ast-serialize",
+        "version": "0.13.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/ast-serialize/0.13.1/json",
+          "response_sha256": "9b0729d3fb981e4e2b4bb8c95faddafb64aac14fa31568f1b7c373c9a681cc34",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "build",
+        "version": "1.6.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/build/1.6.1/json",
+          "response_sha256": "064e9dcb80e948b5de7a841c3fd9b5644a980eb27bb644fb7f562b7d773b157b",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "cffi",
+        "version": "2.1.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/cffi/2.1.1/json",
+          "response_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT-0",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "click",
+        "version": "8.5.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/click/8.5.0/json",
+          "response_sha256": "6fc33d0e534d89a788a0965bb5071ca0726a483747589201789b60babd602686",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "BSD-3-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "colorama",
+        "version": "0.4.6",
+        "pypi": {
+          "url": "https://pypi.org/pypi/colorama/0.4.6/json",
+          "response_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": "",
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "cryptography",
+        "version": "50.0.2",
+        "pypi": {
+          "url": "https://pypi.org/pypi/cryptography/50.0.2/json",
+          "response_sha256": "7423990cc0948676ef47a71ea62a476ece4c76245e6bebd1c3a71f03c4ffc0f4",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "Apache-2.0 OR BSD-3-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/h11/0.16.0/json",
+          "response_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": "MIT",
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "hypothesis",
+        "version": "6.170.9",
+        "pypi": {
+          "url": "https://pypi.org/pypi/hypothesis/6.170.9/json",
+          "response_sha256": "1b4bfe6b8aec3dec8a9d0a20e49982886b229a58c37e0ac98b14cccb01b0d905",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MPL-2.0",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "iniconfig",
+        "version": "2.3.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/iniconfig/2.3.1/json",
+          "response_sha256": "ab4d5df71d2a4f01a0eb418d7809bb22dca3293991a369309f068c07c1471557",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "librt",
+        "version": "0.16.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/librt/0.16.0/json",
+          "response_sha256": "15903fc6fea8431c709b032d2dc99d27da1ab61f2f06998a6bb73b07d9e71ef0",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "mypy",
+        "version": "2.4.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/mypy/2.4.0/json",
+          "response_sha256": "5246f3191f076effff6bd25f9cd4369816a9f9a2a3c9b1f0610705a651fc4f5b",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "mypy-extensions",
+        "version": "1.1.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/mypy-extensions/1.1.0/json",
+          "response_sha256": "e9715bb5583e110c5bb663b8d2ee88ae736e8c37928218e1923714559c972fb1",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "packaging",
+        "version": "26.3",
+        "pypi": {
+          "url": "https://pypi.org/pypi/packaging/26.3/json",
+          "response_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "Apache-2.0 OR BSD-2-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pathspec",
+        "version": "1.1.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pathspec/1.1.1/json",
+          "response_sha256": "24f66829a7f40485bdccfcf32294218b0f4260b289ee4806ab644feb6c194766",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pluggy",
+        "version": "1.7.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pluggy/1.7.0/json",
+          "response_sha256": "9e8f441bba8382eabf6febf386a5b9610cfe0c16b60b96e7b4b1831bd6d96361",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": "MIT",
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pycparser",
+        "version": "3.12",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pycparser/3.12/json",
+          "response_sha256": "e919b291615d54a2328a0da6128cd9d95601ad04d27cec48eeb75e0d57c3b6ad",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "BSD-3-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pygments",
+        "version": "2.21.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pygments/2.21.0/json",
+          "response_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "BSD-2-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pyproject-hooks",
+        "version": "1.3.3",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pyproject-hooks/1.3.3/json",
+          "response_sha256": "ef47170935f8a098c070a3cd65d637d5bbf646158d9559eebac9c465b83d0401",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "pytest",
+        "version": "9.1.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/pytest/9.1.1/json",
+          "response_sha256": "707efea7c8046e3aaaaac619aac85bc1e73c310a9fbff8028c53ac229ca02f2c",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "ruff",
+        "version": "0.17.2",
+        "pypi": {
+          "url": "https://pypi.org/pypi/ruff/0.17.2/json",
+          "response_sha256": "4a91815467cc732d8ea42e83b89a06c1df396861897670c81ae3ac95d77285c1",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "setuptools",
+        "version": "84.2.1",
+        "pypi": {
+          "url": "https://pypi.org/pypi/setuptools/84.2.1/json",
+          "response_sha256": "d75de8ba0d3304a3d74484fb9f340edb87ef02712da4fa02a2ed92e71b0572dd",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "sortedcontainers",
+        "version": "2.4.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/sortedcontainers/2.4.0/json",
+          "response_sha256": "4e0cd7bf62c28a94d9236338cdd4d918aef53a344c6765756ebfe054de14930b",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": null,
+          "license": "Apache 2.0",
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "typing-extensions",
+        "version": "4.16.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+          "response_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "PSF-2.0",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.54.0",
+        "pypi": {
+          "url": "https://pypi.org/pypi/uvicorn/0.54.0/json",
+          "response_sha256": "a308e83961793f6114221aefe9e046ef587da0fc986c4dc50ace1ee43fbe9bcb",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "BSD-3-Clause",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      },
+      {
+        "name": "uv",
+        "version": "0.13.5",
+        "pypi": {
+          "url": "https://pypi.org/pypi/uv/0.13.5/json",
+          "response_sha256": "59590420a28b066d457c6ba509ddf191dac619d6158394fe5b9c7d77ca71212b",
+          "vulnerabilities": [],
+          "next_page_token": null,
+          "license_expression": "MIT OR Apache-2.0",
+          "license": null,
+          "yanked_files": []
+        },
+        "osv": {
+          "url": "https://api.osv.dev/v1/query",
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "vulnerabilities": [],
+          "next_page_token": null
+        }
+      }
+    ]
+  }
+}

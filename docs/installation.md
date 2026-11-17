@@ -1,22 +1,22 @@
 # Install and use CASF
 
-CASF `0.1.0rc2` is published as an experimental
-[GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
-Download the named release assets and verify their [checksums](release/SHA256SUMS-0.1.0rc2.txt).
+CASF `0.1.0rc3` is published as an experimental
+[GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
+Download the named release assets and verify their [checksums](release/SHA256SUMS-0.1.0rc3.txt).
 No PyPI publication was performed; do not use `pip install casf` to obtain this release.
-See the [publication evidence](release/publication-0.1.0rc2.md) and
+See the [publication evidence](release/publication-0.1.0rc3.md) and
 [operating handoff](operating-handoff.md).
 
-Current source is preparing **0.1.0rc3**, an unpublished experimental candidate.
-Its [local build and installation evidence](release/candidate-0.1.0rc3-c38bf82.md) does
-not change the public rc2 download commands below. Do not substitute source
-validation for verification of the named published artifacts.
+The [rc3 build record](release/candidate-0.1.0rc3-c38bf82.md) and
+[publication verification](release/publication-0.1.0rc3.md) identify the exact
+published bytes. Later source changes do not replace those release artifacts.
 
 ## Install from the published wheel
 
 The [validation matrix](release/validation-matrix.md) targets CPython 3.12,
 3.13 and 3.14 on GitHub hosted Ubuntu x86_64 and macOS arm64 runners, with
-locked and minimum direct dependencies. Runner images can change; each job
+locked dependencies on both platforms and minimum direct dependencies on
+Ubuntu plus macOS Python 3.12. Runner images can change; each job
 records its actual components. Consult the exact revision's results before
 treating it as validated. Local macOS checks and historical results are
 recorded separately. Other operating systems and processor types are outside
@@ -28,14 +28,14 @@ downloaded file name.
 
 ```bash
 python3 -m venv .venv
-.venv/bin/python -m pip install ./casf-0.1.0rc2-py3-none-any.whl
+.venv/bin/python -m pip install ./casf-0.1.0rc3-py3-none-any.whl
 .venv/bin/casf --help
 source .venv/bin/activate
 ```
 
 The wheel includes the witness server code, but does not install its optional
 HTTP server dependencies unless the `witness` extra is selected. For a checked
-local wheel, install `"./casf-0.1.0rc2-py3-none-any.whl[witness]"` using the
+local wheel, install `"./casf-0.1.0rc3-py3-none-any.whl[witness]"` using the
 environment's pip. For
 development from a source checkout, the repository's locked setup installs
 the witness and development tools:

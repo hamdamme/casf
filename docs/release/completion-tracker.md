@@ -1,6 +1,6 @@
 # CASF completion tracker
 
-Updated 16 November 2026. Target: experimental v0.1 for research and evaluation.
+Updated 17 November 2026. Target: experimental v0.1 for research and evaluation.
 
 Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
 `ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
@@ -18,8 +18,9 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 21 — research-demo closeout and unpublished candidate review**. Overall:
-**36/41 tasks accepted; P08 candidate preparation is delivered for review, with publication still open.**
+**Phase 8, Session 21 — research-demo publication complete**. Overall:
+**37/41 tasks accepted; P08 publication and public-download verification are complete.**
+See the [rc3 publication record](publication-0.1.0rc3.md). Four production tasks remain incomplete.
 P05/P06 remain partial production gates, outside this research-demo closeout.
 **P03: Whole-machine power-loss testing — Pending future validation.**
 **P04: Independent security review — Pending independent evaluation.**
@@ -32,8 +33,8 @@ was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without clos
 were accepted in PR 71. The [synthetic transaction CLI](../synthetic-transactions.md)
 was accepted in PR 72 and its post-merge CI passed; this does not establish a
 production event source. The [adopted operating rules](research-demo-closeout.md)
-and unpublished rc3 preparation do not close P05/P06 or P08. P05/P06 remain partial: operational keys, trust provisioning and
-real-use acceptance are not established by synthetic tests. No new release is authorized.
+and rc3 publication close P08, but not P05/P06. P05/P06 remain partial: operational keys, trust provisioning and
+real-use acceptance are not established by synthetic tests. Future releases require separate approval.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
@@ -157,7 +158,7 @@ The original 9 November audit and inventory describe the baseline. The [reposito
   worksheet prepare P04–P06; those tasks remain open pending actual review,
   assigned operators and deployment acceptance evidence.
 
-## Current candidate preparation
+## Historical candidate preparation before publication
 
 The [rc3 record](candidate-0.1.0rc3.md), [notes](notes-0.1.0rc3.md),
 [advisory refresh](dependency-review-0.1.0rc3.md) and
@@ -184,7 +185,7 @@ retain those earlier decisions. The current pending statuses supersede that
 scheduling language. USB/reboot results, source revisions, artifact checksums and
 all recorded validation outcomes remain unchanged.
 
-## Candidate refresh after PR 74
+## Historical candidate refresh after PR 74
 
 PR 74 accepted the pending P03/P04 dispositions at
 `c38bf821af013eaa4efa96a799577dab60250b48`. The [refreshed rc3 files](candidate-0.1.0rc3-c38bf82.md)
@@ -196,3 +197,12 @@ installation verification. No production gate or completed-task count changes.
 Post-merge CI passed all twelve configurations on `c38bf82`, each with 1543 tests
 and the 21-check demo. Refreshed exact-byte installation checks passed: 33 on Mac
 and 20 on Linux. Release publication remains unapproved and incomplete.
+
+## Publication closeout — 17 November 2026
+
+The [rc3 publication and verification record](publication-0.1.0rc3.md) supersedes
+the pre-publication P08 statuses in the historical preparation sections above.
+P08 is accepted following approved publication, Mac/Linux public-download and
+installation verification, and the Zenodo archive. PR 76 citation/CI changes
+were merged and post-merge CI passed. P03–P06 remain incomplete; 37/41 tasks
+are accepted. The agreed experimental research-release scope is finished.
