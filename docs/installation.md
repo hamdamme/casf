@@ -7,6 +7,11 @@ No PyPI publication was performed; do not use `pip install casf` to obtain this 
 See the [publication evidence](release/publication-0.1.0rc2.md) and
 [operating handoff](operating-handoff.md).
 
+Current source is preparing **0.1.0rc3**, an unpublished experimental candidate.
+Its [local build and installation evidence](release/candidate-0.1.0rc3.md) does
+not change the public rc2 download commands below. Do not substitute source
+validation for verification of the named published artifacts.
+
 ## Install from the published wheel
 
 The [validation matrix](release/validation-matrix.md) targets CPython 3.12,

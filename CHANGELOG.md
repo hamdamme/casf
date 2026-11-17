@@ -6,6 +6,11 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+## [0.1.0rc3] — candidate, unpublished
+
+- Include the synthetic transaction example in the source archive.
+- Reconcile research-demo operating rules and revision-specific acceptance evidence.
+
 - Add a synthetic transaction-entry example using verified append and witness submission.
 
 - Reject invalid verifier modes before evidence access so raw strings cannot skip online freshness checks.

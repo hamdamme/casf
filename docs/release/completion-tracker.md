@@ -18,16 +18,18 @@ accepted**. This does not close the production gates.
 
 The internal-deployment extension adds **eight tasks across Sessions 16–21** in
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
-**Phase 8, Session 19 — custody and backup rehearsal review**. Overall:
-**36/41 tasks accepted; three active tasks remain (P05, P06, P08)**.
+**Phase 8, Session 21 — research-demo closeout and unpublished candidate review**. Overall:
+**36/41 tasks accepted; P08 candidate preparation is delivered for review, with publication still open.**
+P05/P06 remain partial production gates, outside this research-demo closeout.
 P03 whole-machine power-loss testing is unscheduled and unverified. P04 independent
 review is outside the current queue at the operator's request and remains unperformed.
 Neither is counted as complete. P02 was accepted in PR 69; the scoped USB result
 was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without closing P03.
 [Permissions, backup roundtrip and daily policy evidence](backup-custody-2026-11-16.md)
 were accepted in PR 71. The [synthetic transaction CLI](../synthetic-transactions.md)
-is the next integration demonstration; its acceptance does not establish a production
-event source. P05/P06 remain partial: operational keys, trust provisioning and
+was accepted in PR 72 and its post-merge CI passed; this does not establish a
+production event source. The [adopted operating rules](research-demo-closeout.md)
+and unpublished rc3 preparation do not close P05/P06 or P08. P05/P06 remain partial: operational keys, trust provisioning and
 real-use acceptance are not established by synthetic tests. No new release is authorized.
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
@@ -150,3 +152,15 @@ The original 9 November audit and inventory describe the baseline. The [reposito
   All 12 CI jobs passed. The independent review brief and internal operations
   worksheet prepare P04–P06; those tasks remain open pending actual review,
   assigned operators and deployment acceptance evidence.
+
+## Current candidate preparation
+
+The [rc3 record](candidate-0.1.0rc3.md), [notes](notes-0.1.0rc3.md),
+[advisory refresh](dependency-review-0.1.0rc3.md) and
+[operating rules](research-demo-closeout.md) document the research-demo closeout.
+Build revision `a0ac1bfa61d3406c99b6bf758c62f6e840b633f3` passed 1543 local source
+tests, 8100 parser inputs, 33 Mac installation checks and 20 Linux checks of the
+same artifact bytes. Final PR CI is a separate revision-specific acceptance step.
+P08 remains open for review, separate publication approval and downloaded-artifact
+validation. P03/P04 are outside the current queue, not completed; P05/P06 remain
+partial production gates. No completed-task count is increased by preparation.

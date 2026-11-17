@@ -11,7 +11,7 @@ The goal is to help applications produce evidence of record integrity and detect
 
 ## Project status
 
-**Current version:** `0.1.0rc2` · **Protocol:** proposed `casf-v1` profile · **Stage:** [published experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
+**Source candidate:** `0.1.0rc3` (unpublished) · **Protocol:** proposed `casf-v1` profile · **Latest published release:** [0.1.0rc2 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
@@ -21,9 +21,13 @@ Start with the [operating and maintenance handoff](docs/operating-handoff.md). T
 [publication record](docs/release/publication-0.1.0rc2.md) identifies the exact release
 files and verified downloads. No PyPI release has been published.
 
-Development source contains [unreleased validation and state-handling fixes](docs/release/line-review-2026-11-11.md).
-The repository's full manual file review remains unfinished; published prerelease
-downloads do not include these later corrections.
+The scoped [tracked-file review](docs/release/line-review-2026-11-11.md) and corrections
+were accepted in PR 57 at `e59fd64`; that review does not cover every later change.
+Subsequent fixes and the [synthetic transaction demo](docs/synthetic-transactions.md)
+were accepted through PR 72 at `40382b1`, whose post-merge CI passed.
+The [research-demo closeout](docs/release/research-demo-closeout.md) records the
+accepted evidence and operating rules. Published rc2 downloads predate these fixes.
+The next candidate is prepared for review only; no new publication is authorized.
 
 ## Capabilities
 

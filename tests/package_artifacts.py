@@ -97,7 +97,7 @@ def inspect(root, directory):
             source_files[member.name[len(prefix):]] = stream.read()
     expected = {"src/" + name: data for name, data in package.items()}
     for name in ("LICENSE", "README.md", "pyproject.toml", "MANIFEST.in", "uv.lock",
-                 "examples/__init__.py", "examples/verified_workflow.py"):
+                 "examples/__init__.py", "examples/verified_workflow.py", "examples/transactions.py"):
         expected[name] = (root / name).read_bytes()
     generated = {"PKG-INFO", "setup.cfg"} | {"src/casf.egg-info/" + name for name in (
         "PKG-INFO", "SOURCES.txt", "dependency_links.txt", "entry_points.txt",

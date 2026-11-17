@@ -2,7 +2,8 @@
 
 Status: proposed acceptance requirements, not a deployed configuration. Intended
 use is internal business-transaction audit records. Source system, event classification, readers,
-recovery targets and detailed access roles await operator decisions. One administrator
+detailed production access roles await operator decisions. Research-demo recovery
+targets are recorded in the [adopted rules](research-demo-closeout.md). One administrator
 will initially manage all roles; see [custody and backup evidence](backup-custody-2026-11-16.md). Keep synthetic data in
 the existing rehearsal. Completing this worksheet does not itself pass P05/P06.
 
@@ -21,7 +22,7 @@ protocols or new trust rules as implicit prerequisites to this reference project
 | Custody | Authority, writer, witness, verifier-state and backup administrators; shared-access exceptions | Single administrator; Mac authority/state, Linux witness, Proton backups; writer placement and operational provisioning pending |
 | Trust distribution | Authenticated public-pin/status channel and independent identity confirmation | Awaiting operator |
 | Retention | Record/backup/log lifetime, approved deletion procedure and policy owner | Backups: 7 daily, 4 weekly, 3 monthly; record/log policy and deletion procedure pending |
-| Recovery | Maximum acceptable loss, maximum recovery time, backup frequency and restore approver | Daily manual backups, monthly restore test agreed; synthetic restore passed; recovery targets pending; no automation/reminder configured |
+| Recovery | Maximum acceptable loss, maximum recovery time, backup frequency and restore approver | Daily manual backups, monthly restore test agreed; synthetic restore passed; demo targets: at most one day lost, restore within one working day (not measured guarantees); production targets pending; no automation/reminder configured |
 | Capacity | Expected peak events/second, record size, daily volume, outage duration and available storage | Awaiting operator |
 | Alerts and incidents | Recipient, response target, escalation and maintenance owner | Awaiting operator |
 
