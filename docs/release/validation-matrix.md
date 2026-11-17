@@ -1,13 +1,12 @@
 # Supported validation matrix
 
-Updated 10 November 2026 after PR 49 merged as
-`4d89e764050455d8d0fe289bd6bb27710ec3b3bb`. This is source validation for the
+Updated 17 November 2026. This is source validation for the
 experimental v0.1 work. Final package selection, advisory review, artifact
 approval and publication remain separate gates in the [checklist](checklist-v0.1.md).
 
 ## Required configurations
 
-The [workflow](../../.github/workflows/ci.yml) runs 12 jobs on each pull request
+The [workflow](../../.github/workflows/ci.yml) runs 10 jobs on each pull request
 and main push. All configurations must pass; one failure does not cancel the
 others. Each job has a 20-minute limit. Both matrices check the setup-python
 catalog for the latest available interpreter within the selected Python minor
@@ -19,7 +18,13 @@ the [current advisory scope](dependency-review-0.1.0rc3.md).
 | Runner | Python | Locked dependencies | Minimum direct dependencies |
 | --- | --- | --- | --- |
 | Ubuntu x86_64 (`ubuntu-latest`) | 3.12, 3.13, 3.14 | Full source suite, lint, typing, build and isolated wheel checks | Full installed-wheel suite, minimum backend build and wheel checks |
-| macOS arm64 (`macos-15`) | 3.12, 3.13, 3.14 | Same checks | Same checks |
+| macOS arm64 (`macos-15`) | 3.12 | Same checks | Same checks |
+| macOS arm64 (`macos-15`) | 3.13, 3.14 | Same checks | Not scheduled in hosted CI |
+
+The minimum-dependency macOS Python 3.13 and 3.14 jobs were removed after
+repeated hosted-runner allocation problems. Locked-dependency macOS coverage
+remains on all three Python versions. Earlier twelve-job results describe
+their recorded revisions and are unchanged.
 
 These are GitHub's [standard hosted runner labels](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
 They do not pin every operating-system patch or component. Each job records its
@@ -84,7 +89,7 @@ Explicit Bash pipe failure handling preserves a failing test or fuzz exit code
 when output is copied into a log.
 
 Before accepting a revision, match its PR head and tested merge commit to the
-12 successful jobs, confirm no unexpected skips, review runtime/import records,
+10 successful jobs, confirm no unexpected skips, review runtime/import records,
 and verify builds, base/witness smoke checks and public verification. Retain
 the source hashes and run/job links in a dated review record before artifacts
 expire. CI logs remain additional evidence; a workflow badge alone is insufficient.
