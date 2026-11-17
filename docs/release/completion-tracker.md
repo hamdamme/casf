@@ -183,3 +183,16 @@ The [pre-change records at PR 73's merge](https://github.com/hamdamme/casf/tree/
 retain those earlier decisions. The current pending statuses supersede that
 scheduling language. USB/reboot results, source revisions, artifact checksums and
 all recorded validation outcomes remain unchanged.
+
+## Candidate refresh after PR 74
+
+PR 74 accepted the pending P03/P04 dispositions at
+`c38bf821af013eaa4efa96a799577dab60250b48`. The [refreshed rc3 files](candidate-0.1.0rc3-c38bf82.md)
+include that revision's README, new checksums and fresh installation/advisory
+evidence. Prior candidate files and their recorded results remain preserved.
+P08 stays open for artifact review, separate publication approval and downloaded
+installation verification. No production gate or completed-task count changes.
+
+Post-merge CI passed all twelve configurations on `c38bf82`, each with 1543 tests
+and the 21-check demo. Refreshed exact-byte installation checks passed: 33 on Mac
+and 20 on Linux. Release publication remains unapproved and incomplete.

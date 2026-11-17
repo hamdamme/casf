@@ -24,7 +24,7 @@ PR 71/72 evidence and adopted synthetic-only operating rules.
 | Operate the reference service | [Witness server](witness-server.md) |
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](specification/CASF_SPEC_001.md) |
 | Research questions, outcomes and source records | [Research guide](../research/README.md) |
-| Exact candidate files and installation checks | [Candidate record](release/candidate-0.1.0rc3.md) and [build procedure](release/candidate-build.md) |
+| Exact candidate files and installation checks | [Candidate record](release/candidate-0.1.0rc3-c38bf82.md) and [build procedure](release/candidate-build.md) |
 | Release preparation and advisory scope | [Release notes](release/notes-0.1.0rc3.md), [dependency review](release/dependency-review-0.1.0rc3.md) and [current checklist](release/checklist-v0.1.md) |
 | Candidate state and validation | [Release checklist](release/checklist-v0.1.md) |
 | Current workflow and scoped code review | [Review record](release/workflow-review-2026-11-10.md) |

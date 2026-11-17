@@ -8,7 +8,7 @@ See the [publication evidence](release/publication-0.1.0rc2.md) and
 [operating handoff](operating-handoff.md).
 
 Current source is preparing **0.1.0rc3**, an unpublished experimental candidate.
-Its [local build and installation evidence](release/candidate-0.1.0rc3.md) does
+Its [local build and installation evidence](release/candidate-0.1.0rc3-c38bf82.md) does
 not change the public rc2 download commands below. Do not substitute source
 validation for verification of the named published artifacts.
 

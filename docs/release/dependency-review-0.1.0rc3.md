@@ -1,5 +1,9 @@
 # Dependency review for experimental 0.1.0rc3
 
+The latest package-query refresh is retained in the [c38bf82 results](dependency-review-0.1.0rc3-c38bf82.json)
+and [candidate refresh](candidate-0.1.0rc3-c38bf82.md). Earlier query results and
+native-component inventories below remain tied to their original builds.
+
 Queried 17 November 2026 UTC for build revision
 `a0ac1bfa61d3406c99b6bf758c62f6e840b633f3`. The
 [saved query record](dependency-review-0.1.0rc3.json) retains the lockfile hash,
