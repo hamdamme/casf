@@ -1,5 +1,6 @@
 """Fail-closed schema recognition and transactional initialization."""
 
+import math
 import sqlite3
 from functools import lru_cache
 
@@ -36,6 +37,15 @@ def expected(schema: str) -> SchemaObjects:
 
 
 def check_integrity(con: sqlite3.Connection) -> None:
+    # Old SQLite versions can round the schema's maximum float literal to
+    # infinity. Check stored values independently without changing schema bytes.
+    tables = {row[0] for row in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    for table, column in (("outbox", "next_attempt_at"),
+                          ("checkpoint_schedule", "next_checkpoint_at")):
+        if table in tables:
+            for (value,) in con.execute(f"SELECT {column} FROM {table}"):
+                if not isinstance(value, (int, float)) or not math.isfinite(value):
+                    raise CasfError("storage scheduling time must be finite")
     if con.execute("PRAGMA integrity_check").fetchall() != [("ok",)]:
         raise CasfError("storage integrity check failed")
     if con.execute("PRAGMA foreign_key_check").fetchone() is not None:

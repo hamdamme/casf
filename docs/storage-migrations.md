@@ -91,3 +91,9 @@ The [decision](adr/ADR-010-storage-migrations.md),
 transition. New constraints follow SQLite's
 [foreign-key rules](https://www.sqlite.org/foreignkeys.html); they complement
 CASF's signature and retained-state checks.
+
+Scheduling timestamps are checked for finite numeric values independently of
+SQLite CHECK evaluation when opening stores and before migration publication.
+This covers older SQLite builds that round the schema's maximum float literal
+to infinity. The schema version and valid stored bytes are unchanged; rejected
+migration retains the source and publishes no destination.
