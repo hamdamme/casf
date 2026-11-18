@@ -1,15 +1,19 @@
 # Experimental release operating handoff
 
-CASF 0.1.0rc2 is available as a [GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2).
-Use it for research and evaluation. The [publication record](release/publication-0.1.0rc2.md)
+CASF 0.1.0rc3 is available as a [GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
+Use it for research and evaluation. The [publication record](release/publication-0.1.0rc3.md)
 identifies the exact source, assets, checks and limitations. There is no PyPI release.
+
+The [rc4 candidate](release/candidate-0.1.0rc4.md) includes six later corrections
+absent from rc3. It remains unpublished pending follow-up review and approval.
+The published rc3 evidence below is historical and does not validate rc4.
 
 ## First use
 
 1. Use a maintained Python 3.12–3.14 environment on a validated platform: Ubuntu
    x86_64 or macOS arm64. Review actual Python, SQLite and OpenSSL patch coverage.
 2. Download the named wheel, named source archive and `SHA256SUMS.txt` from the
-   release. Compare the checksum file with the [reviewed hashes](release/SHA256SUMS-0.1.0rc2.txt),
+   release. Compare the checksum file with the [reviewed hashes](release/SHA256SUMS-0.1.0rc3.txt),
    then verify the downloaded packages. On Linux use `sha256sum -c SHA256SUMS.txt`;
    on macOS use `shasum -a 256 -c SHA256SUMS.txt`.
 3. Follow [installation](installation.md) in a new virtual environment. Install the

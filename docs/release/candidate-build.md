@@ -43,7 +43,7 @@ installation. Neither includes CASF itself:
 .venv-tools/bin/uv export --locked --extra witness --no-default-groups --no-emit-project --output-file "$CASF_CANDIDATE_ROOT/witness.txt"
 .venv-tools/bin/uv venv --python python3.12 "$CASF_CANDIDATE_ROOT/base"
 .venv-tools/bin/uv pip install --python "$CASF_CANDIDATE_ROOT/base/bin/python" --require-hashes -r "$CASF_CANDIDATE_ROOT/base.txt"
-.venv-tools/bin/uv pip install --python "$CASF_CANDIDATE_ROOT/base/bin/python" --no-deps "$CASF_CANDIDATE_ROOT/dist/casf-0.1.0rc3-py3-none-any.whl"
+.venv-tools/bin/uv pip install --python "$CASF_CANDIDATE_ROOT/base/bin/python" --no-deps "$CASF_CANDIDATE_ROOT/dist/casf-0.1.0rc4-py3-none-any.whl"
 .venv-tools/bin/uv pip check --python "$CASF_CANDIDATE_ROOT/base/bin/python"
 mkdir "$CASF_CANDIDATE_ROOT/outside-checkout"
 cd "$CASF_CANDIDATE_ROOT/outside-checkout"
@@ -75,6 +75,6 @@ the artifacts after installation. Temporary private demo keys and databases are
 not release evidence. Full tests and all supported CI jobs remain separate gates.
 
 The historical [rc2 candidate record](candidate-0.1.0rc2.md) identifies its executed checks.
-New rc3 artifacts require their own build revision and validation record.
+New rc4 artifacts require their own build revision and validation record.
 Advisory/license review, final notes, a reviewed release tag and explicit
 publication approval remain necessary before these files can be distributed.
