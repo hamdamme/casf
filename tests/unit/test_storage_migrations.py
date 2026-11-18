@@ -166,7 +166,8 @@ def test_failed_migration_retains_source_and_publishes_nothing(tmp_path, change,
         con.execute(change)
     before = source.read_bytes()
     dest = tmp_path / "new.db"
-    with pytest.raises(sqlite3.IntegrityError):
+    expected = CasfError if "1e999" in change else sqlite3.IntegrityError
+    with pytest.raises(expected):
         migrate_database(source, dest, kind=kind)
     assert source.read_bytes() == before
     assert not dest.exists()

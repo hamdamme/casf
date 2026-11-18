@@ -15,6 +15,7 @@ import math
 import os
 import re
 import sqlite3
+import stat
 import sys
 import uuid
 from datetime import UTC, datetime
@@ -35,6 +36,7 @@ from casf.errors import (
     LimitError,
     SchemaError,
     TrustError,
+    WitnessResponseError,
 )
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
@@ -42,6 +44,7 @@ from casf.model.api import EventRequest
 from casf.model.schema import validate_protocol_body
 from casf.online import query_latest
 from casf.storage import Database, migrate_database
+from casf.transport import validate_base_url
 from casf.trust.state import locked_state
 from casf.types import JsonObject, JsonValue
 from casf.verifier import Mode, ProtocolStatus, Report, Result, TrustPins, TrustStatus, verify
@@ -305,6 +308,13 @@ def _cmd_admin_status_install(args: argparse.Namespace) -> int:
 
 def _cmd_admin_trust(args: argparse.Namespace) -> int:
     _validate_query_timeout(args.timeout)
+    if args.witness_url:
+        try:
+            validate_base_url(args.witness_url)
+        except ValueError:
+            raise SchemaError("invalid witness URL configuration") from None
+    elif args.mode == "online":
+        raise SchemaError("online mode requires a witness URL")
     manifest = _read_json_file(args.manifest)
     body = _body_of(manifest)
     authority_pub = _public_key(args.authority_public_key)
@@ -520,7 +530,7 @@ def _cmd_witness_recover(args: argparse.Namespace) -> int:
         count = _count_of(receipt)
         _print(args, {"recovered": True, "count": count, "freshness_checked": False},
                f"recovered receipt through count {count}; fresh witness state was not checked")
-    except (SchemaError, TrustError, InconclusiveError):
+    except (SchemaError, TrustError, InconclusiveError, WitnessResponseError):
         raise
     except CasfError as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -667,9 +677,43 @@ def _validate_query_timeout(timeout: object) -> None:
         raise SchemaError("query_timeout_seconds must be positive and finite")
 
 
+def _read_trust_file(path: str) -> JsonObject:
+    """Read public pins from a non-writable, owned regular file without symlinks."""
+    directory = None
+    fd = None
+    try:
+        target = Path(path).absolute()
+        directory = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        parent = os.fstat(directory)
+        if parent.st_uid not in (0, os.getuid()) or parent.st_mode & 0o022:
+            raise SchemaError("trust directory must be owned and not writable by others")
+        fd = os.open(target.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                     dir_fd=directory)
+        info = os.fstat(fd)
+        if (not stat.S_ISREG(info.st_mode) or info.st_uid not in (0, os.getuid())
+                or info.st_mode & 0o022):
+            raise SchemaError("trust file must be owned, regular and not writable by others")
+        with os.fdopen(fd, "rb") as stream:
+            fd = None
+            raw = stream.read(1024 * 1024 + 1)
+        if len(raw) > 1024 * 1024:
+            raise SchemaError("trust file exceeds the 1 MiB limit")
+        data = parse_config(raw)
+        if not isinstance(data, dict):
+            raise SchemaError("trust file must be an object")
+        return cast(JsonObject, data)
+    except OSError:
+        raise SchemaError("cannot securely read trust file") from None
+    finally:
+        if fd is not None:
+            os.close(fd)
+        if directory is not None:
+            os.close(directory)
+
+
 def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
                                                  JsonObject, JsonObject]:
-    trust = _read_json_file(path, configuration=True)
+    trust = _read_trust_file(path)
     if set(trust) != _TRUST_FIELDS:
         raise SchemaError("trust file must be exactly version, "
                           "authorities, logs, policy")
@@ -695,7 +739,10 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
     for issuer, encoded in authorities.items():
         if not isinstance(encoded, str):
             raise SchemaError("authority keys must be base64url strings")
-        keys[issuer] = crypto.b64url_decode(encoded)
+        key = crypto.b64url_decode(encoded)
+        if len(key) != 32 or crypto.key_id(key) != issuer:
+            raise SchemaError("authority key must be 32 bytes and match its issuer identifier")
+        keys[issuer] = key
     entry = logs.get(log_id)
     if entry is None:
         raise TrustError("LOG_NOT_PROVISIONED: the trust file does not "

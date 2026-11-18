@@ -401,7 +401,9 @@
         "tests/unit/test_backup_sidecars.py::test_migration_refuses_populated_destination_wal",
         "tests/unit/test_backup_sidecars.py::test_sidecar_created_during_copy_prevents_publication",
         "tests/unit/test_backup_sidecars.py::test_sidecar_publication_race_cannot_report_success",
-        "tests/unit/test_backup_sidecars.py::test_clean_destination_preserves_exact_source_rows"
+        "tests/unit/test_backup_sidecars.py::test_clean_destination_preserves_exact_source_rows",
+        "tests/unit/test_advisory_c01_c06.py::test_integrity_checks_finite_times_without_sql_constraints",
+        "tests/unit/test_advisory_c01_c06.py::test_migration_rejects_infinity_before_destination_creation"
       ],
       "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Platform and published-release results apply only to the revisions in docs/release/validation-matrix.md and docs/release/publication-0.1.0rc2.md. Later source fixes require separate validation; physical power-loss recovery is not established."
     },
@@ -461,7 +463,12 @@
         "tests/fuzz/test_guided.py::test_guided_deadline_is_not_a_success",
         "tests/unit/test_admin_trust_timeout.py::test_admin_trust_rejects_invalid_timeout",
         "tests/unit/test_admin_trust_timeout.py::test_admin_trust_valid_timeout_roundtrips",
-        "tests/unit/test_admin_trust_timeout.py::test_trust_loader_keeps_timeout_validation"
+        "tests/unit/test_admin_trust_timeout.py::test_trust_loader_keeps_timeout_validation",
+        "tests/unit/test_advisory_c01_c06.py::test_timestamp_requires_ascii",
+        "tests/unit/test_advisory_c01_c06.py::test_trust_authority_keys_match_identity",
+        "tests/unit/test_advisory_c01_c06.py::test_trust_rejects_unsafe_paths",
+        "tests/unit/test_advisory_c01_c06.py::test_admin_rejects_invalid_url_before_publication",
+        "tests/unit/test_advisory_c01_c06.py::test_read_http_categories"
       ],
       "remaining_review": ""
     },
@@ -491,7 +498,8 @@
         "tests/unit/test_witness_status_validation.py::test_cli_unsupported_status_returns_schema_category",
         "tests/unit/test_bearer_redaction.py::test_malformed_bearer_is_redacted_before_connection",
         "tests/unit/test_bearer_redaction.py::test_wrapper_discards_unsafe_value_error_object",
-        "tests/unit/test_bearer_redaction.py::test_direct_transport_discards_header_construction_error"
+        "tests/unit/test_bearer_redaction.py::test_direct_transport_discards_header_construction_error",
+        "tests/unit/test_advisory_c01_c06.py::test_receipt_http_cli_exit_categories"
       ],
       "remaining_review": ""
     },

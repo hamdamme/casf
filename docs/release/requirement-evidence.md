@@ -190,3 +190,7 @@ tests/unit/test_incremental_verification.py tests/unit/test_verify_bundle.py -q`
 192 tests passed on macOS arm64 with Python 3.12.14. Protocol bytes, trust rules
 and valid-mode failure precedence are unchanged. Full platform validation runs
 in the existing CI matrix; prior fixes reuse their existing regression tests.
+
+The [C01–C06 remediation review](advisory-remediation-2026-11-17.md) records
+additional trust-input, timestamp, HTTP-category and finite-storage regressions.
+These are unreleased source corrections; published rc3 bytes are unchanged.

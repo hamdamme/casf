@@ -33,3 +33,7 @@ class NoCheckpointError(CasfError):
 
 class EvidenceError(CasfError):
     """A peer supplied invalid authenticated evidence or a conflicting view."""
+
+
+class WitnessResponseError(CasfError):
+    """Unexpected witness HTTP status requiring diagnosis, not evidence failure."""

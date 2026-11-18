@@ -48,7 +48,7 @@ from casf.model.operations import ExportResult, Manifest, WitnessResult
 from casf.model.schema import validate_protocol_body
 from casf.online import LatestView
 from casf.storage import Database
-from casf.transport import ResponseLimitError
+from casf.transport import ResponseLimitError, check_witness_status
 from casf.transport import request as http_request
 from casf.trust.state import StateTransaction
 from casf.types import JsonObject
@@ -1059,16 +1059,7 @@ class Writer:
                 configuration_error = "HTTP requires a literal loopback address; use HTTPS"
         if configuration_error is not None:
             raise SchemaError(configuration_error) from None
-        if status in (429, 503):
-            raise InconclusiveError("witness temporarily unavailable; pending bytes are retained")
-        if status == 400:
-            raise SchemaError("witness rejected the submission (HTTP 400)")
-        if status in (401, 403):
-            raise TrustError(f"witness refused submission authorization (HTTP {status})")
-        if status == 409:
-            raise EvidenceError("witness reported a submission conflict (HTTP 409)")
-        if status not in (200, 201):
-            raise CasfError(f"witness rejected the submission (HTTP {status})")
+        check_witness_status(status, success=(200, 201))
         try:
             data = parse(payload)
         except CasfError as e:
@@ -1122,8 +1113,7 @@ class Writer:
             configuration_error = "invalid witness request configuration"
         if configuration_error is not None:
             raise SchemaError(configuration_error) from None
-        if status != 200:
-            raise InconclusiveError("receipt unavailable; pending checkpoint unchanged")
+        check_witness_status(status, missing_receipt=True)
         data = parse(payload)
         if not isinstance(data, dict) or set(data) != {"checkpoint", "receipt"} \
                 or not isinstance(data["receipt"], dict):

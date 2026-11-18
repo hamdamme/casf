@@ -6,6 +6,10 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Reject non-ASCII timestamps, invalid authority pins and unsafe trust-file paths.
+- Validate witness origins during trust creation and consistently classify witness HTTP errors.
+- Reject nonfinite storage scheduling times independently of SQLite constraint behavior.
+
 ## [0.1.0rc3] — candidate, unpublished
 
 - Include the synthetic transaction example in the source archive.

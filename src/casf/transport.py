@@ -18,6 +18,14 @@ from concurrent.futures import Future
 from typing import Any, cast
 from urllib.parse import urlsplit
 
+from casf.errors import (
+    EvidenceError,
+    InconclusiveError,
+    SchemaError,
+    TrustError,
+    WitnessResponseError,
+)
+
 MAX_RESPONSE_BYTES = 64 * 1024
 _MAX_RESPONSE_LINE = 4096
 _MAX_RESPONSE_HEADERS = 32
@@ -236,3 +244,19 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
             conn.close()
         else:
             sock.close()
+
+
+def check_witness_status(status: int, *, success: tuple[int, ...] = (200,),
+                         missing_receipt: bool = False) -> None:
+    """Apply ADR-016 without parsing or exposing an untrusted error body."""
+    if status in success:
+        return
+    if status in (429, 503) or (missing_receipt and status == 404):
+        raise InconclusiveError("witness evidence temporarily unavailable")
+    if status == 400:
+        raise SchemaError("witness rejected request schema (HTTP 400)")
+    if status in (401, 403):
+        raise TrustError(f"witness refused authorization (HTTP {status})")
+    if status == 409:
+        raise EvidenceError("witness reported a conflict (HTTP 409)")
+    raise WitnessResponseError(f"witness rejected request (HTTP {status})")
