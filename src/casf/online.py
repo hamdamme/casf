@@ -20,7 +20,7 @@ from casf import crypto
 from casf.canonical.jcs import parse
 from casf.errors import CasfError, InconclusiveError, NoCheckpointError, SchemaError
 from casf.model.schema import validate_protocol_body
-from casf.transport import ResponseLimitError, validate_base_url
+from casf.transport import ResponseLimitError, check_witness_status, validate_base_url
 from casf.transport import request as http_request
 from casf.types import JsonObject
 
@@ -66,16 +66,16 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
         invalid_configuration = True
     if invalid_configuration:
         raise ValueError("invalid witness request configuration") from None
+    if status != 404:
+        check_witness_status(status)
     try:
         parsed = parse(payload)
     except CasfError as e:
         raise InconclusiveError("witness answer was not valid JSON") from e
-    if status != 200:
-        code = parsed.get("code") if isinstance(parsed, dict) else None
-        if code == "NO_CHECKPOINT":
-            raise NoCheckpointError(
-                "NO_CHECKPOINT: witness has no accepted checkpoint")
-        raise CasfError(f"witness query rejected (HTTP {status})")
+    if status == 404:
+        if isinstance(parsed, dict) and parsed.get("code") == "NO_CHECKPOINT":
+            raise NoCheckpointError("NO_CHECKPOINT: witness has no accepted checkpoint")
+        check_witness_status(status)
     if not isinstance(parsed, dict):
         raise CasfError("witness answer is not an object")
     return parsed, nonce

@@ -10,7 +10,14 @@ from cryptography.hazmat.primitives import serialization
 
 from casf import crypto
 from casf.cli import _cmd_admin_trust, _load_trust
-from casf.errors import CasfError, EvidenceError, InconclusiveError, SchemaError, TrustError
+from casf.errors import (
+    CasfError,
+    EvidenceError,
+    InconclusiveError,
+    SchemaError,
+    TrustError,
+    WitnessResponseError,
+)
 from casf.model.schema import _check_timestamp
 from casf.online import fetch_latest
 from casf.storage.versioning import check_integrity
@@ -46,7 +53,7 @@ def test_integrity_checks_finite_times_without_sql_constraints(table, column, va
 
 @pytest.mark.parametrize("status,error", [(400, SchemaError), (401, TrustError),
     (403, TrustError), (409, EvidenceError), (429, InconclusiveError),
-    (503, InconclusiveError), (500, CasfError)])
+    (503, InconclusiveError), (500, WitnessResponseError)])
 @pytest.mark.parametrize("operation", ["latest", "lookup", "receipt"])
 def test_read_http_categories(tmp_path, monkeypatch, status, error, operation):
     def response(*args, **kwargs):
@@ -127,3 +134,72 @@ def test_admin_rejects_invalid_url_before_publication(tmp_path, url, capsys):
         _cmd_admin_trust(args)
     assert not output.exists()
     assert "created trust" not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("value", [0.0, 1.5, float.fromhex("0x1.fffffffffffffp+1023")])
+def test_finite_schedule_range_unchanged(value):
+    with sqlite3.connect(":memory:") as con:
+        con.execute("CREATE TABLE outbox(next_attempt_at REAL)")
+        con.execute("INSERT INTO outbox VALUES (?)", (value,))
+        check_integrity(con)
+
+
+def test_migration_rejects_infinity_before_destination_creation(tmp_path):
+    from casf.storage import migrate_database
+    from tests.unit.test_storage_migrations import legacy
+
+    source = legacy(tmp_path / "old.db", "writer")
+    with sqlite3.connect(source) as con:
+        con.execute("UPDATE outbox SET next_attempt_at=1e999")
+    before = source.read_bytes()
+    destination = tmp_path / "new.db"
+    with pytest.raises(CasfError, match="finite"):
+        migrate_database(source, destination, kind="writer")
+    assert source.read_bytes() == before
+    assert not destination.exists()
+    assert not list(tmp_path.glob(".casf-*-*"))
+
+
+@pytest.mark.parametrize("status,code", [(400, 2), (401, 3), (403, 3), (409, 1),
+                                       (429, 4), (503, 4), (500, 5)])
+def test_receipt_http_cli_exit_categories(tmp_path, monkeypatch, capsys, status, code):
+    from casf.cli import main
+
+    pending_store(tmp_path)
+    trust = _trust(tmp_path, _manifest_envelope())
+    monkeypatch.setenv("CASF_WITNESS_TOKEN", "synthetic-token")
+    monkeypatch.setattr("casf.writer.http_request",
+                        lambda *a, **k: (status, b'synthetic-private-response'))
+    assert main(["witness", "recover", "--db", str(tmp_path / "writer.db"),
+                 "--trust", str(trust), "--url", "http://127.0.0.1:1"]) == code
+    captured = capsys.readouterr()
+    assert "synthetic" not in captured.out + captured.err
+
+
+@pytest.mark.parametrize("kind", ["fifo", "directory", "directory_symlink"])
+def test_trust_refuses_nonregular_or_redirected_paths(tmp_path, kind):
+    import os
+
+    if kind == "fifo":
+        path = tmp_path / "pipe"
+        os.mkfifo(path, 0o600)
+    elif kind == "directory":
+        path = tmp_path
+    else:
+        actual = tmp_path / "actual"
+        actual.mkdir()
+        _trust(actual, _manifest_envelope())
+        link = tmp_path / "redirect"
+        link.symlink_to(actual, target_is_directory=True)
+        path = link / "trust.json"
+    with pytest.raises(SchemaError):
+        _load_trust(str(path), LOG_ID)
+
+
+@pytest.mark.parametrize("status,error", [(401, TrustError), (403, TrustError),
+                                        (503, InconclusiveError)])
+def test_error_body_cannot_override_status(monkeypatch, status, error):
+    monkeypatch.setattr("casf.online.http_request",
+                        lambda *a, **k: (status, b'{"code":"NO_CHECKPOINT"}'))
+    with pytest.raises(error):
+        fetch_latest("http://127.0.0.1:1", LOG_ID, "synthetic-token")

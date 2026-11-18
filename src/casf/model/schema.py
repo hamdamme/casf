@@ -33,7 +33,7 @@ class Field:
 K = Field  # alias
 
 TIMESTAMP_RE = re.compile(
-    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$")
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{6}Z")
 DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 B64URL_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 UUID_RE = re.compile(
@@ -41,7 +41,7 @@ UUID_RE = re.compile(
 ZERO_DIGEST = "0" * 64
 
 def _check_timestamp(value: str, field: str) -> None:
-    if not TIMESTAMP_RE.match(value):
+    if not TIMESTAMP_RE.fullmatch(value):
         raise SchemaError(f"{field}: invalid UTC timestamp format")
     from datetime import datetime
     try:

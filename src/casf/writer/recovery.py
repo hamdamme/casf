@@ -14,7 +14,7 @@ from casf.canonical.jcs import canonicalize, parse
 from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError, InconclusiveError, SchemaError, TrustError
 from casf.online import LatestView, fetch_latest, verify_latest_response
-from casf.transport import ResponseLimitError
+from casf.transport import ResponseLimitError, check_witness_status
 from casf.transport import request as http_request
 from casf.trust.state import _secure
 from casf.types import JsonObject
@@ -39,8 +39,7 @@ def _lookup(base_url: str, log_id: str, token: str, digest: str,
             timeout=_remaining(deadline))
     except (OSError, http.client.HTTPException, ResponseLimitError) as exc:
         raise InconclusiveError("intervening witness evidence is unavailable") from exc
-    if status != 200:
-        raise InconclusiveError("intervening witness evidence is unavailable")
+    check_witness_status(status, missing_receipt=True)
     value = parse(payload)
     if not isinstance(value, dict) or set(value) != {"checkpoint", "receipt"} \
             or not isinstance(value["checkpoint"], dict) \
