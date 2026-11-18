@@ -61,3 +61,12 @@ context when rendered. Network/TLS failure categories and socket cleanup remain
 unchanged. Pending canonical bytes survive and a corrected credential can retry.
 The regression checks ordinary complete traceback rendering and exception-chain
 attributes; applications must also avoid logging credentials or capturing locals.
+
+## Witness read operations
+
+The same 400/401/403/409/429/503/other-status categories apply to latest queries,
+intervening receipt lookup and pending receipt recovery, before decoding error
+bodies. Latest HTTP 404 with `NO_CHECKPOINT` keeps NoCheckpointError. Receipt
+lookup HTTP 404 keeps InconclusiveError because the requested receipt is absent.
+Only submission accepts 201; witness reads require 200. See
+[ADR-017](ADR-017-audit-input-boundaries.md) for the boundary decisions.

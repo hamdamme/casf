@@ -234,3 +234,17 @@ records or checkpoints. Export reads a consistent snapshot of the database
 and does not sign; it therefore does not require a private key. See
 [installation and usage](installation.md) and the
 [CASF specification](specification/CASF_SPEC_001.md).
+
+## Trust configuration validation
+
+`admin trust` validates a supplied witness URL before creating output. Online
+mode requires a URL; offline modes may leave it empty. Use an HTTPS origin or
+literal loopback HTTP origin, optionally with a lone `/`, without credentials,
+path prefixes, queries or fragments.
+
+Trust loading requires 32-byte authority keys whose IDs match their map keys.
+Trust files and their immediate directory must be owned by the current user or
+root and not writable by group/others. Public readability is allowed; final
+file/directory symlinks and stdin trust input are refused. Keep ancestor paths
+under trusted administrative control. Invalid configuration exits with code 2.
+See [ADR-017](adr/ADR-017-audit-input-boundaries.md).
