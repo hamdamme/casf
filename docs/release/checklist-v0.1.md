@@ -10,6 +10,13 @@ The published [0.1.0rc2 prerelease](https://github.com/hamdamme/casf/releases/ta
 and its [publication evidence](publication-0.1.0rc2.md) remain unchanged. No PyPI
 upload was performed. Historical acceptance does not approve new artifact bytes.
 
+## Next candidate
+
+[0.1.0rc4 preparation](candidate-0.1.0rc4.md) includes PR 78 fixes absent from
+the published rc3. Follow-up review, final CI/artifact approval and publication
+remain pending. The table below retains the accepted rc3 disposition; it does
+not approve rc4 or establish its public-download or Zenodo verification.
+
 ## Current disposition
 
 | Area | Status | Evidence and completion boundary |

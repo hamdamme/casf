@@ -8,11 +8,15 @@ Start with the [operating handoff](operating-handoff.md). The separate
 measurement revision and preserves the historical results.
 The [completion tracker](release/completion-tracker.md) distinguishes completed
 work from remaining validation, research and release gates. Package metadata is
-`0.1.0rc3` (published experimental prerelease); the proposed wire profile is `casf-v1`. These identify different
+`0.1.0rc4` (unpublished candidate; rc3 remains the published release); the proposed wire profile is `casf-v1`. These identify different
 things. Validation records must name the exact source or artifact bytes.
 
 The [research-demo closeout](release/research-demo-closeout.md) records accepted
 PR 71/72 evidence and adopted synthetic-only operating rules.
+
+The [rc4 candidate](release/candidate-0.1.0rc4.md) contains PR 78
+corrections absent from rc2/rc3. Follow-up review and publication approval remain
+pending; the current DOI identifies rc3.
 
 ## Which document to use
 

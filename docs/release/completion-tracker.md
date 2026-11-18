@@ -38,6 +38,16 @@ real-use acceptance are not established by synthetic tests. Future releases requ
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
+## Next experimental release
+
+PR 78 fixes C01–C06 on `main`; its post-merge CI passed. The
+[rc4 candidate](candidate-0.1.0rc4.md) is prepared for review, not published.
+Remaining release work: follow-up evaluation and any confirmed blockers, final
+artifact/CI approval, GitHub publication and download checks, then a new Zenodo
+version and citation verification. No publication is authorized by preparation.
+These are maintenance steps after the accepted rc3 closeout, not changes to the
+37/41 historical plan count. Production tasks remain incomplete as stated above.
+
 ## Tasks
 
 | Phase | Session | Task | Work | Status |
