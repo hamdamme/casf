@@ -49,12 +49,22 @@ Focused advisory regressions and traceability checks passed: **69 tests** via
 `PYTHONPATH=src python -m pytest tests/unit/test_advisory_c01_c06.py tests/unit/test_traceability.py -q`.
 Repository/link checks and `git diff --check` passed; final totals are recorded
 with the PR validation.
-The full ten-job CI matrix runs on the release-preparation PR, covering locked
-Linux/macOS Python 3.12–3.14 plus minimum dependencies on Linux 3.12–3.14 and
-macOS 3.12. Completion must be checked on the final PR head; prior CI is not a
-substitute. CI builds its own packages; exact local-byte installation evidence
-above is Mac-only. Public-download installs on both platforms remain a publication
-step, not completed evidence for this unpublished candidate.
+All **20 Linux checks passed** on the x86_64 laptop with Python 3.14.4,
+in fresh wheel and source-archive environments. Both completed the 21-check
+workflow, public-only verification, witness smoke tests, transaction help and
+all 39 installed runtime-file hash comparisons. The exact copied files retained
+the Mac checksums. Existing services and state were not changed. The
+machine-readable record retains check results and actual native-component versions.
+
+[CI run 44212436824](https://github.com/hamdamme/casf/actions/runs/44212436824)
+passed all **10 jobs**, each with **1606 tests**, at PR head
+`c9372e14678cc1721a245432787c634cbdbfc733`. This covers locked Linux/macOS Python
+3.12–3.14 and minimum dependencies on Linux 3.12–3.14 and macOS 3.12, including
+existing generated, crash, fuzz and package checks. CI builds its own packages;
+exact local-byte installation evidence is recorded separately above.
+Later evidence-only commits must pass their own PR checks before merge; this
+run is not attributed to a later revision. Public-download installation checks
+remain a publication step for this unpublished candidate.
 
 Commands (absolute checkout/output paths substituted at execution):
 

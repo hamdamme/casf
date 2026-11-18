@@ -113,6 +113,23 @@
       "size": 148027
     }
   },
+  "ci": {
+    "conclusion": "success",
+    "pr_head": "c9372e14678cc1721a245432787c634cbdbfc733",
+    "run_url": "https://github.com/hamdamme/casf/actions/runs/44212436824",
+    "test_results": [
+      "minimum (3.13)\tTest installed wheel\t2026-11-18T01:03:34.0773061Z ======================= 1606 passed in 158.09s (0:02:38) =======================",
+      "minimum (3.14)\tTest installed wheel\t2026-11-18T01:03:22.4690987Z ======================= 1606 passed in 145.22s (0:02:25) =======================",
+      "test macos (3.14)\tTest suite\t2026-11-18T01:04:22.0568260Z ======================= 1606 passed in 199.30s (0:03:19) =======================",
+      "test (3.14)\tTest suite\t2026-11-18T01:02:59.9961355Z ======================= 1606 passed in 119.17s (0:01:59) =======================",
+      "minimum macos (3.12)\tTest installed wheel\t2026-11-18T01:04:32.7139370Z ======================= 1606 passed in 212.71s (0:03:32) =======================",
+      "minimum (3.12)\tTest installed wheel\t2026-11-18T01:03:32.7082312Z ======================= 1606 passed in 157.90s (0:02:37) =======================",
+      "test macos (3.12)\tTest suite\t2026-11-18T01:03:55.8941080Z ======================= 1606 passed in 178.87s (0:02:58) =======================",
+      "test macos (3.13)\tTest suite\t2026-11-18T01:04:18.4562980Z ======================= 1606 passed in 194.16s (0:03:14) =======================",
+      "test (3.13)\tTest suite\t2026-11-18T01:03:29.2262310Z ======================= 1606 passed in 152.80s (0:02:32) =======================",
+      "test (3.12)\tTest suite\t2026-11-18T01:03:18.9533325Z ======================= 1606 passed in 144.12s (0:02:24) ======================="
+    ]
+  },
   "installation_checks": [
     {
       "check": "base-export",
@@ -448,6 +465,132 @@
       "source_commit": "58e3db6f8ae8dbe362c2541be25fb486ab154128",
       "sqlite": "3.53.1",
       "worktree_clean": true
+    }
+  },
+  "linux": {
+    "artifact_hashes": {
+      "casf-0.1.0rc4-py3-none-any.whl": "850de972d7e6bab4463ddc11f53fd950fc3cfad877c13496441577e7a4d70139",
+      "casf-0.1.0rc4.tar.gz": "daa4f9c6a56e31a8cd087ad36c00944af5a0111e03fe4f456b50875343f190b9"
+    },
+    "checks": [
+      {
+        "check": "wheel-create",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-deps",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-install",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-consistency",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-demo",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "wheel-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-create",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-deps",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-install",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-consistency",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-demo",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-environment",
+        "exit_code": 0
+      }
+    ],
+    "environments": {
+      "sdist": {
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+        "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+        "python_tls": "OpenSSL 3.5.5 27 Jan 2026",
+        "runtime_files": 39,
+        "sqlite": "3.46.1",
+        "version": "0.1.0rc4"
+      },
+      "wheel": {
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.43",
+        "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+        "python_tls": "OpenSSL 3.5.5 27 Jan 2026",
+        "runtime_files": 39,
+        "sqlite": "3.46.1",
+        "version": "0.1.0rc4"
+      }
     }
   },
   "publication_status": "unpublished; follow-up review and separate approval pending",
