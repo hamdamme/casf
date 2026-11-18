@@ -38,6 +38,12 @@ incomplete and relevant to future production-readiness evaluation. Neither block
 publication of experimental research releases; future releases still require
 separate publication approval and artifact validation.
 
+The next candidate is **0.1.0rc4, unpublished**. It contains the six corrections
+from [PR 78](https://github.com/hamdamme/casf/pull/78), covering timestamp and
+trust-input validation, witness error categories and finite storage scheduling.
+Published rc2/rc3 do not contain these corrections. Follow-up review and separate
+publication approval are pending. See the [rc4 notes](docs/release/notes-0.1.0rc4.md).
+
 ## Capabilities
 
 - **Signed records:** Bind each record to its log, sequence, predecessor, and signing key using Ed25519 and SHA-256.

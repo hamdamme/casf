@@ -1,0 +1,51 @@
+# CASF 0.1.0rc4 — experimental candidate
+
+Unpublished. Prepared for research and evaluation with synthetic records and
+disposable keys. Publication requires follow-up review and separate approval.
+
+## Fixes since rc3
+
+- C01: require ASCII digits and an exact match for protocol timestamps.
+- C02: reject nonfinite stored scheduling times on open and migration, including
+  SQLite versions whose SQL float boundary accepts infinity.
+- C03: apply consistent witness HTTP error categories to latest-view and receipt
+  lookup/recovery calls; preserve pending evidence on failures.
+- C04: validate authority public-key length and identifier when loading trust pins.
+- C05: reject unsafe trust-file ownership, writable permissions, symlinks and
+  nonregular files; read through checked file descriptors.
+- C06: reject unsupported witness origins when creating trust configuration.
+
+[PR 78](https://github.com/hamdamme/casf/pull/78) and the
+[remediation record](advisory-remediation-2026-11-17.md) identify the reproductions,
+regressions, decisions and executed validation. Credit: @adzguy.
+
+## Compatibility and upgrade
+
+Valid casf-v1 bytes, cryptographic domains and database schemas are unchanged.
+Non-ASCII timestamps previously accepted contrary to the specified format are
+now rejected; do not rewrite signed evidence to make it pass. Trust files must
+be regular files owned by the current user or root, with neither file nor its
+immediate directory writable by group/others. Ancestor directories still require
+trusted administration. Invalid authority pins and witness origins now fail at
+configuration boundaries. Read failures follow the documented HTTP categories.
+See [administration](../administration.md) and [storage migration](../storage-migrations.md).
+
+Published rc2 and rc3 remain affected and unchanged. This candidate is not yet a
+published safe-update option. No PyPI upload or production deployment is planned.
+The rc3 Zenodo DOI continues to identify rc3, not this candidate.
+
+## Release boundary
+
+Resolve the follow-up review of C01–C06 and any reproducible release blockers,
+then approve the exact revision, files and checksums. If packaged inputs change,
+rebuild and validate the replacement candidate before approval. After approved
+GitHub publication, verify public downloads and installation, then create a new
+version of the existing Zenodo software record and verify its file and citation.
+Do not replace rc2/rc3 assets or the existing Zenodo archive.
+
+This closes the experimental release work, not production acceptance. P03
+whole-machine power-loss testing is pending future validation; P04 independent
+security review is pending independent evaluation. A scoped follow-up review does
+not close P04. P05/P06 remain partial. Canonical H1's primary expectation remains
+unmet: WITNESS_AHEAD without retained conflicting state is INCONCLUSIVE, not the
+predeclared FAIL. Historical research and deployment evidence retain their revisions.
