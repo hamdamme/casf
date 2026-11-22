@@ -119,6 +119,17 @@ def _pins(mh=None, minimum_status_serial=1):
         minimum_status_serial=minimum_status_serial,
     )
 
+
+@pytest.mark.parametrize("retained", [(0, "ab" * 32), (1, "cd" * 32)])
+def test_integrity_rejects_unusable_retained_checkpoint_before_evidence(retained):
+    def unread_records():
+        pytest.fail("invalid arguments consumed evidence")
+        yield
+
+    with pytest.raises(ValueError, match="retained_checkpoint requires an anchor"):
+        verify({}, unread_records(), _pins(), mode=Mode.INTEGRITY,
+               retained_checkpoint=retained)
+
 def _anchored(n=3, anchor_count=2):
     env = _manifest_env()
     mh = env["manifest_hash"]

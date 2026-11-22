@@ -117,6 +117,8 @@ def verify(manifest_envelope: JsonObject,
         raise ValueError("mode must be a Mode member")  # noqa: TRY004 - public argument contract
     if anchor is not None and not isinstance(anchor, VerificationAnchor):
         raise SchemaError("anchor requires a VerificationAnchor")
+    if mode is Mode.INTEGRITY and anchor is None and retained_checkpoint is not None:
+        raise ValueError("retained_checkpoint requires an anchor in integrity mode")
     if type(max_chain_steps) is not int or max_chain_steps < 1:
         raise ValueError("max_chain_steps must be a positive integer")
     if type(pins.minimum_status_serial) is not int or pins.minimum_status_serial < 1:

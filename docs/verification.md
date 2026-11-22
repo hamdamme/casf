@@ -150,6 +150,12 @@ authenticated status serials and terminal revocation even on FAIL, without
 advancing the checkpoint. Supply retained serial,
 checkpoint and revocation through `minimum_status_serial`,
 `retained_checkpoint` and `retained_revoked` while holding an appropriate lock.
+An `INTEGRITY` call without an explicit `VerificationAnchor` cannot use a retained
+checkpoint and raises `ValueError` if one is supplied. Use anchored/online
+verification or supply the explicit anchor; do not silently discard retained state.
+The CLI returns configuration exit `2` when integrity mode is selected with an
+existing retained checkpoint. Select `--mode anchored` or `--mode online`;
+the rejected call leaves saved state unchanged.
 Verified writer entry points manage this state and also retain each accepted
 receipt before reporting successful submission.
 

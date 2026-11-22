@@ -1,5 +1,7 @@
 # Current experimental release checklist
 
+See the [release records index](README.md) for current work and historical evidence.
+
 Updated 22 November 2026. **0.1.0rc3 is published and public downloads and
 installations are verified.** See the [publication closeout](publication-0.1.0rc3.md). The [candidate record](candidate-0.1.0rc3-c38bf82.md) identifies exact build
 revision and artifacts. Later documentation and CI revisions are distinct.
@@ -12,21 +14,21 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 ## Next candidate
 
-[Replacement 0.1.0rc4 preparation](candidate-0.1.0rc4-3333d00.md) includes the
-SQLite permissions and canonical JSONL fixes merged in PR 82 at `3333d00`, along
-with the earlier advisory corrections. Post-merge CI 238 passed all ten jobs;
-the exact replacement wheel and sdist passed fresh installation checks.
-The earlier `d4721c4` artifacts are historical and must not be published.
+The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is superseded and
+historical. It includes the PR 78/82 corrections but omits the Ed25519 fix.
+Its artifacts and all earlier rc4 artifacts must not be published. CI 238
+belongs to `3333d00`; the new correction requires its own CI and new build.
 
 | rc4 gate | Current status |
 | --- | --- |
 | C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
-| Hosted acceptance matrix | CI 238: 10/10 jobs passed on exact build `3333d00` |
-| SQLite permissions and canonical JSONL | Accepted in PR 82; regressions passed in all applicable configurations |
-| Exact replacement artifacts | Built from `3333d00`; 40 runtime files verified; new hashes recorded |
-| Exact-file installations | 38 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
-| Dependency query refresh | Previous record covers unchanged lockfile; fresh queries required before publication |
-| Final review and artifact approval | Pending this release record's review; no new researcher signoff claimed |
+| SQLite permissions and canonical JSONL | Accepted in PR 82 at `3333d00`; historical regressions passed |
+| Small-order Ed25519 keys and retained checkpoint arguments | Correction and regressions prepared; review pending |
+| Hosted acceptance matrix | New revision must pass its own CI; CI 238 does not validate it |
+| Exact replacement artifacts | Pending new accepted build revision; `3333d00` files superseded |
+| Exact-file installations | Pending new artifacts; prior installation evidence is historical |
+| Dependency query refresh | Fresh queries required before publication |
+| Final review and artifact approval | Pending new files and validation; no independent signoff claimed |
 | Tag, GitHub release and advisory publication | Not performed; require separate approval |
 | Public downloads and Zenodo version | Pending approved publication |
 

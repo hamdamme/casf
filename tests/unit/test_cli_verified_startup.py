@@ -169,7 +169,7 @@ def test_failed_record_verification_retains_authenticated_status_serial(setup, t
     state_path = tmp_path / "state.json"
     before = json.loads(state_path.read_text())["manifests"][_manifest_envelope()["manifest_hash"]]
     assert main(["verify", str(bundle), "--trust", str(trust),
-                 "--state", str(state_path), "--json"]) == 1
+                 "--state", str(state_path), "--mode", "anchored", "--json"]) == 1
     report = json.loads(capsys.readouterr().out)
     assert report["result"] == "FAIL"
     after = json.loads(state_path.read_text())["manifests"][_manifest_envelope()["manifest_hash"]]

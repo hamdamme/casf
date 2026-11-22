@@ -225,7 +225,7 @@ def test_directory_sync_failure_cannot_report_pass(environment, tmp_path, capsys
     assert json.loads(state.read_text())["version"] == 1
 
 
-def test_integrity_run_preserves_saved_checkpoint(environment, tmp_path, capsys):
+def test_integrity_run_rejects_saved_checkpoint(environment, tmp_path, capsys):
     writer, svc, trust, state = environment
     _append(writer, 1)
     anchor(writer, svc)
@@ -233,11 +233,18 @@ def test_integrity_run_preserves_saved_checkpoint(environment, tmp_path, capsys)
     assert command(tmp_path / "first", trust, state, initialize=True) == 0
     capsys.readouterr()
     previous = json.loads(state.read_text())
+    saved = state.read_bytes()
     configuration = json.loads(trust.read_text())
     configuration["policy"]["mode"] = "integrity"
     trust.write_text(json.dumps(configuration))
     export(writer, tmp_path / "second", serial=2)
-    assert command(tmp_path / "second", trust, state) == 0
+    assert command(tmp_path / "second", trust, state) == 2
+    output = capsys.readouterr()
+    assert not output.out
+    assert "integrity mode cannot use a retained checkpoint" in output.err
+    assert state.read_bytes() == saved
+    assert main(["verify", str(tmp_path / "second"), "--trust", str(trust),
+                 "--state", str(state), "--mode", "anchored", "--json"]) == 0
     current = json.loads(state.read_text())
     digest = writer.manifest_envelope(LOG_ID)["manifest_hash"]
     assert current["manifests"][digest]["checkpoint"] == previous["manifests"][digest]["checkpoint"]

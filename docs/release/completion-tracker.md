@@ -45,18 +45,29 @@ SQLite permissions and canonical JSONL corrections and regressions. The earlier
 PR 78 and C03/D01–D03 corrections remain included. Post-merge CI 238 passed all
 ten jobs on this exact source.
 
-The [replacement rc4 candidate](candidate-0.1.0rc4-3333d00.md) is built from
-`3333d00`. Six fresh installations passed 76 commands across native macOS and
-emulated Ubuntu, including four 21-check workflows. The previous `d4721c4`
-artifacts remain historical and must not be published as the corrected rc4.
-Preparation is complete; exact-file review, final advisory disposition and
-separate publication approval remain pending. No new researcher signoff is claimed.
+The [3333d00 rc4 candidate](candidate-0.1.0rc4-3333d00.md) and all earlier
+rc4 artifacts are now superseded and historical. Their installation and CI
+results remain credited to their named revisions. They omit the small-order
+Ed25519 correction and must not be published.
 
-Remaining release work is review and a final dependency-query refresh, approved
-GitHub publication and download verification, then a new Zenodo version and
-citation verification. Estimated remaining release effort is 1–2 development
-sessions after approval; external review timing is unknown. Preparation does not
-authorize publication.
+The new follow-up rejects unsafe Ed25519 public keys at the shared loader,
+records the verification profile and edge vectors, and rejects unused retained
+checkpoints in unanchored integrity calls. Implementation and regression review
+are pending acceptance. The next steps are this revision's CI and review, then
+a new candidate build and exact-file installation validation. CI 238 is not
+attributed to this follow-up.
+
+Local source validation on macOS arm64 passed **1,903 tests, zero failures and
+zero skips** with Python 3.12.14, SQLite 3.53.1 and cryptography 50.0.2. Tracked
+code lint, source typing and repository consistency checks passed. These results
+cover this correction's source, not replacement release artifacts or the hosted
+acceptance matrix, which require separate evidence.
+
+After that validation: refresh dependency queries, review and approve the exact
+files, obtain separate GitHub publication approval, verify public downloads,
+then create and verify a new Zenodo version. Estimated remaining release effort
+is 2–3 development sessions after correction review; external review timing is
+unknown. No new independent researcher signoff or publication is claimed.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.

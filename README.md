@@ -38,11 +38,13 @@ incomplete and relevant to future production-readiness evaluation. Neither block
 publication of experimental research releases; future releases still require
 separate publication approval and artifact validation.
 
-The next candidate is **0.1.0rc4, unpublished**. It contains the six corrections
-from [PR 78](https://github.com/hamdamme/casf/pull/78), covering timestamp and
-trust-input validation, witness error categories and finite storage scheduling.
-Published rc2/rc3 do not contain these corrections. Follow-up review and separate
-publication approval are pending. See the [rc4 notes](docs/release/notes-0.1.0rc4.md).
+The next candidate is **0.1.0rc4, unpublished**. It includes the corrections from
+[PR 78](https://github.com/hamdamme/casf/pull/78) and
+[PR 82](https://github.com/hamdamme/casf/pull/82), plus rejection of small-order
+Ed25519 keys that permit signature bypasses. Published rc2/rc3 are affected.
+The `3333d00` artifacts are superseded and must not be published. A new build,
+validation, review and separate publication approval are required. See the
+[rc4 notes](docs/release/notes-0.1.0rc4.md).
 
 ## Capabilities
 
@@ -109,6 +111,7 @@ These are different assurances. A valid local signature chain alone cannot prove
 | [Runnable demonstration](docs/demo.md) | Verified CLI workflow, synthetic file fingerprint and expected outcomes |
 | [Research guide](research/README.md) | Canonical questions, evidence, outcomes and historical label crosswalk |
 | [Research limitations](research/limitations.md) | Detection boundaries and limits of the experiments |
+| [Release records index](docs/release/README.md) | Current release work and revision-specific historical evidence |
 | [Release checklist](docs/release/checklist-v0.1.md) | Current source checks, artifact status and historical decisions |
 | [Contributing](CONTRIBUTING.md) | Contribution expectations |
 | [Security policy](SECURITY.md) | Private vulnerability reporting and support scope |
