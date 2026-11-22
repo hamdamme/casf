@@ -22,9 +22,10 @@ stabilization (SPEC §26).
 - Validate witness origins during trust creation and consistently classify witness HTTP errors.
 - Reject nonfinite storage scheduling times independently of SQLite constraint behavior.
 
-The [earlier candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) identifies
-historical files that omit the SQLite and canonical JSONL corrections.
-A new build, validation and artifact approval are required before publication.
+The [replacement candidate](docs/release/candidate-0.1.0rc4-3333d00.md) identifies
+the exact source, files and installation checks, including the SQLite and
+canonical JSONL corrections. Earlier rc4 files are historical. Exact-file review
+and separate publication approval remain pending.
 
 ## [0.1.0rc3] — 2026-11-17
 

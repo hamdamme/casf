@@ -14,12 +14,11 @@ things. Validation records must name the exact source or artifact bytes.
 The [research-demo closeout](release/research-demo-closeout.md) records accepted
 PR 71/72 evidence and adopted synthetic-only operating rules.
 
-The [replacement rc4 candidate](release/candidate-0.1.0rc4-d4721c4.md) contains
-PR 78 and the C03/D01–D03 follow-up corrections absent from rc2/rc3. Source CI
-and exact-file installation checks passed. Final review disposition and
-publication approval remain pending; the current DOI identifies rc3. That
-candidate omits the subsequent SQLite-permission and canonical-JSONL corrections
-and must be rebuilt from accepted source before publication.
+The [replacement rc4 candidate](release/candidate-0.1.0rc4-3333d00.md) is built
+from PR 82's merge `3333d00`, including the SQLite permissions, canonical JSONL
+and earlier advisory corrections. Post-merge CI and exact-file installation
+checks passed. Final artifact review and publication approval remain pending;
+the current DOI identifies rc3.
 
 ## Which document to use
 
