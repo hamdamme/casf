@@ -14,7 +14,7 @@ part of this remediation.
 | D01 | Sensitive descriptors reject Darwin extended ACL entries and inspection failures; new sensitive bytes are checked before writing. | Completed; local validation passed |
 | D02 | Loaded/effective origins reject invalid configuration with exit 2 before secrets, network or persistent changes. | Completed; local validation passed |
 | D03 | Read 409 yields response error, not evidence conflict; submission compatibility and evidence verdicts retained. | Completed; local validation passed |
-| Validation | Focused regressions, supported CI matrix, lint, typing and package checks. | Local checks complete; hosted matrix pending |
+| Validation | Focused regressions, supported CI matrix, lint, typing and package checks. | Available local matrix passed; remaining platform gates open; hosted advisory-fork CI unavailable |
 | Review | Maintainer and follow-up review of the exact correction revision. | Pending |
 | Candidate | Build and approve new artifacts from accepted source before publication. | Pending |
 
@@ -22,7 +22,7 @@ The acceptance policy is recorded in [ADR-017](../adr/ADR-017-audit-input-bounda
 Regression files: `test_advisory_followup.py`, `test_file_permissions.py` and the
 updated read-category expectations in `test_advisory_c01_c06.py`.
 
-## Validation record
+## Initial validation record
 
 Correction revision: `1a3db0319d78c5c2073de7076cadc2efa7b42db7`. Subsequent
 evidence-only commits do not change the runtime or regression source.
@@ -51,8 +51,8 @@ private PR has no check runs. No hosted CI success is claimed. Python 3.13/3.14,
 Linux x86_64 and the hosted minimum-dependency matrix remain unverified for these
 changes. Existing historical results do not cover this revision.
 
-Tracked completion: **4/7 tasks (57%)**. Implementation is complete; matrix
-validation, review and the accepted release candidate remain open.
+At that revision, tracked completion was **4/7 tasks (57%)**. Subsequent pre-merge
+validation reopened D02 for hostname syntax; the follow-up below records that work.
 
 A clean committed-source build at that revision passed package inspection. Its
 member hashes match the wheel and source archive used for local validation.
@@ -65,6 +65,53 @@ These are private review artifacts, not approved publication assets:
 
 Native ACL tests use disposable synthetic files; HTTP response regressions stub
 transport. Existing integration tests use local loopback services.
+
+## D02 hostname validation follow-up
+
+Independent pre-merge validation found that `https://bad host` passed origin
+validation, reached secret/transport callbacks and state creation, and exited 4.
+The shared validator now rejects whitespace and controls before URL parsing and
+checks DNS hostname syntax and lengths after IDNA conversion. IP literals retain
+their existing handling. Valid HTTPS names, internationalized names, trailing
+DNS dots, explicit ports and loopback HTTP origins remain supported.
+
+Regressions cover transport, verification and both stored/overridden writer
+startup origins. Invalid origins must fail before secrets, network callbacks,
+writer initialization or retained-state creation. Only the three Python files
+introduced by the original follow-up receive whole-file formatting.
+
+Validation below applies to the implementation and tests accompanying this record.
+The correction adds 101 cases for malformed origins and valid-host compatibility.
+
+| Platform | Python | SQLite | Complete suite |
+| --- | --- | --- | --- |
+| macOS arm64 | 3.12.0 | 3.43.1 | 1,761 passed |
+| macOS arm64 | 3.12.14 | 3.53.1 | 1,761 passed |
+| macOS arm64 | 3.13.17 | 3.53.1 | 1,761 passed |
+| macOS arm64 | 3.14.9 | 3.53.1 | 1,761 passed |
+| Linux arm64 | 3.12.16 | 3.42.0 | 1,747 passed; 14 Darwin-only skips |
+| Linux arm64 | 3.12.16 | 3.46.1 | 1,747 passed; 14 Darwin-only skips |
+
+Each macOS environment also passed 282 focused transport/security regressions and
+the independent D02 acceptance test that previously returned exit 4. All native
+ACL cases passed. Linux runs used offline containers and read-only source mounts;
+the 3.42.0 run loaded the compiled SQLite 3.42.0 amalgamation explicitly.
+
+Lint, strict typing, lock/dependency checks, repository consistency and package
+inspection passed. The wheel and source distribution contain the expected 40
+runtime files. Python 3.12.14, 3.13.17 and 3.14.9 each passed base/witness wheel
+smoke checks, public synthetic verification, the 21-check example and 8,100 bounded
+parser fuzz cases. The three newly added files pass formatting. The whole-tree
+formatter still reports 142 pre-existing files; those files were not reformatted.
+AST comparisons confirmed formatting preserved the ACL implementation/tests and
+the existing follow-up test functions. Full-diff review found no unintended code,
+credentials or operational private keys.
+
+D02 is complete again within this scope. Tracked completion remains **4/7 (57%)**:
+Linux x86_64, Linux Python 3.13/3.14 and the separate minimum-dependency matrix were
+not rerun. Hosted Actions cannot run on the temporary advisory fork. Remaining
+platform validation, maintainer/follow-up review and an accepted candidate remain
+open; local success does not claim those gates or publication are complete.
 
 ## Limitations and next milestone
 

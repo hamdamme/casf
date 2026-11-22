@@ -10,6 +10,7 @@ from __future__ import annotations
 import http.client
 import ipaddress
 import math
+import re
 import socket
 import ssl
 import threading
@@ -165,6 +166,11 @@ def _connected_socket(host: str, port: int, *, https: bool,
 
 def validate_base_url(base_url: str) -> tuple[str, int, bool]:
     """Validate an origin before any DNS or network operation."""
+    # urlsplit strips some controls and leading spaces; reject the original
+    # input before normalization can turn malformed configuration into an origin.
+    if any(char.isspace() or ord(char) < 32 or 127 <= ord(char) <= 159
+           for char in base_url):
+        raise ValueError("witness URL must not contain whitespace or control characters")
     try:
         parts = urlsplit(base_url)
         host, port = parts.hostname, parts.port
@@ -176,6 +182,28 @@ def validate_base_url(base_url: str) -> tuple[str, int, bool]:
         raise ValueError("witness URL requires a valid HTTP or HTTPS host")
     if parts.path not in ("", "/") or "?" in base_url or "#" in base_url:
         raise ValueError("witness URL must be an origin without path, query or fragment")
+    if parts.netloc.startswith("["):
+        suffix = parts.netloc.partition("]")[2]
+        if suffix and not suffix.startswith(":"):
+            raise ValueError("invalid witness hostname")
+        # urlsplit also accepts IPvFuture; the socket transport supports IPv6.
+        try:
+            ipaddress.IPv6Address(host)
+        except ValueError:
+            raise ValueError("invalid witness hostname") from None
+    try:
+        ipaddress.ip_address(host)
+    except ValueError:
+        # Match the standard library's IDNA conversion without resolving DNS
+        # or changing the hostname returned to the existing transport.
+        try:
+            name = host.encode("idna").decode("ascii").removesuffix(".")
+        except UnicodeError:
+            raise ValueError("invalid witness hostname") from None
+        if len(name) > 253 or any(
+                re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", label) is None
+                for label in name.split(".")):
+            raise ValueError("invalid witness hostname")
     https = parts.scheme == "https"
     if not https:
         try:

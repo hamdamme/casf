@@ -32,8 +32,10 @@ def test_trust_rejects_acl_write_access(tmp_path, target):
     path = _trust(tmp_path, _manifest_envelope())
     path.chmod(0o600)
     assert _load_trust(str(path), LOG_ID)
-    add_acl(path if target == "file" else tmp_path,
-            "write,append" if target == "file" else "add_file,delete_child")
+    add_acl(
+        path if target == "file" else tmp_path,
+        "write,append" if target == "file" else "add_file,delete_child",
+    )
     assert path.stat().st_mode & 0o022 == 0
     assert tmp_path.stat().st_mode & 0o022 == 0
     with pytest.raises(SchemaError, match="ACL"):
@@ -106,12 +108,17 @@ def test_acl_inspection_fails_closed(monkeypatch, failure):
         if failure == "load":
             raise OSError("synthetic")
         ctypes.set_errno(errno.EACCES)
+
         def read(*a):
             ctypes.set_errno(errno.EACCES)
             return None if failure == "read" else 123
-        return SimpleNamespace(acl_get_fd_np=read,
-                               acl_valid=lambda *a: -1 if failure == "valid" else 0,
-                               acl_get_entry=entry, acl_free=release)
+
+        return SimpleNamespace(
+            acl_get_fd_np=read,
+            acl_valid=lambda *a: -1 if failure == "valid" else 0,
+            acl_get_entry=entry,
+            acl_free=release,
+        )
 
     monkeypatch.setattr(permissions.sys, "platform", "darwin")
     monkeypatch.setattr(permissions, "_darwin_acl", library)

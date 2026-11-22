@@ -51,6 +51,10 @@ The published rc3 artifacts remain unchanged; remediation requires a later relea
   the effective writer startup origin before loading secrets or opening the writer.
   Invalid configuration raises SchemaError (CLI exit 2). Offline empty origins
   remain supported; invalid stored origins must be corrected even with an override.
+  Reject whitespace and control characters before URL parsing can strip them.
+  Hosts must be IP literals or valid DNS labels after the standard library's IDNA
+  conversion, with DNS label/name length limits. Preserve internationalized names,
+  a trailing DNS dot, explicit ports and the existing loopback HTTP policy.
 - On Darwin, sensitive files and immediate directories must have no extended ACL
   entries, including inherited or restrictive entries. Check the opened descriptor,
   reject inspection errors and preserve existing ownership/mode/link requirements.

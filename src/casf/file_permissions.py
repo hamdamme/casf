@@ -18,8 +18,11 @@ def _darwin_acl() -> ctypes.CDLL:
     library.acl_get_fd_np.restype = ctypes.c_void_p
     library.acl_valid.argtypes = [ctypes.c_void_p]
     library.acl_valid.restype = ctypes.c_int
-    library.acl_get_entry.argtypes = [ctypes.c_void_p, ctypes.c_int,
-                                     ctypes.POINTER(ctypes.c_void_p)]
+    library.acl_get_entry.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_int,
+        ctypes.POINTER(ctypes.c_void_p),
+    ]
     library.acl_get_entry.restype = ctypes.c_int
     library.acl_free.argtypes = [ctypes.c_void_p]
     library.acl_free.restype = ctypes.c_int
