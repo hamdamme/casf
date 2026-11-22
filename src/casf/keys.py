@@ -19,6 +19,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf.errors import CasfError
+from casf.file_permissions import reject_extended_acl
 
 __all__ = ["generate_key", "load_key"]
 
@@ -26,6 +27,7 @@ MAX_KEY_BYTES = 16384
 
 
 def _owner_only(fd: int, *, directory: bool = False) -> None:
+    reject_extended_acl(fd)
     info = os.fstat(fd)
     regular = stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode)
     if not regular or info.st_uid != os.getuid() or info.st_mode & 0o077:
@@ -64,6 +66,7 @@ def generate_key(role: str, path: str | Path, *,
                      0o600, dir_fd=directory)
         try:
             with os.fdopen(fd, "wb") as stream:
+                _owner_only(stream.fileno())
                 stream.write(blob)
                 stream.flush()
                 os.fsync(stream.fileno())

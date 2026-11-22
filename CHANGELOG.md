@@ -6,6 +6,16 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
+- Distinguish unexpected witness read responses from submission conflicts and
+  retryable unavailability, including malformed latest-view 404 bodies.
+- Validate loaded and effective online witness origins before secret loading or
+  persistent changes.
+- Reject macOS extended ACLs on sensitive files and directories, including newly
+  created key, verifier-state and status-book files.
+
+These follow-up changes require replacement rc4 candidate artifacts; the earlier
+unpublished rc4 build does not include them.
+
 ## [0.1.0rc4] — candidate, unpublished
 
 - Reject non-ASCII timestamps, invalid authority pins and unsafe trust-file paths.

@@ -21,6 +21,7 @@ from casf.errors import (
     CasfError,
     InconclusiveError,
     SchemaError,
+    WitnessResponseError,
 )
 from casf.model.schema import validate_protocol_body
 from casf.types import JsonObject
@@ -656,6 +657,11 @@ def verify(manifest_envelope: JsonObject,
     anchor_index = _field_int(anchor_body, "index")
     try:
         view = online_query()
+    except WitnessResponseError:
+        report.freshness_status = FreshnessStatus.INCONCLUSIVE
+        report.result = Result.INCONCLUSIVE
+        codes.append("WITNESS_RESPONSE_ERROR")
+        return report
     except InconclusiveError:
         report.freshness_status = FreshnessStatus.INCONCLUSIVE
         report.result = Result.INCONCLUSIVE

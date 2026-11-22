@@ -5,6 +5,14 @@ review and separate publication approval pending.** No release/tag, PyPI upload,
 service deployment or Zenodo deposit has been created. Published rc2/rc3 remain
 unchanged and do not include the six PR 78 corrections.
 
+## Follow-up maintenance
+
+The November 21 follow-up requires corrections before publication. The historical
+artifacts below do not contain these corrections and must not be approved as the
+updated candidate. See [follow-up status](advisory-followup-2026-11-21.md).
+A new build from reviewed source, exact checksums and installation evidence are
+required after the fixes are accepted; retain the historical artifacts and records.
+
 ## Baseline and build identity
 
 Baseline: PR 78 merge `dc0f47e87974e747f406e3e0e22bc581a367827f`.
