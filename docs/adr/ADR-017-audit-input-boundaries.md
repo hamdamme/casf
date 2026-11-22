@@ -30,3 +30,40 @@ cryptographic domains, evidence precedence or database schema version 1.
 
 These changes do not close production provisioning or independent-review gates.
 The published rc3 artifacts remain unchanged; remediation requires a later release.
+
+## Follow-up decisions before rc4
+
+- Latest-view HTTP 404 is a no-checkpoint result only when its parsed object
+  contains `code=NO_CHECKPOINT`. Empty, malformed and unrecognized 404 bodies
+  raise WitnessResponseError. Receipt lookup 404 remains inconclusive.
+- HTTP 409 on read operations (including the POST latest-view query) is an
+  unexpected response, not authenticated evidence of divergence. It raises
+  WitnessResponseError. Submission 409 retains ADR-016's conflict category;
+  that server assertion is not independently authenticated proof of tampering.
+- Verification retains INCONCLUSIVE freshness for an unexpected read response,
+  with diagnostic WITNESS_RESPONSE_ERROR. The CLI returns exit 5 while preserving
+  the report. Recognized missing evidence, 429/503 and transport unavailability
+  retain exit 4. Existing schema/trust precedence is unchanged. A read error
+  never advances an accepted checkpoint; independently authenticated status
+  observations may still be retained under the existing monotonic status policy.
+- Validate nonempty witness origins when loading trust configuration. Stored
+  online mode and effective online overrides require a nonempty origin. Validate
+  the effective writer startup origin before loading secrets or opening the writer.
+  Invalid configuration raises SchemaError (CLI exit 2). Offline empty origins
+  remain supported; invalid stored origins must be corrected even with an override.
+- On Darwin, sensitive files and immediate directories must have no extended ACL
+  entries, including inherited or restrictive entries. Check the opened descriptor,
+  reject inspection errors and preserve existing ownership/mode/link requirements.
+  Administrators must review ACLs explicitly; CASF does not remove them. Apply this
+  to trust inputs, encrypted keys, retained state and consumers of the shared state
+  permission check, including locks and status books. Check newly created sensitive
+  files before writing bytes. This conservative policy avoids implementing a second
+  ACL authorization engine. Linux retains POSIX mode/mask checks.
+
+Darwin's descriptor API reports an absent ACL as NULL/ENOENT through
+[acl_get_fd_np](https://github.com/apple-oss-distributions/Libc/blob/main/posix1e/acl_file.c).
+The implementation checks errno and descriptor validity; NULL by itself is not
+accepted. Nonempty ACLs are rejected after validated entry inspection. The native
+regressions cover plain files, explicit ACL grants, inherited ACLs and bad descriptors.
+These decisions change diagnostics and local configuration acceptance, not protocol
+bytes, cryptographic domains or database schemas.

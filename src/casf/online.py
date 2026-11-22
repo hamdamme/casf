@@ -52,8 +52,8 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
     request = json.dumps({"nonce": crypto.b64url_encode(nonce)}).encode()
     try:
         validate_base_url(base_url)
-    except ValueError as e:
-        raise CasfError(str(e)) from e
+    except ValueError:
+        raise SchemaError("invalid witness URL configuration") from None
     invalid_configuration = False
     try:
         status, payload = http_request(
@@ -71,6 +71,8 @@ def fetch_latest(base_url: str, log_id: str, token: str, *,
     try:
         parsed = parse(payload)
     except CasfError as e:
+        if status == 404:
+            check_witness_status(status)
         raise InconclusiveError("witness answer was not valid JSON") from e
     if status == 404:
         if isinstance(parsed, dict) and parsed.get("code") == "NO_CHECKPOINT":

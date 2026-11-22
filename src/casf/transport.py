@@ -247,7 +247,7 @@ def request(base_url: str, method: str, path: str, token: str, body: bytes,
 
 
 def check_witness_status(status: int, *, success: tuple[int, ...] = (200,),
-                         missing_receipt: bool = False) -> None:
+                         missing_receipt: bool = False, submission: bool = False) -> None:
     """Apply ADR-016 without parsing or exposing an untrusted error body."""
     if status in success:
         return
@@ -257,6 +257,6 @@ def check_witness_status(status: int, *, success: tuple[int, ...] = (200,),
         raise SchemaError("witness rejected request schema (HTTP 400)")
     if status in (401, 403):
         raise TrustError(f"witness refused authorization (HTTP {status})")
-    if status == 409:
+    if status == 409 and submission:
         raise EvidenceError("witness reported a conflict (HTTP 409)")
     raise WitnessResponseError(f"witness rejected request (HTTP {status})")

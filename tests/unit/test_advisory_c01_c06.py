@@ -12,7 +12,6 @@ from casf import crypto
 from casf.cli import _cmd_admin_trust, _load_trust
 from casf.errors import (
     CasfError,
-    EvidenceError,
     InconclusiveError,
     SchemaError,
     TrustError,
@@ -52,7 +51,7 @@ def test_integrity_checks_finite_times_without_sql_constraints(table, column, va
 
 
 @pytest.mark.parametrize("status,error", [(400, SchemaError), (401, TrustError),
-    (403, TrustError), (409, EvidenceError), (429, InconclusiveError),
+    (403, TrustError), (409, WitnessResponseError), (429, InconclusiveError),
     (503, InconclusiveError), (500, WitnessResponseError)])
 @pytest.mark.parametrize("operation", ["latest", "lookup", "receipt"])
 def test_read_http_categories(tmp_path, monkeypatch, status, error, operation):
@@ -160,7 +159,7 @@ def test_migration_rejects_infinity_before_destination_creation(tmp_path):
     assert not list(tmp_path.glob(".casf-*-*"))
 
 
-@pytest.mark.parametrize("status,code", [(400, 2), (401, 3), (403, 3), (409, 1),
+@pytest.mark.parametrize("status,code", [(400, 2), (401, 3), (403, 3), (409, 5),
                                        (429, 4), (503, 4), (500, 5)])
 def test_receipt_http_cli_exit_categories(tmp_path, monkeypatch, capsys, status, code):
     from casf.cli import main

@@ -213,3 +213,14 @@ current release validation scope is Python 3.12 through 3.14 on those systems.
 Windows portability of its filesystem flags has not been established. See the
 [Phase 3 closeout record](release/phase3-closeout-2026-10-28.md) for the exact
 runtime inventory and evidence.
+
+## Unexpected witness read responses
+
+An unexpected HTTP response, including read HTTP 409 or an unrecognized/invalid
+latest-view 404 body, cannot prove rollback. The report retains INCONCLUSIVE
+freshness and diagnostic `WITNESS_RESPONSE_ERROR`; the CLI exits 5 to request
+operator diagnosis. A recognized `404 NO_CHECKPOINT`, receipt unavailability,
+429/503 or transport outage remains inconclusive with exit 4. Submission conflict
+handling is distinct. Read failures do not advance accepted checkpoints; separately
+validated authority status can still advance its retained serial under the existing
+status policy. Invalid witness-origin configuration exits 2 before verification.

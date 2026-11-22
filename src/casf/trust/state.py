@@ -14,6 +14,7 @@ from typing import cast
 from casf.canonical.jcs import parse
 from casf.canonical.limits import SAFE_INT_MAX
 from casf.errors import CasfError
+from casf.file_permissions import reject_extended_acl
 
 MAX_STATE_BYTES = 1024 * 1024
 
@@ -70,6 +71,7 @@ def _decode(raw: bytes) -> dict[str, SavedState]:
 
 
 def _secure(fd: int, *, directory: bool = False) -> None:
+    reject_extended_acl(fd)
     info = os.fstat(fd)
     expected = stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode)
     if not expected or info.st_uid != os.getuid() or info.st_mode & 0o077:
@@ -122,6 +124,7 @@ class StateTransaction:
                      0o600, dir_fd=self.directory)
         try:
             with os.fdopen(fd, "wb") as stream:
+                _secure(stream.fileno())
                 stream.write(raw)
                 stream.flush()
                 os.fsync(stream.fileno())

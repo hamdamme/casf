@@ -237,7 +237,7 @@ and does not sign; it therefore does not require a private key. See
 
 ## Trust configuration validation
 
-`admin trust` validates a supplied witness URL before creating output. Online
+`admin trust` and trust loading validate supplied witness URLs. Online
 mode requires a URL; offline modes may leave it empty. Use an HTTPS origin or
 literal loopback HTTP origin, optionally with a lone `/`, without credentials,
 path prefixes, queries or fragments.
@@ -248,3 +248,16 @@ root and not writable by group/others. Public readability is allowed; final
 file/directory symlinks and stdin trust input are refused. Keep ancestor paths
 under trusted administrative control. Invalid configuration exits with code 2.
 See [ADR-017](adr/ADR-017-audit-input-boundaries.md).
+
+On macOS, trust files, private-key files, retained-state files and their checked
+immediate directories must have no extended ACL entries. This includes inherited
+and restrictive ACLs; ACL inspection failures stop the operation. CASF does not
+change permissions automatically. Have an administrator review an affected path
+and provision an appropriate directory before retrying. Linux continues to enforce
+its existing ownership and mode/mask policy.
+
+The effective online verification or writer-startup URL is checked before secrets,
+network activity or writer/state mutation. An offline trust file may leave the URL
+empty, but using it with `--mode online` requires a valid origin. Invalid stored
+origins must be corrected even when an override is supplied. Configuration errors
+exit 2; they are not freshness outages.

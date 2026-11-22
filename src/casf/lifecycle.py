@@ -171,6 +171,7 @@ class StatusBook:
                      0o600, dir_fd=directory)
         try:
             with os.fdopen(fd, "wb") as stream:
+                _secure(stream.fileno())
                 stream.write(raw)
                 stream.flush()
                 os.fsync(stream.fileno())

@@ -70,3 +70,12 @@ bodies. Latest HTTP 404 with `NO_CHECKPOINT` keeps NoCheckpointError. Receipt
 lookup HTTP 404 keeps InconclusiveError because the requested receipt is absent.
 Only submission accepts 201; witness reads require 200. See
 [ADR-017](ADR-017-audit-input-boundaries.md) for the boundary decisions.
+
+## Read-response refinement
+
+The follow-up decision in [ADR-017](ADR-017-audit-input-boundaries.md#follow-up-decisions-before-rc4)
+separates read errors from submission conflicts. HTTP 409 on reads raises
+WitnessResponseError; an unexpected latest-view status yields an INCONCLUSIVE
+report with WITNESS_RESPONSE_ERROR and CLI exit 5. This does not establish
+conflicting signed evidence. The submission table above remains applicable to
+submission only.

@@ -1059,7 +1059,7 @@ class Writer:
                 configuration_error = "HTTP requires a literal loopback address; use HTTPS"
         if configuration_error is not None:
             raise SchemaError(configuration_error) from None
-        check_witness_status(status, success=(200, 201))
+        check_witness_status(status, success=(200, 201), submission=True)
         try:
             data = parse(payload)
         except CasfError as e:

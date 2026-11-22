@@ -38,6 +38,7 @@ from casf.errors import (
     TrustError,
     WitnessResponseError,
 )
+from casf.file_permissions import reject_extended_acl
 from casf.keys import generate_key, load_key
 from casf.lifecycle import rotate_epoch, sign_status, verify_predecessor
 from casf.model.api import EventRequest
@@ -120,19 +121,20 @@ def _writer(args: argparse.Namespace, manifest: JsonObject | None = None) -> Wri
     if not args.local_only and not (args.trust and args.status_file and args.state):
         raise TrustError("verified startup requires --trust, --status-file and --state; "
                          "--local-only explicitly selects unverified operation")
-    key = load_key(args.key, passphrase=_secret(args.passphrase_env))
     pins = _writer_trust_pins(args, manifest)
     if args.local_only:
+        key = load_key(args.key, passphrase=_secret(args.passphrase_env))
         return Writer(args.db, key, trust_pins=pins, local_only=True)
     assert pins is not None
     log_id = next(iter(pins))
     _, entry, configuration = _load_trust(args.trust, log_id)
-    url = getattr(args, "url", None) or entry["witness_url"]
-    if not isinstance(url, str) or not url:
-        raise TrustError("verified startup requires a provisioned witness URL")
+    override_url = getattr(args, "url", None)
+    url = entry["witness_url"] if override_url is None else override_url
+    _validate_witness_url(url, required=True)
+    key = load_key(args.key, passphrase=_secret(args.passphrase_env))
     startup = StartupPolicy(
         state_path=args.state, status_envelopes=(_read_json_file(args.status_file),),
-        witness_url=url, token=_secret(args.token_env).decode(),
+        witness_url=cast(str, url), token=_secret(args.token_env).decode(),
         initialize_state=args.initialize_state,
         timeout=cast(float, configuration["query_timeout_seconds"]),
         max_chain_steps=cast(int, configuration["max_chain_steps"]))
@@ -684,11 +686,19 @@ def _read_trust_file(path: str) -> JsonObject:
     try:
         target = Path(path).absolute()
         directory = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            reject_extended_acl(directory)
+        except CasfError as exc:
+            raise SchemaError(str(exc)) from None
         parent = os.fstat(directory)
         if parent.st_uid not in (0, os.getuid()) or parent.st_mode & 0o022:
             raise SchemaError("trust directory must be owned and not writable by others")
         fd = os.open(target.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
                      dir_fd=directory)
+        try:
+            reject_extended_acl(fd)
+        except CasfError as exc:
+            raise SchemaError(str(exc)) from None
         info = os.fstat(fd)
         if (not stat.S_ISREG(info.st_mode) or info.st_uid not in (0, os.getuid())
                 or info.st_mode & 0o022):
@@ -709,6 +719,19 @@ def _read_trust_file(path: str) -> JsonObject:
             os.close(fd)
         if directory is not None:
             os.close(directory)
+
+
+def _validate_witness_url(url: object, *, required: bool = False) -> None:
+    if not isinstance(url, str):
+        raise SchemaError("witness_url must be a string")
+    if not url:
+        if required:
+            raise SchemaError("online operation requires a witness URL")
+        return
+    try:
+        validate_base_url(url)
+    except ValueError:
+        raise SchemaError("invalid witness URL configuration") from None
 
 
 def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
@@ -753,8 +776,7 @@ def _load_trust(path: str, log_id: str) -> tuple[dict[str, bytes],
         value = entry[field]
         if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
             raise SchemaError(f"trust {field} must be a lowercase SHA-256 digest")
-    if not isinstance(entry["witness_url"], str):
-        raise SchemaError("witness_url must be a string")
+    _validate_witness_url(entry["witness_url"], required=policy["mode"] == "online")
     minimum = entry["minimum_status_serial"]
     if type(minimum) is not int or not 1 <= minimum <= SAFE_INT_MAX:
         raise SchemaError("minimum_status_serial must be a positive safe integer")
@@ -817,6 +839,7 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
     online_query = None
     if mode is Mode.ONLINE:
         url = str(entry["witness_url"])
+        _validate_witness_url(url, required=True)
         token = _secret(args.token_env).decode()
         timeout = policy["query_timeout_seconds"]
         budget = timeout if isinstance(timeout, (int, float)) else 10.0
@@ -884,6 +907,8 @@ def _verification_exit_code(report: Report) -> int:
     if report.protocol_status is ProtocolStatus.UNSUPPORTED or report.trust_status in (
             TrustStatus.REVOKED, TrustStatus.CONFLICT, TrustStatus.UNKNOWN):
         return 3
+    if "WITNESS_RESPONSE_ERROR" in report.diagnostic_codes:
+        return 5
     if report.result is Result.INCONCLUSIVE:
         return 4
     return 1
