@@ -49,6 +49,19 @@ and an online check that has not obtained a view remains INCONCLUSIVE.
 
 ## Public verification API
 
+Bundle JSONL members require one canonical UTF-8 envelope followed by one LF,
+as specified in SPEC section 20. This applies to records, checkpoints, receipts
+and status statements. Extra whitespace, reordered object keys, unnecessary
+escapes and CRLF are rejected even when the parsed values would verify
+cryptographically. The CLI returns schema error `2`; Python bundle APIs raise
+`BundleReadError`. Streaming reads still check the complete input after an early
+verdict. Record-body depth limits exclude the envelope container.
+
+Current CASF exports already use this encoding. Previously accepted reformatted
+or third-party bundles may need an explicitly reviewed conversion into a new
+copy; preserve the original evidence and do not rewrite signed values. General
+JSON configuration and the verifier's Python-object API are unchanged.
+
 `casf.verifier.verify_bundle(path, pins, mode=Mode.ANCHORED)` verifies a
 bounded bundle and consumes records through EOF before returning a report.
 An early verification verdict cannot conceal a malformed tail. All files close

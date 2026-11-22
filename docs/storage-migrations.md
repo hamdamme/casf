@@ -15,6 +15,34 @@ log. Witness status references its manifest. Append-only guards remain active.
 These checks constrain local storage. They do not authenticate lookup columns,
 prove freshness, or prevent a file administrator from replacing the database.
 
+## File permissions
+
+New writer and witness databases are reserved atomically with mode `600` before
+SQLite opens them. On the supported local Linux/macOS filesystems, SQLite creates
+WAL/SHM files with the database mode. Backups and migration staging files also use
+owner-only creation. No process-wide umask or existing permission is changed.
+
+On open, the main file and any WAL, SHM or rollback journal must be regular files
+without symlinks or hard links, owned by the current effective user or root and
+not writable by group/others. Existing group/other-readable files are accepted
+only inside an owner-only immediate directory (normally mode `700`). Otherwise
+the files must have no group/other permissions. The immediate directory must
+have a trusted owner and no group/other write access; its final component cannot
+be a symlink. On macOS, extended ACLs on checked paths are rejected, including
+restrictive entries; inspection errors fail closed. Ancestors remain under
+trusted administrative control. Same-account or root compromise is outside this
+permission boundary.
+
+Stop every database user before an administrator adjusts an existing store or
+its directory. Keep the database and required sidecars together and preserve
+recovery evidence. Cross-account readers must use an explicitly provisioned
+alternative, such as exported evidence; do not silently weaken the database
+policy. Permission failures are local errors (CLI exit `5`). These controls do
+not encrypt payloads or establish support for network filesystems.
+
+Existing SQLite files are inspected without opening and closing extra file
+descriptors, which could cancel SQLite's POSIX locks in the same process.
+
 ## Upgrade an unversioned store
 
 This is a breaking storage change from the earlier experimental source.

@@ -21,8 +21,8 @@ from pathlib import Path
 from typing import BinaryIO
 
 from casf import crypto
-from casf.canonical.jcs import parse
-from casf.canonical.limits import MAX_JSONL_LINE_BYTES
+from casf.canonical.jcs import canonicalize, parse
+from casf.canonical.limits import ENVELOPE_LIMITS, MAX_JSONL_LINE_BYTES
 from casf.errors import CasfError, LimitError
 from casf.model.operations import ExportResult
 from casf.types import JsonObject
@@ -136,6 +136,8 @@ def _iter_jsonl(source: BinaryIO, path: Path, max_line_bytes: int,
         value = parse(line[:-1])
         if not isinstance(value, dict):
             raise CasfError(f"expected a JSON object line: {path.name}")
+        if canonicalize(value, ENVELOPE_LIMITS) != line[:-1]:
+            raise CasfError(f"JSONL envelope must use canonical encoding: {path.name}")
         count += 1
         yield value
 

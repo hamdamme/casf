@@ -1,11 +1,16 @@
 # CASF 0.1.0rc4 — experimental candidate
 
 Unpublished. Prepared for research and evaluation with synthetic records and
-disposable keys. Publication requires final review of the
-[replacement candidate](candidate-0.1.0rc4-d4721c4.md) and separate approval.
+disposable keys. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) omits the
+SQLite permissions and canonical JSONL corrections below. Build and validate
+replacement artifacts from the accepted source before separate publication approval.
 
 ## Fixes since rc3
 
+- Reserve new SQLite databases with mode `600`; check existing database,
+  sidecar and directory permissions without disturbing SQLite locks.
+- Enforce canonical JSONL bytes during bundle import, verification and restore;
+  formatting-only variants now fail as malformed input (CLI exit `2`).
 - C01: require ASCII digits and an exact match for protocol timestamps.
 - C02: reject nonfinite stored scheduling times on open and migration, including
   SQLite versions whose SQL float boundary accepts infinity.
@@ -46,6 +51,12 @@ IDNA, trailing DNS dots, valid ports and IP literals retain compatibility.
 Invalid authority pins and witness origins now fail at
 configuration boundaries. Read failures follow the documented HTTP categories.
 See [administration](../administration.md) and [storage migration](../storage-migrations.md).
+
+Existing readable SQLite files need an owner-only parent directory or explicit
+permission remediation while services are stopped. CASF never changes their
+permissions automatically. Standard canonical bundles remain valid; reformatted
+bundles that previously passed are rejected. See the
+[verification compatibility policy](../verification.md#public-verification-api).
 
 Published rc2 and rc3 remain affected and unchanged. This candidate is not yet a
 published safe-update option. No PyPI upload or production deployment is planned.

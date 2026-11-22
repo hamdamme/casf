@@ -4,6 +4,7 @@ import json
 
 import pytest
 
+from casf.canonical.jcs import canonicalize
 from casf.cli import _load_trust, main
 from casf.errors import SchemaError
 from tests.unit.test_cli import _trust
@@ -58,8 +59,8 @@ def test_invalid_policy_cannot_initialize_verifier_state(tmp_path, capsys):
         bundle = writer.export_bundle(LOG_ID, tmp_path / "bundle")
     finally:
         writer.close()
-    (bundle / "status.jsonl").write_text(json.dumps(active_status(
-        AUTH, manifest["manifest_hash"])) + "\n")
+    (bundle / "status.jsonl").write_bytes(canonicalize(active_status(
+        AUTH, manifest["manifest_hash"])) + b"\n")
     path = _trust(tmp_path, manifest)
     data = json.loads(path.read_text())
     data["policy"]["allow_unwitnessed"] = "false"

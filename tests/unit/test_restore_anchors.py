@@ -1,11 +1,11 @@
 """R06/R09: restore uses authenticated external checkpoint evidence."""
 
-import json
 
 import pytest
 
 from casf import crypto
 from casf.bundle import read_bundle
+from casf.canonical.jcs import canonicalize
 from casf.errors import CasfError
 from casf.writer import RestoreBehindWitnessError, SealedError, Writer
 from tests.unit.test_writer import LOG, LOG_ID, WIT, _append, _writer
@@ -115,7 +115,7 @@ def test_restore_refuses_missing_anchor_journal(tmp_path):
 
 def test_anchor_receipt_recovers_matching_pending_tail(tmp_path):
     path, bundle, pins = evidence(tmp_path)
-    (path / "receipts.jsonl").write_text(json.dumps(bundle.receipts[0]) + "\n")
+    (path / "receipts.jsonl").write_bytes(canonicalize(bundle.receipts[0]) + b"\n")
     writer = Writer.restore_from_bundle(
         tmp_path / "restored.db", LOG, path, trust_pins=pins,
         anchor_checkpoint=bundle.checkpoints[-1], anchor_receipt=bundle.receipts[-1], local_only=True)
