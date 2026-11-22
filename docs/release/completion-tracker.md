@@ -1,6 +1,6 @@
 # CASF completion tracker
 
-Updated 17 November 2026. Target: experimental v0.1 for research and evaluation.
+Updated 21 November 2026. Target: experimental v0.1 for research and evaluation.
 
 Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
 `ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
@@ -40,11 +40,15 @@ These counts describe this completion plan, not the proportion of all historical
 
 ## Next experimental release
 
-PR 78 fixes C01–C06 on `main`; its post-merge CI passed. The
-[rc4 candidate](candidate-0.1.0rc4.md) is prepared for review, not published.
-Remaining release work: follow-up evaluation and any confirmed blockers, final
-artifact/CI approval, GitHub publication and download checks, then a new Zenodo
-version and citation verification. No publication is authorized by preparation.
+PR 78 and the C03/D01–D03 follow-up are merged on `main`. CI #234 passed all ten
+jobs on `d4721c4`. The [replacement rc4 candidate](candidate-0.1.0rc4-d4721c4.md)
+is built from that merge and passed exact-file installation checks on native
+macOS and emulated Ubuntu. It is prepared for review, not published.
+The [follow-up scope](advisory-followup-2026-11-21.md#current-post-merge-status)
+has 5/7 tasks accepted: corrections and validation complete, final review
+disposition and candidate approval pending. Remaining release work is approval,
+GitHub publication and download checks, then a new Zenodo version and citation
+verification. No publication is authorized by preparation.
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.
 

@@ -1,4 +1,9 @@
-# Experimental 0.1.0rc4 candidate
+# Historical experimental 0.1.0rc4 candidate
+
+**Superseded for release selection.** The [replacement candidate from d4721c4](candidate-0.1.0rc4-d4721c4.md)
+contains the follow-up corrections and has new hashes and installation evidence.
+The original files, JSON record and checksums below remain historical; do not
+publish them as the corrected rc4 release.
 
 Prepared 18 November 2026 UTC (17 November in Chicago). **Unpublished; follow-up
 review and separate publication approval pending.** No release/tag, PyPI upload,

@@ -1,6 +1,6 @@
 # Current experimental release checklist
 
-Updated 17 November 2026. **0.1.0rc3 is published and public downloads and
+Updated 21 November 2026. **0.1.0rc3 is published and public downloads and
 installations are verified.** See the [publication closeout](publication-0.1.0rc3.md). The [candidate record](candidate-0.1.0rc3-c38bf82.md) identifies exact build
 revision and artifacts. Later documentation and CI revisions are distinct.
 The [research-demo closeout](research-demo-closeout.md) is the current scope;
@@ -12,10 +12,24 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 ## Next candidate
 
-[0.1.0rc4 preparation](candidate-0.1.0rc4.md) includes PR 78 fixes absent from
-the published rc3. Follow-up review, final CI/artifact approval and publication
-remain pending. The table below retains the accepted rc3 disposition; it does
-not approve rc4 or establish its public-download or Zenodo verification.
+[Replacement 0.1.0rc4 preparation](candidate-0.1.0rc4-d4721c4.md) includes PR 78
+and the follow-up fixes merged as `d4721c4`. Source CI #234 passed all ten jobs.
+The exact replacement wheel and sdist passed fresh installation checks; final
+review disposition, artifact approval and publication remain pending.
+
+| rc4 gate | Current status |
+| --- | --- |
+| C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
+| Hosted acceptance matrix | CI #234: 10/10 jobs passed on `d4721c4` |
+| Exact replacement artifacts | Built from `d4721c4`; 40 runtime files verified; hashes recorded |
+| Exact-file installations | 35 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
+| Dependency query refresh | 50 successful queries, no listed findings; refresh before publication |
+| Final review and artifact approval | Pending this release record's review; no new researcher signoff claimed |
+| Tag, GitHub release and advisory publication | Not performed; require separate approval |
+| Public downloads and Zenodo version | Pending approved publication |
+
+The table below retains the accepted rc3 disposition. It does not approve rc4
+or establish rc4 public-download or Zenodo verification.
 
 ## Current disposition
 

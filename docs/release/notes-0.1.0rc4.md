@@ -1,7 +1,8 @@
 # CASF 0.1.0rc4 — experimental candidate
 
 Unpublished. Prepared for research and evaluation with synthetic records and
-disposable keys. Publication requires follow-up review and separate approval.
+disposable keys. Publication requires final review of the
+[replacement candidate](candidate-0.1.0rc4-d4721c4.md) and separate approval.
 
 ## Fixes since rc3
 
@@ -14,10 +15,22 @@ disposable keys. Publication requires follow-up review and separate approval.
 - C05: reject unsafe trust-file ownership, writable permissions, symlinks and
   nonregular files; read through checked file descriptors.
 - C06: reject unsupported witness origins when creating trust configuration.
+- C03 follow-up: malformed, empty and unrecognized latest-view HTTP 404 bodies
+  produce an operational response error (exit 5). Explicit `NO_CHECKPOINT`
+  remains inconclusive; receipt-lookup absence retains its existing policy.
+- D01: reject extended macOS ACLs and ACL inspection failures on sensitive files
+  and directories, including newly created key and retained-state files.
+- D02: reject malformed loaded/effective witness origins, including whitespace,
+  control characters and invalid hostnames, as configuration errors (exit 2)
+  before secrets, transport callbacks or persistent state creation.
+- D03: unsigned HTTP 409 responses on reads produce an operational response
+  error (exit 5); submission conflicts retain their existing classification.
 
 [PR 78](https://github.com/hamdamme/casf/pull/78) and the
 [remediation record](advisory-remediation-2026-11-17.md) identify the reproductions,
-regressions, decisions and executed validation. Credit: @adzguy.
+regressions, decisions and executed validation. The
+[follow-up record](advisory-followup-2026-11-21.md) covers the later corrections
+merged at `d4721c4`. Credit: @adzguy. No new independent signoff is claimed.
 
 ## Compatibility and upgrade
 
@@ -26,7 +39,11 @@ Non-ASCII timestamps previously accepted contrary to the specified format are
 now rejected; do not rewrite signed evidence to make it pass. Trust files must
 be regular files owned by the current user or root, with neither file nor its
 immediate directory writable by group/others. Ancestor directories still require
-trusted administration. Invalid authority pins and witness origins now fail at
+trusted administration. On macOS, sensitive paths must have no extended ACL
+entries, even restrictive ones; inspection errors fail closed. Provision
+compatible paths explicitly rather than silently removing ACLs. Supported HTTPS,
+IDNA, trailing DNS dots, valid ports and IP literals retain compatibility.
+Invalid authority pins and witness origins now fail at
 configuration boundaries. Read failures follow the documented HTTP categories.
 See [administration](../administration.md) and [storage migration](../storage-migrations.md).
 
@@ -36,8 +53,8 @@ The rc3 Zenodo DOI continues to identify rc3, not this candidate.
 
 ## Release boundary
 
-Resolve the follow-up review of C01–C06 and any reproducible release blockers,
-then approve the exact revision, files and checksums. If packaged inputs change,
+Record the final follow-up review disposition and resolve any reproducible release
+blockers, then approve the exact revision, files and checksums. If packaged inputs change,
 rebuild and validate the replacement candidate before approval. After approved
 GitHub publication, verify public downloads and installation, then create a new
 version of the existing Zenodo software record and verify its file and citation.

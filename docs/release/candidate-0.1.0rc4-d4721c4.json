@@ -1,0 +1,1513 @@
+{
+  "artifact_hashes_unchanged_after_installation": true,
+  "artifacts": {
+    "casf-0.1.0rc4-py3-none-any.whl": {
+      "members_sha256": {
+        "casf-0.1.0rc4.dist-info/METADATA": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "casf-0.1.0rc4.dist-info/RECORD": "c8f18c91a0448b367179c5c13fb80591c0fb0b5f7a4540a0a0e5e3d674b705e7",
+        "casf-0.1.0rc4.dist-info/WHEEL": "98e75747d0b7c0c568bfb71263c3d8f970b3a374a6996087bc642be5cb09a1aa",
+        "casf-0.1.0rc4.dist-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "casf-0.1.0rc4.dist-info/licenses/LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "casf-0.1.0rc4.dist-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "casf/__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+        "casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "casf/bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "casf/cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+        "casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "casf/errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+        "casf/file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+        "casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "casf/keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+        "casf/lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+        "casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "casf/model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+        "casf/online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+        "casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "casf/storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+        "casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "casf/storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+        "casf/transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+        "casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "casf/trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+        "casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "casf/verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+        "casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "casf/writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+        "casf/writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+        "casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+      },
+      "sha256": "daebe02190c676d77e6db028a9753cc30c804be35414ec022945d566c9683549",
+      "size": 112359
+    },
+    "casf-0.1.0rc4.tar.gz": {
+      "members_sha256": {
+        "LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "MANIFEST.in": "903697d1eab4b918a5fba0e9cd7b69d5f8b01229ed38b9b4e6fe436726656bca",
+        "PKG-INFO": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "README.md": "deb3b60350708545968324b37004b8456e661362cd469675641848cd5601fcc2",
+        "examples/__init__.py": "a34382bbd0a2cdbc5a4fcfed31f3ebaa7b405a6987959ef5b207855a5574265d",
+        "examples/transactions.py": "f6c7f26caa75e1dec4f15d701294adcbbb3af8a5cd92f1fe90e7d0b0f655cdb3",
+        "examples/verified_workflow.py": "c351c898662e4847d3188fa9f14b559d7be4cafbff9718aa2d3ce80142e5b10a",
+        "pyproject.toml": "dd802314fbc7c4c696f73055a7048993c7e80f972dc834b1f86c35af2b991c43",
+        "setup.cfg": "1c473cbaee8da5fc46e7f0158794af5cea4414c34a3cf3f180c2001f5e38bd3e",
+        "src/casf.egg-info/PKG-INFO": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "src/casf.egg-info/SOURCES.txt": "dd13317380137368a5934febb394d69097c17aba350d7027e8b7fe439a50e13f",
+        "src/casf.egg-info/dependency_links.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf.egg-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "src/casf.egg-info/requires.txt": "a4402cae8da8c6ed5d260fe589f9166bd1917c838e3abfd3bd6f6479a6a3d98a",
+        "src/casf.egg-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "src/casf/__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+        "src/casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "src/casf/bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+        "src/casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "src/casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "src/casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "src/casf/cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+        "src/casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "src/casf/errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+        "src/casf/file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+        "src/casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "src/casf/keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+        "src/casf/lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+        "src/casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "src/casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "src/casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "src/casf/model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+        "src/casf/online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+        "src/casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf/storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+        "src/casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "src/casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "src/casf/storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+        "src/casf/transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+        "src/casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "src/casf/trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+        "src/casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "src/casf/verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+        "src/casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "src/casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "src/casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "src/casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "src/casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "src/casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "src/casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "src/casf/writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+        "src/casf/writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+        "src/casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "src/casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "src/casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011",
+        "uv.lock": "a445899f7620fe356064a4177ba30a9fa6add0938ba06d201b65be3b530592d9"
+      },
+      "sha256": "b6ef7e6be77826019835d9dca428df0b46193c3bfdd8553d2a2d3f3cd1333172",
+      "size": 149640
+    }
+  },
+  "build_environment": {
+    "packages": {
+      "Pygments": "2.21.0",
+      "ast_serialize": "0.13.1",
+      "build": "1.6.1",
+      "casf": "0.1.0rc4",
+      "cffi": "2.1.1",
+      "click": "8.5.0",
+      "cryptography": "50.0.2",
+      "h11": "0.16.0",
+      "hypothesis": "6.170.9",
+      "iniconfig": "2.3.1",
+      "librt": "0.16.0",
+      "mypy": "2.4.0",
+      "mypy_extensions": "1.1.0",
+      "packaging": "26.3",
+      "pathspec": "1.1.1",
+      "pluggy": "1.7.0",
+      "pycparser": "3.12",
+      "pyproject_hooks": "1.3.3",
+      "pytest": "9.1.1",
+      "ruff": "0.17.2",
+      "setuptools": "84.2.1",
+      "sortedcontainers": "2.4.0",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.54.0"
+    },
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+    "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+    "sqlite": "3.47.1"
+  },
+  "historical_candidate_source_commit": "58e3db6f8ae8dbe362c2541be25fb486ab154128",
+  "initial_setup_attempts": [
+    "Initial macOS and Ubuntu fixture exports failed because the validation harness omitted the destination parent directory. The harness was corrected; complete checks passed in fresh environments with unchanged CASF artifacts.",
+    "A macOS retry stopped before environment creation because of an incorrect interpreter path. The verified path was used for the complete successful run."
+  ],
+  "installation_checks": {
+    "macos": [
+      {
+        "check": "base-create",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "base-install",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "base-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "base-version",
+        "exit_code": 0
+      },
+      {
+        "check": "base-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "base-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "base-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-create",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-install",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-version",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-workflow",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-create",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-install",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-version",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-workflow",
+        "exit_code": 0
+      }
+    ],
+    "ubuntu_amd64_emulated": [
+      {
+        "check": "base-create",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "base-install",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-create",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-install",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-create",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-install",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "base-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "base-version",
+        "exit_code": 0
+      },
+      {
+        "check": "base-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "base-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "base-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-version",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-workflow",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-version",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-workflow",
+        "exit_code": 0
+      }
+    ]
+  },
+  "installation_environments": {
+    "macos": {
+      "base": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/base/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "cryptography": "50.0.2",
+          "pycparser": "3.12"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/base/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "recorded_at": "2026-11-22T05:53:25.194379+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.47.1",
+        "worktree_clean": true
+      },
+      "sdist": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/sdist/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/sdist/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "recorded_at": "2026-11-22T05:53:33.250804+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.47.1",
+        "worktree_clean": true
+      },
+      "witness": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/witness/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/witness/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "recorded_at": "2026-11-22T05:53:29.951691+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.47.1",
+        "worktree_clean": true
+      }
+    },
+    "ubuntu_amd64_emulated": {
+      "base": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "cryptography": "50.0.2",
+          "pycparser": "3.12"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "recorded_at": "2026-11-22T05:53:12.138105+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.45.1",
+        "worktree_clean": true
+      },
+      "sdist": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "recorded_at": "2026-11-22T05:53:18.364651+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.45.1",
+        "worktree_clean": true
+      },
+      "witness": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "b33e51b1a4d5330298d9f1a7d5586ea41309a07f9d65a8298dc77cf0fc235ed7",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "f671cf1b35bc59e0331fbd7b52a430a9f4a93176779adde92734e77bcf1cfaa7",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "cfb55e9934a4b69578bcc7b7e1b64bf7a58cf2b8ee10166d99e0d4eac2509eb1",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/lib/python/site-packages/casf"
+        },
+        "context": {
+          "CASF_PR_HEAD_SHA": "d4721c43b23ec93a14819390a1d7606f0c74e259"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "recorded_at": "2026-11-22T05:53:14.487872+00:00",
+        "schema_version": 1,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.45.1",
+        "worktree_clean": true
+      }
+    }
+  },
+  "limitations": [
+    "Ubuntu exact-artifact checks use approved amd64 emulation on an arm64 Mac, with Linux-local test data and no test-network access. Native hosted source/package validation is separate CI evidence.",
+    "Docker Desktop host-shared SQLite state storage is not validated.",
+    "Package-advisory queries do not clear native components, lower dependency bounds, or host patches.",
+    "No new independent researcher signoff is claimed; final review disposition and publication approval remain pending."
+  ],
+  "post_merge_ci": {
+    "configurations": [
+      {
+        "architecture": "arm64",
+        "configuration": "validation-locked-macos-15-3.12",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1761,
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "python": "3.12.10",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files": 40,
+        "skipped": 0,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.49.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "arm64",
+        "configuration": "validation-locked-macos-15-3.13",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1761,
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "python": "3.13.17",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files": 40,
+        "skipped": 0,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.50.4",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "arm64",
+        "configuration": "validation-locked-macos-15-3.14",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1761,
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "python": "3.14.10",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files": 40,
+        "skipped": 0,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.50.4",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-locked-ubuntu-latest-3.12",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "python": "3.12.16",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-locked-ubuntu-latest-3.13",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "python": "3.13.18",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-locked-ubuntu-latest-3.14",
+        "failed": 0,
+        "import_mode": "source",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "python": "3.14.10",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "arm64",
+        "configuration": "validation-minimum-macos-15-3.12",
+        "failed": 0,
+        "import_mode": "wheel",
+        "passed": 1761,
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "python": "3.12.10",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files": 40,
+        "skipped": 0,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.49.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-minimum-ubuntu-latest-3.12",
+        "failed": 0,
+        "import_mode": "wheel",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+        "python": "3.12.16",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.88.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-minimum-ubuntu-latest-3.13",
+        "failed": 0,
+        "import_mode": "wheel",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "python": "3.13.18",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      },
+      {
+        "architecture": "x86_64",
+        "configuration": "validation-minimum-ubuntu-latest-3.14",
+        "failed": 0,
+        "import_mode": "wheel",
+        "passed": 1747,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "python": "3.14.10",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files": 40,
+        "skipped": 14,
+        "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+        "sqlite": "3.46.1",
+        "wheel_and_sdist_runtime_hashes_match": true
+      }
+    ],
+    "fuzz_cases": 72900,
+    "run_id": 44989456952,
+    "run_number": 234,
+    "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+    "url": "https://github.com/hamdamme/casf/actions/runs/44989456952"
+  },
+  "publication_status": "unpublished; candidate review and separate publication approval pending",
+  "runtime_files": 40,
+  "source_archive_sha256": "b4ab153fef4d75aac177d94b17f524cd04e3d78cbd22f232938f552461a5a5d5",
+  "source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+  "source_date_epoch": 1795325215,
+  "synthetic_workflows": {
+    "macos": {
+      "sdist": {
+        "checks": 21,
+        "status": "complete",
+        "steps": [
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create authority key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create log key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create witness key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create manifest"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "sign active status"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "register witness"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "provision trust"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verified initialization"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "append document fingerprint"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "retry identical event"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness pending record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "export public evidence"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify integrity"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify anchored"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify online"
+          },
+          {
+            "exit_code": 1,
+            "expected_exit_code": 1,
+            "step": "reject modified record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "inspect backup"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "authenticate restored bundle"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "promote and seal restored writer"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness final seal"
+          },
+          {
+            "exit_code": 4,
+            "expected_exit_code": 4,
+            "step": "report unavailable witness"
+          }
+        ],
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      },
+      "witness": {
+        "checks": 21,
+        "status": "complete",
+        "steps": [
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create authority key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create log key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create witness key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create manifest"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "sign active status"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "register witness"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "provision trust"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verified initialization"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "append document fingerprint"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "retry identical event"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness pending record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "export public evidence"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify integrity"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify anchored"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify online"
+          },
+          {
+            "exit_code": 1,
+            "expected_exit_code": 1,
+            "step": "reject modified record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "inspect backup"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "authenticate restored bundle"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "promote and seal restored writer"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness final seal"
+          },
+          {
+            "exit_code": 4,
+            "expected_exit_code": 4,
+            "step": "report unavailable witness"
+          }
+        ],
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      }
+    },
+    "ubuntu_amd64_emulated": {
+      "sdist": {
+        "checks": 21,
+        "status": "complete",
+        "steps": [
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create authority key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create log key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create witness key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create manifest"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "sign active status"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "register witness"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "provision trust"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verified initialization"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "append document fingerprint"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "retry identical event"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness pending record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "export public evidence"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify integrity"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify anchored"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify online"
+          },
+          {
+            "exit_code": 1,
+            "expected_exit_code": 1,
+            "step": "reject modified record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "inspect backup"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "authenticate restored bundle"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "promote and seal restored writer"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness final seal"
+          },
+          {
+            "exit_code": 4,
+            "expected_exit_code": 4,
+            "step": "report unavailable witness"
+          }
+        ],
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      },
+      "witness": {
+        "checks": 21,
+        "status": "complete",
+        "steps": [
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create authority key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create log key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create witness key"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "create manifest"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "sign active status"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "register witness"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "provision trust"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verified initialization"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "append document fingerprint"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "retry identical event"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness pending record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "export public evidence"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify integrity"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify anchored"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "verify online"
+          },
+          {
+            "exit_code": 1,
+            "expected_exit_code": 1,
+            "step": "reject modified record"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "inspect backup"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "authenticate restored bundle"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "promote and seal restored writer"
+          },
+          {
+            "exit_code": 0,
+            "expected_exit_code": 0,
+            "step": "witness final seal"
+          },
+          {
+            "exit_code": 4,
+            "expected_exit_code": 4,
+            "step": "report unavailable witness"
+          }
+        ],
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      }
+    }
+  },
+  "uv": "0.13.5",
+  "version": "0.1.0rc4",
+  "worktree_clean": true
+}
