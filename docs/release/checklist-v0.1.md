@@ -12,21 +12,20 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 ## Next candidate
 
-[Replacement 0.1.0rc4 preparation](candidate-0.1.0rc4-d4721c4.md) includes PR 78
-and the follow-up fixes merged as `d4721c4`. Source CI #234 passed all ten jobs.
-Those exact files passed fresh installation checks, but omit the subsequent
-SQLite permissions and canonical JSONL corrections. Their evidence is historical.
-The new corrections require all ten configurations, review and replacement
-artifacts before publication.
+[Replacement 0.1.0rc4 preparation](candidate-0.1.0rc4-3333d00.md) includes the
+SQLite permissions and canonical JSONL fixes merged in PR 82 at `3333d00`, along
+with the earlier advisory corrections. Post-merge CI 238 passed all ten jobs;
+the exact replacement wheel and sdist passed fresh installation checks.
+The earlier `d4721c4` artifacts are historical and must not be published.
 
 | rc4 gate | Current status |
 | --- | --- |
 | C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
-| Hosted acceptance matrix | CI #234: 10/10 jobs passed on `d4721c4` |
-| SQLite permissions and canonical JSONL | Corrections and regressions implemented; full matrix and PR review required |
-| Exact replacement artifacts | Rebuild required from accepted corrected source; `d4721c4` files must not be published |
-| Exact-file installations | 35 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
-| Dependency query refresh | 50 successful queries, no listed findings; refresh before publication |
+| Hosted acceptance matrix | CI 238: 10/10 jobs passed on exact build `3333d00` |
+| SQLite permissions and canonical JSONL | Accepted in PR 82; regressions passed in all applicable configurations |
+| Exact replacement artifacts | Built from `3333d00`; 40 runtime files verified; new hashes recorded |
+| Exact-file installations | 38 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
+| Dependency query refresh | Previous record covers unchanged lockfile; fresh queries required before publication |
 | Final review and artifact approval | Pending this release record's review; no new researcher signoff claimed |
 | Tag, GitHub release and advisory publication | Not performed; require separate approval |
 | Public downloads and Zenodo version | Pending approved publication |

@@ -1,0 +1,1888 @@
+{
+  "artifact_hashes_unchanged_after_installation": true,
+  "artifacts": {
+    "casf-0.1.0rc4-py3-none-any.whl": {
+      "members_sha256": {
+        "casf-0.1.0rc4.dist-info/METADATA": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "casf-0.1.0rc4.dist-info/RECORD": "7be78a52b3e871dd829ee49bac7eac92489757c89bfc345d9a5366feca3fdf6d",
+        "casf-0.1.0rc4.dist-info/WHEEL": "98e75747d0b7c0c568bfb71263c3d8f970b3a374a6996087bc642be5cb09a1aa",
+        "casf-0.1.0rc4.dist-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "casf-0.1.0rc4.dist-info/licenses/LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "casf-0.1.0rc4.dist-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "casf/__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+        "casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "casf/bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+        "casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "casf/cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+        "casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "casf/errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+        "casf/file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+        "casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "casf/keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+        "casf/lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+        "casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "casf/model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+        "casf/online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+        "casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "casf/storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+        "casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "casf/storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+        "casf/transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+        "casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "casf/trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+        "casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "casf/verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+        "casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "casf/writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+        "casf/writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+        "casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+      },
+      "sha256": "e4c7c8747d77998e6b8f05e042319b584a19911b3773536544014702e5dadad7",
+      "size": 113427
+    },
+    "casf-0.1.0rc4.tar.gz": {
+      "members_sha256": {
+        "LICENSE": "f391481d36f056d2f541d864504a9f065a81f055d640d3130c851896622226f6",
+        "MANIFEST.in": "903697d1eab4b918a5fba0e9cd7b69d5f8b01229ed38b9b4e6fe436726656bca",
+        "PKG-INFO": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "README.md": "deb3b60350708545968324b37004b8456e661362cd469675641848cd5601fcc2",
+        "examples/__init__.py": "a34382bbd0a2cdbc5a4fcfed31f3ebaa7b405a6987959ef5b207855a5574265d",
+        "examples/transactions.py": "f6c7f26caa75e1dec4f15d701294adcbbb3af8a5cd92f1fe90e7d0b0f655cdb3",
+        "examples/verified_workflow.py": "c351c898662e4847d3188fa9f14b559d7be4cafbff9718aa2d3ce80142e5b10a",
+        "pyproject.toml": "dd802314fbc7c4c696f73055a7048993c7e80f972dc834b1f86c35af2b991c43",
+        "setup.cfg": "1c473cbaee8da5fc46e7f0158794af5cea4414c34a3cf3f180c2001f5e38bd3e",
+        "src/casf.egg-info/PKG-INFO": "b67b3314d639017ae1c90fc2bd21bc97144b4d5a59436c79b76d81a531c38aee",
+        "src/casf.egg-info/SOURCES.txt": "dd13317380137368a5934febb394d69097c17aba350d7027e8b7fe439a50e13f",
+        "src/casf.egg-info/dependency_links.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf.egg-info/entry_points.txt": "849f21b3e55ef39e2897e89eba9b9dfa3eba9380184675433c3ce58c1cd342a7",
+        "src/casf.egg-info/requires.txt": "a4402cae8da8c6ed5d260fe589f9166bd1917c838e3abfd3bd6f6479a6a3d98a",
+        "src/casf.egg-info/top_level.txt": "96365db1cdb3723ad2d6c8d074ed89c91aab4d13bcbfd5f1c7a3b88b34d1beb2",
+        "src/casf/__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+        "src/casf/api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+        "src/casf/bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+        "src/casf/canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+        "src/casf/canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+        "src/casf/canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+        "src/casf/cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+        "src/casf/crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+        "src/casf/errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+        "src/casf/file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+        "src/casf/filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+        "src/casf/keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+        "src/casf/lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+        "src/casf/model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+        "src/casf/model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+        "src/casf/model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+        "src/casf/model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+        "src/casf/online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+        "src/casf/py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "src/casf/storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+        "src/casf/storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+        "src/casf/storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+        "src/casf/storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+        "src/casf/transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+        "src/casf/trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+        "src/casf/trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+        "src/casf/types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+        "src/casf/verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+        "src/casf/verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+        "src/casf/verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+        "src/casf/verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+        "src/casf/witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+        "src/casf/witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+        "src/casf/witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+        "src/casf/witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+        "src/casf/writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+        "src/casf/writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+        "src/casf/writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+        "src/casf/writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+        "src/casf/writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011",
+        "uv.lock": "a445899f7620fe356064a4177ba30a9fa6add0938ba06d201b65be3b530592d9"
+      },
+      "sha256": "0b65a4514909d4289336911a67f296bd08d667ac65521134261d500d6fd0f447",
+      "size": 150620
+    }
+  },
+  "build_environment": {
+    "packages": {
+      "Pygments": "2.21.0",
+      "ast_serialize": "0.13.1",
+      "build": "1.6.1",
+      "casf": "0.1.0rc4",
+      "cffi": "2.1.1",
+      "click": "8.5.0",
+      "cryptography": "50.0.2",
+      "h11": "0.16.0",
+      "hypothesis": "6.170.9",
+      "iniconfig": "2.3.1",
+      "librt": "0.16.0",
+      "mypy": "2.4.0",
+      "mypy_extensions": "1.1.0",
+      "packaging": "26.3",
+      "pathspec": "1.1.1",
+      "pluggy": "1.7.0",
+      "pycparser": "3.12",
+      "pyproject_hooks": "1.3.3",
+      "pytest": "9.1.1",
+      "ruff": "0.17.2",
+      "setuptools": "84.2.1",
+      "sortedcontainers": "2.4.0",
+      "typing_extensions": "4.16.0",
+      "uvicorn": "0.54.0"
+    },
+    "platform": "macOS-15.6.1-arm64-arm-64bit",
+    "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+    "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+    "sqlite": "3.47.1"
+  },
+  "dependency_review": {
+    "lock_sha256": "a445899f7620fe356064a4177ba30a9fa6add0938ba06d201b65be3b530592d9",
+    "new_queries_performed": false,
+    "record": "dependency-review-0.1.0rc4-d4721c4.json",
+    "refresh_before_publication_required": true
+  },
+  "harness_setup": "An initial harness invocation used the older system Python and stopped at source archive extraction before building packages. The complete run used Python 3.12.10 in new work/output directories; no implementation changes were needed.",
+  "installation_checks": {
+    "macos": [
+      {
+        "check": "base-create",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "base-install",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "base-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "base-version",
+        "exit_code": 0
+      },
+      {
+        "check": "base-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "base-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "base-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-create",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-install",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-version",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-workflow",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-create",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-install",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-version",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-workflow",
+        "exit_code": 0
+      }
+    ],
+    "ubuntu_amd64_emulated": [
+      {
+        "check": "base-create",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "base-install",
+        "exit_code": 0
+      },
+      {
+        "check": "base-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-create",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-install",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-create",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-install",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-dependency-check",
+        "exit_code": 0
+      },
+      {
+        "check": "base-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "base-version",
+        "exit_code": 0
+      },
+      {
+        "check": "base-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "base-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "base-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "base-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "base-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-version",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "witness-workflow",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-cli",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-version",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-environment",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-fixture",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-public-verify",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-security-smoke",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-transactions",
+        "exit_code": 0
+      },
+      {
+        "check": "sdist-workflow",
+        "exit_code": 0
+      }
+    ]
+  },
+  "installation_environments": {
+    "macos": {
+      "base": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/base/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "cryptography": "50.0.2",
+          "pycparser": "3.12"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/base/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.47.1"
+      },
+      "sdist": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/sdist/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/sdist/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.47.1"
+      },
+      "witness": {
+        "architecture": "arm64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/macos/witness/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "macOS-15.6.1-arm64-arm-64bit",
+        "python": "3.12.10 (main, May 30 2025, 05:53:56) [Clang 20.1.4 ]",
+        "python_executable": "$INSTALL_ROOT/macos/witness/bin/python",
+        "python_tls": "OpenSSL 3.0.16 11 Feb 2025",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.47.1"
+      }
+    },
+    "ubuntu_amd64_emulated": {
+      "base": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "cryptography": "50.0.2",
+          "pycparser": "3.12"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.45.1"
+      },
+      "sdist": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.45.1"
+      },
+      "witness": {
+        "architecture": "x86_64",
+        "casf": {
+          "files_sha256": {
+            "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+            "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+            "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+            "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+            "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+            "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+            "cli/__init__.py": "4f9b621db75d9083b72583c6f3bdfea0bf9506cde89a3b1b1574323bee6d85f8",
+            "crypto/__init__.py": "b18a607a4c26e3d1e367f53950fcb78b369023956495a903cf9220500033ae53",
+            "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+            "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+            "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+            "keys.py": "77d90930d45909950931625afc673e3e2f9c46df02ef41faaab12e5bd6642208",
+            "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+            "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+            "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+            "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+            "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+            "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+            "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+            "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+            "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+            "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+            "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+            "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+            "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+            "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+            "verifier/__init__.py": "04dd6048bd1bcfbef8e3da337520055592d6ad7c8445bbd1d04eea69205e0d9c",
+            "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+            "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+            "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+            "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+            "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+            "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+            "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+            "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+            "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+            "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+            "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+            "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+          },
+          "mode": "wheel",
+          "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/lib/python/site-packages/casf"
+        },
+        "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+        "packages": {
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "pycparser": "3.12",
+          "uvicorn": "0.54.0"
+        },
+        "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+        "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+        "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/bin/python",
+        "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+        "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "source_export_from_commit": true,
+        "sqlite": "3.45.1"
+      }
+    }
+  },
+  "limitations": [
+    "Exact-artifact Ubuntu checks use local amd64 emulation on an arm64 Mac; synthetic databases remain on container-local storage and the test phase has networking disabled. Native hosted validation is separate evidence.",
+    "Docker Desktop host-shared SQLite state storage remains unvalidated.",
+    "The full matrix uses its recorded SQLite versions; SQLite 3.42.0 was not rerun for these artifacts.",
+    "Dependency-query refresh, native-library and host-patch assessment, exact-file approval and publication remain separate gates. No new independent researcher signoff is claimed."
+  ],
+  "post_merge_ci": {
+    "configurations": [
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:4f5eef654002e4117cf2b356160b3f5eca8a614ed911d8e66493aa3d7d24bf00",
+        "name": "validation-locked-ubuntu-latest-3.14",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.14.10 (main, Oct 26 2026, 14:17:03) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "arm64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0,
+          "tests": 1808
+        },
+        "digest": "sha256:e3265aa1e7a5ad9f9962659576c5ac2e15f2b88a7b22240ea39bb90f32fd56ca",
+        "name": "validation-locked-macos-15-3.14",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1808,
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.14.10 (v3.14.10:b703b2c5e70, Oct 25 2026, 14:17:53) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files_match": 40,
+        "skips": [],
+        "sqlite": "3.50.4",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:cea1352670f64ff453da8c65fcabeaade4abd0668e4cf35b87e2982810236831",
+        "name": "validation-minimum-ubuntu-latest-3.13",
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.13.18 (main, Oct 26 2026, 14:19:33) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "arm64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0,
+          "tests": 1808
+        },
+        "digest": "sha256:e5bd07b0c8f98495cb91ab9aade9abde7b5e385c3d6bddc2f2619d868eefc1aa",
+        "name": "validation-locked-macos-15-3.12",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1808,
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files_match": 40,
+        "skips": [],
+        "sqlite": "3.49.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:d97a7563cd64c032dd96067bd993c385add7089dcf59c3ac4d35e2ac9280f4b4",
+        "name": "validation-minimum-ubuntu-latest-3.14",
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.14.10 (main, Oct 26 2026, 14:17:03) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "arm64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0,
+          "tests": 1808
+        },
+        "digest": "sha256:6ddd446a6c034e67130ddb4ca7458001bf05bbdb6ba30b072ad3e20b9bb405a7",
+        "name": "validation-locked-macos-15-3.13",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1808,
+        "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.13.17 (v3.13.17:64e080d3815, Oct 21 2026, 07:24:09) [Clang 21.0.0 (clang-2100.1.1.101)]",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files_match": 40,
+        "skips": [],
+        "sqlite": "3.50.4",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:2a74e5a51e801d798d9ce91bdf44ebe36b07602fe33532312290aeab0f443401",
+        "name": "validation-locked-ubuntu-latest-3.13",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.13.18 (main, Oct 26 2026, 14:19:33) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "arm64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 0,
+          "tests": 1808
+        },
+        "digest": "sha256:90abb9b9b456e2f9dfbdb8be895f411dd64b90eaa16f4113a797f4eed4d97ba9",
+        "name": "validation-minimum-macos-15-3.12",
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "passed": 1808,
+        "platform": "macOS-15.8.2-arm64-arm-64bit",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.12.10 (v3.12.10:0cc81280367, Apr  8 2025, 08:46:59) [Clang 13.0.0 (clang-1300.0.29.30)]",
+        "runner_image": "macos15",
+        "runner_image_version": "20261118.0550.1",
+        "runtime_files_match": 40,
+        "skips": [],
+        "sqlite": "3.49.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:2e2bd7f2bc34e59ef60aa6f30486f6e7cfca750ad79fe6f6924980f1b7fa4878",
+        "name": "validation-locked-ubuntu-latest-3.12",
+        "packages": {
+          "Pygments": "2.21.0",
+          "ast_serialize": "0.13.1",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.0",
+          "cryptography": "50.0.2",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "librt": "0.16.0",
+          "mypy": "2.4.0",
+          "mypy_extensions": "1.1.0",
+          "packaging": "26.3",
+          "pathspec": "1.1.1",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "ruff": "0.17.2",
+          "setuptools": "84.2.1",
+          "sortedcontainers": "2.4.0",
+          "typing_extensions": "4.16.0",
+          "uvicorn": "0.54.0"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.12.16 (main, Oct 26 2026, 02:48:44) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      },
+      {
+        "architecture": "x86_64",
+        "counts": {
+          "errors": 0,
+          "failures": 0,
+          "skipped": 20,
+          "tests": 1808
+        },
+        "digest": "sha256:16fb7c4e5255a6ef549f08dd5187caded8c6403a4bb634f4699307d76fbdb330",
+        "name": "validation-minimum-ubuntu-latest-3.12",
+        "packages": {
+          "Pygments": "2.21.0",
+          "build": "1.6.1",
+          "casf": "0.1.0rc4",
+          "cffi": "2.1.1",
+          "click": "8.5.1",
+          "cryptography": "41.0.0",
+          "h11": "0.16.0",
+          "hypothesis": "6.170.9",
+          "iniconfig": "2.3.1",
+          "packaging": "26.3",
+          "pluggy": "1.7.0",
+          "pycparser": "3.12",
+          "pyproject_hooks": "1.3.3",
+          "pytest": "9.1.1",
+          "setuptools": "77.0.3",
+          "sortedcontainers": "2.4.0",
+          "uvicorn": "0.54.0",
+          "wheel": "0.45.1"
+        },
+        "passed": 1788,
+        "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+        "pr_head": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "python": "3.12.16 (main, Oct 26 2026, 02:48:44) [GCC 15.2.0]",
+        "runner_image": "ubuntu26",
+        "runner_image_version": "20261116.202.1",
+        "runtime_files_match": 40,
+        "skips": [
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[main]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-wal]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_database_acl_is_rejected_before_sqlite[-shm]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_refused_before_database_creation",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_database_acl_checked_before_sqlite_bytes",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[file]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_trust_rejects_acl_write_access[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_key_loading_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[lock]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_state_rejects_extended_acl[directory]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_inherited_acl_directory_rejected_before_publication[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_empty_acl_and_invalid_descriptor",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[key]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[state]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_new_sensitive_file_checked_before_bytes_are_written[status]",
+            "reason": "native Darwin ACL semantics"
+          },
+          {
+            "name": "test_explicit_empty_acl_is_allowed",
+            "reason": "native Darwin ACL semantics"
+          }
+        ],
+        "sqlite": "3.46.1",
+        "tested_merge_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+        "workflow_checks": 21
+      }
+    ],
+    "fuzz_cases": 72900,
+    "run_id": 45058864531,
+    "run_number": 238,
+    "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+    "url": "https://github.com/hamdamme/casf/actions/runs/45058864531",
+    "verified_archive_digests": {
+      "parser-fuzz-locked-macos-15-3.12": "sha256:8248d68680c7d3c81db6f11214619549f42a92613f836f48f82404c52f28f236",
+      "parser-fuzz-locked-macos-15-3.13": "sha256:87fb0e99cb532b403a50fa9b7e1a6d1e752e5c0fd9244561ff6372e1910bae34",
+      "parser-fuzz-locked-macos-15-3.14": "sha256:46e168e888371a633d1f41440744cf500787d7168dc8d26a0bd0eea7765504ed",
+      "parser-fuzz-locked-ubuntu-latest-3.12": "sha256:964263e3b744c957ae2cb10f2c8099afdf23dc2f8f0b6066111aa27f2cb35165",
+      "parser-fuzz-locked-ubuntu-latest-3.13": "sha256:db741562f6688e82bc5b9285baeb9d9377dcb1a3e40ad00052c9614822adaff1",
+      "parser-fuzz-locked-ubuntu-latest-3.14": "sha256:b33e8c7f2fe77199ea56cca054ed2a1c9adf0c3c53dfc471c5b782033324e1fc",
+      "parser-fuzz-minimum-macos-15-3.12": "sha256:bd55df7486ae454a16f50ac097687258b7cef6cee6d005d19c3ec1e18edd5615",
+      "parser-fuzz-minimum-ubuntu-latest-3.12": "sha256:7457f15fbf1f878ae561d0a44962973dab0cdcd0e34e10c1cc9a3c3e8e3bf4aa",
+      "parser-fuzz-minimum-ubuntu-latest-3.13": "sha256:4fe3d295a19c39cd820e1100a2ca400b9039b38a429883592e394af648b511ba",
+      "parser-fuzz-minimum-ubuntu-latest-3.14": "sha256:4fe3d295a19c39cd820e1100a2ca400b9039b38a429883592e394af648b511ba",
+      "validation-locked-macos-15-3.12": "sha256:e5bd07b0c8f98495cb91ab9aade9abde7b5e385c3d6bddc2f2619d868eefc1aa",
+      "validation-locked-macos-15-3.13": "sha256:6ddd446a6c034e67130ddb4ca7458001bf05bbdb6ba30b072ad3e20b9bb405a7",
+      "validation-locked-macos-15-3.14": "sha256:e3265aa1e7a5ad9f9962659576c5ac2e15f2b88a7b22240ea39bb90f32fd56ca",
+      "validation-locked-ubuntu-latest-3.12": "sha256:2e2bd7f2bc34e59ef60aa6f30486f6e7cfca750ad79fe6f6924980f1b7fa4878",
+      "validation-locked-ubuntu-latest-3.13": "sha256:2a74e5a51e801d798d9ce91bdf44ebe36b07602fe33532312290aeab0f443401",
+      "validation-locked-ubuntu-latest-3.14": "sha256:4f5eef654002e4117cf2b356160b3f5eca8a614ed911d8e66493aa3d7d24bf00",
+      "validation-minimum-macos-15-3.12": "sha256:90abb9b9b456e2f9dfbdb8be895f411dd64b90eaa16f4113a797f4eed4d97ba9",
+      "validation-minimum-ubuntu-latest-3.12": "sha256:16fb7c4e5255a6ef549f08dd5187caded8c6403a4bb634f4699307d76fbdb330",
+      "validation-minimum-ubuntu-latest-3.13": "sha256:cea1352670f64ff453da8c65fcabeaade4abd0668e4cf35b87e2982810236831",
+      "validation-minimum-ubuntu-latest-3.14": "sha256:d97a7563cd64c032dd96067bd993c385add7089dcf59c3ac4d35e2ac9280f4b4"
+    }
+  },
+  "pre_existing_untracked_files_excluded": 12,
+  "publication_status": "unpublished; exact artifact review and separate publication approval pending",
+  "runtime_files": 40,
+  "source_archive_sha256": "15dacefb4f81f1aaf9cca371bbd4f171be885dd30dbe348ff33678e5cc84f147",
+  "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
+  "source_date_epoch": 1795374395,
+  "source_export_from_commit": true,
+  "superseded_candidate_source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+  "synthetic_workflows": {
+    "macos": {
+      "sdist": {
+        "checks": 21,
+        "status": "complete",
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      },
+      "witness": {
+        "checks": 21,
+        "status": "complete",
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      }
+    },
+    "ubuntu_amd64_emulated": {
+      "sdist": {
+        "checks": 21,
+        "status": "complete",
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      },
+      "witness": {
+        "checks": 21,
+        "status": "complete",
+        "synthetic": true,
+        "tamper_result": "FAIL",
+        "unavailable_witness_result": "INCONCLUSIVE"
+      }
+    }
+  },
+  "tracked_worktree_clean": true,
+  "uv": "0.13.5",
+  "version": "0.1.0rc4"
+}

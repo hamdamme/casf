@@ -1,9 +1,10 @@
 # CASF 0.1.0rc4 — experimental candidate
 
 Unpublished. Prepared for research and evaluation with synthetic records and
-disposable keys. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) omits the
-SQLite permissions and canonical JSONL corrections below. Build and validate
-replacement artifacts from the accepted source before separate publication approval.
+disposable keys. The [replacement candidate](candidate-0.1.0rc4-3333d00.md) is
+built from merge `3333d00` and includes every correction below. Exact-file
+installation checks and post-merge CI passed; artifact review and separate
+publication approval remain pending.
 
 ## Fixes since rc3
 

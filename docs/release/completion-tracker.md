@@ -40,21 +40,23 @@ These counts describe this completion plan, not the proportion of all historical
 
 ## Next experimental release
 
-PR 78 and the C03/D01–D03 follow-up are merged on `main`. CI #234 passed all ten
-jobs on `d4721c4`. The [replacement rc4 candidate](candidate-0.1.0rc4-d4721c4.md)
-is built from that merge and passed exact-file installation checks on native
-macOS and emulated Ubuntu. It is prepared for review, not published.
-The [follow-up scope](advisory-followup-2026-11-21.md#current-post-merge-status)
-has 5/7 tasks accepted: corrections and validation complete, final review
-disposition and candidate approval pending. Remaining release work is approval,
-GitHub publication and download checks, then a new Zenodo version and citation
-verification. No publication is authorized by preparation.
-The subsequent SQLite-permission and canonical-JSONL review adds two corrections
-and their regressions. Both are implemented for PR review. Acceptance requires
-the full ten-configuration matrix, maintainer review, then a new candidate build
-and exact-file installation checks. The `d4721c4` artifacts are historical and
-cannot be published as the corrected rc4. Estimated remaining release effort is
-1–2 development sessions after review; external review timing is unknown.
+PR 82 merged at `3333d0025388e97a3e54b7ae29974b7369545f81`, accepting the
+SQLite permissions and canonical JSONL corrections and regressions. The earlier
+PR 78 and C03/D01–D03 corrections remain included. Post-merge CI 238 passed all
+ten jobs on this exact source.
+
+The [replacement rc4 candidate](candidate-0.1.0rc4-3333d00.md) is built from
+`3333d00`. Six fresh installations passed 76 commands across native macOS and
+emulated Ubuntu, including four 21-check workflows. The previous `d4721c4`
+artifacts remain historical and must not be published as the corrected rc4.
+Preparation is complete; exact-file review, final advisory disposition and
+separate publication approval remain pending. No new researcher signoff is claimed.
+
+Remaining release work is review and a final dependency-query refresh, approved
+GitHub publication and download verification, then a new Zenodo version and
+citation verification. Estimated remaining release effort is 1–2 development
+sessions after approval; external review timing is unknown. Preparation does not
+authorize publication.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.
