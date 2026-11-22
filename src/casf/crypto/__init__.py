@@ -107,9 +107,26 @@ def generate_key() -> Ed25519PrivateKey:
 def public_key_raw(priv: Ed25519PrivateKey) -> bytes:
     return priv.public_key().public_bytes_raw()
 
+# libsodium 1.0.18 ge25519_has_small_order, with the x sign bit cleared.
+# Public encodings only: this check performs no secret-dependent arithmetic.
+_ED25519_SMALL_ORDER = frozenset(bytes.fromhex(value) for value in (
+    "00" * 32,
+    "01" + "00" * 31,
+    "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05",
+    "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a",
+    "ec" + "ff" * 30 + "7f",
+    "ed" + "ff" * 30 + "7f",
+    "ee" + "ff" * 30 + "7f",
+))
+
+
 def load_public_key(raw: bytes) -> Ed25519PublicKey:
     if len(raw) != 32:
         raise SchemaError("Ed25519 public keys are exactly 32 bytes")
+    y_encoding = raw[:31] + bytes([raw[31] & 0x7f])
+    if (y_encoding in _ED25519_SMALL_ORDER
+            or int.from_bytes(y_encoding, "little") >= (1 << 255) - 19):
+        raise SchemaError("Ed25519 public key has small order")
     return Ed25519PublicKey.from_public_bytes(raw)
 
 def key_id(raw_public_key: bytes) -> str:

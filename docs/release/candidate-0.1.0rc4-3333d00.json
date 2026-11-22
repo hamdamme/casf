@@ -1841,13 +1841,14 @@
     }
   },
   "pre_existing_untracked_files_excluded": 12,
-  "publication_status": "unpublished; exact artifact review and separate publication approval pending",
+  "publication_status": "superseded and historical; do not publish; new candidate build and validation required",
   "runtime_files": 40,
   "source_archive_sha256": "15dacefb4f81f1aaf9cca371bbd4f171be885dd30dbe348ff33678e5cc84f147",
   "source_commit": "3333d0025388e97a3e54b7ae29974b7369545f81",
   "source_date_epoch": 1795374395,
   "source_export_from_commit": true,
   "superseded_candidate_source_commit": "d4721c43b23ec93a14819390a1d7606f0c74e259",
+  "superseded_reason": "Omits the small-order Ed25519 key rejection and retained-checkpoint argument correction; runtime bytes changed.",
   "synthetic_workflows": {
     "macos": {
       "sdist": {

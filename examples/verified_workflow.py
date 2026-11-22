@@ -129,7 +129,7 @@ def run(output: Path) -> dict:
                 record["body"]["payload"]["sha256"] = "0" * 64
                 (tampered / "records.jsonl").write_bytes(canonicalize(record) + b"\n")
                 bad = command("reject modified record", "verify", tampered, *verify,
-                              "--mode", "integrity", expected=1)
+                              "--mode", "anchored", expected=1)
                 if bad.get("result") != "FAIL" or (work / "verifier-state.json").read_bytes() != state_before:
                     raise RuntimeError("modified evidence was accepted or replaced retained state")
                 with closing(Writer(work / "writer.db")) as reader:

@@ -1,4 +1,10 @@
-# Experimental 0.1.0rc4 candidate from 3333d00
+# Historical 0.1.0rc4 candidate from 3333d00 — superseded
+
+**Do not publish these artifacts.** They omit the small-order Ed25519 key
+rejection described in [ADR-018](../adr/ADR-018-ed25519-verification-profile.md).
+Runtime bytes have changed; a new candidate build, installation validation and
+artifact approval are required. The original preparation evidence below remains
+historical and is not acceptance evidence for the corrected implementation.
 
 Prepared 22 November 2026. **Unpublished; exact-file approval and separate
 publication approval remain pending.** This candidate replaces the
@@ -86,7 +92,7 @@ runner identifiers are recorded in the JSON evidence. These results cover the
 listed SQLite versions; SQLite 3.42.0 was not rerun for these files.
 This documentation PR requires its own CI; CI 238 is not attributed to later commits.
 
-## Remaining release gates
+## Historical release gates at preparation (superseded)
 
 1. Review these exact files, hashes, [release notes](notes-0.1.0rc4.md) and the
    documentation PR's CI; record final review disposition and artifact approval.

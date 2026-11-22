@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 
 import pytest
+from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from casf import crypto
@@ -63,6 +64,24 @@ SIGN_FN = {
 }
 
 KAT = json.loads((VEC / "crypto_kat.json").read_text())
+ED25519_EDGE = json.loads((VEC / "ed25519_edge_cases.json").read_text())
+
+
+@pytest.mark.parametrize("case", ED25519_EDGE["cases"], ids=lambda case: case["name"])
+def test_ed25519_verification_profile(case):
+    raw = bytes.fromhex(case["public_key_hex"])
+    if case["expect"] == "SchemaError":
+        with pytest.raises(SchemaError, match="^Ed25519 public key has small order$"):
+            crypto.load_public_key(raw)
+        return
+    key = crypto.load_public_key(raw)
+    signature, message = bytes.fromhex(case["signature_hex"]), bytes.fromhex(case["message_hex"])
+    if case["expect"] == "InvalidSignature":
+        with pytest.raises(InvalidSignature):
+            key.verify(signature, message)
+    else:
+        assert case["expect"] == "ACCEPT"
+        key.verify(signature, message)
 
 
 def _keys():

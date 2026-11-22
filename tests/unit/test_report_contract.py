@@ -2,7 +2,7 @@
 
 import pytest
 
-from casf.verifier import verify
+from casf.verifier import Mode, verify
 from tests.unit.test_verifier import _chain, _manifest_env, _pins, _status_env
 
 
@@ -55,21 +55,23 @@ def test_report_serialization_does_not_share_mutable_objects():
     assert "LATER_CHANGE" not in serialized["diagnostic_codes"]
 
 
-def test_report_records_requested_policy_and_budget_verdict():
+@pytest.mark.parametrize("mode", list(Mode))
+def test_report_records_requested_policy_and_budget_verdict(mode):
     manifest = _manifest_env()
-    report = verify(manifest, _chain(2), _pins(manifest["manifest_hash"]),
+    retained = None if mode is Mode.INTEGRITY else (2, "ab" * 32)
+    report = verify(manifest, _chain(2), _pins(manifest["manifest_hash"]), mode=mode,
                     status_envelopes=[_status_env(manifest["manifest_hash"])],
                     allow_unwitnessed=True, max_records=1, max_chain_steps=7,
-                    retained_checkpoint=(2, "ab" * 32))
+                    retained_checkpoint=retained)
     output = report.to_dict()
     assert output["result"] == "INCONCLUSIVE"
     assert output["verified_from"] == output["verified_through"] == 1
     assert output["assumptions"] == {
         "authority_trust": "caller_provisioned",
         "status_currentness": "supplied_statements_only",
-        "witness_honesty_required": False,
+        "witness_honesty_required": mode is not Mode.INTEGRITY,
         "allow_unwitnessed": True, "minimum_status_serial": 1,
-        "retained_checkpoint_supplied": True, "retained_revoked": False,
+        "retained_checkpoint_supplied": retained is not None, "retained_revoked": False,
         "max_records": 1, "max_chain_steps": 7,
     }
 

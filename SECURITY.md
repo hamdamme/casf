@@ -3,7 +3,9 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.x (pre-1.0) | 0.1.0rc2 is a published experimental GitHub prerelease; reports are accepted on a best-effort basis with no long-term support guarantee |
+| 0.1.0rc4 | Unpublished candidate; next experimental prerelease with fixes for privately reported issues (C01–C06, D01–D03), SQLite permissions, canonical JSONL and small-order Ed25519 keys; new artifacts required |
+| 0.1.0rc3 | Latest published experimental GitHub prerelease; best-effort reports; affected by the Ed25519 key-validation issue; users should upgrade to rc4 once published |
+| 0.1.0rc2 | Superseded; affected by the Ed25519 key-validation issue; no backports |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 
 ## Reporting a vulnerability

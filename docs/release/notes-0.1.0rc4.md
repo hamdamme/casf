@@ -1,13 +1,23 @@
 # CASF 0.1.0rc4 — experimental candidate
 
 Unpublished. Prepared for research and evaluation with synthetic records and
-disposable keys. The [replacement candidate](candidate-0.1.0rc4-3333d00.md) is
-built from merge `3333d00` and includes every correction below. Exact-file
-installation checks and post-merge CI passed; artifact review and separate
-publication approval remain pending.
+disposable keys. The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is
+superseded and historical: it omits the Ed25519 correction and must not be
+published. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) also omits the
+SQLite permissions and canonical JSONL corrections below. Runtime bytes change;
+build and validate new artifacts from the accepted source before separate
+publication approval. No existing rc4 artifact is approved by this correction.
 
 ## Fixes since rc3
 
+- Reject small-order Ed25519 public keys, including identity keys that allow
+  universal signatures, and every noncanonical public-key y encoding. A real
+  authority signature cannot make an unsafe embedded key acceptable. Published
+  rc2 and rc3 are affected. See [ADR-018](../adr/ADR-018-ed25519-verification-profile.md).
+- Raise `ValueError` for `INTEGRITY` verification with a retained checkpoint
+  but no explicit anchor; the checkpoint can no longer be silently ignored.
+  The CLI reports configuration exit `2` without changing saved state; use
+  anchored or online mode when a checkpoint has already been retained.
 - Reserve new SQLite databases with mode `600`; check existing database,
   sidecar and directory permissions without disturbing SQLite locks.
 - Enforce canonical JSONL bytes during bundle import, verification and restore;
@@ -41,6 +51,12 @@ merged at `d4721c4`. Credit: @adzguy. No new independent signoff is claimed.
 ## Compatibility and upgrade
 
 Valid casf-v1 bytes, cryptographic domains and database schemas are unchanged.
+Normal generated Ed25519 keys remain compatible. Evidence depending on rejected
+public keys must not be trusted or rewritten to pass; provision legitimate keys
+and a newly authorized manifest. Pure Ed25519, cofactorless verification and
+`S < L` remain required. The correction does not add prime-subgroup validation.
+Callers using a retained checkpoint must select an appropriate anchored/online
+verification mode or supply an explicit anchor in integrity mode.
 Non-ASCII timestamps previously accepted contrary to the specified format are
 now rejected; do not rewrite signed evidence to make it pass. Trust files must
 be regular files owned by the current user or root, with neither file nor its

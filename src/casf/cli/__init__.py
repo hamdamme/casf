@@ -854,6 +854,9 @@ def _verify_open_bundle(args: argparse.Namespace, bundle: StreamingBundle) -> in
     with locked_state(str(state_path), str(entry["manifest_hash"]),
                       initialize=args.initialize_state) as state:
         previous = state.previous
+        if mode is Mode.INTEGRITY and previous is not None and previous.checkpoint is not None:
+            raise SchemaError("integrity mode cannot use a retained checkpoint; "
+                              "select anchored or online mode")
         if previous is not None:
             pins = TrustPins(
                 authority_keys=pins.authority_keys, witness_keys=pins.witness_keys,

@@ -1,0 +1,161 @@
+{
+  "description": "Synthetic primitive edge cases for CASF SPEC section 9; no deployment keys.",
+  "sources": [
+    {
+      "url": "https://github.com/novifinancial/ed25519-speccheck/blob/65519336fda78a3d016e947df6d82848aca0c9da/cases.json",
+      "license": "Apache-2.0",
+      "upstream_sha256": "08e47a36d9aead288664930505584f353fff113ab854f2800db1e4f5b3540450",
+      "adaptation": "Cases 0-11 retain upstream message, public key and signature bytes; names, reasons and CASF expectations added."
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc8032#section-7.1",
+      "case": "TEST 1"
+    }
+  ],
+  "cases": [
+    {
+      "name": "paper-00",
+      "public_key_hex": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa",
+      "message_hex": "8c93255d71dcab10e8f379c26200f3c7bd5f09d9bc3068d3ef4edeb4853022b6",
+      "signature_hex": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a0000000000000000000000000000000000000000000000000000000000000000",
+      "expect": "SchemaError",
+      "reason": "small-order A and R"
+    },
+    {
+      "name": "paper-01",
+      "public_key_hex": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa",
+      "message_hex": "9bd9f44f4dcc75bd531b56b2cd280b0bb38fc1cd6d1230e14861d861de092e79",
+      "signature_hex": "f7badec5b8abeaf699583992219b7b223f1df3fbbea919844e3f7c554a43dd43a5bb704786be79fc476f91d3f3f89b03984d8068dcf1bb7dfc6637b45450ac04",
+      "expect": "SchemaError",
+      "reason": "small-order A, mixed-order R"
+    },
+    {
+      "name": "paper-02",
+      "public_key_hex": "f7badec5b8abeaf699583992219b7b223f1df3fbbea919844e3f7c554a43dd43",
+      "message_hex": "aebf3f2601a0c8c5d39cc7d8911642f740b78168218da8471772b35f9d35b9ab",
+      "signature_hex": "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa8c4bd45aecaca5b24fb97bc10ac27ac8751a7dfe1baff8b953ec9f5833ca260e",
+      "expect": "ACCEPT",
+      "reason": "mixed-order A and small-order R satisfy the cofactorless equation"
+    },
+    {
+      "name": "paper-03",
+      "public_key_hex": "cdb267ce40c5cd45306fa5d2f29731459387dbf9eb933b7bd5aed9a765b88d4d",
+      "message_hex": "9bd9f44f4dcc75bd531b56b2cd280b0bb38fc1cd6d1230e14861d861de092e79",
+      "signature_hex": "9046a64750444938de19f227bb80485e92b83fdb4b6506c160484c016cc1852f87909e14428a7a1d62e9f22f3d3ad7802db02eb2e688b6c52fcd6648a98bd009",
+      "expect": "ACCEPT",
+      "reason": "mixed-order A and R satisfy the cofactorless equation"
+    },
+    {
+      "name": "paper-04",
+      "public_key_hex": "cdb267ce40c5cd45306fa5d2f29731459387dbf9eb933b7bd5aed9a765b88d4d",
+      "message_hex": "e47d62c63f830dc7a6851a0b1f33ae4bb2f507fb6cffec4011eaccd55b53f56c",
+      "signature_hex": "160a1cb0dc9c0258cd0a7d23e94d8fa878bcb1925f2c64246b2dee1796bed5125ec6bc982a269b723e0668e540911a9a6a58921d6925e434ab10aa7940551a09",
+      "expect": "InvalidSignature",
+      "reason": "cofactored-only equation"
+    },
+    {
+      "name": "paper-05",
+      "public_key_hex": "cdb267ce40c5cd45306fa5d2f29731459387dbf9eb933b7bd5aed9a765b88d4d",
+      "message_hex": "e47d62c63f830dc7a6851a0b1f33ae4bb2f507fb6cffec4011eaccd55b53f56c",
+      "signature_hex": "21122a84e0b5fca4052f5b1235c80a537878b38f3142356b2c2384ebad4668b7e40bc836dac0f71076f9abe3a53f9c03c1ceeeddb658d0030494ace586687405",
+      "expect": "InvalidSignature",
+      "reason": "cofactored-only equation with prime-order R"
+    },
+    {
+      "name": "paper-06",
+      "public_key_hex": "442aad9f089ad9e14647b1ef9099a1ff4798d78589e66f28eca69c11f582a623",
+      "message_hex": "85e241a07d148b41e47d62c63f830dc7a6851a0b1f33ae4bb2f507fb6cffec40",
+      "signature_hex": "e96f66be976d82e60150baecff9906684aebb1ef181f67a7189ac78ea23b6c0e547f7690a0e2ddcd04d87dbc3490dc19b3b3052f7ff0538cb68afb369ba3a514",
+      "expect": "InvalidSignature",
+      "reason": "S exceeds L"
+    },
+    {
+      "name": "paper-07",
+      "public_key_hex": "442aad9f089ad9e14647b1ef9099a1ff4798d78589e66f28eca69c11f582a623",
+      "message_hex": "85e241a07d148b41e47d62c63f830dc7a6851a0b1f33ae4bb2f507fb6cffec40",
+      "signature_hex": "8ce5b96c8f26d0ab6c47958c9e68b937104cd36e13c33566acd2fe8d38aa19427e71f98a473474f2f13f06f97c20d58cc3f54b8bd0d272f42b695dd7e89a8c22",
+      "expect": "InvalidSignature",
+      "reason": "S greatly exceeds L"
+    },
+    {
+      "name": "paper-08",
+      "public_key_hex": "f7badec5b8abeaf699583992219b7b223f1df3fbbea919844e3f7c554a43dd43",
+      "message_hex": "9bedc267423725d473888631ebf45988bad3db83851ee85c85e241a07d148b41",
+      "signature_hex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff03be9678ac102edcd92b0210bb34d7428d12ffc5df5f37e359941266a4e35f0f",
+      "expect": "InvalidSignature",
+      "reason": "noncanonical R, reduced for challenge"
+    },
+    {
+      "name": "paper-09",
+      "public_key_hex": "f7badec5b8abeaf699583992219b7b223f1df3fbbea919844e3f7c554a43dd43",
+      "message_hex": "9bedc267423725d473888631ebf45988bad3db83851ee85c85e241a07d148b41",
+      "signature_hex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffca8c5b64cd208982aa38d4936621a4775aa233aa0505711d8fdcfdaa943d4908",
+      "expect": "InvalidSignature",
+      "reason": "noncanonical R, unreduced challenge"
+    },
+    {
+      "name": "paper-10",
+      "public_key_hex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "message_hex": "e96b7021eb39c1a163b6da4e3093dcd3f21387da4cc4572be588fafae23c155b",
+      "signature_hex": "a9d55260f765261eb9b84e106f665e00b867287a761990d7135963ee0a7d59dca5bb704786be79fc476f91d3f3f89b03984d8068dcf1bb7dfc6637b45450ac04",
+      "expect": "SchemaError",
+      "reason": "noncanonical small-order A, reduced for challenge"
+    },
+    {
+      "name": "paper-11",
+      "public_key_hex": "ecffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "message_hex": "39a591f5321bbe07fd5a23dc2f39d025d74526615746727ceefd6e82ae65c06f",
+      "signature_hex": "a9d55260f765261eb9b84e106f665e00b867287a761990d7135963ee0a7d59dca5bb704786be79fc476f91d3f3f89b03984d8068dcf1bb7dfc6637b45450ac04",
+      "expect": "SchemaError",
+      "reason": "noncanonical small-order A, unreduced challenge"
+    },
+    {
+      "name": "identity-universal-0",
+      "public_key_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "message_hex": "",
+      "signature_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "expect": "SchemaError",
+      "reason": "identity public key rejected before universal R=identity, S=0 signature"
+    },
+    {
+      "name": "identity-universal-1",
+      "public_key_hex": "0100000000000000000000000000000000000000000000000000000000000000",
+      "message_hex": "73796e74686574696320617262697472617279207265636f7264",
+      "signature_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "expect": "SchemaError",
+      "reason": "identity public key rejected before universal R=identity, S=0 signature"
+    },
+    {
+      "name": "rfc8032-test-1",
+      "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "message_hex": "",
+      "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b",
+      "expect": "ACCEPT",
+      "reason": "RFC 8032 section 7.1 pure Ed25519 positive control"
+    },
+    {
+      "name": "scalar-equals-L",
+      "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "message_hex": "",
+      "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e06522490155edd3f55c1a631258d69cf7a2def9de1400000000000000000000000000000010",
+      "expect": "InvalidSignature",
+      "reason": "S must be strictly less than L"
+    },
+    {
+      "name": "noncanonical-y-p-plus-2-sign-0",
+      "public_key_hex": "efffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f",
+      "message_hex": "",
+      "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b",
+      "expect": "SchemaError",
+      "reason": "all y >= p rejected, including encodings outside the seven-entry torsion blocklist"
+    },
+    {
+      "name": "noncanonical-y-p-plus-2-sign-1",
+      "public_key_hex": "efffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "message_hex": "",
+      "signature_hex": "e5564300c360ac729086e2cc806e828a84877f1eb8e5d974d873e065224901555fb8821590a33bacc61e39701cf9b46bd25bf5f0595bbe24655141438e7a100b",
+      "expect": "SchemaError",
+      "reason": "all y >= p rejected, including encodings outside the seven-entry torsion blocklist"
+    }
+  ]
+}

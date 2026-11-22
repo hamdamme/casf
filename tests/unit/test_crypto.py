@@ -105,6 +105,48 @@ def test_genesis_hash_domain():
 
 # ---------------- negative vectors (T03) ----------------
 
+# Independent fixtures from libsodium's ge25519_has_small_order blocklist.
+SMALL_ORDER_KEYS = [
+    "00" * 32,
+    "01" + "00" * 31,
+    "26e8958fc2b227b045c3f489f2ef98f0d5dfac05d3c63339b13802886d53fc05",
+    "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac037a",
+    "ec" + "ff" * 30 + "7f",
+    "ed" + "ff" * 30 + "7f",
+    "ee" + "ff" * 30 + "7f",
+]
+
+
+@pytest.mark.parametrize("encoding", SMALL_ORDER_KEYS)
+@pytest.mark.parametrize("sign_bit", [0, 0x80])
+def test_small_order_public_keys_rejected(encoding, sign_bit):
+    raw = bytes.fromhex(encoding)
+    raw = raw[:31] + bytes([raw[31] | sign_bit])
+    with pytest.raises(SchemaError, match="^Ed25519 public key has small order$"):
+        crypto.load_public_key(raw)
+
+
+@pytest.mark.parametrize("y", range((1 << 255) - 19, 1 << 255))
+@pytest.mark.parametrize("sign_bit", [0, 1 << 255])
+def test_noncanonical_public_keys_rejected(y, sign_bit):
+    with pytest.raises(SchemaError, match="^Ed25519 public key has small order$"):
+        crypto.load_public_key((y | sign_bit).to_bytes(32, "little"))
+
+
+def test_generated_public_keys_accepted():
+    for _ in range(16):
+        key = crypto.generate_key()
+        raw = crypto.public_key_raw(key)
+        loaded = crypto.load_public_key(raw)
+        assert loaded.public_bytes_raw() == raw
+        loaded.verify(key.sign(b"synthetic key acceptance"), b"synthetic key acceptance")
+
+
+@pytest.mark.parametrize("length", [0, 31, 33, 64])
+def test_public_key_length_still_required(length):
+    with pytest.raises(SchemaError, match="^Ed25519 public keys are exactly 32 bytes$"):
+        crypto.load_public_key(bytes(length))
+
 def test_wrong_key_fails():
     body = _record()
     sig = crypto.sign_record(LOG, body)

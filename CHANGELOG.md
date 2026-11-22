@@ -8,6 +8,11 @@ stabilization (SPEC §26).
 
 ## [0.1.0rc4] — candidate, unpublished
 
+- Reject small-order Ed25519 public keys and noncanonical public-key y encodings
+  at every shared key-loading boundary, preventing identity-key signature bypasses.
+  Published rc2 and rc3 are affected; normal generated keys remain compatible.
+- Reject an unanchored integrity verification call with `retained_checkpoint`
+  instead of silently ignoring the caller's retained checkpoint.
 - Create SQLite stores with owner-only permissions and validate existing stores,
   sidecars and parent directories before opening them.
 - Reject noncanonical JSONL envelopes during bundle import, verification and restore.
@@ -22,10 +27,11 @@ stabilization (SPEC §26).
 - Validate witness origins during trust creation and consistently classify witness HTTP errors.
 - Reject nonfinite storage scheduling times independently of SQLite constraint behavior.
 
-The [replacement candidate](docs/release/candidate-0.1.0rc4-3333d00.md) identifies
-the exact source, files and installation checks, including the SQLite and
-canonical JSONL corrections. Earlier rc4 files are historical. Exact-file review
-and separate publication approval remain pending.
+The [3333d00 candidate](docs/release/candidate-0.1.0rc4-3333d00.md) is superseded
+and historical: it omits the Ed25519 correction and must not be published.
+The [earlier candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) also omits
+the SQLite and canonical JSONL corrections. New artifacts, validation, exact-file
+review and separate publication approval are required.
 
 ## [0.1.0rc3] — 2026-11-17
 
