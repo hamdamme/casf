@@ -1,4 +1,4 @@
-"""Descriptor-based extended ACL policy for sensitive local files."""
+"""Extended ACL policy for sensitive local files and SQLite paths."""
 
 import ctypes
 import errno
@@ -16,6 +16,8 @@ def _darwin_acl() -> ctypes.CDLL:
     library = ctypes.CDLL("/usr/lib/libSystem.B.dylib", use_errno=True)
     library.acl_get_fd_np.argtypes = [ctypes.c_int, ctypes.c_int]
     library.acl_get_fd_np.restype = ctypes.c_void_p
+    library.acl_get_link_np.argtypes = [ctypes.c_char_p, ctypes.c_int]
+    library.acl_get_link_np.restype = ctypes.c_void_p
     library.acl_valid.argtypes = [ctypes.c_void_p]
     library.acl_valid.restype = ctypes.c_int
     library.acl_get_entry.argtypes = [
@@ -51,6 +53,32 @@ def reject_extended_acl(fd: int) -> None:
             os.fstat(fd)
             return
         raise CasfError("extended ACL could not be read")
+    _check_acl(library, acl)
+
+
+def reject_extended_acl_path(path: str | os.PathLike[str]) -> None:
+    """Check an existing SQLite path without opening/closing another descriptor.
+
+    Closing a separate descriptor can release SQLite's process-wide POSIX locks.
+    Callers must reject symlinks and keep the parent under trusted administration.
+    """
+    if sys.platform != "darwin":
+        return
+    try:
+        library = _darwin_acl()
+    except (OSError, AttributeError):
+        raise CasfError("extended ACL inspection is unavailable") from None
+    ctypes.set_errno(0)
+    acl = library.acl_get_link_np(os.fsencode(path), 0x100)
+    if not acl:
+        if ctypes.get_errno() == errno.ENOENT:
+            os.lstat(path)  # Distinguish an absent ACL from a vanished sidecar.
+            return
+        raise CasfError("extended ACL could not be read")
+    _check_acl(library, acl)
+
+
+def _check_acl(library: ctypes.CDLL, acl: int) -> None:
     try:
         if library.acl_valid(acl) != 0:
             raise CasfError("extended ACL is invalid")

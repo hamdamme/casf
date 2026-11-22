@@ -8,6 +8,9 @@ stabilization (SPEC §26).
 
 ## [0.1.0rc4] — candidate, unpublished
 
+- Create SQLite stores with owner-only permissions and validate existing stores,
+  sidecars and parent directories before opening them.
+- Reject noncanonical JSONL envelopes during bundle import, verification and restore.
 - Distinguish unexpected witness read responses from submission conflicts and
   retryable unavailability, including malformed latest-view 404 bodies.
 - Validate loaded and effective online witness origins before secret loading or
@@ -19,9 +22,9 @@ stabilization (SPEC §26).
 - Validate witness origins during trust creation and consistently classify witness HTTP errors.
 - Reject nonfinite storage scheduling times independently of SQLite constraint behavior.
 
-The [replacement candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) identifies
-the source and exact files. Earlier rc4 artifacts remain historical and omit
-the follow-up corrections. Publication approval remains pending.
+The [earlier candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) identifies
+historical files that omit the SQLite and canonical JSONL corrections.
+A new build, validation and artifact approval are required before publication.
 
 ## [0.1.0rc3] — 2026-11-17
 

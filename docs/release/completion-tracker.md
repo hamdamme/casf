@@ -1,6 +1,6 @@
 # CASF completion tracker
 
-Updated 21 November 2026. Target: experimental v0.1 for research and evaluation.
+Updated 22 November 2026. Target: experimental v0.1 for research and evaluation.
 
 Audit baseline: `93ba4325675c948b108a0281c2b0d97c713decdc`. PR 54 was accepted at
 `ecc47630c1340ac118dc50f2989cc51c37171080`. Explicit publication approval followed;
@@ -49,6 +49,13 @@ has 5/7 tasks accepted: corrections and validation complete, final review
 disposition and candidate approval pending. Remaining release work is approval,
 GitHub publication and download checks, then a new Zenodo version and citation
 verification. No publication is authorized by preparation.
+The subsequent SQLite-permission and canonical-JSONL review adds two corrections
+and their regressions. Both are implemented for PR review. Acceptance requires
+the full ten-configuration matrix, maintainer review, then a new candidate build
+and exact-file installation checks. The `d4721c4` artifacts are historical and
+cannot be published as the corrected rc4. Estimated remaining release effort is
+1–2 development sessions after review; external review timing is unknown.
+
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.
 

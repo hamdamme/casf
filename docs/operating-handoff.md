@@ -6,7 +6,8 @@ identifies the exact source, assets, checks and limitations. There is no PyPI re
 
 The [replacement rc4 candidate](release/candidate-0.1.0rc4-d4721c4.md) includes
 the C01–C06 fixes and C03/D01–D03 follow-up corrections absent from rc3.
-It remains unpublished pending final review and approval.
+It remains unpublished and now requires another build incorporating the SQLite
+permissions and canonical JSONL corrections, followed by final review and approval.
 The published rc3 evidence below is historical and does not validate rc4.
 
 ## First use

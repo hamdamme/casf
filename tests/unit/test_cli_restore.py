@@ -6,6 +6,7 @@ import pytest
 from cryptography.hazmat.primitives import serialization
 
 from casf import crypto
+from casf.canonical.jcs import canonicalize
 from casf.writer import SealedError, Writer
 from tests.local_mode import local_cli as main
 from tests.unit.test_cli import PASS, _trust
@@ -25,7 +26,7 @@ def restore_args(tmp_path, monkeypatch):
     monkeypatch.setenv("CASF_PASSPHRASE", PASS.decode())
     monkeypatch.delenv("CASF_WITNESS_TOKEN", raising=False)
     trust = _trust(tmp_path, bundle.manifest)
-    (path / "status.jsonl").write_text(json.dumps(status(bundle.manifest_hash)) + "\n")
+    (path / "status.jsonl").write_bytes(canonicalize(status(bundle.manifest_hash)) + b"\n")
     for name, envelope in (("anchor-checkpoint", bundle.checkpoints[-1]),
                            ("anchor-receipt", bundle.receipts[-1])):
         (tmp_path / (name + ".json")).write_text(json.dumps(envelope))
@@ -58,8 +59,8 @@ def test_cli_restore_rejects_bad_evidence(restore_args, tmp_path, capsys, change
         (tmp_path / "bundle/status.jsonl").unlink()
     elif change == "revoked":
         manifest = json.loads((tmp_path / "bundle/manifest.json").read_text())
-        (tmp_path / "bundle/status.jsonl").write_text(json.dumps(
-            status(manifest["manifest_hash"], 2, "revoked")) + "\n")
+        (tmp_path / "bundle/status.jsonl").write_bytes(canonicalize(
+            status(manifest["manifest_hash"], 2, "revoked")) + b"\n")
     elif change in {"old_serial", "wrong_manifest"}:
         path = tmp_path / "trust.json"
         trust = json.loads(path.read_text())
@@ -101,7 +102,7 @@ def test_cli_restore_behind_anchor_reports_sealed_result(restore_args, tmp_path,
         manifest = writer.manifest_envelope(LOG_ID)
     finally:
         writer.close()
-    (bundle / "status.jsonl").write_text(json.dumps(status(manifest["manifest_hash"])) + "\n")
+    (bundle / "status.jsonl").write_bytes(canonicalize(status(manifest["manifest_hash"])) + b"\n")
     restore_args[1] = str(bundle)
     assert main(restore_args) == 4
     report = json.loads(capsys.readouterr().out)

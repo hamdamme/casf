@@ -1,11 +1,11 @@
 """R07/R09: explicit restore policy verifies supplied authority status."""
 
-import json
 from dataclasses import replace
 
 import pytest
 
 from casf import crypto
+from casf.canonical.jcs import canonicalize
 from casf.errors import CasfError, TrustError
 from casf.lifecycle import sign_status
 from casf.writer import Writer
@@ -22,7 +22,7 @@ def status(manifest_hash, serial=1, state="active"):
 def test_restore_accepts_active_status_at_provisioned_minimum(tmp_path, serial):
     path, bundle, pins = evidence(tmp_path)
     pins[LOG_ID] = replace(pins[LOG_ID], minimum_status_serial=serial)
-    (path / "status.jsonl").write_text(json.dumps(status(bundle.manifest_hash, serial)) + "\n")
+    (path / "status.jsonl").write_bytes(canonicalize(status(bundle.manifest_hash, serial)) + b"\n")
     writer = Writer.restore_from_bundle(tmp_path / "restored.db", LOG, path,
                                         trust_pins=pins, require_active_status=True, local_only=True)
     try:
@@ -60,7 +60,7 @@ def test_restore_rejects_untrusted_status_before_creating_store(tmp_path, change
         pins = None
     else:
         pins = {}
-    (path / "status.jsonl").write_text("".join(json.dumps(s) + "\n" for s in statements))
+    (path / "status.jsonl").write_bytes(b"".join(canonicalize(s) + b"\n" for s in statements))
     dest = tmp_path / "restored.db"
     with pytest.raises(TrustError):
         Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True, local_only=True)
@@ -69,9 +69,9 @@ def test_restore_rejects_untrusted_status_before_creating_store(tmp_path, change
 
 def test_status_policy_does_not_accept_corrupt_records(tmp_path):
     path, bundle, pins = evidence(tmp_path)
-    (path / "status.jsonl").write_text(json.dumps(status(bundle.manifest_hash)) + "\n")
+    (path / "status.jsonl").write_bytes(canonicalize(status(bundle.manifest_hash)) + b"\n")
     bundle.records[0]["signature"] = crypto.b64url_encode(bytes(64))
-    (path / "records.jsonl").write_text("".join(json.dumps(r) + "\n" for r in bundle.records))
+    (path / "records.jsonl").write_bytes(b"".join(canonicalize(r) + b"\n" for r in bundle.records))
     dest = tmp_path / "restored.db"
     with pytest.raises(CasfError):
         Writer.restore_from_bundle(dest, LOG, path, trust_pins=pins, require_active_status=True, local_only=True)

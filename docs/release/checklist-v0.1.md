@@ -1,6 +1,6 @@
 # Current experimental release checklist
 
-Updated 21 November 2026. **0.1.0rc3 is published and public downloads and
+Updated 22 November 2026. **0.1.0rc3 is published and public downloads and
 installations are verified.** See the [publication closeout](publication-0.1.0rc3.md). The [candidate record](candidate-0.1.0rc3-c38bf82.md) identifies exact build
 revision and artifacts. Later documentation and CI revisions are distinct.
 The [research-demo closeout](research-demo-closeout.md) is the current scope;
@@ -14,14 +14,17 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 [Replacement 0.1.0rc4 preparation](candidate-0.1.0rc4-d4721c4.md) includes PR 78
 and the follow-up fixes merged as `d4721c4`. Source CI #234 passed all ten jobs.
-The exact replacement wheel and sdist passed fresh installation checks; final
-review disposition, artifact approval and publication remain pending.
+Those exact files passed fresh installation checks, but omit the subsequent
+SQLite permissions and canonical JSONL corrections. Their evidence is historical.
+The new corrections require all ten configurations, review and replacement
+artifacts before publication.
 
 | rc4 gate | Current status |
 | --- | --- |
 | C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
 | Hosted acceptance matrix | CI #234: 10/10 jobs passed on `d4721c4` |
-| Exact replacement artifacts | Built from `d4721c4`; 40 runtime files verified; hashes recorded |
+| SQLite permissions and canonical JSONL | Corrections and regressions implemented; full matrix and PR review required |
+| Exact replacement artifacts | Rebuild required from accepted corrected source; `d4721c4` files must not be published |
 | Exact-file installations | 35 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
 | Dependency query refresh | 50 successful queries, no listed findings; refresh before publication |
 | Final review and artifact approval | Pending this release record's review; no new researcher signoff claimed |

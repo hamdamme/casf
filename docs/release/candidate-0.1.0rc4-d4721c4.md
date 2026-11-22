@@ -1,5 +1,10 @@
 # Replacement experimental 0.1.0rc4 candidate
 
+**Rebuild required before publication.** These historical files do not contain
+the later SQLite permissions and canonical JSONL corrections described in the
+[release notes](notes-0.1.0rc4.md). Preserve their hashes and evidence; do not
+publish them as the corrected release.
+
 Prepared 21 November 2026 (America/Chicago). **Unpublished; exact artifact review
 and separate publication approval remain pending.** This record supersedes the
 [earlier candidate](candidate-0.1.0rc4.md) for release selection. Its files and
