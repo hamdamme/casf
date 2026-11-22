@@ -70,7 +70,7 @@ archive after extraction; `python -I` keeps its source package off the import pa
 
 Run installed checks outside the checkout, without `PYTHONPATH` or `PYTHONHOME`.
 Retain logs, import inventories and public synthetic outputs. Compare installation
-origin paths and all 39 runtime file hashes with the inspected artifacts; rehash
+origin paths and all 40 runtime file hashes with the inspected artifacts; rehash
 the artifacts after installation. Temporary private demo keys and databases are
 not release evidence. Full tests and all supported CI jobs remain separate gates.
 

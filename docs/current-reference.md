@@ -14,9 +14,10 @@ things. Validation records must name the exact source or artifact bytes.
 The [research-demo closeout](release/research-demo-closeout.md) records accepted
 PR 71/72 evidence and adopted synthetic-only operating rules.
 
-The [rc4 candidate](release/candidate-0.1.0rc4.md) contains PR 78
-corrections absent from rc2/rc3. Follow-up review and publication approval remain
-pending; the current DOI identifies rc3.
+The [replacement rc4 candidate](release/candidate-0.1.0rc4-d4721c4.md) contains
+PR 78 and the C03/D01–D03 follow-up corrections absent from rc2/rc3. Source CI
+and exact-file installation checks passed. Final review disposition and
+publication approval remain pending; the current DOI identifies rc3.
 
 ## Which document to use
 

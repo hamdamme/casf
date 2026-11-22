@@ -14,13 +14,33 @@ part of this remediation.
 | D01 | Sensitive descriptors reject Darwin extended ACL entries and inspection failures; new sensitive bytes are checked before writing. | Completed; local validation passed |
 | D02 | Loaded/effective origins reject invalid configuration with exit 2 before secrets, network or persistent changes. | Completed; local validation passed |
 | D03 | Read 409 yields response error, not evidence conflict; submission compatibility and evidence verdicts retained. | Completed; local validation passed |
-| Validation | Focused regressions, supported CI matrix, lint, typing and package checks. | Available local matrix passed; remaining platform gates open; hosted advisory-fork CI unavailable |
-| Review | Maintainer and follow-up review of the exact correction revision. | Pending |
-| Candidate | Build and approve new artifacts from accepted source before publication. | Pending |
+| Validation | Focused regressions, supported CI matrix, lint, typing and package checks. | Complete; public merge CI #234 passed all ten jobs |
+| Review | Maintainer and follow-up review of the exact correction revision. | Maintainer merge accepted; final follow-up disposition pending |
+| Candidate | Build and approve new artifacts from accepted source before publication. | Replacement artifacts built and validated; approval pending |
 
 The acceptance policy is recorded in [ADR-017](../adr/ADR-017-audit-input-boundaries.md#follow-up-decisions-before-rc4).
 Regression files: `test_advisory_followup.py`, `test_file_permissions.py` and the
 updated read-category expectations in `test_advisory_c01_c06.py`.
+
+## Current post-merge status
+
+The maintainer merged the corrections as
+`d4721c43b23ec93a14819390a1d7606f0c74e259`, whose tree matches reviewed
+`0fac103594823a0def2dc92a863dd9563f070359`.
+[CI #234](https://github.com/hamdamme/casf/actions/runs/44989456952) passed all ten
+hosted configurations: 1747 tests plus 14 Darwin-only skips in each Ubuntu job,
+1761 tests without skips in each macOS job, and 72,900 total parser cases.
+This supersedes the platform-validation gaps in the historical sections below.
+
+The [replacement candidate](candidate-0.1.0rc4-d4721c4.md) identifies new files
+built from that exact merge. All 40 packaged/runtime files match; 35 installation
+commands on native macOS and 35 on locally emulated Ubuntu passed, including
+four 21-check synthetic workflows. Historical candidate files remain preserved.
+
+Tracked acceptance is **5/7 tasks (71%)**: four corrections and validation are
+complete. Maintainer source acceptance is established by merge; final follow-up
+disposition and approval of the exact candidate remain open. No new independent
+researcher signoff is claimed. Tagging, publication and disclosure are separate.
 
 ## Initial validation record
 
@@ -107,7 +127,7 @@ AST comparisons confirmed formatting preserved the ACL implementation/tests and
 the existing follow-up test functions. Full-diff review found no unintended code,
 credentials or operational private keys.
 
-D02 is complete again within this scope. Tracked completion remains **4/7 (57%)**:
+D02 was complete again within this scope. At that point completion was **4/7 (57%)**:
 Linux x86_64, Linux Python 3.13/3.14 and the separate minimum-dependency matrix were
 not rerun. Hosted Actions cannot run on the temporary advisory fork. Remaining
 platform validation, maintainer/follow-up review and an accepted candidate remain
@@ -122,7 +142,7 @@ A read failure does not advance checkpoint state; independently authenticated
 status observations may still advance under existing policy. No evidence of
 production readiness or absence of other defects is claimed.
 
-The milestone is reviewed corrections followed by a separately identified,
-validated candidate. Publication and advisory disclosure require separate approval.
-Estimated remaining effort after local validation: 1–2 development sessions for
-review responses and candidate preparation; external review timing is unknown.
+The current milestone is final review and approval of the replacement candidate.
+Publication and advisory disclosure require separate approval. Estimated remaining
+effort is 1–2 development sessions for approved publication, download/installation
+verification and Zenodo closeout; external review timing is unknown.
