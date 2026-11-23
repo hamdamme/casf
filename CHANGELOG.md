@@ -6,7 +6,11 @@ stabilization (SPEC §26).
 
 ## [Unreleased]
 
-## [0.1.0rc4] — candidate, unpublished
+## [0.1.0rc4] — 2026-11-22
+
+Published as an experimental [GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
+The [publication record](docs/release/0.1.0rc4/publication-0.1.0rc4.md) identifies
+the exact assets, public download hashes and installation results.
 
 - Require at least 16 passphrase bytes when generating encrypted PKCS8 keys;
   retain loading compatibility for existing keys with shorter passphrases.
@@ -41,10 +45,10 @@ The [earlier candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-d4721c4.md) als
 the SQLite and canonical JSONL corrections. The
 [492f330 candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) preserves
 historical artifacts and installation evidence but omits the key-passphrase and
-package updates above. The [replacement candidate from `ce6cd67`](docs/release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
-contains those changes and passed fresh exact-file installation checks.
-Review and separate publication approval remain pending; earlier artifacts,
-checksums and evidence are unchanged.
+package updates above. The [accepted candidate from `ce6cd67`](docs/release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
+contains those changes. Its exact files were published and passed fresh public
+download and installation checks; earlier artifacts, checksums and evidence
+are unchanged. Separate advisory publication and the rc4 Zenodo DOI are Pending.
 
 ## [0.1.0rc3] — 2026-11-17
 

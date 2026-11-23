@@ -38,7 +38,7 @@ real-use acceptance are not established by synthetic tests. Future releases requ
 
 These counts describe this completion plan, not the proportion of all historical project work. A session is a reviewable work package, not a fixed time estimate. Historical Phase 3 closeout is a separate record. Partial implementation and work awaiting review remain in the remaining totals.
 
-## Next experimental release
+## Current experimental release
 
 PR 82 merged at `3333d0025388e97a3e54b7ae29974b7369545f81`, accepting the
 SQLite permissions and canonical JSONL corrections and regressions. The earlier
@@ -77,13 +77,21 @@ remain historical and unchanged. A [fresh dependency review](0.1.0rc4/dependency
 records no listed locked-package advisories and retains the unchanged
 minimum-only build-tool findings and scope limits.
 
-Candidate preparation is complete; exact-file review, this documentation PR's
-own CI, final CASF advisory disposition and separate publication approval remain
-pending. After approval, verify public downloads and installations and a new
-Zenodo version/citation. Refresh dependency queries if publication is delayed.
-Estimated remaining release effort is 1–2 development sessions after artifact
-review; external review timing is unknown. No independent signoff or publication
-is claimed.
+PR 88 merged at `0a91df52ad0ce73cc4a5b886ab8d29bfe9e33f6c`; CI 250 passed
+all ten jobs. After explicit publication approval, `v0.1.0rc4` was published
+from exact build `ce6cd67` on 22 November 2026 in America/Chicago. The
+[publication record](0.1.0rc4/publication-0.1.0rc4.md) retains independent public
+downloads of all three assets on Mac and Ubuntu, matching hashes and another
+six fresh installations: 76 commands and four 21-check workflows passed.
+The final dependency refresh again passed all 58 queries and 442 digest checks;
+the four minimum-only build-tool advisories remain unchanged.
+
+GitHub publication and public-file verification are complete. Security-advisory
+publication and the rc4 Zenodo version/DOI remain Pending; no PyPI upload was
+performed. This publication-record PR needs its own review and CI. Estimated
+remaining archival/documentation effort is one development session after the
+remaining publication scope is approved; independent review timing is unknown.
+No independent signoff or production-readiness claim is made.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.

@@ -2,24 +2,27 @@
 
 See the [release records index](README.md) for current work and historical evidence.
 
-Updated 22 November 2026. **0.1.0rc3 is published and public downloads and
-installations are verified.** See the [publication closeout](0.1.0rc3/publication-0.1.0rc3.md). The [candidate record](0.1.0rc3/candidate-0.1.0rc3-c38bf82.md) identifies exact build
-revision and artifacts. Later documentation and CI revisions are distinct.
-The [research-demo closeout](reviews/research-demo-closeout.md) is the current scope;
-production deployment is not part of this release scope.
+Updated 22 November 2026. **0.1.0rc4 is published and public downloads and
+installations are verified.** The [publication record](0.1.0rc4/publication-0.1.0rc4.md)
+identifies exact build `ce6cd67`, accepted review merge `0a91df5`, published assets
+and checks. Later documentation and CI revisions are distinct. The
+[research-demo closeout](reviews/research-demo-closeout.md) defines the experimental
+scope; production deployment is outside this release.
 
-The published [0.1.0rc2 prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
-and its [publication evidence](0.1.0rc2/publication-0.1.0rc2.md) remain unchanged. No PyPI
-upload was performed. Historical acceptance does not approve new artifact bytes.
+The rc2 and rc3 release assets and publication records remain unchanged.
+No PyPI upload or security-advisory publication occurred; rc4 Zenodo archival is
+Pending. Historical candidate approvals do not authorize substituted artifact bytes.
 
-## Next candidate
+## Current rc4 release
 
 The [492f330 candidate](0.1.0rc4/candidate-0.1.0rc4-492f330.md) and all earlier
 rc4 artifacts are superseded and historical. Their evidence remains tied to
 their own revisions; they must not be published as the updated rc4.
 The [replacement candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) is built from
-PR 87's merge `ce6cd67`. CI 248 passed all ten jobs on that source, and its exact
-wheel and sdist passed fresh installations. This documentation PR needs its own CI.
+PR 87's merge `ce6cd67`. CI 248 passed all ten jobs on that source. PR 88's
+accepted merge `0a91df5` passed CI 250, and separate maintainer publication
+approval followed. Public downloads and fresh installations passed. This
+publication-documentation PR requires its own CI.
 
 | rc4 gate | Current status |
 | --- | --- |
@@ -31,14 +34,16 @@ wheel and sdist passed fresh installations. This documentation PR needs its own 
 | Exact replacement artifacts | Built from `ce6cd67`; 40 runtime files and package metadata verified; new checksums recorded |
 | Exact-file installations | 38 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
 | Dependency query refresh | 58 successful OSV/PyPI queries; no listed locked-package advisories; four existing minimum-only build-tool advisories remain scoped in the [review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md) |
-| Final review and artifact approval | Pending review of these exact files and dependency scope; no independent signoff claimed |
-| Tag, GitHub release and advisory publication | Not performed; require separate approval |
-| Public downloads and Zenodo version | Pending approved publication |
+| Final review and artifact approval | Maintainer accepted PR 88 and explicitly approved the exact files; no independent signoff claimed |
+| Tag and GitHub release | Published experimental `v0.1.0rc4` at exact build `ce6cd67` |
+| Security-advisory publication | Pending separate approval; not performed |
+| Public downloads | Three assets independently downloaded without authentication on Mac and Ubuntu; hashes and all six fresh installations passed |
+| Zenodo version and DOI | Pending; rc3 DOI is not attributed to rc4 |
 
-The table below retains the accepted rc3 disposition. It does not approve rc4
-or establish rc4 public-download or Zenodo verification.
+The table below retains the historical accepted rc3 disposition. Current rc4
+evidence is recorded above; rc4 Zenodo archival remains Pending.
 
-## Current disposition
+## Historical rc3 disposition
 
 | Area | Status | Evidence and completion boundary |
 | --- | --- | --- |

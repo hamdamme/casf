@@ -2,20 +2,26 @@
 
 ## Current
 
-rc4 is unpublished. Replacement artifacts from PR 87's merge `ce6cd67` passed
-fresh installation checks. Exact-file review and separate publication approval
-remain pending; earlier candidate artifacts and evidence remain historical.
+rc4 is published as an experimental GitHub prerelease from `ce6cd67`. Public
+downloads and six fresh installations verified the exact approved files.
+Security-advisory publication and the rc4 Zenodo DOI remain Pending.
 
+- [Publication record](0.1.0rc4/publication-0.1.0rc4.md)
 - [Release checklist](checklist-v0.1.md)
-- [ce6cd67 candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
+- [ce6cd67 build and validation record](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
 - [rc4 release notes and upgrade guidance](0.1.0rc4/notes-0.1.0rc4.md)
-- [ce6cd67 checksums](0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt)
-- [Fresh dependency review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md)
+- [Published checksums](0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt)
+- [Dependency review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md)
 - [Production readiness gates](production-readiness-gates.md)
 - [Completion tracker](completion-tracker.md)
 - [Independent review brief](independent-review-brief.md)
 
 ## Latest published
+
+- [rc4 publication record](0.1.0rc4/publication-0.1.0rc4.md)
+- [v0.1.0rc4 GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4)
+
+## Earlier published releases
 
 - [rc3 publication record](0.1.0rc3/publication-0.1.0rc3.md)
 - [v0.1.0rc3 GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3)
@@ -31,7 +37,7 @@ names; it must not be attributed to a later implementation.
 
 ## Project status and release history
 
-**Latest published release:** [0.1.0rc3 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3) · **Protocol:** proposed `casf-v1` profile
+**Latest published release:** [0.1.0rc4 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4) · **Protocol:** proposed `casf-v1` profile
 
 The repository includes an implemented Python library, command line interface, SQLite writer, reference HTTP witness, evidence export and verification, automated tests, and research experiments. CI checks Python 3.12, 3.13, and 3.14.
 
@@ -40,8 +46,10 @@ The protocol specification remains a design review document. The project has not
 Start with the [operating and maintenance handoff](../operations/operating-handoff.md). The
 [rc2 publication record](0.1.0rc2/publication-0.1.0rc2.md) retains the earlier release
 files and download evidence. The [rc3 release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3)
-provides the current experimental artifacts with [publication and installation evidence](0.1.0rc3/publication-0.1.0rc3.md); its source distribution is also
-[archived on Zenodo](https://doi.org/10.5281/zenodo.24321232). No PyPI release has been published.
+retains its historical [publication and installation evidence](0.1.0rc3/publication-0.1.0rc3.md) and
+[Zenodo archive](https://doi.org/10.5281/zenodo.24321232). The current
+[rc4 publication record](0.1.0rc4/publication-0.1.0rc4.md) identifies the new files.
+The rc4 Zenodo DOI is Pending. No PyPI release has been published.
 
 The scoped [tracked-file review](reviews/line-review-2026-11-11.md) and corrections
 were accepted in PR 57 at `e59fd64`; that review does not cover every later change.
@@ -57,16 +65,16 @@ incomplete and relevant to future production-readiness evaluation. Neither block
 publication of experimental research releases; future releases still require
 separate publication approval and artifact validation.
 
-The next candidate is **0.1.0rc4, unpublished**. It includes the corrections from
-[PR 78](https://github.com/hamdamme/casf/pull/78) and
-[PR 82](https://github.com/hamdamme/casf/pull/82), plus rejection of small-order
-Ed25519 keys that permit signature bypasses. Published rc2/rc3 are affected.
-The [492f330 artifacts](0.1.0rc4/candidate-0.1.0rc4-492f330.md) include PR 84 and
-passed installation checks for that revision, but omit PR 87's key-passphrase and
-package updates. They remain historical. The [ce6cd67 candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
-includes PR 87 and passed new installation checks; CI 248 passed all ten jobs on
-that source. Exact-file review and publication approval remain pending. See the
-[rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
+The published **0.1.0rc4** includes the corrections from
+[PR 78](https://github.com/hamdamme/casf/pull/78),
+[PR 82](https://github.com/hamdamme/casf/pull/82),
+[PR 84](https://github.com/hamdamme/casf/pull/84) and
+[PR 87](https://github.com/hamdamme/casf/pull/87). Published rc2/rc3 are affected
+by the Ed25519 issue. The `492f330` and earlier candidate files remain historical.
+The [ce6cd67 build](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) was accepted through
+PR 88 and separately approved for publication. [Public verification](0.1.0rc4/publication-0.1.0rc4.md)
+passed on the exact files. CI 248 covers the build; CI 250 covers the documentation
+merge. See the [rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
 
 ## Moved paths
 
