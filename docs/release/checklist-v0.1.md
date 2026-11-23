@@ -16,19 +16,21 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is superseded and
 historical. It includes the PR 78/82 corrections but omits the Ed25519 fix.
-Its artifacts and all earlier rc4 artifacts must not be published. CI 238
-belongs to `3333d00`; the new correction requires its own CI and new build.
+Its artifacts and all earlier rc4 artifacts must not be published. The
+[replacement candidate](candidate-0.1.0rc4-492f330.md) is built from PR 84's
+merge `492f330`. CI 242 passed all ten jobs on that source; the exact wheel and
+sdist passed fresh installation checks. This documentation PR needs its own CI.
 
 | rc4 gate | Current status |
 | --- | --- |
 | C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
 | SQLite permissions and canonical JSONL | Accepted in PR 82 at `3333d00`; historical regressions passed |
-| Small-order Ed25519 keys and retained checkpoint arguments | Correction and regressions prepared; review pending |
-| Hosted acceptance matrix | New revision must pass its own CI; CI 238 does not validate it |
-| Exact replacement artifacts | Pending new accepted build revision; `3333d00` files superseded |
-| Exact-file installations | Pending new artifacts; prior installation evidence is historical |
+| Small-order Ed25519 keys and retained checkpoint arguments | Accepted in PR 84 at `492f330`; installed regressions passed |
+| Hosted acceptance matrix | CI 242: 10/10 jobs passed on exact build `492f330` |
+| Exact replacement artifacts | Built from `492f330`; all 40 runtime files verified; new checksums recorded |
+| Exact-file installations | 38 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
 | Dependency query refresh | Fresh queries required before publication |
-| Final review and artifact approval | Pending new files and validation; no independent signoff claimed |
+| Final review and artifact approval | Pending review of these exact files; no independent signoff claimed |
 | Tag, GitHub release and advisory publication | Not performed; require separate approval |
 | Public downloads and Zenodo version | Pending approved publication |
 

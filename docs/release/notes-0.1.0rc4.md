@@ -4,9 +4,10 @@ Unpublished. Prepared for research and evaluation with synthetic records and
 disposable keys. The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is
 superseded and historical: it omits the Ed25519 correction and must not be
 published. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) also omits the
-SQLite permissions and canonical JSONL corrections below. Runtime bytes change;
-build and validate new artifacts from the accepted source before separate
-publication approval. No existing rc4 artifact is approved by this correction.
+SQLite permissions and canonical JSONL corrections below. The
+[replacement candidate from `492f330`](candidate-0.1.0rc4-492f330.md) includes
+every correction below and passed fresh installation checks. Exact-file review
+and separate publication approval remain pending.
 
 ## Fixes since rc3
 
