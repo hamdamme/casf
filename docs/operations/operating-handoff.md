@@ -7,8 +7,10 @@ identifies the exact source, assets, checks and limitations. There is no PyPI re
 The [replacement rc4 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) includes
 the earlier advisory, SQLite and canonical JSONL fixes plus PR 84's Ed25519 and
 retained-checkpoint corrections. Its exact files passed installation checks and
-remain unpublished pending artifact review and separate publication approval.
-The `3333d00` and earlier rc4 artifacts are historical and must not be published.
+remain unpublished. The key-passphrase and package follow-up requires a new
+candidate after acceptance; the `492f330` files and their evidence are historical
+for that follow-up. The `3333d00` and earlier rc4 artifacts are also historical
+and must not be published as the updated rc4.
 The published rc3 evidence below is historical and does not validate rc4.
 
 ## First use

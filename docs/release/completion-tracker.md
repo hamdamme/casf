@@ -62,12 +62,18 @@ macOS and emulated Ubuntu, including four 21-check workflows and the installed
 security regressions. Ubuntu emulation and host-shared filesystem limitations
 remain explicit in the candidate record. Later documentation is not a build input.
 
-Preparation is complete; exact-file review, the documentation PR's own CI, final
-advisory disposition and separate publication approval remain pending. Remaining
-release work is a fresh dependency query, approved publication and public-download
-checks, then a new Zenodo version and citation verification. Estimated remaining
-release effort is 1–2 development sessions after review; external review timing
-is unknown. No new independent researcher signoff or publication is claimed.
+The next follow-up adds a 16-byte key-generation passphrase minimum with legacy
+loading compatibility, raises the cryptography minimum to 50.0.0 while retaining
+locked 50.0.2, and improves package metadata. Implementation review and its own
+validation remain required. The `492f330` candidate is historical for this work;
+preserve its exact files, hashes and results rather than overwriting them.
+
+After the final implementation is accepted, build and validate a replacement
+candidate and record its exact revision. Remaining release work includes fresh
+dependency queries, exact-file approval, final advisory disposition, separate
+publication approval, public-download checks and a new Zenodo version. Estimated
+remaining release effort is 2–3 development sessions after implementation review;
+external review timing is unknown. No independent signoff or publication is claimed.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.

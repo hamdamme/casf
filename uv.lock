@@ -115,7 +115,7 @@ build = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cryptography", specifier = ">=41.0" },
+    { name = "cryptography", specifier = ">=50.0.0" },
     { name = "h11", marker = "extra == 'witness'", specifier = ">=0.16.0" },
     { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.0" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },

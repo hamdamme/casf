@@ -56,6 +56,10 @@ locally built wheel is then installed without resolving dependencies again.
 lockfile. Ordinary pip installation remains available to library consumers;
 it does not promise the exact development environment recorded here.
 
+The supported `cryptography` minimum is **50.0.0**; the lockfile retains
+**50.0.2**. Updating the lower bound does not upgrade the locked packages.
+Older `cryptography` versions are no longer supported by this candidate.
+
 ## Dependency updates
 
 ```bash
@@ -105,6 +109,10 @@ base and witness requirements from pyproject.toml and uses uv's
 is also read from the declared build requirements. Transitive dependencies
 use compatible available versions; this is not a minimum transitive package
 matrix. The selected versions are printed in each job log.
+
+The direct cryptography minimum tested by this matrix is 50.0.0. Raising this
+library requirement does not change CASF protocol bytes, signing domains or
+the [Ed25519 verification profile](../adr/ADR-018-ed25519-verification-profile.md).
 
 The test runner and build frontend stay fixed at pytest 9.1.1 and build
 1.6.1, with wheel 0.45.1 for the minimum backend. The development extra's

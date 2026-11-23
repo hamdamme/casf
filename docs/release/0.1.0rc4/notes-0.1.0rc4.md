@@ -5,11 +5,20 @@ disposable keys. The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is
 superseded and historical: it omits the Ed25519 correction and must not be
 published. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) also omits the
 SQLite permissions and canonical JSONL corrections below. The
-[replacement candidate from `492f330`](candidate-0.1.0rc4-492f330.md) includes
-every correction below and passed fresh installation checks. Exact-file review
-and separate publication approval remain pending.
+[492f330 candidate](candidate-0.1.0rc4-492f330.md) retains its historical
+installation evidence but omits the key-passphrase and package updates below.
+After acceptance of this implementation, a new candidate must be built from the
+final accepted revision and validated before publication approval. No replacement
+candidate record or release artifacts are created by this change.
 
 ## Fixes since rc3
+
+- Require at least 16 bytes for newly generated key-file passphrases while
+  preserving encrypted PKCS8 PEM and legacy short-passphrase loading. Atomic
+  creation, filesystem protections and no-overwrite guarantees are unchanged.
+- Raise the cryptography minimum to 50.0.0; the locked version remains 50.0.2.
+- Add author, keywords, Alpha/audience/Python/cryptography/typing classifiers,
+  and Changelog and Security links to package metadata. Apache-2.0 is unchanged.
 
 - Reject small-order Ed25519 public keys, including identity keys that allow
   universal signatures, and every noncanonical public-key y encoding. A real
@@ -52,6 +61,15 @@ merged at `d4721c4`. Credit: @adzguy. No new independent signoff is claimed.
 ## Compatibility and upgrade
 
 Valid casf-v1 bytes, cryptographic domains and database schemas are unchanged.
+The key-passphrase and package updates also preserve signature verification
+semantics and evidence formats. New key generation rejects passphrases below
+16 bytes, including empty input; existing encrypted keys using shorter
+passphrases still load. A byte-length minimum does not guarantee strength:
+copied encrypted files permit offline guessing. Use long, randomly generated
+passphrases from a password manager. See the measured PKCS8 encryption parameters
+in [administration](../../operations/administration.md#create-keys-and-public-key-files).
+Existing environments must satisfy the new cryptography minimum before installing
+the updated package; older versions are no longer supported.
 Normal generated Ed25519 keys remain compatible. Evidence depending on rejected
 public keys must not be trusted or rewritten to pass; provision legitimate keys
 and a newly authorized manifest. Pure Ed25519, cofactorless verification and
