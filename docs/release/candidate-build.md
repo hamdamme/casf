@@ -1,7 +1,7 @@
 # Build and check a local candidate
 
 This procedure prepares review files. It does not tag, publish or approve a
-release. Use a clean checkout and the locked tooling in [dependencies](../dependencies.md).
+release. Use a clean checkout and the locked tooling in [dependencies](../reference/dependencies.md).
 Record the source revision, interpreter, dependency inventory and exact file hashes.
 Keep old candidate files; use a new output directory for each attempt.
 
@@ -74,7 +74,7 @@ origin paths and all 40 runtime file hashes with the inspected artifacts; rehash
 the artifacts after installation. Temporary private demo keys and databases are
 not release evidence. Full tests and all supported CI jobs remain separate gates.
 
-The historical [rc2 candidate record](candidate-0.1.0rc2.md) identifies its executed checks.
+The historical [rc2 candidate record](0.1.0rc2/candidate-0.1.0rc2.md) identifies its executed checks.
 New rc4 artifacts require their own build revision and validation record.
 Advisory/license review, final notes, a reviewed release tag and explicit
 publication approval remain necessary before these files can be distributed.

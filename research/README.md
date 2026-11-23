@@ -12,6 +12,28 @@ refreshes RQ4 at an identified revision. Its [raw evidence](../benchmarks/result
 is separate from the historical records below. H1's primary expectation remains
 unmet; the historical WAN/Linux results and preprint are unchanged.
 
+## Evidence directories
+
+The [current evidence guide](current-evidence-2026-11-10.md) identifies the
+latest retained local follow-up and its measurement revisions. “Current” here
+does not mean that these experiments measured rc4. Every other directory below
+is historical evidence for its recorded revision.
+
+| Directory under `benchmarks/results/` | Status | Purpose |
+| --- | --- | --- |
+| [current-evidence-2026-11-10](../benchmarks/results/current-evidence-2026-11-10/README.md) | Current retained follow-up | Local detection, H1, batching, H3 and RQ4 |
+| [detection-v1](../benchmarks/results/detection-v1/report.md) | Historical | Original detection matrix |
+| [h1-writer-rollback-v1](../benchmarks/results/h1-writer-rollback-v1/report.md) | Historical | Original writer rollback comparison |
+| [h3-witness-outage-pilot-v1](../benchmarks/results/h3-witness-outage-pilot-v1/report.md) | Historical | Feasibility pilot, excluded from measured inference |
+| [h3-witness-outage-v1](../benchmarks/results/h3-witness-outage-v1/report.md) | Historical | Original controlled witness outage experiment |
+| [h3-witness-outage-review-2026-10-31-v1](../benchmarks/results/h3-witness-outage-review-2026-10-31-v1/report.md) | Historical | Transport follow-up for the outage experiment |
+| [linux-matrix-v2](../benchmarks/results/linux-matrix-v2/report.md) | Historical | Selected Linux workloads |
+| [local-subset-v1](../benchmarks/results/local-subset-v1/report.md) | Historical | Original local batching workloads |
+| [local-subset-v1-linux](../benchmarks/results/local-subset-v1-linux/report.md) | Historical | Linux local-subset measurements |
+| [rq4-operational-burden-v1](../benchmarks/results/rq4-operational-burden-v1/report.md) | Historical | Repository and process proxy snapshot |
+| [streaming-v1](../benchmarks/results/streaming-v1/report.md) | Historical | Streaming verification measurements |
+| [wide-area-v3](../benchmarks/results/wide-area-v3/report.md) | Historical | Wide-area batching measurements |
+
 ## Canonical questions and hypotheses
 
 | Label | Question or hypothesis | Evidence and outcome |
@@ -85,7 +107,7 @@ signature check produced that diagnostic. Private demonstration materials
 remain outside this repository.
 
 Limited external review covered witness and online behavior and part of the
-verifier. The [recorded scope and dispositions](../docs/release/phase3-closeout-2026-10-28.md#review-coverage)
+verifier. The [recorded scope and dispositions](../docs/release/reviews/phase3-closeout-2026-10-28.md#review-coverage)
 identify areas not reviewed. This was not an independent security audit.
 See [limitations](limitations.md) and [provenance](preprint/historical-provenance.md)
 for boundaries on interpretation and reproducibility.

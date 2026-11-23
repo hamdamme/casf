@@ -27,11 +27,11 @@ stabilization (SPEC §26).
 - Validate witness origins during trust creation and consistently classify witness HTTP errors.
 - Reject nonfinite storage scheduling times independently of SQLite constraint behavior.
 
-The [3333d00 candidate](docs/release/candidate-0.1.0rc4-3333d00.md) is superseded
+The [3333d00 candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-3333d00.md) is superseded
 and historical: it omits the Ed25519 correction and must not be published.
-The [earlier candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) also omits
+The [earlier candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-d4721c4.md) also omits
 the SQLite and canonical JSONL corrections. The
-[replacement candidate](docs/release/candidate-0.1.0rc4-492f330.md) records new
+[replacement candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) records new
 artifacts from `492f330` and their installation checks. Exact-file review and
 separate publication approval remain pending.
 
@@ -82,7 +82,7 @@ separate publication approval remain pending.
 - Prepare exact candidate files, installation evidence and release review.
 
 See the [published release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc2)
-and [publication evidence](docs/release/publication-0.1.0rc2.md) for exact assets,
+and [publication evidence](docs/release/0.1.0rc2/publication-0.1.0rc2.md) for exact assets,
 installation checks, support and limitations. No PyPI publication was performed.
 
 ## Earlier development entries (historical)
@@ -113,7 +113,7 @@ the [pinned archive source](https://github.com/hamdamme/casf/tree/ba417691b4a748
 - Preserve verified checkpoint/receipt journals and final seals during bundle
   restore. Reject invalid recovery evidence and clean up failed destinations.
   Refuse accepted-only bundle export while a final receipt is pending; use the
-  database backup API to preserve pending state. See `docs/writer-recovery.md`.
+  database backup API to preserve pending state. See `docs/operations/writer-recovery.md`.
 - Reject duplicate JSON fields in external CASF input and apply bounded,
   total timeouts to online queries and witness submissions. Require signed
   witness status before checkpoint acceptance and stop new acceptance after
@@ -125,7 +125,7 @@ the [pinned archive source](https://github.com/hamdamme/casf/tree/ba417691b4a748
   database snapshot without signing. Append and checkpoint operations still
   require the private log key.
 - Add administration commands for explicit manifest, trust, status, witness
-  registration, and epoch provisioning. See `docs/administration.md`.
+  registration, and epoch provisioning. See `docs/operations/administration.md`.
 
 ### Added
 - Recover an accepted pending receipt through `Writer.recover_pending_receipt`
@@ -186,7 +186,7 @@ the [pinned archive source](https://github.com/hamdamme/casf/tree/ba417691b4a748
   (T19) never overwrites committed results. 1 new test (208 total,
   all green).
 - Initial C12 release candidate status, later superseded by the
-  [2026-10-28 closeout record](docs/release/phase3-closeout-2026-10-28.md).
+  [2026-10-28 closeout record](docs/release/reviews/phase3-closeout-2026-10-28.md).
   At that earlier review point, the outstanding items were a Linux
   benchmark matrix, disclosure channel test submission, external review,
   and final hash approval. The later closeout records the completed

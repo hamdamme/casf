@@ -3,12 +3,12 @@
 Status: proposed acceptance requirements, not a deployed configuration. Intended
 use is internal business-transaction audit records. Source system, event classification, readers,
 detailed production access roles await operator decisions. Research-demo recovery
-targets are recorded in the [adopted rules](research-demo-closeout.md). One administrator
-will initially manage all roles; see [custody and backup evidence](backup-custody-2026-11-16.md). Keep synthetic data in
+targets are recorded in the [adopted rules](reviews/research-demo-closeout.md). One administrator
+will initially manage all roles; see [custody and backup evidence](reviews/backup-custody-2026-11-16.md). Keep synthetic data in
 the existing rehearsal. Completing this worksheet does not itself pass P05/P06.
 
-Use [administration](../administration.md), [writer recovery](../writer-recovery.md),
-[recovery drills](../recovery-drills.md) and [witness service](../witness-server.md)
+Use [administration](../operations/administration.md), [writer recovery](../operations/writer-recovery.md),
+[recovery drills](../operations/recovery-drills.md) and [witness service](../operations/witness-server.md)
 for implemented behavior. Do not introduce enterprise tenancy, encryption
 protocols or new trust rules as implicit prerequisites to this reference project.
 
@@ -57,7 +57,7 @@ or a finalized event schema:
   Do not claim they form one atomic transaction. Select and test the application's
   durable delivery/retry mechanism before using real transactions.
 
-The [synthetic transaction CLI](../synthetic-transactions.md) is the first demonstration
+The [synthetic transaction CLI](../guide/synthetic-transactions.md) is the first demonstration
 source. Production application, reader roles, accepted business schema, delivery
 design and expected volume remain unassigned. No source-system integration is authorized by this
 worksheet alone; its implementation must follow the confirmed application scope.
@@ -102,9 +102,9 @@ retained checkpoint/status serial, commands, outputs and elapsed time.
 
 Existing automated backup/rollback drills provide software evidence. They do
 not demonstrate the organization's encrypted backup system, access controls or
-independent custody. Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and was
+independent custody. Normal reboot [passed on the rehearsal revision](reviews/reboot-2026-11-16.md) and was
 accepted in PR 69. Whole-machine power-loss testing remains incomplete, pending future validation (P03).
-The [USB-only interruption result](usb-interruption-2026-11-16.md) and these
+The [USB-only interruption result](reviews/usb-interruption-2026-11-16.md) and these
 restore checks do not establish whole-machine durability.
 
 ## Monitoring and incident acceptance

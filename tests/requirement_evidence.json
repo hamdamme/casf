@@ -413,7 +413,7 @@
         "tests/unit/test_advisory_c01_c06.py::test_integrity_checks_finite_times_without_sql_constraints",
         "tests/unit/test_advisory_c01_c06.py::test_migration_rejects_infinity_before_destination_creation"
       ],
-      "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Platform and published-release results apply only to the revisions in docs/release/validation-matrix.md and docs/release/publication-0.1.0rc2.md. Later source fixes require separate validation; physical power-loss recovery is not established."
+      "remaining_review": "Selected process failures, recovery drills and automatic checkpoint scheduling have linked assertions. Platform and published-release results apply only to the revisions in docs/release/validation-matrix.md and docs/release/0.1.0rc2/publication-0.1.0rc2.md. Later source fixes require separate validation; physical power-loss recovery is not established."
     },
     "T16": {
       "assertion_scope": "Bound input reads, object counts, checkpoint and receipt work, nesting, and concurrent HTTP work. Streaming verification retains one record plus bounded protocol evidence and checkpoint boundary digests; eager read_bundle remains available for compatibility.",

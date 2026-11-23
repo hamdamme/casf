@@ -1,7 +1,7 @@
 # Architecture Decision Records — Baseline Gate Decisions
 
 This is a dated decision and validation record. Subsequent platform and
-redistribution evidence is in the [October 28 closeout](../release/phase3-closeout-2026-10-28.md). Use the
+redistribution evidence is in the [October 28 closeout](../release/reviews/phase3-closeout-2026-10-28.md). Use the
 [current checklist](../release/checklist-v0.1.md) for active requirements.
 
 **Date:** 2026-10-10 · **Status:** APPROVED 2026-10-11 (maintainer decision)
@@ -85,15 +85,15 @@ serving to an optional Uvicorn adapter using h11 and asyncio. The implementation
 was merged by the maintainer in [PR 7](https://github.com/hamdamme/casf/pull/7).
 [CI run 40123118085](https://github.com/hamdamme/casf/actions/runs/40123118085)
 passed all three Python jobs. Its installation and resource
-limits are described in the [server guide](../witness-server.md), and the
-added dependencies have a [review record](../release/http-dependency-review.md).
+limits are described in the [server guide](../operations/witness-server.md), and the
+added dependencies have a [review record](../release/reviews/http-dependency-review.md).
 The approved HTTP error boundary above applies. D05 remains open pending
-the remaining platform component, redistribution, and release reviews. The [full Python dependency inventory](../release/dependency-review.md)
+the remaining platform component, redistribution, and release reviews. The [full Python dependency inventory](../release/reviews/dependency-review.md)
 records the completed exact version advisory queries and license metadata.
 
 The [dependency lockfile](../../uv.lock) records exact runtime, development,
 and build group versions. The [package configuration](../../pyproject.toml)
-constrains the build backend, and the [dependency guide](../dependencies.md)
+constrains the build backend, and the [dependency guide](../reference/dependencies.md)
 describes installation and validation for R12. Dependency advisory and license
 review remain release checks. Historical research environments retain their
 original recorded versions.

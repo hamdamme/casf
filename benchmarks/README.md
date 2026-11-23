@@ -4,7 +4,7 @@ Benchmark harness for the research evaluation (SPEC §22-§23).
 Synthetic data only.
 
 For new experiments, install from `uv.lock` using the
-[dependency guide](../docs/dependencies.md). Keep the lockfile with the commit
+[dependency guide](../docs/reference/dependencies.md). Keep the lockfile with the commit
 used for each run. This setup does not change the recorded environments or
 results of earlier experiments. Choose a new output directory for each new
 experiment to preserve existing evidence.

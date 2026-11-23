@@ -25,21 +25,21 @@ and artifact validation are still required.
 The published `0.1.0rc2` build is
 `e92194fe0fa6eb37c2ff9016c381b8e734008880`; it contains neither PR 57 nor these
 remediation changes. No PyPI upload is part of this work. The
-[publication record](publication-0.1.0rc2.md) remains the historical authority.
+[publication record](0.1.0rc2/publication-0.1.0rc2.md) remains the historical authority.
 
 PR 60 added generated writer/witness recovery sequences; PR 61 added bounded
 Python-line-edge-guided JSON parser campaigns. The six locked-dependency CI jobs
 each run 2,000 guided mutations plus 25 seed cases. Both PRs passed their CI
-matrices. See [adversarial testing](../adversarial-testing.md) for commands and scope. These campaigns and process-crash tests do not exhaust
+matrices. See [adversarial testing](../testing/adversarial-testing.md) for commands and scope. These campaigns and process-crash tests do not exhaust
 all protocol states or crash schedules. The fuzz targets exclude HTTP framing,
 SQLite files and native cryptographic internals. Whole-machine power-loss testing remains incomplete, pending future validation.
-P02 normal reboot [was accepted in PR 69](reboot-2026-11-16.md).
-The [USB interruption test](usb-interruption-2026-11-16.md) passed its scoped
+P02 normal reboot [was accepted in PR 69](reviews/reboot-2026-11-16.md).
+The [USB interruption test](reviews/usb-interruption-2026-11-16.md) passed its scoped
 checks but does not close P03;
 use the [acceptance tracker](internal-deployment-acceptance.md) for current status.
 The [review brief](independent-review-brief.md) and
 [operations worksheet](internal-operations-worksheet.md) prepare the open review
 and deployment gates without claiming they have passed.
 
-The [custody and backup record](backup-custody-2026-11-16.md) distinguishes
+The [custody and backup record](reviews/backup-custody-2026-11-16.md) distinguishes
 operator-reported cloud settings, measured restore results and unconfigured automation.

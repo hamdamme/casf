@@ -29,7 +29,7 @@ first, protocol rule second, implementation third.
   historical status and any affected examples against the implementation.
 
 - Keep active installation, API and status guidance linked from
-  `docs/current-reference.md`. Distinguish intended specification behavior
+  `docs/reference/current-reference.md`. Distinguish intended specification behavior
   from verified implementation behavior.
 - Use `research/README.md` for canonical labels. Preserve original reports,
   raw results and historical labels; correct interpretations in current text.

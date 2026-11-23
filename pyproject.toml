@@ -16,7 +16,7 @@ dependencies = [
 
 [project.urls]
 Repository = "https://github.com/hamdamme/casf"
-Documentation = "https://github.com/hamdamme/casf/blob/main/docs/current-reference.md"
+Documentation = "https://github.com/hamdamme/casf/blob/main/docs/README.md"
 Issues = "https://github.com/hamdamme/casf/issues"
 
 [project.optional-dependencies]

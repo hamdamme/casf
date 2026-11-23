@@ -1,7 +1,7 @@
 # Linux research reproduction
 
 The Linux laptop installation and correctness checks are recorded in the
-[publication evidence](../docs/release/publication-0.1.0rc2.md). New Linux
+[publication evidence](../docs/release/0.1.0rc2/publication-0.1.0rc2.md). New Linux
 performance measurements remain deferred. Routine Ubuntu CI checks correctness
 and installed packages; neither it nor the laptop checks establish representative
 deployment performance. This guide describes a future research rerun.
@@ -17,7 +17,7 @@ comparison are not instructions for the current candidate.
 
 Select a clean source commit and record why these configurations are being
 rerun. Install Python 3.12–3.14 and the locked witness/development dependencies
-using the [dependency guide](../docs/dependencies.md). Record the actual OS,
+using the [dependency guide](../docs/reference/dependencies.md). Record the actual OS,
 architecture, CPU, RAM, storage/filesystem, Python, SQLite and cryptography
 versions. A commit hash alone does not identify imported code or hardware.
 

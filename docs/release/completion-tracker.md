@@ -20,7 +20,7 @@ The internal-deployment extension adds **eight tasks across Sessions 16–21** i
 Phase 8; see [acceptance plan](internal-deployment-acceptance.md). Current position:
 **Phase 8, Session 21 — research-demo publication complete**. Overall:
 **37/41 tasks accepted; P08 publication and public-download verification are complete.**
-See the [rc3 publication record](publication-0.1.0rc3.md). Four production tasks remain incomplete.
+See the [rc3 publication record](0.1.0rc3/publication-0.1.0rc3.md). Four production tasks remain incomplete.
 P05/P06 remain partial production gates, outside this research-demo closeout.
 **P03: Whole-machine power-loss testing — Pending future validation.**
 **P04: Independent security review — Pending independent evaluation.**
@@ -29,10 +29,10 @@ evaluation. Neither blocks publication of the experimental research release;
 artifact review, publication approval and download validation remain required.
 Neither is counted as complete. P02 was accepted in PR 69; the scoped USB result
 was accepted in PR 70 at `95ec5b9a6b7bb465c3790b8ddb6d62930f9934e4` without closing P03.
-[Permissions, backup roundtrip and daily policy evidence](backup-custody-2026-11-16.md)
-were accepted in PR 71. The [synthetic transaction CLI](../synthetic-transactions.md)
+[Permissions, backup roundtrip and daily policy evidence](reviews/backup-custody-2026-11-16.md)
+were accepted in PR 71. The [synthetic transaction CLI](../guide/synthetic-transactions.md)
 was accepted in PR 72 and its post-merge CI passed; this does not establish a
-production event source. The [adopted operating rules](research-demo-closeout.md)
+production event source. The [adopted operating rules](reviews/research-demo-closeout.md)
 and rc3 publication close P08, but not P05/P06. P05/P06 remain partial: operational keys, trust provisioning and
 real-use acceptance are not established by synthetic tests. Future releases require separate approval.
 
@@ -45,7 +45,7 @@ SQLite permissions and canonical JSONL corrections and regressions. The earlier
 PR 78 and C03/D01–D03 corrections remain included. Post-merge CI 238 passed all
 ten jobs on this exact source.
 
-The [3333d00 rc4 candidate](candidate-0.1.0rc4-3333d00.md) and all earlier
+The [3333d00 rc4 candidate](0.1.0rc4/candidate-0.1.0rc4-3333d00.md) and all earlier
 rc4 artifacts are now superseded and historical. Their installation and CI
 results remain credited to their named revisions. They omit the small-order
 Ed25519 correction and must not be published.
@@ -56,7 +56,7 @@ passed all ten configurations: 1,903 tests on macOS; 1,883 passed and 20 native
 Darwin ACL skips on Ubuntu. All 20 evidence archive digests and runtime hashes
 were verified, and 72,900 parser cases passed.
 
-The [replacement rc4 candidate](candidate-0.1.0rc4-492f330.md) is built from
+The [replacement rc4 candidate](0.1.0rc4/candidate-0.1.0rc4-492f330.md) is built from
 that exact merge. Six fresh installations passed 76 commands across native
 macOS and emulated Ubuntu, including four 21-check workflows and the installed
 security regressions. Ubuntu emulation and host-shared filesystem limitations
@@ -127,7 +127,7 @@ After every completed task, report: task ID and changes; checks actually run and
   266 manually read text files, 243 structured-data reviews and three document
   text/visual reviews. Runtime and benchmark fixes, corrected crash assertions,
   1,258 passing local tests and retained-data reconciliation are recorded in the
-  [review report](line-review-2026-11-11.md). F19/F20/F28 were accepted by the PR 57 merge.
+  [review report](reviews/line-review-2026-11-11.md). F19/F20/F28 were accepted by the PR 57 merge.
 - Team A remediation: five tasks accepted in PR 58. Production gates remain
   separate; internal-deployment acceptance now has an explicit eight-task plan.
 
@@ -137,9 +137,9 @@ After every completed task, report: task ID and changes; checks actually run and
   commit with the retained wheel, source archive and checksum file. Public downloads
   on Mac and Linux matched all three hashes; fresh public wheel/source installations
   passed CLI, import, witness, public-verification and 21-check demonstrations. No PyPI upload.
-- F27: [operating handoff](../operating-handoff.md) delivers installation/demo entry points,
+- F27: [operating handoff](../operations/operating-handoff.md) delivers installation/demo entry points,
   trust and state responsibilities, monitoring, backup/recovery, maintenance and support limits.
-- F28: [publication evidence](publication-0.1.0rc2.md) and its machine-readable record
+- F28: [publication evidence](0.1.0rc2/publication-0.1.0rc2.md) and its machine-readable record
   identify the tag, assets, reviewed CI and Linux results. All 46 packaged source inputs
   match the build revision and accepted review checkout; all 39 imported runtime files match.
 - Linux laptop validation is complete for the recorded Ubuntu/Python environment:
@@ -147,7 +147,7 @@ After every completed task, report: task ID and changes; checks actually run and
   6075 parser cases and three 21-check demonstrations. This is separate from historical research.
 - F02/F19 reconciliation: the tracked-file inventory, original audit dispositions,
   historical archive, status corrections and package links are delivered in the
-  [repository review](repository-review.md). PR 55's merge accepts these corrections
+  [repository review](reviews/repository-review.md). PR 55's merge accepts these corrections
   and F27/F28. The earlier premature closeout remains documented in that review.
 - PR 55 validation: [CI run 43067257585](https://github.com/hamdamme/casf/actions/runs/43067257585)
   passed all twelve configurations at `42909d756285cd8cfb13ef49671dfeea8783f290`:
@@ -161,26 +161,26 @@ After every completed task, report: task ID and changes; checks actually run and
 
 ## Evidence
 
-- [Release scope and audit-to-acceptance mapping](completion-scope-v0.1.md)
-- [Startup and recovery behavior and limitations](../writer-recovery.md)
-- [Recovery drill matrix and operating procedure](../recovery-drills.md)
-- [Generated inputs and parser fuzzing](../adversarial-testing.md)
-- [Process crash and concurrency matrix](../process-crash-testing.md)
+- [Release scope and audit-to-acceptance mapping](0.1.0rc2/completion-scope-v0.1.md)
+- [Startup and recovery behavior and limitations](../operations/writer-recovery.md)
+- [Recovery drill matrix and operating procedure](../operations/recovery-drills.md)
+- [Generated inputs and parser fuzzing](../testing/adversarial-testing.md)
+- [Process crash and concurrency matrix](../testing/process-crash-testing.md)
 - [Supported validation matrix and evidence](validation-matrix.md)
 - [Current research measurements and reconciliation](../../research/current-evidence-2026-11-10.md)
-- [Runnable workflow](../demo.md) and [critical-change review](workflow-review-2026-11-10.md)
-- [Bundle and incremental verification](../verifier-api.md)
-- [Typed log operations and result boundaries](../log-api.md)
-- [Typed append requests and results](../append-api.md)
-- [Prefix export and complete diagnostics](../export-and-reports.md)
-- [Storage integrity and migration](../storage-migrations.md)
-- [Checkpoint worker behavior and reports](../checkpoint-worker.md)
+- [Runnable workflow](../guide/demo.md) and [critical-change review](reviews/workflow-review-2026-11-10.md)
+- [Bundle and incremental verification](../reference/verifier-api.md)
+- [Typed log operations and result boundaries](../reference/log-api.md)
+- [Typed append requests and results](../reference/append-api.md)
+- [Prefix export and complete diagnostics](../reference/export-and-reports.md)
+- [Storage integrity and migration](../reference/storage-migrations.md)
+- [Checkpoint worker behavior and reports](../reference/checkpoint-worker.md)
 - [New integrity and recovery regressions](../../tests/unit/test_writer_integrity_recovery.py)
 - [Writer trust regressions](../../tests/unit/test_writer_trust.py) and [CLI trust regressions](../../tests/unit/test_cli_writer_trust.py)
 - [Requirement-to-test evidence](../../tests/requirement_evidence.json)
 - [Coverage status](test-coverage-status.md)
 
-The original 9 November audit and inventory describe the baseline. The [repository review](repository-review.md) reuses their findings and records every tracked path, corrections, retained evidence and verification limits for this revision.
+The original 9 November audit and inventory describe the baseline. The [repository review](reviews/repository-review.md) reuses their findings and records every tracked path, corrections, retained evidence and verification limits for this revision.
 
 - PR 60 accepted the generated recovery sequences at
   `aadcc190897ddfe884e97bc21c6a3a2795fe9430`; all 12 CI jobs passed. At that revision, P07 remained
@@ -194,9 +194,9 @@ The original 9 November audit and inventory describe the baseline. The [reposito
 
 ## Historical candidate preparation before publication
 
-The [rc3 record](candidate-0.1.0rc3.md), [notes](notes-0.1.0rc3.md),
-[advisory refresh](dependency-review-0.1.0rc3.md) and
-[operating rules](research-demo-closeout.md) document the research-demo closeout.
+The [rc3 record](0.1.0rc3/candidate-0.1.0rc3.md), [notes](0.1.0rc3/notes-0.1.0rc3.md),
+[advisory refresh](0.1.0rc3/dependency-review-0.1.0rc3.md) and
+[operating rules](reviews/research-demo-closeout.md) document the research-demo closeout.
 Build revision `a0ac1bfa61d3406c99b6bf758c62f6e840b633f3` passed 1543 local source
 tests, 8100 parser inputs, 33 Mac installation checks and 20 Linux checks of the
 same artifact bytes. Final PR CI is a separate revision-specific acceptance step.
@@ -222,7 +222,7 @@ all recorded validation outcomes remain unchanged.
 ## Historical candidate refresh after PR 74
 
 PR 74 accepted the pending P03/P04 dispositions at
-`c38bf821af013eaa4efa96a799577dab60250b48`. The [refreshed rc3 files](candidate-0.1.0rc3-c38bf82.md)
+`c38bf821af013eaa4efa96a799577dab60250b48`. The [refreshed rc3 files](0.1.0rc3/candidate-0.1.0rc3-c38bf82.md)
 include that revision's README, new checksums and fresh installation/advisory
 evidence. Prior candidate files and their recorded results remain preserved.
 P08 stays open for artifact review, separate publication approval and downloaded
@@ -234,7 +234,7 @@ and 20 on Linux. Release publication remains unapproved and incomplete.
 
 ## Publication closeout — 17 November 2026
 
-The [rc3 publication and verification record](publication-0.1.0rc3.md) supersedes
+The [rc3 publication and verification record](0.1.0rc3/publication-0.1.0rc3.md) supersedes
 the pre-publication P08 statuses in the historical preparation sections above.
 P08 is accepted following approved publication, Mac/Linux public-download and
 installation verification, and the Zenodo archive. PR 76 citation/CI changes
