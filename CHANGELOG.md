@@ -40,10 +40,11 @@ and historical: it omits the Ed25519 correction and must not be published.
 The [earlier candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-d4721c4.md) also omits
 the SQLite and canonical JSONL corrections. The
 [492f330 candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) preserves
-historical artifacts and installation evidence. It omits the key-passphrase and
-package updates above. Once this implementation is accepted, build and validate
-a new candidate from the final accepted revision before separate publication
-approval. Earlier files, checksums and evidence remain unchanged.
+historical artifacts and installation evidence but omits the key-passphrase and
+package updates above. The [replacement candidate from `ce6cd67`](docs/release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
+contains those changes and passed fresh exact-file installation checks.
+Review and separate publication approval remain pending; earlier artifacts,
+checksums and evidence are unchanged.
 
 ## [0.1.0rc3] — 2026-11-17
 

@@ -62,18 +62,28 @@ macOS and emulated Ubuntu, including four 21-check workflows and the installed
 security regressions. Ubuntu emulation and host-shared filesystem limitations
 remain explicit in the candidate record. Later documentation is not a build input.
 
-The next follow-up adds a 16-byte key-generation passphrase minimum with legacy
-loading compatibility, raises the cryptography minimum to 50.0.0 while retaining
-locked 50.0.2, and improves package metadata. Implementation review and its own
-validation remain required. The `492f330` candidate is historical for this work;
-preserve its exact files, hashes and results rather than overwriting them.
+PR 87 merged at `ce6cd67c01df2af283b2e07fc1b832e79bb14821`, accepting the
+16-byte key-generation passphrase minimum with legacy loading compatibility,
+cryptography minimum 50.0.0 with locked 50.0.2, and package metadata updates.
+CI 248 passed all ten configurations: 1,914 tests on macOS; 1,894 passed and 20
+native Darwin ACL skips on Ubuntu. All 20 evidence archive digests and runtime
+hashes were verified; 72,900 parser cases passed.
 
-After the final implementation is accepted, build and validate a replacement
-candidate and record its exact revision. Remaining release work includes fresh
-dependency queries, exact-file approval, final advisory disposition, separate
-publication approval, public-download checks and a new Zenodo version. Estimated
-remaining release effort is 2–3 development sessions after implementation review;
-external review timing is unknown. No independent signoff or publication is claimed.
+The [ce6cd67 candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) is built from that
+exact merge. Six fresh installations passed 76 commands and four 21-check
+workflows on native macOS and emulated Ubuntu, including installed passphrase
+and earlier security regressions. The `492f330` artifacts, hashes and evidence
+remain historical and unchanged. A [fresh dependency review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md)
+records no listed locked-package advisories and retains the unchanged
+minimum-only build-tool findings and scope limits.
+
+Candidate preparation is complete; exact-file review, this documentation PR's
+own CI, final CASF advisory disposition and separate publication approval remain
+pending. After approval, verify public downloads and installations and a new
+Zenodo version/citation. Refresh dependency queries if publication is delayed.
+Estimated remaining release effort is 1–2 development sessions after artifact
+review; external review timing is unknown. No independent signoff or publication
+is claimed.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.

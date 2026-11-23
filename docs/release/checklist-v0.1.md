@@ -14,26 +14,24 @@ upload was performed. Historical acceptance does not approve new artifact bytes.
 
 ## Next candidate
 
-The [3333d00 candidate](0.1.0rc4/candidate-0.1.0rc4-3333d00.md) is superseded and
-historical. It includes the PR 78/82 corrections but omits the Ed25519 fix.
-Its artifacts and all earlier rc4 artifacts must not be published. The
-[replacement candidate](0.1.0rc4/candidate-0.1.0rc4-492f330.md) is built from PR 84's
-merge `492f330`. CI 242 passed all ten jobs on that source; the exact wheel and
-sdist passed fresh installation checks for that revision. The key-passphrase and
-package follow-up changes runtime and package bytes; `492f330` is historical for
-that follow-up. Accept and validate the final implementation before preparing a
-new release candidate. No replacement candidate record exists yet.
+The [492f330 candidate](0.1.0rc4/candidate-0.1.0rc4-492f330.md) and all earlier
+rc4 artifacts are superseded and historical. Their evidence remains tied to
+their own revisions; they must not be published as the updated rc4.
+The [replacement candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) is built from
+PR 87's merge `ce6cd67`. CI 248 passed all ten jobs on that source, and its exact
+wheel and sdist passed fresh installations. This documentation PR needs its own CI.
 
 | rc4 gate | Current status |
 | --- | --- |
 | C03/D01–D03 correction source | Merged at `d4721c4`; same source tree as reviewed `0fac103` |
-| SQLite permissions and canonical JSONL | Accepted in PR 82 at `3333d00`; historical regressions passed |
+| SQLite permissions and canonical JSONL | Accepted in PR 82 at `3333d00`; installed regressions passed |
 | Small-order Ed25519 keys and retained checkpoint arguments | Accepted in PR 84 at `492f330`; installed regressions passed |
-| Hosted acceptance matrix | CI 242 remains historical; key-passphrase/package follow-up requires its own ten-job run |
-| Exact replacement artifacts | Pending final accepted implementation and validation; preserve `492f330` files and hashes |
-| Exact-file installations | Prior `492f330` results retained; repeat on the replacement candidate once built |
-| Dependency query refresh | Fresh queries required before publication |
-| Final review and artifact approval | Pending new candidate; no independent signoff claimed |
+| Key-file passphrases and package metadata | Accepted in PR 87 at `ce6cd67`; new-key rejection and legacy loading passed |
+| Hosted acceptance matrix | CI 248: 10/10 jobs passed on exact build `ce6cd67` |
+| Exact replacement artifacts | Built from `ce6cd67`; 40 runtime files and package metadata verified; new checksums recorded |
+| Exact-file installations | 38 commands each on native macOS and emulated Ubuntu; four 21-check workflows passed |
+| Dependency query refresh | 58 successful OSV/PyPI queries; no listed locked-package advisories; four existing minimum-only build-tool advisories remain scoped in the [review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md) |
+| Final review and artifact approval | Pending review of these exact files and dependency scope; no independent signoff claimed |
 | Tag, GitHub release and advisory publication | Not performed; require separate approval |
 | Public downloads and Zenodo version | Pending approved publication |
 

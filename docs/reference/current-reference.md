@@ -17,10 +17,12 @@ PR 71/72 evidence and adopted synthetic-only operating rules.
 The [3333d00 rc4 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-3333d00.md) is superseded
 and historical. Its CI and installation results apply to those bytes, which
 omit the small-order Ed25519 correction. The
-[replacement candidate from `492f330`](../release/0.1.0rc4/candidate-0.1.0rc4-492f330.md)
-passed exact-file installation checks for that revision. Its files are historical
-for the key-passphrase and package follow-up; a new build and validation are
-required after implementation acceptance, before separate publication approval. See the [release records index](../release/README.md).
+[492f330 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) is also
+historical: it omits PR 87's key-passphrase and package updates. The
+[replacement from `ce6cd67`](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
+contains those changes and passed fresh exact-file installation checks. Review
+and separate publication approval remain pending. See the
+[release records index](../release/README.md).
 The current DOI identifies rc3.
 
 ## Which document to use
