@@ -1,0 +1,3418 @@
+{
+  "assets": [
+    {
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4-py3-none-any.whl",
+      "created_at": "2026-11-23T04:24:05Z",
+      "digest": "sha256:980101b0459bf6d155a2394930eefcbaa46972373ce396a3ff24b5f97a538578",
+      "id": 781508149,
+      "name": "casf-0.1.0rc4-py3-none-any.whl",
+      "size": 113107,
+      "state": "uploaded",
+      "updated_at": "2026-11-23T04:24:05Z"
+    },
+    {
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4.tar.gz",
+      "created_at": "2026-11-23T04:24:05Z",
+      "digest": "sha256:07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+      "id": 781508151,
+      "name": "casf-0.1.0rc4.tar.gz",
+      "size": 149681,
+      "state": "uploaded",
+      "updated_at": "2026-11-23T04:24:05Z"
+    },
+    {
+      "browser_download_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+      "created_at": "2026-11-23T04:24:05Z",
+      "digest": "sha256:569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31",
+      "id": 781508150,
+      "name": "SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+      "size": 184,
+      "state": "uploaded",
+      "updated_at": "2026-11-23T04:24:05Z"
+    }
+  ],
+  "build_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+  "candidate_record": "candidate-0.1.0rc4-ce6cd67.json",
+  "candidate_record_sha256": "d6df1cc944a213687cf7c8ac89ef794cd39f553c4f8d3fc8ffff1d0ec11d4eca",
+  "checksum_record": "SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+  "ci": {
+    "accepted_review_merge": {
+      "commit": "0a91df52ad0ce73cc4a5b886ab8d29bfe9e33f6c",
+      "id": 45111069596,
+      "jobs_passed": 10,
+      "number": 250
+    },
+    "build": {
+      "commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+      "id": 45107762353,
+      "jobs_passed": 10,
+      "number": 248
+    },
+    "candidate_documentation_pr": {
+      "head_commit": "6a1b80156615d2c9aae71931d104c87994a1f9ce",
+      "id": 45110359724,
+      "jobs_passed": 10,
+      "number": 249
+    }
+  },
+  "citation": {
+    "doi": "Pending; prior rc3 DOI does not identify rc4",
+    "url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+    "version": "0.1.0rc4"
+  },
+  "draft": false,
+  "fresh_public_installations": {
+    "macos": {
+      "artifact_hashes_unchanged": true,
+      "commands": [
+        {
+          "exit_code": 0,
+          "name": "base-create",
+          "seconds": 0.34
+        },
+        {
+          "exit_code": 0,
+          "name": "base-dependencies",
+          "seconds": 4.776
+        },
+        {
+          "exit_code": 0,
+          "name": "base-install",
+          "seconds": 2.643
+        },
+        {
+          "exit_code": 0,
+          "name": "base-dependency-check",
+          "seconds": 0.024
+        },
+        {
+          "exit_code": 0,
+          "name": "base-cli",
+          "seconds": 0.574
+        },
+        {
+          "exit_code": 0,
+          "name": "base-version",
+          "seconds": 0.015
+        },
+        {
+          "exit_code": 0,
+          "name": "base-environment",
+          "seconds": 0.094
+        },
+        {
+          "exit_code": 0,
+          "name": "base-smoke",
+          "seconds": 0.114
+        },
+        {
+          "exit_code": 0,
+          "name": "base-public-fixture",
+          "seconds": 0.108
+        },
+        {
+          "exit_code": 0,
+          "name": "base-public-verify",
+          "seconds": 0.055
+        },
+        {
+          "exit_code": 0,
+          "name": "base-security-smoke",
+          "seconds": 0.119
+        },
+        {
+          "exit_code": 0,
+          "name": "base-transactions",
+          "seconds": 0.083
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-create",
+          "seconds": 0.012
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-dependencies",
+          "seconds": 3.203
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-install",
+          "seconds": 0.349
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-dependency-check",
+          "seconds": 0.021
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-cli",
+          "seconds": 0.388
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-version",
+          "seconds": 0.017
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-environment",
+          "seconds": 0.082
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-smoke",
+          "seconds": 0.411
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-public-fixture",
+          "seconds": 0.112
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-public-verify",
+          "seconds": 0.055
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-security-smoke",
+          "seconds": 0.129
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-transactions",
+          "seconds": 0.082
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-workflow",
+          "seconds": 0.469
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-create",
+          "seconds": 0.014
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-dependencies",
+          "seconds": 9.99
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-install",
+          "seconds": 20.535
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-dependency-check",
+          "seconds": 0.016
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-cli",
+          "seconds": 0.377
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-version",
+          "seconds": 0.017
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-environment",
+          "seconds": 0.085
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-smoke",
+          "seconds": 0.426
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-public-fixture",
+          "seconds": 0.117
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-public-verify",
+          "seconds": 0.054
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-security-smoke",
+          "seconds": 0.106
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-transactions",
+          "seconds": 0.076
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-workflow",
+          "seconds": 0.469
+        }
+      ],
+      "environments": {
+        "base": {
+          "architecture": "arm64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/macos/base/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "cryptography": "50.0.2",
+            "pycparser": "3.12"
+          },
+          "platform": "macOS-27.2.1-arm64-arm-64bit",
+          "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+          "python_executable": "$INSTALL_ROOT/macos/base/bin/python",
+          "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.53.1"
+        },
+        "sdist": {
+          "architecture": "arm64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/macos/sdist/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "click": "8.5.0",
+            "cryptography": "50.0.2",
+            "h11": "0.16.0",
+            "pycparser": "3.12",
+            "uvicorn": "0.54.0"
+          },
+          "platform": "macOS-27.2.1-arm64-arm-64bit",
+          "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+          "python_executable": "$INSTALL_ROOT/macos/sdist/bin/python",
+          "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.53.1"
+        },
+        "witness": {
+          "architecture": "arm64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/macos/witness/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "click": "8.5.0",
+            "cryptography": "50.0.2",
+            "h11": "0.16.0",
+            "pycparser": "3.12",
+            "uvicorn": "0.54.0"
+          },
+          "platform": "macOS-27.2.1-arm64-arm-64bit",
+          "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+          "python_executable": "$INSTALL_ROOT/macos/witness/bin/python",
+          "python_tls": "OpenSSL 3.5.8 25 Aug 2026",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.53.1"
+        }
+      },
+      "installed_security_regressions": "passed in all three environments",
+      "workflows": {
+        "sdist": {
+          "checks": 21,
+          "private_state_retained": false,
+          "single_host": true,
+          "status": "complete",
+          "synthetic": true,
+          "tamper_result": "FAIL",
+          "unavailable_witness_result": "INCONCLUSIVE"
+        },
+        "witness": {
+          "checks": 21,
+          "private_state_retained": false,
+          "single_host": true,
+          "status": "complete",
+          "synthetic": true,
+          "tamper_result": "FAIL",
+          "unavailable_witness_result": "INCONCLUSIVE"
+        }
+      }
+    },
+    "ubuntu_amd64_emulated": {
+      "artifact_hashes_unchanged": true,
+      "commands": [
+        {
+          "exit_code": 0,
+          "name": "base-create",
+          "seconds": 0.501
+        },
+        {
+          "exit_code": 0,
+          "name": "base-dependencies",
+          "seconds": 0.996
+        },
+        {
+          "exit_code": 0,
+          "name": "base-install",
+          "seconds": 0.373
+        },
+        {
+          "exit_code": 0,
+          "name": "base-dependency-check",
+          "seconds": 0.144
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-create",
+          "seconds": 0.134
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-dependencies",
+          "seconds": 1.028
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-install",
+          "seconds": 0.28
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-dependency-check",
+          "seconds": 0.158
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-create",
+          "seconds": 0.133
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-dependencies",
+          "seconds": 0.629
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-install",
+          "seconds": 2.627
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-dependency-check",
+          "seconds": 0.148
+        },
+        {
+          "exit_code": 0,
+          "name": "base-cli",
+          "seconds": 0.531
+        },
+        {
+          "exit_code": 0,
+          "name": "base-version",
+          "seconds": 0.114
+        },
+        {
+          "exit_code": 0,
+          "name": "base-environment",
+          "seconds": 0.33
+        },
+        {
+          "exit_code": 0,
+          "name": "base-smoke",
+          "seconds": 0.432
+        },
+        {
+          "exit_code": 0,
+          "name": "base-public-fixture",
+          "seconds": 0.426
+        },
+        {
+          "exit_code": 0,
+          "name": "base-public-verify",
+          "seconds": 0.265
+        },
+        {
+          "exit_code": 0,
+          "name": "base-security-smoke",
+          "seconds": 0.71
+        },
+        {
+          "exit_code": 0,
+          "name": "base-transactions",
+          "seconds": 0.319
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-cli",
+          "seconds": 0.412
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-version",
+          "seconds": 0.12
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-environment",
+          "seconds": 0.349
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-smoke",
+          "seconds": 0.902
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-public-fixture",
+          "seconds": 0.443
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-public-verify",
+          "seconds": 0.251
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-security-smoke",
+          "seconds": 0.462
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-transactions",
+          "seconds": 0.325
+        },
+        {
+          "exit_code": 0,
+          "name": "witness-workflow",
+          "seconds": 1.236
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-cli",
+          "seconds": 0.43
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-version",
+          "seconds": 0.114
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-environment",
+          "seconds": 0.346
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-smoke",
+          "seconds": 0.895
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-public-fixture",
+          "seconds": 0.433
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-public-verify",
+          "seconds": 0.264
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-security-smoke",
+          "seconds": 0.467
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-transactions",
+          "seconds": 0.325
+        },
+        {
+          "exit_code": 0,
+          "name": "sdist-workflow",
+          "seconds": 1.265
+        }
+      ],
+      "environments": {
+        "base": {
+          "architecture": "x86_64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "cryptography": "50.0.2",
+            "pycparser": "3.12"
+          },
+          "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+          "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+          "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/base/bin/python",
+          "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.45.1"
+        },
+        "sdist": {
+          "architecture": "x86_64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "click": "8.5.0",
+            "cryptography": "50.0.2",
+            "h11": "0.16.0",
+            "pycparser": "3.12",
+            "uvicorn": "0.54.0"
+          },
+          "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+          "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+          "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/sdist/bin/python",
+          "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.45.1"
+        },
+        "witness": {
+          "architecture": "x86_64",
+          "casf": {
+            "files_sha256": {
+              "__init__.py": "2437df0d668b777b0fef7bee2a109533090ed93da54c35a1fe01b22018d9c0ef",
+              "api.py": "49b947ba3faa27e062319a46e591e3196358a2cc147d16179112bd01ce8706db",
+              "bundle.py": "0220ac1e552ac729a505c0dad1bf070d24c37f56eb49c4a8c455a15b21b48f28",
+              "canonical/__init__.py": "a83b51ff2b7d7d133a62ea8831b91c8907b6d20ce07e0b427e16804c277331cd",
+              "canonical/jcs.py": "d9a1f75254ccf50715d2ffe9eacbb3a2c3854e068a9884a5462d15746f0c546e",
+              "canonical/limits.py": "f0292d7d133caa28f3ade22a1af832de6977291210241f93d18a172071301890",
+              "cli/__init__.py": "b114d7cd5468dcac3b8ed758a965daf613962a66a58dc709ca28a0a43231f5bf",
+              "crypto/__init__.py": "eafb55dbaeb682b79cf2accf8fea68bead37e67e5eb67b15e5936ac3ab3151f8",
+              "errors.py": "0b7cda7a30488b3f622ab9c59737712186662e2467292edcd7034195463a543e",
+              "file_permissions.py": "ba1392230ad05f1628a9fafef01d8c3e3de22513133d26e4edeb5c378190a9eb",
+              "filesystem.py": "4adc041836373e400e4464744f483c7704bf42972917306efb11e1f3941dcaa1",
+              "keys.py": "71f8c383c7e8903b09c0769db8e40bb385ed718e0f925825bae92a17cd3faa4d",
+              "lifecycle.py": "634f5275f9c9389f222951ecc60d4babf67cbab3bf510db0ac26eb29350f9b79",
+              "model/__init__.py": "8ed4f59f97c43dad412ea33d5a82bc56f9c3cb3459f74ec7eb463020fcc7fddb",
+              "model/api.py": "4c0dab7328b42f4ae36e0f2aa03c640ef0a9f4dfc2151cbd92d1d0847a6989ff",
+              "model/operations.py": "d2c841e34ad07b5fac26314fbd7a5071265a70f81f0581b37c1c7a9647c234c2",
+              "model/schema.py": "0cd2153aa20a30b86899b8bda0516826672d5f31ac280cfcd76783e6f6015d5e",
+              "online.py": "64d6f8070fd3529ba9f1716624b868910fbd6e46dabab78e3a9be47c350f8baf",
+              "py.typed": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+              "storage/__init__.py": "921c55d27b575aa82d986a1da7bc24a859fe35d2da60a05aa24bcbac9cbffc6a",
+              "storage/legacy.py": "6e52dee24208abd91350335a0afe516b1e3027c0b8ccbed194fe9fa8f1d71c4b",
+              "storage/schema.py": "e329e55967c9f51b24dca56e4d54f687bc2fe1c7e2d868f1d7b9aa5077ea08fc",
+              "storage/versioning.py": "f04aaef9c6e2c49c4405ff4bf035482be4782cb7313fcdd25e2a643786bfaeb3",
+              "transport.py": "cbaabee26ade261dbc83e1d299b6c90f6178b026358b95f1a3148e9cf4fc6876",
+              "trust/__init__.py": "9a8cbba09b3f64d8bc30a17cd434be9bf1788f6e7cdd75682dca461797e4793d",
+              "trust/state.py": "2dc4eed9ac47a22a2358a818c010cca0fcf69a91739158b51a17abb53dc8eed8",
+              "types.py": "1c1bd2771c8afaa3d0d1ed1b255c374eb7d523e217e35476b000df9a549870ee",
+              "verifier/__init__.py": "afac50f5b356a902a16eae52e198e8490e79f371caf8a4f80390b793d749355b",
+              "verifier/anchor.py": "407d92291dbee0c2c918b88d1816526208d670a19438aab72ee4650db99814d9",
+              "verifier/bundle.py": "a9ba6fd45fe248143208d6e60f7725f176bfa19c9e1065302522215fdac51a6f",
+              "verifier/report.py": "9e3f71a6c83990464cd2edde3c92131205d7932b2de896766bb50820f7ef0ef2",
+              "witness/__init__.py": "4f6173e4dc8d344686907fefd5e8f14ad019b51adbc0d000306102a11787a7e7",
+              "witness/http.py": "a9d07a015946f06a56a3d456c8671f75c0e3cd27a28eb2e0bda0ad9b5340dd93",
+              "witness/protocol.py": "ec38f293eedbf3f58692a98c5a3ed4b76e405704f78b39eeacfee4dda6f4b560",
+              "witness/server.py": "e36f8fd8bffc81e86cfddded570cff9fb44520c6882cc8ae969751b6018ebf0e",
+              "writer/__init__.py": "73d94dd631326ee9816da108f4ddf24e08c840cec8cdbe54524e90e6fb9f64e4",
+              "writer/recovery.py": "7c44af4591200c44162f27564b5be11973dd92ab54d273f4bacfdf8bf5128e62",
+              "writer/startup.py": "c4ef28328f814714bb4a4006ccbd54aabe11c436151bdf344ef2dd1a870269a7",
+              "writer/validation.py": "5297d5a2d745fdc44a30247b5396706a1249bae6d8769de004c364d3edff3c8d",
+              "writer/worker.py": "25efe97e319630e54aa69af096565d4d8f5b8d0374aeaa476a936a9873170011"
+            },
+            "mode": "wheel",
+            "path": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/lib/python/site-packages/casf"
+          },
+          "cryptography_openssl": "OpenSSL 4.0.3 29 Sep 2026",
+          "packages": {
+            "casf": "0.1.0rc4",
+            "cffi": "2.1.1",
+            "click": "8.5.0",
+            "cryptography": "50.0.2",
+            "h11": "0.16.0",
+            "pycparser": "3.12",
+            "uvicorn": "0.54.0"
+          },
+          "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+          "python": "3.12.16 (main, Oct 26 2026, 02:50:49) [GCC 13.3.0]",
+          "python_executable": "$INSTALL_ROOT/ubuntu_amd64_emulated/witness/bin/python",
+          "python_tls": "OpenSSL 3.0.13 30 Jan 2024",
+          "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+          "source_export_from_commit": true,
+          "sqlite": "3.45.1"
+        }
+      },
+      "installed_security_regressions": "passed in all three environments",
+      "workflows": {
+        "sdist": {
+          "checks": 21,
+          "private_state_retained": false,
+          "single_host": true,
+          "status": "complete",
+          "synthetic": true,
+          "tamper_result": "FAIL",
+          "unavailable_witness_result": "INCONCLUSIVE"
+        },
+        "witness": {
+          "checks": 21,
+          "private_state_retained": false,
+          "single_host": true,
+          "status": "complete",
+          "synthetic": true,
+          "tamper_result": "FAIL",
+          "unavailable_witness_result": "INCONCLUSIVE"
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Exact public-file Ubuntu installation uses amd64 emulation on an arm64 Mac, with synthetic SQLite data on container-local storage; Docker host-shared SQLite remains unvalidated.",
+    "CI builds its own packages; public-download verification identifies the actual published assets. No new full source-suite run was performed after publication.",
+    "SQLite 3.42.0 was not rerun for these assets.",
+    "Four existing minimum-only build-tool advisories remain documented; minimum compatibility is not security clearance. Native-library and host-patch assessment remains separate.",
+    "Old releases were compared using retained metadata and asset IDs/digests; their bytes were not downloaded again.",
+    "Zenodo latest public version is still rc3; no new deposit or DOI was created. Private drafts or delayed background processing are not assessed.",
+    "No independent audit, physical power-loss validation, production readiness or research-result change is claimed."
+  ],
+  "maintainer_publication_approval": "Explicit approval after PR 88 merge",
+  "pre_publication_dependency_refresh": {
+    "assessment": {
+      "additional_minimum": {
+        "advisory_listed": [
+          {
+            "name": "setuptools",
+            "osv_ids_unchanged": true,
+            "osv_record_count": 5,
+            "upstream_advisory_ids": [
+              "GHSA-5rjg-fvgr-3xxf",
+              "GHSA-h35f-9h28-mq5c",
+              "GHSA-xmj3-9gf7-h52w"
+            ],
+            "version": "77.0.3"
+          },
+          {
+            "name": "wheel",
+            "osv_ids_unchanged": true,
+            "osv_record_count": 2,
+            "upstream_advisory_ids": [
+              "GHSA-8rrh-rw8j-w5fx"
+            ],
+            "version": "0.45.1"
+          }
+        ],
+        "aliases_are_not_distinct_vulnerabilities": true,
+        "exact_version_pairs": 4,
+        "no_listed_advisories": [
+          "cryptography==50.0.0",
+          "click==8.5.1"
+        ]
+      },
+      "comparison": {
+        "cryptography_change": "The former 41.0.0 compatibility minimum is outside the supported range at this commit; 50.0.0 has no listed advisories in these queries.",
+        "new_upstream_advisory_ids_for_same_minimum_packages": [],
+        "prior_queried_at_utc": "2026-11-23T02:29:24.262597+00:00",
+        "prior_source_commit": "492f330c0be93a1b722314bbdc2f91ab0cb37e11"
+      },
+      "disposition": "Final pre-publication refresh found no new runtime or locked release-tool package finding and no dependency-query blocker for the exact locked candidate artifacts. The four already documented minimum-only build-tool advisories remain unchanged; compatibility success is not security clearance. Native libraries, host patches and full permitted dependency ranges remain outside scope. No publication action was performed by this review.",
+      "license_declarations": "PyPI license fields/classifiers retained. mypy-extensions 1.1.0 still lacks those JSON fields; its retained MIT license-file evidence is documented in docs/release/reviews/dependency-review.md. That prior evidence was not independently refreshed here. No new legal or bundled-native license clearance is claimed.",
+      "limits": [
+        "Package queries are dated snapshots, not absence-of-vulnerability proofs.",
+        "Native OpenSSL, Python TLS, SQLite, operating-system patches and all allowed dependency versions are outside this query scope.",
+        "Minimum extra versions came from the prior actual validation inventory; these queries do not independently establish which dependencies a future installation will select.",
+        "Existing installations can retain older satisfying build tools; prefer the reviewed locked environment."
+      ],
+      "locked_and_tooling": {
+        "exact_version_pairs": 25,
+        "hash_mismatches": 0,
+        "listed_advisories": 0,
+        "query_errors": 0,
+        "yanked_files": 0
+      },
+      "minimum_advisory_conditions": [
+        {
+          "applicability": "Not called by CASF runtime or the locked candidate build/install procedure.",
+          "condition": "Attacker-controlled URL processed by legacy PackageIndex.download can cause arbitrary file writes.",
+          "fixed_in": "78.1.1",
+          "id": "GHSA-5rjg-fvgr-3xxf",
+          "package": "setuptools==77.0.3"
+        },
+        {
+          "applicability": "CASF manifest patterns at this commit are ASCII; locked build backend 84.2.1 is newer than the fix. Artifact member inspection remains separate evidence.",
+          "condition": "Non-ASCII MANIFEST.in exclusions may fail across NFC/NFD path normalization when creating an sdist on macOS filesystems.",
+          "fixed_in": "83.0.0",
+          "id": "GHSA-h35f-9h28-mq5c",
+          "package": "setuptools==77.0.3"
+        },
+        {
+          "applicability": "Not used by CASF runtime or the Ubuntu/macOS locked installation procedure.",
+          "condition": "On Windows, a crafted namespace_packages.txt passed to legacy Wheel.install_as_egg can create a fixed-content file outside the destination.",
+          "fixed_in": "84.1.0",
+          "id": "GHSA-xmj3-9gf7-h52w",
+          "package": "setuptools==77.0.3"
+        },
+        {
+          "applicability": "Minimum compatibility tooling only; not part of CASF runtime or the locked candidate dependency set. The vulnerable unpack API is not used by the checked CASF source/CI workflow.",
+          "condition": "Unpacking a crafted wheel through wheel.cli.unpack can change permissions outside the destination through archive path traversal.",
+          "fixed_in": "0.46.2",
+          "id": "GHSA-8rrh-rw8j-w5fx",
+          "package": "wheel==0.45.1"
+        }
+      ],
+      "raw_evidence_verification": {
+        "saved_request_response_and_distribution_files_verified": 140,
+        "sha256_matches": true
+      }
+    },
+    "candidate_review_comparison": {
+      "changed_advisory_details": [],
+      "lock_distribution_mismatches": [],
+      "new_advisory_ids": [],
+      "new_yanks": [],
+      "previous_completed_at_utc": "2026-11-23T04:05:23.188697+00:00",
+      "previous_portable_record_sha256": "33a39c6d549e32feaa9a86b8a461d615312c471b546940ead9d4582a75426a90",
+      "query_errors": [],
+      "same_exact_version_pairs": true,
+      "same_lockfile": true,
+      "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821"
+    },
+    "completed_at_utc": "2026-11-23T04:20:50.090997+00:00",
+    "license_scope": "PyPI declarations recorded; no new legal compliance assessment or binary bundled-license inspection.",
+    "lock_sha256": "9928329bc20ceb95f52dadaaed4022ba322a0bacdbd3a3617c0f1451e4777669",
+    "method_documentation": [
+      "https://google.github.io/osv.dev/post-v1-query/",
+      "https://docs.pypi.org/api/json/"
+    ],
+    "minimum_scope_provenance": {
+      "inventory_sha256": "dab4f1b2abbf4d50ac4e1e92814d564643cc59c101bd5d195784a46af8eeb3c3",
+      "note": "Prior minimum validation inventory used only to select exact version pairs; not claimed to be candidate installation evidence.",
+      "source_commit": "c21cb2173d2ff7a06866afb5cc879c38114145b8",
+      "source_tree": "fff20d4681d7b17530f44241e0c28af9437a7ac1"
+    },
+    "packages": [
+      {
+        "name": "ast-serialize",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.599072+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "ast-serialize"
+            },
+            "version": "0.13.1"
+          },
+          "request_sha256": "aa3bca61d30047f26787f5b697a87a27d1f5b35f219bd34fa4eecae04c3a52d4",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "ast-serialize-0.13.1-osv-request.json",
+          "saved_response": "ast-serialize-0.13.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 57,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "ast-serialize-0.13.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "c799f2a16600aa929def4a46d5d22dc7348ca9f6ba1079c71a39372e4647f50f",
+          "locked_distribution_hashes_checked": 57,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.598940+00:00",
+          "request_payload": null,
+          "request_sha256": "3ad0d1570b44169a5d61d5e3277878fd3b5a6c5172de30ce79c26764e3b47749",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"UxdPQCETgG7FfVCeQfkzHw\""
+          },
+          "response_sha256": "9b0729d3fb981e4e2b4bb8c95faddafb64aac14fa31568f1b7c373c9a681cc34",
+          "saved_request": "ast-serialize-0.13.1-pypi-request.json",
+          "saved_response": "ast-serialize-0.13.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/ast-serialize/0.13.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "0.13.1"
+      },
+      {
+        "name": "build",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.599337+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "build"
+            },
+            "version": "1.6.1"
+          },
+          "request_sha256": "517145edb2b4a2e622835db8f29bb393ad4898899527fde7bbbbbd3fa3821bd8",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "build-1.6.1-osv-request.json",
+          "saved_response": "build-1.6.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "build-1.6.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "d287bdbbff6e11e04c50e62827cb6223365505c78bdd410263845942d164d144",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.599181+00:00",
+          "request_payload": null,
+          "request_sha256": "ccc9a2a0ed47f45a4e3a5d9011cb8f8a608607330b588b7617c815a5d4c48d7e",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"ORGo8qCWjFdEFs443gekDQ\""
+          },
+          "response_sha256": "064e9dcb80e948b5de7a841c3fd9b5644a980eb27bb644fb7f562b7d773b157b",
+          "saved_request": "build-1.6.1-pypi-request.json",
+          "saved_response": "build-1.6.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/build/1.6.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "1.6.1"
+      },
+      {
+        "name": "cffi",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.600228+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "cffi"
+            },
+            "version": "2.1.1"
+          },
+          "request_sha256": "a68ab5b3771c65aa5aad556b0a0a32f521b93f04520c99cea79f238dc4b22372",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "cffi-2.1.1-osv-request.json",
+          "saved_response": "cffi-2.1.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 100,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT-0",
+          "locked_distribution_evidence": "cffi-2.1.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "7c281f32916454daa59892068428dc109fbc88dd48de12525fa77206804c8566",
+          "locked_distribution_hashes_checked": 75,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.599478+00:00",
+          "request_payload": null,
+          "request_sha256": "97447d07dda87f05849df3c565a0b78d1cf8f12b03f6d67e8b18a9a2b643df5a",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"OAysEPf1d/baFIiFc2G/Xw\""
+          },
+          "response_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+          "saved_request": "cffi-2.1.1-pypi-request.json",
+          "saved_response": "cffi-2.1.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/cffi/2.1.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "2.1.1"
+      },
+      {
+        "name": "click",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.664304+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "click"
+            },
+            "version": "8.5.0"
+          },
+          "request_sha256": "03eb795ce79b9afa408d0c993ca46d2698f18517f64b666583fa37dbfbbd6417",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "click-8.5.0-osv-request.json",
+          "saved_response": "click-8.5.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "BSD-3-Clause",
+          "locked_distribution_evidence": "click-8.5.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "65c2c53b5055dc1042b6d9fcb7791bc79cef4e4f5cffd500958af48eaf918141",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.657031+00:00",
+          "request_payload": null,
+          "request_sha256": "1b1c146cbb705bd6e8218e824f5588b9c9bf7b04bbe00aa7f31a38622a892261",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"0ZOvRDJF7MKp3s07etAWuw\""
+          },
+          "response_sha256": "6fc33d0e534d89a788a0965bb5071ca0726a483747589201789b60babd602686",
+          "saved_request": "click-8.5.0-pypi-request.json",
+          "saved_response": "click-8.5.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/click/8.5.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "8.5.0"
+      },
+      {
+        "name": "click",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.710968+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "click"
+            },
+            "version": "8.5.1"
+          },
+          "request_sha256": "84278018dce4770c35370bbadd3f1a5f8a676e82f9d09a8e4ddb948bea2d358b",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "click-8.5.1-osv-request.json",
+          "saved_response": "click-8.5.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "BSD-3-Clause",
+          "locked_distribution_hashes_checked": 0,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.661818+00:00",
+          "request_payload": null,
+          "request_sha256": "8541caa7749defb2d290cd1374bdb0129834f5a65be0a097e784fb1aa4d5b042",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"qrGwLXNyX6eWKjhVj3xaiw\""
+          },
+          "response_sha256": "d6ec5ff9b41fc09d046eb431973dae2eec594dba3a853d03f369c4e3b2fde9b6",
+          "saved_request": "click-8.5.1-pypi-request.json",
+          "saved_response": "click-8.5.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/click/8.5.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "version": "8.5.1"
+      },
+      {
+        "name": "colorama",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.691723+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "colorama"
+            },
+            "version": "0.4.6"
+          },
+          "request_sha256": "4f3c56df0dd9298d455469b39f8e8f5b4f5378513367cc30dff6528af9115824",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "colorama-0.4.6-osv-request.json",
+          "saved_response": "colorama-0.4.6-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": "",
+          "license_classifiers": [
+            "License :: OSI Approved :: BSD License"
+          ],
+          "license_expression": null,
+          "locked_distribution_evidence": "colorama-0.4.6-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "5bf0f1717da6a1236315f3e8660087b69a394596df3e2ecc9ca755ccad35a912",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.669124+00:00",
+          "request_payload": null,
+          "request_sha256": "cdb5719d786fca385601d30bb0bf994e2fba58e8ccbdfeb8ad80d499d3344b40",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"Q/TQItdXUcxruL+ZDArsaw\""
+          },
+          "response_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+          "saved_request": "colorama-0.4.6-pypi-request.json",
+          "saved_response": "colorama-0.4.6-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/colorama/0.4.6/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "0.4.6"
+      },
+      {
+        "name": "cryptography",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.740985+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "cryptography"
+            },
+            "version": "50.0.0"
+          },
+          "request_sha256": "02d907584851eba1fa78aaba7a7055eab6fff1871c03151cef5689c2c494931f",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "cryptography-50.0.0-osv-request.json",
+          "saved_response": "cryptography-50.0.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 46,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "Apache-2.0 OR BSD-3-Clause",
+          "locked_distribution_hashes_checked": 0,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.712898+00:00",
+          "request_payload": null,
+          "request_sha256": "e858c1791109822c037e8db1e0087da628deab2001bfbdc4f3e55f6f142e4b28",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"4lx5HjQLk9bmO0OQXT3uGA\""
+          },
+          "response_sha256": "4cb03a11a6a704310e9aab006acf6d4946c1543f0f8410d7188b90ec1e17f03d",
+          "saved_request": "cryptography-50.0.0-pypi-request.json",
+          "saved_response": "cryptography-50.0.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/cryptography/50.0.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "version": "50.0.0"
+      },
+      {
+        "name": "cryptography",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.748560+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "cryptography"
+            },
+            "version": "50.0.2"
+          },
+          "request_sha256": "b972917192ded17d70760915f2d9e39406647f0787fa110b3bf899334ffbc3ef",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "cryptography-50.0.2-osv-request.json",
+          "saved_response": "cryptography-50.0.2-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 59,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "Apache-2.0 OR BSD-3-Clause",
+          "locked_distribution_evidence": "cryptography-50.0.2-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "d449bb86b94511d8f3a1009788d6de8589299040302a68030f6d6c674ea6204a",
+          "locked_distribution_hashes_checked": 53,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.705610+00:00",
+          "request_payload": null,
+          "request_sha256": "fd3dfdd565eb4a4d27b2527efb279cf9e6e82c74ee51bed5a35c8d4cfe231989",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"KMeZB6rX8RKAOYtgYLmSbQ\""
+          },
+          "response_sha256": "7423990cc0948676ef47a71ea62a476ece4c76245e6bebd1c3a71f03c4ffc0f4",
+          "saved_request": "cryptography-50.0.2-pypi-request.json",
+          "saved_response": "cryptography-50.0.2-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/cryptography/50.0.2/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "50.0.2"
+      },
+      {
+        "name": "h11",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.866438+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "h11"
+            },
+            "version": "0.16.0"
+          },
+          "request_sha256": "d7aa2ef8975eae6b515e5e6208fb3978469cab958357b644472a99500163c0d9",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "h11-0.16.0-osv-request.json",
+          "saved_response": "h11-0.16.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": "MIT",
+          "license_classifiers": [
+            "License :: OSI Approved :: MIT License"
+          ],
+          "license_expression": null,
+          "locked_distribution_evidence": "h11-0.16.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "0304cf6d12ec52294017ed5863fc103bfb4e10882d05b3ec8263fb20ac0e15d3",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.843393+00:00",
+          "request_payload": null,
+          "request_sha256": "1bc2fbe4a194104011508a21405b9709254d062d4a95808e61d692e131d3a201",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"sxf6OblifYWD3AVMv2KEmw\""
+          },
+          "response_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+          "saved_request": "h11-0.16.0-pypi-request.json",
+          "saved_response": "h11-0.16.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/h11/0.16.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "0.16.0"
+      },
+      {
+        "name": "hypothesis",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.897613+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "hypothesis"
+            },
+            "version": "6.170.9"
+          },
+          "request_sha256": "e1d25ee09262dddd25e59ee131685bcaacf8166377468839e28a0c56b29b6f1f",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "hypothesis-6.170.9-osv-request.json",
+          "saved_response": "hypothesis-6.170.9-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 83,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MPL-2.0",
+          "locked_distribution_evidence": "hypothesis-6.170.9-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "9580a5013deb29a25a341d4d99f4dda87166e65fa6fd8cdf598b15d04edd1700",
+          "locked_distribution_hashes_checked": 71,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.878250+00:00",
+          "request_payload": null,
+          "request_sha256": "3cf7ba21d197e4e118bb0d56dcd4a91f752643e9c9f6d2957f542e65366b5a7c",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"2lw4SxZPmLOcZVQDJZOLQg\""
+          },
+          "response_sha256": "2054670d7c9c818367c885030217eea1c50b43bb25110e84fefcaea6c4a5f979",
+          "saved_request": "hypothesis-6.170.9-pypi-request.json",
+          "saved_response": "hypothesis-6.170.9-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/hypothesis/6.170.9/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "6.170.9"
+      },
+      {
+        "name": "iniconfig",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.922847+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "iniconfig"
+            },
+            "version": "2.3.1"
+          },
+          "request_sha256": "9b11e4fd50cd5bd52244a1d38e7773d7350b5232d8fe114834aa588da3bc4c11",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "iniconfig-2.3.1-osv-request.json",
+          "saved_response": "iniconfig-2.3.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "iniconfig-2.3.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "d853768ed7ef7cbd40a8c1a22c0ae3de91a088c7db64820fbd89dd3b8df248ce",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.904143+00:00",
+          "request_payload": null,
+          "request_sha256": "169da6850db98cad3b7c5385bc2a71880009605f8140a31a6ddd811cfcdbb3e7",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"R4GZVv+pWpS+BqTW2etswg\""
+          },
+          "response_sha256": "ab4d5df71d2a4f01a0eb418d7809bb22dca3293991a369309f068c07c1471557",
+          "saved_request": "iniconfig-2.3.1-pypi-request.json",
+          "saved_response": "iniconfig-2.3.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/iniconfig/2.3.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "2.3.1"
+      },
+      {
+        "name": "librt",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:48.958284+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "librt"
+            },
+            "version": "0.16.0"
+          },
+          "request_sha256": "e289b524085ddcb754f9b1a891ae69306d242acb5ec5a222a3277019086bc2a0",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "librt-0.16.0-osv-request.json",
+          "saved_response": "librt-0.16.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 137,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "librt-0.16.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "fe035e0abf310cc82c9e62870266044344918829dea2a2b45465e1ff59b60b04",
+          "locked_distribution_hashes_checked": 94,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.934688+00:00",
+          "request_payload": null,
+          "request_sha256": "bfd731f1b64cd49ba05b9fcfd97d57801f22c9d298558d17996b17bceeaaa9d6",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"30CmHSFD1lx6IVTLZIhxDQ\""
+          },
+          "response_sha256": "60f1bc7d6cd095ee016d4a4789909fed2a9c6a4a088470596d9f2f62621dabb2",
+          "saved_request": "librt-0.16.0-pypi-request.json",
+          "saved_response": "librt-0.16.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/librt/0.16.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "0.16.0"
+      },
+      {
+        "name": "mypy",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.008162+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "mypy"
+            },
+            "version": "2.4.0"
+          },
+          "request_sha256": "7f9391bdfe4f2df56746d1228cfc25b044336fce5bc3866c0560df57d3db81d1",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "mypy-2.4.0-osv-request.json",
+          "saved_response": "mypy-2.4.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 52,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "mypy-2.4.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "a413f83a29df0f7b65fca1b0ad6c56c3149a0d06e0785e54beb3e0bc915c568d",
+          "locked_distribution_hashes_checked": 40,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:48.968421+00:00",
+          "request_payload": null,
+          "request_sha256": "84723b0b87c35f9ad96f37a9c5dcec6f20dbb3b6ca73d0b8388106c2c5bbf64b",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:48 GMT",
+            "content-type": "application/json",
+            "etag": "\"Eoa+EIv2/b5oJ9Y0+uks9w\""
+          },
+          "response_sha256": "5246f3191f076effff6bd25f9cd4369816a9f9a2a3c9b1f0610705a651fc4f5b",
+          "saved_request": "mypy-2.4.0-pypi-request.json",
+          "saved_response": "mypy-2.4.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/mypy/2.4.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "2.4.0"
+      },
+      {
+        "name": "mypy-extensions",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.126460+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "mypy-extensions"
+            },
+            "version": "1.1.0"
+          },
+          "request_sha256": "38760d7e5d051bddd8223e0a99e6104107cd426b9a64b0942589c66434565d8f",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "mypy-extensions-1.1.0-osv-request.json",
+          "saved_response": "mypy-extensions-1.1.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": null,
+          "locked_distribution_evidence": "mypy-extensions-1.1.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "76fa70504031ec6305815f8a5edaf94b9c2984c2b5df31f55a4d11646043a9d8",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.094411+00:00",
+          "request_payload": null,
+          "request_sha256": "f020f995faf21393ffbbef595a81e23fe7047414b079d7c8a006f0f585136cad",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"/fYv8gfrIk0hjCoADUy7Gw\""
+          },
+          "response_sha256": "e9715bb5583e110c5bb663b8d2ee88ae736e8c37928218e1923714559c972fb1",
+          "saved_request": "mypy-extensions-1.1.0-pypi-request.json",
+          "saved_response": "mypy-extensions-1.1.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/mypy-extensions/1.1.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "1.1.0"
+      },
+      {
+        "name": "packaging",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.163261+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "packaging"
+            },
+            "version": "26.3"
+          },
+          "request_sha256": "0032d32e693c3e50f12cc654263969342f505836b089927600e754441e79b2b2",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "packaging-26.3-osv-request.json",
+          "saved_response": "packaging-26.3-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "Apache-2.0 OR BSD-2-Clause",
+          "locked_distribution_evidence": "packaging-26.3-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "5b4d1a37293b4a0e2304853cdcbaf85f91c34ab7851008ec9795aef269e0f737",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.127444+00:00",
+          "request_payload": null,
+          "request_sha256": "926b19b26c450d15c7bad087aaa37ccbd57d42d57b86f2552d8993f6a62d175c",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"2sOe3KZ6LJeIJMEvAtnyMA\""
+          },
+          "response_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+          "saved_request": "packaging-26.3-pypi-request.json",
+          "saved_response": "packaging-26.3-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/packaging/26.3/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "26.3"
+      },
+      {
+        "name": "pathspec",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.190724+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pathspec"
+            },
+            "version": "1.1.1"
+          },
+          "request_sha256": "3d1697eb9feeca3964e9cac31c632c243310a26ef827aef38c28a806de52f887",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:48 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pathspec-1.1.1-osv-request.json",
+          "saved_response": "pathspec-1.1.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [
+            "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+          ],
+          "license_expression": null,
+          "locked_distribution_evidence": "pathspec-1.1.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "ea25455f53109f29b0e9167111ed678936ee9f31914b7ec127824034124d4845",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.175953+00:00",
+          "request_payload": null,
+          "request_sha256": "16f565035bcf5431ff62a5c6c76de7a258ed37d76e46a7fc7eceb7723b2d53ef",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"J+dylBEnDvliDG2EDCeomg\""
+          },
+          "response_sha256": "24f66829a7f40485bdccfcf32294218b0f4260b289ee4806ab644feb6c194766",
+          "saved_request": "pathspec-1.1.1-pypi-request.json",
+          "saved_response": "pathspec-1.1.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pathspec/1.1.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "1.1.1"
+      },
+      {
+        "name": "pluggy",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.211451+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pluggy"
+            },
+            "version": "1.7.0"
+          },
+          "request_sha256": "d3a52799f197d85227d716f068f1b29510b3ca2c8f3f2dac6272195361a4a5e7",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pluggy-1.7.0-osv-request.json",
+          "saved_response": "pluggy-1.7.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": "MIT",
+          "license_classifiers": [
+            "License :: OSI Approved :: MIT License"
+          ],
+          "license_expression": null,
+          "locked_distribution_evidence": "pluggy-1.7.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "93441b1312504de2eed9b1113b60db1f32bcaf50524c2741514707a9158eeaea",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.205706+00:00",
+          "request_payload": null,
+          "request_sha256": "0dcbc382af0914f6ea19fe6dbb77397ae1307987fdf1776165827b14535ce6ac",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"u42wiSDraZw0v4utPb5ogQ\""
+          },
+          "response_sha256": "9e8f441bba8382eabf6febf386a5b9610cfe0c16b60b96e7b4b1831bd6d96361",
+          "saved_request": "pluggy-1.7.0-pypi-request.json",
+          "saved_response": "pluggy-1.7.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pluggy/1.7.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "1.7.0"
+      },
+      {
+        "name": "pycparser",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.238894+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pycparser"
+            },
+            "version": "3.12"
+          },
+          "request_sha256": "aa64fffbcf5184f0664be16994a49395a51917924b351b3138ef4f7bc082147d",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pycparser-3.12-osv-request.json",
+          "saved_response": "pycparser-3.12-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "BSD-3-Clause",
+          "locked_distribution_evidence": "pycparser-3.12-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "e09a63d4b0bad72f8c14cf4c6a50c39cd4b87f49fe423d7daff22d27fa854d81",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.214560+00:00",
+          "request_payload": null,
+          "request_sha256": "e2d2a011c636d8ab6eb7704e3c400fb1bf5260c61224cb8602188a097a31799b",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"b6ENcFZnUhfPSeKwVafHKw\""
+          },
+          "response_sha256": "e919b291615d54a2328a0da6128cd9d95601ad04d27cec48eeb75e0d57c3b6ad",
+          "saved_request": "pycparser-3.12-pypi-request.json",
+          "saved_response": "pycparser-3.12-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pycparser/3.12/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "3.12"
+      },
+      {
+        "name": "pygments",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.302447+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pygments"
+            },
+            "version": "2.21.0"
+          },
+          "request_sha256": "cb21060f3a071eecd7c0be95f94a6fb2486b90e346d3cb419c613f487fb65ba4",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pygments-2.21.0-osv-request.json",
+          "saved_response": "pygments-2.21.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "BSD-2-Clause",
+          "locked_distribution_evidence": "pygments-2.21.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "0a3dba996d40f624264ae764deacbb23c9620823fbb2dfb949c5c82425cdde29",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.250593+00:00",
+          "request_payload": null,
+          "request_sha256": "49029f4f8d37d052d34fe8a94c7085f78aea368047b5356beeea1b6d0841fed6",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"s4Z5fDwWZUSiO6/39E7Nzg\""
+          },
+          "response_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+          "saved_request": "pygments-2.21.0-pypi-request.json",
+          "saved_response": "pygments-2.21.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pygments/2.21.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "2.21.0"
+      },
+      {
+        "name": "pyproject-hooks",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.387411+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pyproject-hooks"
+            },
+            "version": "1.3.3"
+          },
+          "request_sha256": "0805e28528791f880f2858e621a5b8671868b89187a5cf7c62a11ebd77d3d895",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pyproject-hooks-1.3.3-osv-request.json",
+          "saved_response": "pyproject-hooks-1.3.3-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "pyproject-hooks-1.3.3-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "0149c75125d273483b4061dd84def7a4d385514eb605d5aa3c8346c353cec38d",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.367846+00:00",
+          "request_payload": null,
+          "request_sha256": "42aa7a3804c8ca32c4608af1894c0a2e394101d50f784efc35fcd7e08985269c",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"Q+st3ZJC4YadwljWkbIU7g\""
+          },
+          "response_sha256": "ef47170935f8a098c070a3cd65d637d5bbf646158d9559eebac9c465b83d0401",
+          "saved_request": "pyproject-hooks-1.3.3-pypi-request.json",
+          "saved_response": "pyproject-hooks-1.3.3-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pyproject-hooks/1.3.3/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "1.3.3"
+      },
+      {
+        "name": "pytest",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.421091+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "pytest"
+            },
+            "version": "9.1.1"
+          },
+          "request_sha256": "8c5bd773f3d622ebe8d2ba389a1a9d27b02db44b957a853c3a666c77e4825b3c",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "pytest-9.1.1-osv-request.json",
+          "saved_response": "pytest-9.1.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "pytest-9.1.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "0cd26ddb29ff1e895d4b2a2a38e06fd773f27912058c1daa347c99cd1d47ce5e",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.387572+00:00",
+          "request_payload": null,
+          "request_sha256": "f73c5b959fb28cd0ca4bf675fec4756ac4be54bc1783131f9f56a60036bd8b68",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"/pBlinePoVXZZTvtLVDI5g\""
+          },
+          "response_sha256": "707efea7c8046e3aaaaac619aac85bc1e73c310a9fbff8028c53ac229ca02f2c",
+          "saved_request": "pytest-9.1.1-pypi-request.json",
+          "saved_response": "pytest-9.1.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/pytest/9.1.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "9.1.1"
+      },
+      {
+        "name": "ruff",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.433294+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "ruff"
+            },
+            "version": "0.17.2"
+          },
+          "request_sha256": "2c18fe8e1ae8964f1d61b729edeca0c163a23ed890b67240a12a971cf3f3e8c1",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "ruff-0.17.2-osv-request.json",
+          "saved_response": "ruff-0.17.2-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 18,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "ruff-0.17.2-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "802ea842b41d5387f90b0d02f59d59e989a3ea6fd322be8f6b0f0639a03d7479",
+          "locked_distribution_hashes_checked": 18,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.423002+00:00",
+          "request_payload": null,
+          "request_sha256": "49f92058551ea5cbee350ac06f22550c0052f028bfa7b24f299e8c0eb7b3642c",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"5qLI1OIgjjearLVee6ql3Q\""
+          },
+          "response_sha256": "44ab7ce0865508341ac76a96c72c70dabe2eb4faafbdbc0c2c89eed28fed7078",
+          "saved_request": "ruff-0.17.2-pypi-request.json",
+          "saved_response": "ruff-0.17.2-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/ruff/0.17.2/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "0.17.2"
+      },
+      {
+        "name": "setuptools",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.792432+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "setuptools"
+            },
+            "version": "77.0.3"
+          },
+          "request_sha256": "a2ca56567eac81bb1ef2563068088c2b0d05f3545b953c3a55e9d536537e5410",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "978bb9d711a8ec6dcc2cc028dc79fca8d333b2bfd3562ce1c438d689b9c18dfe",
+          "saved_request": "setuptools-77.0.3-osv-request.json",
+          "saved_response": "setuptools-77.0.3-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": [
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "setuptools",
+                    "purl": "pkg:pypi/setuptools"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0"
+                        },
+                        {
+                          "fixed": "78.1.1"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "BIT-setuptools-2025-47273",
+                "CVE-2025-47273",
+                "PYSEC-2025-49"
+              ],
+              "id": "GHSA-5rjg-fvgr-3xxf",
+              "modified": "2026-09-10T03:50:24.253527717Z",
+              "published": "2025-05-19T16:52:43Z",
+              "references": [
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-5rjg-fvgr-3xxf"
+                },
+                {
+                  "type": "ADVISORY",
+                  "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-47273"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/issues/4946"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/commit/250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/advisory-database/tree/main/vulns/setuptools/PYSEC-2025-49.yaml"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://github.com/pypa/setuptools"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/blob/6ead555c5fb29bc57fe6105b1bffc163f56fd558/setuptools/package_index.py#L810C1-L825C88"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://lists.debian.org/debian-lts-announce/2025/05/msg00035.html"
+                }
+              ],
+              "summary": "setuptools has a path traversal vulnerability in PackageIndex.download that leads to Arbitrary File Write"
+            },
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "setuptools",
+                    "purl": "pkg:pypi/setuptools"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0"
+                        },
+                        {
+                          "fixed": "83.0.0"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "BIT-setuptools-2026-59890",
+                "CVE-2026-59890",
+                "PYSEC-2026-3447"
+              ],
+              "id": "GHSA-h35f-9h28-mq5c",
+              "modified": "2026-09-10T03:50:52.323347787Z",
+              "published": "2026-07-21T19:09:21Z",
+              "references": [
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-h35f-9h28-mq5c"
+                },
+                {
+                  "type": "ADVISORY",
+                  "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-59890"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/commit/dd9f436a36486b4cb8a4c70a2321548b0be09b8f"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/advisory-database/tree/main/vulns/setuptools/PYSEC-2026-3447.yaml"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://github.com/pypa/setuptools"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/releases/tag/v83.0.0"
+                }
+              ],
+              "summary": "setuptools: MANIFEST.in exclusion bypass in sdist via Unicode normalization collision (NFC/NFD) on macOS APFS/HFS+"
+            },
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "setuptools",
+                    "purl": "pkg:pypi/setuptools"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "38.2.2"
+                        },
+                        {
+                          "fixed": "84.1.0"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "id": "GHSA-xmj3-9gf7-h52w",
+              "modified": "2026-10-23T22:00:03.739009766Z",
+              "published": "2026-10-23T21:44:11Z",
+              "references": [
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/pull/5329"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/commit/6d07b8d17890dda58d944ac51e58f54af92d52af"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://github.com/pypa/setuptools"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/releases/tag/v84.1.0"
+                }
+              ],
+              "summary": "setuptools: Windows path escape via namespace_packages.txt during legacy wheel installation  Description"
+            },
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "setuptools",
+                    "purl": "pkg:pypi/setuptools"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0"
+                        },
+                        {
+                          "fixed": "250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+                        }
+                      ],
+                      "repo": "https://github.com/pypa/setuptools",
+                      "type": "GIT"
+                    },
+                    {
+                      "events": [
+                        {
+                          "introduced": "0"
+                        },
+                        {
+                          "fixed": "78.1.1"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "BIT-setuptools-2025-47273",
+                "CVE-2025-47273",
+                "GHSA-5rjg-fvgr-3xxf"
+              ],
+              "id": "PYSEC-2025-49",
+              "modified": "2026-05-11T00:26:34.671259971Z",
+              "published": "2025-05-17T16:15:19Z",
+              "references": [
+                {
+                  "type": "EVIDENCE",
+                  "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-5rjg-fvgr-3xxf"
+                },
+                {
+                  "type": "ARTICLE",
+                  "url": "https://lists.debian.org/debian-lts-announce/2025/05/msg00035.html"
+                },
+                {
+                  "type": "REPORT",
+                  "url": "https://github.com/pypa/setuptools/issues/4946"
+                },
+                {
+                  "type": "FIX",
+                  "url": "https://github.com/pypa/setuptools/commit/250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/setuptools/blob/6ead555c5fb29bc57fe6105b1bffc163f56fd558/setuptools/package_index.py#L810C1-L825C88"
+                }
+              ]
+            },
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "setuptools",
+                    "purl": "pkg:pypi/setuptools"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0"
+                        },
+                        {
+                          "fixed": "83.0.0"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "BIT-setuptools-2026-59890",
+                "CVE-2026-59890",
+                "GHSA-h35f-9h28-mq5c"
+              ],
+              "id": "PYSEC-2026-3447",
+              "modified": "2026-07-14T10:56:37.948360943Z",
+              "published": "2026-07-08T17:17:27.020Z",
+              "references": [
+                {
+                  "type": "ADVISORY",
+                  "url": "https://github.com/pypa/setuptools/releases/tag/v83.0.0"
+                },
+                {
+                  "type": "FIX",
+                  "url": "https://github.com/pypa/setuptools/commit/dd9f436a36486b4cb8a4c70a2321548b0be09b8f"
+                },
+                {
+                  "type": "EVIDENCE",
+                  "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-h35f-9h28-mq5c"
+                }
+              ]
+            }
+          ]
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [
+            "License :: OSI Approved :: MIT License"
+          ],
+          "license_expression": null,
+          "locked_distribution_hashes_checked": 0,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.758116+00:00",
+          "request_payload": null,
+          "request_sha256": "b0409969f27eb3ef74f9504aecd651017a4dd4655edb9a2a80ee88db789b1c5a",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"o6YHgkJgHZaGZyxUWZSgyA\""
+          },
+          "response_sha256": "e895889244a737c379e7a698b6d3e039c27ac518acc3f20451e5b84a9a05c57d",
+          "saved_request": "setuptools-77.0.3-pypi-request.json",
+          "saved_response": "setuptools-77.0.3-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/setuptools/77.0.3/json",
+          "vulnerabilities": [
+            {
+              "aliases": [
+                "BIT-setuptools-2025-47273",
+                "CVE-2025-47273",
+                "PYSEC-2025-49"
+              ],
+              "fixed_in": [
+                "78.1.1"
+              ],
+              "id": "GHSA-5rjg-fvgr-3xxf",
+              "link": "https://osv.dev/vulnerability/GHSA-5rjg-fvgr-3xxf",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            },
+            {
+              "aliases": [
+                "CVE-2025-47273",
+                "GHSA-5rjg-fvgr-3xxf"
+              ],
+              "fixed_in": [
+                "78.1.1"
+              ],
+              "id": "PYSEC-2025-49",
+              "link": "https://osv.dev/vulnerability/PYSEC-2025-49",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            },
+            {
+              "aliases": [
+                "CVE-2026-59890",
+                "GHSA-h35f-9h28-mq5c"
+              ],
+              "fixed_in": [
+                "83.0.0"
+              ],
+              "id": "PYSEC-2026-3447",
+              "link": "https://osv.dev/vulnerability/PYSEC-2026-3447",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            },
+            {
+              "aliases": [
+                "BIT-setuptools-2026-59890",
+                "CVE-2026-59890",
+                "PYSEC-2026-3447"
+              ],
+              "fixed_in": [
+                "83.0.0"
+              ],
+              "id": "GHSA-h35f-9h28-mq5c",
+              "link": "https://osv.dev/vulnerability/GHSA-h35f-9h28-mq5c",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            },
+            {
+              "aliases": [],
+              "fixed_in": [
+                "84.1.0"
+              ],
+              "id": "GHSA-xmj3-9gf7-h52w",
+              "link": "https://osv.dev/vulnerability/GHSA-xmj3-9gf7-h52w",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            }
+          ],
+          "yanked_files": []
+        },
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "version": "77.0.3"
+      },
+      {
+        "name": "setuptools",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.463242+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "setuptools"
+            },
+            "version": "84.2.1"
+          },
+          "request_sha256": "f2a926a58feb1d5f77971fc9088d8ac05b319ab045b1ad96f409399c7f05d7ef",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "setuptools-84.2.1-osv-request.json",
+          "saved_response": "setuptools-84.2.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT",
+          "locked_distribution_evidence": "setuptools-84.2.1-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "3756debb5984322d323d3d3d7797e264258f5a4749daca351e0eecd41342c752",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.457657+00:00",
+          "request_payload": null,
+          "request_sha256": "37237551733dfe8208323e4c511066a0c16015ac65d9962163eb6403ff33c38e",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"55uJHk8bRHokagvCy18CkA\""
+          },
+          "response_sha256": "d75de8ba0d3304a3d74484fb9f340edb87ef02712da4fa02a2ed92e71b0572dd",
+          "saved_request": "setuptools-84.2.1-pypi-request.json",
+          "saved_response": "setuptools-84.2.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/setuptools/84.2.1/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "84.2.1"
+      },
+      {
+        "name": "sortedcontainers",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.528524+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "sortedcontainers"
+            },
+            "version": "2.4.0"
+          },
+          "request_sha256": "780399f087d8c16abaad80616701720f1455e4ed2e3ed9d69a4250afbf1501ff",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "sortedcontainers-2.4.0-osv-request.json",
+          "saved_response": "sortedcontainers-2.4.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": "Apache 2.0",
+          "license_classifiers": [
+            "License :: OSI Approved :: Apache Software License"
+          ],
+          "license_expression": null,
+          "locked_distribution_evidence": "sortedcontainers-2.4.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "ee8418271e40b3319747815ef6cdbe08b24710de3a61cb6f05202c40b5e68a01",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.489610+00:00",
+          "request_payload": null,
+          "request_sha256": "098881768ce610ee69043eab916a8ac734d01eb41ed68ee7d1095d57b4805db2",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"y3C/puysLwHYXGXqc1zRtg\""
+          },
+          "response_sha256": "4e0cd7bf62c28a94d9236338cdd4d918aef53a344c6765756ebfe054de14930b",
+          "saved_request": "sortedcontainers-2.4.0-pypi-request.json",
+          "saved_response": "sortedcontainers-2.4.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/sortedcontainers/2.4.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "2.4.0"
+      },
+      {
+        "name": "typing-extensions",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.583001+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "typing-extensions"
+            },
+            "version": "4.16.0"
+          },
+          "request_sha256": "8fc60a60e766ab2ae5a4b0bb96985e1f9bda266fc9ff0e1e013185c3159be8e0",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "typing-extensions-4.16.0-osv-request.json",
+          "saved_response": "typing-extensions-4.16.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "PSF-2.0",
+          "locked_distribution_evidence": "typing-extensions-4.16.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "0fe48a2ed34426b4885e4d39e75145bf5bfa6fda220ad00f0a12eaab2998cd03",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.544630+00:00",
+          "request_payload": null,
+          "request_sha256": "b816c070b3225ed0d3822ec16dc0d5c7fb5818fc897546b477864ce2ac733f8d",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"1+LJRQCylO/9iWatnmVMBw\""
+          },
+          "response_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+          "saved_request": "typing-extensions-4.16.0-pypi-request.json",
+          "saved_response": "typing-extensions-4.16.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked"
+        ],
+        "version": "4.16.0"
+      },
+      {
+        "name": "uv",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.656701+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "uv"
+            },
+            "version": "0.13.5"
+          },
+          "request_sha256": "8bba116d36b557f190fbf5046c924ccc62450d2ab9f91e456ea9029eeeb9db35",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "uv-0.13.5-osv-request.json",
+          "saved_response": "uv-0.13.5-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 19,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "MIT OR Apache-2.0",
+          "locked_distribution_hashes_checked": 0,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.652090+00:00",
+          "request_payload": null,
+          "request_sha256": "9ba859b852d64465b03941118b1c6a2441c35cbae82c3e0d6421e6df17ef09c2",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"SxBjtsHl/BnG7ZqN4Y/fzQ\""
+          },
+          "response_sha256": "0cafe4929e7832becb8d58b2dae629a6d7b892af0dee0e8b8869f781f7c3f362",
+          "saved_request": "uv-0.13.5-pypi-request.json",
+          "saved_response": "uv-0.13.5-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/uv/0.13.5/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "tooling"
+        ],
+        "version": "0.13.5"
+      },
+      {
+        "name": "uvicorn",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.640614+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "uvicorn"
+            },
+            "version": "0.54.0"
+          },
+          "request_sha256": "35c7ae53bbd680ff86260ab7c7b177e882cbae5ee09395d805be0c427ec02133",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "saved_request": "uvicorn-0.54.0-osv-request.json",
+          "saved_response": "uvicorn-0.54.0-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": []
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [],
+          "license_expression": "BSD-3-Clause",
+          "locked_distribution_evidence": "uvicorn-0.54.0-locked-distributions.json",
+          "locked_distribution_evidence_sha256": "e3a173661668545a39c545cc2230303357452d22c13204a5aa831da5ed48cdba",
+          "locked_distribution_hashes_checked": 2,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.608670+00:00",
+          "request_payload": null,
+          "request_sha256": "4967648108ed2c8857e819f8b692a8b9e40ae0d7d2844c8be1bf6b40c752676a",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"82gPZCfuXvQKgaCunLOAlA\""
+          },
+          "response_sha256": "a308e83961793f6114221aefe9e046ef587da0fc986c4dc50ace1ee43fbe9bcb",
+          "saved_request": "uvicorn-0.54.0-pypi-request.json",
+          "saved_response": "uvicorn-0.54.0-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/uvicorn/0.54.0/json",
+          "vulnerabilities": [],
+          "yanked_files": []
+        },
+        "scopes": [
+          "locked",
+          "observed_minimum_environment"
+        ],
+        "version": "0.54.0"
+      },
+      {
+        "name": "wheel",
+        "osv": {
+          "additional_responses": [],
+          "next_page_token": null,
+          "pages": 1,
+          "queried_at_utc": "2026-11-23T04:20:49.837585+00:00",
+          "request_payload": {
+            "package": {
+              "ecosystem": "PyPI",
+              "name": "wheel"
+            },
+            "version": "0.45.1"
+          },
+          "request_sha256": "8effa30df61f11f33bd56bf7b2604eb4c525c1338468f6083a044a745afda6fb",
+          "response_headers": {
+            "content-type": "application/json",
+            "date": "Mon, 23 Nov 2026 04:20:49 GMT"
+          },
+          "response_sha256": "26001bcd87f822de51bb5f57b847f98acbaa89c8ca2e071f11fc43d2123ab0af",
+          "saved_request": "wheel-0.45.1-osv-request.json",
+          "saved_response": "wheel-0.45.1-osv.json",
+          "status": 200,
+          "url": "https://api.osv.dev/v1/query",
+          "vulnerabilities": [
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "wheel",
+                    "purl": "pkg:pypi/wheel"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0.40.0"
+                        },
+                        {
+                          "fixed": "0.46.2"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "CVE-2026-24049",
+                "PYSEC-2026-2047"
+              ],
+              "id": "GHSA-8rrh-rw8j-w5fx",
+              "modified": "2026-09-10T03:50:32.887502862Z",
+              "published": "2026-01-22T18:02:56Z",
+              "references": [
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx"
+                },
+                {
+                  "type": "ADVISORY",
+                  "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24049"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://github.com/pypa/wheel"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/releases/tag/0.46.2"
+                }
+              ],
+              "summary": "Wheel Affected by Arbitrary File Permission Modification via Path Traversal in wheel unpack"
+            },
+            {
+              "affected": [
+                {
+                  "package": {
+                    "ecosystem": "PyPI",
+                    "name": "wheel",
+                    "purl": "pkg:pypi/wheel"
+                  },
+                  "ranges": [
+                    {
+                      "events": [
+                        {
+                          "introduced": "0.40.0"
+                        },
+                        {
+                          "fixed": "0.46.2"
+                        }
+                      ],
+                      "type": "ECOSYSTEM"
+                    }
+                  ]
+                }
+              ],
+              "aliases": [
+                "CVE-2026-24049",
+                "GHSA-8rrh-rw8j-w5fx"
+              ],
+              "id": "PYSEC-2026-2047",
+              "modified": "2026-07-07T17:47:43.451695844Z",
+              "published": "2026-07-07T16:03:19.867108Z",
+              "references": [
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx"
+                },
+                {
+                  "type": "ADVISORY",
+                  "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24049"
+                },
+                {
+                  "type": "FIX",
+                  "url": "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef"
+                },
+                {
+                  "type": "INTRODUCED",
+                  "url": "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://github.com/pypa/wheel"
+                },
+                {
+                  "type": "WEB",
+                  "url": "https://github.com/pypa/wheel/releases/tag/0.46.2"
+                },
+                {
+                  "type": "PACKAGE",
+                  "url": "https://pypi.org/project/wheel"
+                },
+                {
+                  "type": "ADVISORY",
+                  "url": "https://github.com/advisories/GHSA-8rrh-rw8j-w5fx"
+                }
+              ],
+              "summary": "Wheel Affected by Arbitrary File Permission Modification via Path Traversal in wheel unpack"
+            }
+          ]
+        },
+        "pypi": {
+          "distribution_count": 2,
+          "legacy_license": null,
+          "license_classifiers": [
+            "License :: OSI Approved :: MIT License"
+          ],
+          "license_expression": null,
+          "locked_distribution_hashes_checked": 0,
+          "locked_distribution_problems": [],
+          "queried_at_utc": "2026-11-23T04:20:49.800035+00:00",
+          "request_payload": null,
+          "request_sha256": "cfbc9efa1b81d7c397ea1171399c8fc1f4877608db4b908ddcc84e654d5c42aa",
+          "response_headers": {
+            "Date": "Mon, 23 Nov 2026 04:20:49 GMT",
+            "content-type": "application/json",
+            "etag": "\"j52EGoto45nirMGQGTBHDw\""
+          },
+          "response_sha256": "617c2b62cc17caeef3fc1e10144bd3d5b8dc2fb93bb67a87f2802c2d0a856c32",
+          "saved_request": "wheel-0.45.1-pypi-request.json",
+          "saved_response": "wheel-0.45.1-pypi.json",
+          "status": 200,
+          "url": "https://pypi.org/pypi/wheel/0.45.1/json",
+          "vulnerabilities": [
+            {
+              "aliases": [
+                "CVE-2026-24049"
+              ],
+              "fixed_in": [
+                "0.46.2"
+              ],
+              "id": "GHSA-8rrh-rw8j-w5fx",
+              "link": "https://osv.dev/vulnerability/GHSA-8rrh-rw8j-w5fx",
+              "source": "osv",
+              "summary": null,
+              "withdrawn": null
+            }
+          ],
+          "yanked_files": []
+        },
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "version": "0.45.1"
+      }
+    ],
+    "pyproject_sha256": "e578ddede31e90034bbe50fa1396e5e5bebc80e48dee2d74dbc9b77c8f4dd018",
+    "queried_at_utc": "2026-11-23T04:20:48.597093+00:00",
+    "review_stage": "final_prepublication_refresh",
+    "schema_version": 1,
+    "scope": "24 exact locked external packages, required uv tooling, and additional version pairs from the observed minimum compatibility environment. Package-only queries; native libraries, host patches, all allowed version ranges and development-tool minimums are not cleared.",
+    "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+    "summary": {
+      "additional_minimum_version_pairs": 4,
+      "issues": [
+        {
+          "details": [
+            "GHSA-5rjg-fvgr-3xxf",
+            "PYSEC-2025-49",
+            "PYSEC-2026-3447",
+            "GHSA-h35f-9h28-mq5c",
+            "GHSA-xmj3-9gf7-h52w"
+          ],
+          "kind": "vulnerabilities",
+          "package": "setuptools",
+          "scopes": [
+            "observed_minimum_environment"
+          ],
+          "service": "pypi",
+          "version": "77.0.3"
+        },
+        {
+          "details": [
+            "GHSA-5rjg-fvgr-3xxf",
+            "GHSA-h35f-9h28-mq5c",
+            "GHSA-xmj3-9gf7-h52w",
+            "PYSEC-2025-49",
+            "PYSEC-2026-3447"
+          ],
+          "kind": "vulnerabilities",
+          "package": "setuptools",
+          "scopes": [
+            "observed_minimum_environment"
+          ],
+          "service": "osv",
+          "version": "77.0.3"
+        },
+        {
+          "details": [
+            "GHSA-8rrh-rw8j-w5fx"
+          ],
+          "kind": "vulnerabilities",
+          "package": "wheel",
+          "scopes": [
+            "observed_minimum_environment"
+          ],
+          "service": "pypi",
+          "version": "0.45.1"
+        },
+        {
+          "details": [
+            "GHSA-8rrh-rw8j-w5fx",
+            "PYSEC-2026-2047"
+          ],
+          "kind": "vulnerabilities",
+          "package": "wheel",
+          "scopes": [
+            "observed_minimum_environment"
+          ],
+          "service": "osv",
+          "version": "0.45.1"
+        }
+      ],
+      "locked_distribution_hashes_checked": 442,
+      "locked_packages": 24,
+      "packages": 29,
+      "requests": 58,
+      "successful_initial_requests": 58,
+      "tooling_packages": 1
+    }
+  },
+  "prerelease": true,
+  "prior_published_releases": [
+    {
+      "asset_count": 3,
+      "id": 448145138,
+      "recorded_asset_metadata_unchanged": true,
+      "recorded_metadata_unchanged": true,
+      "tag_name": "v0.1.0rc3"
+    },
+    {
+      "asset_count": 3,
+      "id": 441943309,
+      "recorded_asset_metadata_unchanged": true,
+      "recorded_metadata_unchanged": true,
+      "tag_name": "v0.1.0rc2"
+    }
+  ],
+  "public_downloads": {
+    "macos": {
+      "all_hashes_match_approved_candidate": true,
+      "assets_downloaded": 3,
+      "downloads": [
+        {
+          "asset": "casf-0.1.0rc4-py3-none-any.whl",
+          "authenticated": false,
+          "bytes": 113107,
+          "completed_at_utc": "2026-11-23T04:25:22.677812+00:00",
+          "expected_sha256": "980101b0459bf6d155a2394930eefcbaa46972373ce396a3ff24b5f97a538578",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/4f8b125d-1783-4ad3-b84c-07a171ceb8c8",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_at_utc": "2026-11-23T04:25:22.394270+00:00",
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4-py3-none-any.whl",
+          "response_headers": {
+            "Content-Length": "113107",
+            "Content-Type": "application/octet-stream",
+            "ETag": "\"0x8DF49199C125D72\"",
+            "Last-Modified": "Mon, 23 Nov 2026 04:24:05 GMT"
+          },
+          "sha256": "980101b0459bf6d155a2394930eefcbaa46972373ce396a3ff24b5f97a538578"
+        },
+        {
+          "asset": "casf-0.1.0rc4.tar.gz",
+          "authenticated": false,
+          "bytes": 149681,
+          "completed_at_utc": "2026-11-23T04:25:22.950776+00:00",
+          "expected_sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/f785508f-8f2a-47ca-a5b5-b17ec4651090",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_at_utc": "2026-11-23T04:25:22.678571+00:00",
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4.tar.gz",
+          "response_headers": {
+            "Content-Length": "149681",
+            "Content-Type": "application/octet-stream",
+            "ETag": "\"0x8DF49199C1B7AF2\"",
+            "Last-Modified": "Mon, 23 Nov 2026 04:24:05 GMT"
+          },
+          "sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3"
+        },
+        {
+          "asset": "SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+          "authenticated": false,
+          "bytes": 184,
+          "completed_at_utc": "2026-11-23T04:25:23.213006+00:00",
+          "expected_sha256": "569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/ffc04c2e-ca47-400e-b739-0afd08e0075a",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_at_utc": "2026-11-23T04:25:22.951683+00:00",
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+          "response_headers": {
+            "Content-Length": "184",
+            "Content-Type": "application/octet-stream",
+            "ETag": "\"0x8DF49199C0F05DA\"",
+            "Last-Modified": "Mon, 23 Nov 2026 04:24:05 GMT"
+          },
+          "sha256": "569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31"
+        }
+      ],
+      "expected_checksum_record_commit": "6a1b80156615d2c9aae71931d104c87994a1f9ce",
+      "expected_checksum_record_path": "docs/release/0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+      "expected_checksum_record_sha256": "569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31",
+      "public_checksum_asset": "SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+      "public_checksum_bytes_match_tracked_record": true,
+      "redirect_query_policy": "Ephemeral signed CDN query strings are omitted from records.",
+      "release_url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+      "result": "PASS",
+      "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+      "unauthenticated_https": true
+    },
+    "ubuntu_amd64_emulated": {
+      "all_hashes_match_approved_candidate": true,
+      "architecture": "x86_64",
+      "assets_downloaded": 3,
+      "downloads": [
+        {
+          "asset": "casf-0.1.0rc4-py3-none-any.whl",
+          "authenticated": false,
+          "bytes": 113107,
+          "completed_at_utc": "2026-11-23T04:26:05.350647+00:00",
+          "expected_sha256": "980101b0459bf6d155a2394930eefcbaa46972373ce396a3ff24b5f97a538578",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/4f8b125d-1783-4ad3-b84c-07a171ceb8c8",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4-py3-none-any.whl",
+          "sha256": "980101b0459bf6d155a2394930eefcbaa46972373ce396a3ff24b5f97a538578"
+        },
+        {
+          "asset": "casf-0.1.0rc4.tar.gz",
+          "authenticated": false,
+          "bytes": 149681,
+          "completed_at_utc": "2026-11-23T04:26:05.509313+00:00",
+          "expected_sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/f785508f-8f2a-47ca-a5b5-b17ec4651090",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4.tar.gz",
+          "sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3"
+        },
+        {
+          "asset": "SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+          "authenticated": false,
+          "bytes": 184,
+          "completed_at_utc": "2026-11-23T04:26:05.648378+00:00",
+          "expected_sha256": "569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31",
+          "final_url_without_query": "https://release-assets.githubusercontent.com/github-production-release-asset/1414712523/ffc04c2e-ca47-400e-b739-0afd08e0075a",
+          "hash_matches": true,
+          "http_status": 200,
+          "request_headers": {
+            "Accept": "application/octet-stream",
+            "User-Agent": "CASF-public-release-verification"
+          },
+          "requested_url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+          "sha256": "569c89b3f07f7f9560fc33e23b59848b97ee6d31584e04f8fbec3a737390bc31"
+        }
+      ],
+      "emulated": true,
+      "platform": "Linux-6.12.54-linuxkit-x86_64-with-glibc2.39",
+      "public_checksum_bytes_match_tracked_record": true,
+      "result": "PASS",
+      "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+      "unauthenticated_https": true
+    }
+  },
+  "publication_status": "published experimental GitHub prerelease",
+  "published_at": "2026-11-23T04:25:03Z",
+  "published_date_america_chicago": "2026-11-22",
+  "pypi_upload": false,
+  "release_id": 454983651,
+  "release_url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+  "review_commit": "0a91df52ad0ce73cc4a5b886ab8d29bfe9e33f6c",
+  "review_pr": "https://github.com/hamdamme/casf/pull/88",
+  "schema_version": 1,
+  "security_advisory_publication": "Pending separate approval; existing advisory remains unpublished",
+  "tag": "v0.1.0rc4",
+  "version": "0.1.0rc4",
+  "zenodo": {
+    "checked_url": "https://zenodo.org/api/records/24321232/versions/latest",
+    "latest_doi": "10.5281/zenodo.24321232",
+    "latest_record_id": 24321232,
+    "latest_record_url": "https://zenodo.org/records/24321232",
+    "latest_version": "0.1.0rc3",
+    "mutations_performed": false,
+    "rc4_doi": "Pending",
+    "rc4_status": "Pending"
+  }
+}

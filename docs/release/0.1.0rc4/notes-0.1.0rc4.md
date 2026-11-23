@@ -1,17 +1,17 @@
-# CASF 0.1.0rc4 — experimental candidate
+# CASF 0.1.0rc4 — experimental prerelease
 
-Unpublished. Prepared for research and evaluation with synthetic records and
-disposable keys. The [3333d00 candidate](candidate-0.1.0rc4-3333d00.md) is
-superseded and historical: it omits the Ed25519 correction and must not be
-published. The [earlier candidate](candidate-0.1.0rc4-d4721c4.md) also omits the
-SQLite permissions and canonical JSONL corrections below. The
-[492f330 candidate](candidate-0.1.0rc4-492f330.md) retains its historical
-installation evidence but omits the key-passphrase and package updates below.
-The [replacement candidate from `ce6cd67`](candidate-0.1.0rc4-ce6cd67.md), PR 87's
-merge, contains these updates and passed fresh exact-file installation checks.
-Its [dependency review](dependency-review-0.1.0rc4-ce6cd67.md) retains minimum-only
-build-tool findings separately from the locked release environment. Review of
-these exact files and separate publication approval remain pending.
+Published 22 November 2026 in America/Chicago (`2026-11-23T04:25:03Z`) for
+research and evaluation. The [GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4)
+contains the exact wheel and source distribution built from `ce6cd67`, PR 87's
+merge. The [publication record](publication-0.1.0rc4.md) verifies public downloads
+and fresh installations. The [build record](candidate-0.1.0rc4-ce6cd67.md) remains
+the historical pre-publication evidence; its files and hashes are unchanged.
+
+The `492f330` and earlier rc4 candidates remain superseded and must not be
+substituted for this release. The [dependency review](dependency-review-0.1.0rc4-ce6cd67.md)
+and publication refresh retain minimum-only build-tool findings separately from
+the locked release environment. This experimental prerelease is not an
+independent audit or production-readiness claim.
 
 ## Fixes since rc3
 
@@ -96,9 +96,10 @@ permissions automatically. Standard canonical bundles remain valid; reformatted
 bundles that previously passed are rejected. See the
 [verification compatibility policy](../../guide/verification.md#public-verification-api).
 
-Published rc2 and rc3 remain affected and unchanged. This candidate is not yet a
-published safe-update option. No PyPI upload or production deployment is planned.
-The rc3 Zenodo DOI continues to identify rc3, not this candidate.
+Published rc2 and rc3 remain affected and unchanged; upgrade to rc4 after
+reviewing these compatibility requirements. No PyPI upload or production
+deployment was performed. The rc4 Zenodo DOI is Pending; the existing rc3 DOI
+identifies only the rc3 software archive.
 
 ## Release boundary
 

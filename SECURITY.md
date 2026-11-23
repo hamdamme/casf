@@ -3,8 +3,8 @@
 ## Supported versions
 | Version | Support status |
 |---|---|
-| 0.1.0rc4 | Unpublished candidate; next experimental prerelease with fixes for privately reported issues (C01–C06, D01–D03), SQLite permissions, canonical JSONL and small-order Ed25519 keys; replacement artifacts include key-passphrase and package updates; review and publication approval pending |
-| 0.1.0rc3 | Latest published experimental GitHub prerelease; best-effort reports; affected by the Ed25519 key-validation issue; users should upgrade to rc4 once published |
+| 0.1.0rc4 | Latest published experimental GitHub prerelease; best-effort reports; includes the [documented corrections](docs/release/0.1.0rc4/notes-0.1.0rc4.md); separate advisory publication is Pending |
+| 0.1.0rc3 | Superseded; affected by the Ed25519 key-validation issue; upgrade to rc4; no backports |
 | 0.1.0rc2 | Superseded; affected by the Ed25519 key-validation issue; no backports |
 | 1.0+ | To be defined before 1.0 (decision D10) |
 

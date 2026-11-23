@@ -1,14 +1,14 @@
 # Current CASF implementation reference
 
-The experimental 0.1.0rc3 GitHub prerelease is published. The
-[publication record](../release/0.1.0rc3/publication-0.1.0rc3.md) distinguishes the build commit,
+The experimental 0.1.0rc4 GitHub prerelease is published. The
+[publication record](../release/0.1.0rc4/publication-0.1.0rc4.md) distinguishes the build commit,
 accepted review revision, Linux validation and public-installation evidence.
 Start with the [operating handoff](../operations/operating-handoff.md). The separate
 [research follow-up](../../research/current-evidence-2026-11-10.md) identifies its
 measurement revision and preserves the historical results.
 The [completion tracker](../release/completion-tracker.md) distinguishes completed
 work from remaining validation, research and release gates. Package metadata is
-`0.1.0rc4` (unpublished candidate; rc3 remains the published release); the proposed wire profile is `casf-v1`. These identify different
+`0.1.0rc4` (published experimental prerelease); the proposed wire profile is `casf-v1`. These identify different
 things. Validation records must name the exact source or artifact bytes.
 
 The [research-demo closeout](../release/reviews/research-demo-closeout.md) records accepted
@@ -20,10 +20,10 @@ omit the small-order Ed25519 correction. The
 [492f330 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) is also
 historical: it omits PR 87's key-passphrase and package updates. The
 [replacement from `ce6cd67`](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
-contains those changes and passed fresh exact-file installation checks. Review
-and separate publication approval remain pending. See the
-[release records index](../release/README.md).
-The current DOI identifies rc3.
+contains those changes and was published after maintainer approval. Public
+download hashes and fresh installations passed. See the
+[release records index](../release/README.md). The existing Zenodo DOI identifies
+rc3; the rc4 DOI is Pending.
 
 ## Which document to use
 
@@ -35,8 +35,8 @@ The current DOI identifies rc3.
 | Operate the reference service | [Witness server](../operations/witness-server.md) |
 | Protocol requirements and threat model | [CASF SPEC 001 revision 0.10](../specification/CASF_SPEC_001.md) |
 | Research questions, outcomes and source records | [Research guide](../../research/README.md) |
-| Exact candidate files and installation checks | [Candidate record](../release/0.1.0rc3/candidate-0.1.0rc3-c38bf82.md) and [build procedure](../release/candidate-build.md) |
-| Release preparation and advisory scope | [Release notes](../release/0.1.0rc3/notes-0.1.0rc3.md), [dependency review](../release/0.1.0rc3/dependency-review-0.1.0rc3.md) and [current checklist](../release/checklist-v0.1.md) |
+| Exact candidate files and installation checks | [Candidate record](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) and [build procedure](../release/candidate-build.md) |
+| Release preparation and advisory scope | [Release notes](../release/0.1.0rc4/notes-0.1.0rc4.md), [dependency review](../release/0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md) and [current checklist](../release/checklist-v0.1.md) |
 | Candidate state and validation | [Release checklist](../release/checklist-v0.1.md) |
 | Current workflow and scoped code review | [Review record](../release/reviews/workflow-review-2026-11-10.md) |
 | Independent security assessment preparation | [Review brief](../release/independent-review-brief.md) |

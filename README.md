@@ -3,7 +3,7 @@
 **Cryptographic Audit and Signing Framework**
 
 [![CI](https://github.com/hamdamme/casf/actions/workflows/ci.yml/badge.svg)](https://github.com/hamdamme/casf/actions/workflows/ci.yml)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24321232.svg)](https://doi.org/10.5281/zenodo.24321232)
+rc3 archive: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24321232.svg)](https://doi.org/10.5281/zenodo.24321232)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 CASF is an experimental Python framework for creating cryptographically verifiable audit records. It combines Ed25519 signatures, SHA-256 hash chaining, canonical JSON based on RFC 8785, and an independent witness that retains authenticated checkpoints. The goal is to help applications produce evidence of record integrity and detect certain changes or rollbacks when a verifier has independently retained witness state.
@@ -12,9 +12,12 @@ CASF is an experimental Python framework for creating cryptographically verifiab
 
 ## Project status
 
-- **Latest published release:** [0.1.0rc3 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
-- **Next candidate:** [0.1.0rc4, unpublished; artifacts awaiting approval](docs/release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md).
+- **Latest published release:** [0.1.0rc4 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
+- **Release evidence:** [Public downloads and fresh installation checks](docs/release/0.1.0rc4/publication-0.1.0rc4.md).
 - **Maturity:** Experimental; not independently audited or production ready. [Detailed status](docs/release/README.md#project-status-and-release-history).
+
+rc4 includes the security, key-file and package corrections described in the
+[release notes](docs/release/0.1.0rc4/notes-0.1.0rc4.md).
 
 ## Where to go next
 
@@ -115,12 +118,13 @@ license decision pending; no manuscript deposit or DOI is claimed.
 
 ## Citation
 
-If you use CASF in research, cite the archived software version:
+If you use CASF in research, cite the software version you used:
 
-> Aynazarov, H. (2026). CASF: Cryptographic Audit and Signing Framework (0.1.0rc3)
-> (Version 0.1.0rc3) [Computer software]. Zenodo.
-> https://doi.org/10.5281/zenodo.24321232
+> Aynazarov, H. (2026). CASF: Cryptographic Audit and Signing Framework (0.1.0rc4)
+> (Version 0.1.0rc4) [Computer software]. GitHub.
+> [Published release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
 
 Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
-This DOI identifies the rc3 software archive, not the separate research manuscript
-or later changes on `main`.
+The rc4 Zenodo archive and DOI are **Pending**. The historical
+[rc3 software DOI](https://doi.org/10.5281/zenodo.24321232) identifies rc3 only,
+not rc4, the separate research manuscript or later changes on `main`.

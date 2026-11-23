@@ -10,8 +10,8 @@ must remain synthetic until deployment acceptance is approved.
 
 Repository: [hamdamme/casf](https://github.com/hamdamme/casf).
 Pinned baseline: `ce6cd67c01df2af283b2e07fc1b832e79bb14821` (PR 87 merge),
-the current rc4 build revision. The current version is `0.1.0rc4`, an unpublished
-candidate. Published rc2 and rc3 omit later corrections, including small-order
+the published rc4 build revision. The current version is `0.1.0rc4`, a published
+experimental prerelease. Published rc2 and rc3 omit later corrections, including small-order
 Ed25519 public-key rejection. Review the pinned source, not an unqualified
 package version.
 

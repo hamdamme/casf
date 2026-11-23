@@ -1,25 +1,24 @@
 # Experimental release operating handoff
 
-CASF 0.1.0rc3 is available as a [GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
-Use it for research and evaluation. The [publication record](../release/0.1.0rc3/publication-0.1.0rc3.md)
-identifies the exact source, assets, checks and limitations. There is no PyPI release.
+CASF 0.1.0rc4 is available as an [experimental GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
+Use it for research and evaluation. The [publication record](../release/0.1.0rc4/publication-0.1.0rc4.md)
+identifies exact build `ce6cd67`, assets, public-installation checks and limitations.
+There is no PyPI release. The rc4 Zenodo DOI and security-advisory publication
+remain Pending.
 
-The [replacement rc4 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
-includes the earlier advisory, SQLite, canonical JSONL, Ed25519 and
+This release includes the advisory, SQLite, canonical JSONL, Ed25519 and
 retained-checkpoint corrections, plus PR 87's key-passphrase and package updates.
-Its exact files passed fresh installation checks and remain unpublished pending
-review and separate publication approval. The `492f330` and earlier rc4 files
-are historical and must not be published as this candidate.
-The published rc3 evidence below is historical and does not validate rc4.
+The `492f330` and earlier rc4 candidates are historical and must not be substituted.
+Earlier rc3 evidence remains historical and does not validate rc4.
 
 ## First use
 
 1. Use a maintained Python 3.12–3.14 environment on a validated platform: Ubuntu
    x86_64 or macOS arm64. Review actual Python, SQLite and OpenSSL patch coverage.
-2. Download the named wheel, named source archive and `SHA256SUMS.txt` from the
-   release. Compare the checksum file with the [reviewed hashes](../release/0.1.0rc3/SHA256SUMS-0.1.0rc3.txt),
-   then verify the downloaded packages. On Linux use `sha256sum -c SHA256SUMS.txt`;
-   on macOS use `shasum -a 256 -c SHA256SUMS.txt`.
+2. Download the named wheel, named source archive and `SHA256SUMS-0.1.0rc4-ce6cd67.txt`
+   from the release. Compare with the [reviewed hashes](../release/0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt).
+   Verify with `sha256sum -c SHA256SUMS-0.1.0rc4-ce6cd67.txt` on Linux or
+   `shasum -a 256 -c SHA256SUMS-0.1.0rc4-ce6cd67.txt` on macOS.
 3. Follow [installation](../guide/installation.md) in a new virtual environment. Install the
    `witness` extra only when the reference HTTP witness is needed. The dependency
    lock documents the tested environment; package compatibility ranges are not a

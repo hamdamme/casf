@@ -1,15 +1,18 @@
 # Install and use CASF
 
-CASF `0.1.0rc3` is published as an experimental
-[GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
-Download the named release assets and verify their [checksums](../release/0.1.0rc3/SHA256SUMS-0.1.0rc3.txt).
+CASF `0.1.0rc4` is published as an experimental
+[GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
+Download `casf-0.1.0rc4-py3-none-any.whl` or `casf-0.1.0rc4.tar.gz` and verify
+the [checksums](../release/0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt).
 No PyPI publication was performed; do not use `pip install casf` to obtain this release.
-See the [publication evidence](../release/0.1.0rc3/publication-0.1.0rc3.md) and
+See the [publication evidence](../release/0.1.0rc4/publication-0.1.0rc4.md) and
 [operating handoff](../operations/operating-handoff.md).
 
-The [rc3 build record](../release/0.1.0rc3/candidate-0.1.0rc3-c38bf82.md) and
-[publication verification](../release/0.1.0rc3/publication-0.1.0rc3.md) identify the exact
+The [rc4 build record](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) and
+[publication verification](../release/0.1.0rc4/publication-0.1.0rc4.md) identify the exact
 published bytes. Later source changes do not replace those release artifacts.
+
+Before upgrading, review [Compatibility and upgrade](../release/0.1.0rc4/notes-0.1.0rc4.md#compatibility-and-upgrade) for trust-file permissions, macOS ACLs, SQLite permissions, canonical JSONL and key-file requirements.
 
 ## Install from the published wheel
 
@@ -28,14 +31,14 @@ downloaded file name.
 
 ```bash
 python3 -m venv .venv
-.venv/bin/python -m pip install ./casf-0.1.0rc3-py3-none-any.whl
+.venv/bin/python -m pip install ./casf-0.1.0rc4-py3-none-any.whl
 .venv/bin/casf --help
 source .venv/bin/activate
 ```
 
 The wheel includes the witness server code, but does not install its optional
 HTTP server dependencies unless the `witness` extra is selected. For a checked
-local wheel, install `"./casf-0.1.0rc3-py3-none-any.whl[witness]"` using the
+local wheel, install `"./casf-0.1.0rc4-py3-none-any.whl[witness]"` using the
 environment's pip. For
 development from a source checkout, the repository's locked setup installs
 the witness and development tools:
@@ -49,7 +52,7 @@ python3 -m venv .venv-tools
 PYTHONPATH=src .venv/bin/casf --help
 ```
 
-The remaining examples use `casf` from the activated candidate environment.
+The remaining examples use `casf` from the activated release environment.
 When checking development source instead, run them from the repository root
 with `PYTHONPATH=src .venv/bin/casf` in place of `casf`. This distinction avoids
 testing a stale installed package. The [synthetic demo](demo.md) supplies a
