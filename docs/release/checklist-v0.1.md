@@ -10,8 +10,10 @@ and checks. Later documentation and CI revisions are distinct. The
 scope; production deployment is outside this release.
 
 The rc2 and rc3 release assets and publication records remain unchanged.
-No PyPI upload or security-advisory publication occurred; rc4 Zenodo archival is
-Pending. Historical candidate approvals do not authorize substituted artifact bytes.
+No PyPI upload or security-advisory publication occurred. The
+[rc4 Zenodo archive](https://doi.org/10.5281/zenodo.24454789) is published and
+its source distribution matches the GitHub release. Historical candidate
+approvals do not authorize substituted artifact bytes.
 
 ## Current rc4 release
 
@@ -21,8 +23,9 @@ their own revisions; they must not be published as the updated rc4.
 The [replacement candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md) is built from
 PR 87's merge `ce6cd67`. CI 248 passed all ten jobs on that source. PR 88's
 accepted merge `0a91df5` passed CI 250, and separate maintainer publication
-approval followed. Public downloads and fresh installations passed. This
-publication-documentation PR requires its own CI.
+approval followed. Public downloads and fresh installations passed. PR 89
+accepted the publication record at `d8fdf56`; CI 251 passed all ten jobs for
+that PR. This DOI documentation PR requires its own CI.
 
 | rc4 gate | Current status |
 | --- | --- |
@@ -38,10 +41,10 @@ publication-documentation PR requires its own CI.
 | Tag and GitHub release | Published experimental `v0.1.0rc4` at exact build `ce6cd67` |
 | Security-advisory publication | Pending separate approval; not performed |
 | Public downloads | Three assets independently downloaded without authentication on Mac and Ubuntu; hashes and all six fresh installations passed |
-| Zenodo version and DOI | Pending; rc3 DOI is not attributed to rc4 |
+| Zenodo version and DOI | Published 23 November 2026: [10.5281/zenodo.24454789](https://doi.org/10.5281/zenodo.24454789); downloaded source distribution matches the exact GitHub release |
 
 The table below retains the historical accepted rc3 disposition. Current rc4
-evidence is recorded above; rc4 Zenodo archival remains Pending.
+publication and Zenodo verification evidence is recorded above.
 
 ## Historical rc3 disposition
 

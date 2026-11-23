@@ -4,7 +4,8 @@
 
 rc4 is published as an experimental GitHub prerelease from `ce6cd67`. Public
 downloads and six fresh installations verified the exact approved files.
-Security-advisory publication and the rc4 Zenodo DOI remain Pending.
+The [rc4 Zenodo archive](https://doi.org/10.5281/zenodo.24454789) contains the
+same source distribution. Security-advisory publication remains Pending.
 
 - [Publication record](0.1.0rc4/publication-0.1.0rc4.md)
 - [Release checklist](checklist-v0.1.md)
@@ -20,6 +21,7 @@ Security-advisory publication and the rc4 Zenodo DOI remain Pending.
 
 - [rc4 publication record](0.1.0rc4/publication-0.1.0rc4.md)
 - [v0.1.0rc4 GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4)
+- [rc4 Zenodo software archive](https://doi.org/10.5281/zenodo.24454789)
 
 ## Earlier published releases
 
@@ -49,7 +51,9 @@ files and download evidence. The [rc3 release](https://github.com/hamdamme/casf/
 retains its historical [publication and installation evidence](0.1.0rc3/publication-0.1.0rc3.md) and
 [Zenodo archive](https://doi.org/10.5281/zenodo.24321232). The current
 [rc4 publication record](0.1.0rc4/publication-0.1.0rc4.md) identifies the new files.
-The rc4 Zenodo DOI is Pending. No PyPI release has been published.
+The [rc4 Zenodo archive](https://doi.org/10.5281/zenodo.24454789), published
+23 November 2026, contains the byte-identical GitHub source distribution from
+`ce6cd67`. No PyPI release has been published.
 
 The scoped [tracked-file review](reviews/line-review-2026-11-11.md) and corrections
 were accepted in PR 57 at `e59fd64`; that review does not cover every later change.

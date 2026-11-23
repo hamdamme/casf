@@ -22,8 +22,9 @@ historical: it omits PR 87's key-passphrase and package updates. The
 [replacement from `ce6cd67`](../release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
 contains those changes and was published after maintainer approval. Public
 download hashes and fresh installations passed. See the
-[release records index](../release/README.md). The existing Zenodo DOI identifies
-rc3; the rc4 DOI is Pending.
+[release records index](../release/README.md). The
+[rc4 Zenodo DOI](https://doi.org/10.5281/zenodo.24454789) identifies the matching
+published source archive; the earlier rc3 record remains separate.
 
 ## Which document to use
 

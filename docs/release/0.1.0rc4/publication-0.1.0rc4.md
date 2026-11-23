@@ -51,6 +51,30 @@ is separate source evidence: CI 248 passed all ten jobs on `ce6cd67`.
 CI 249 and 250 also passed all ten jobs for the documentation review and merge;
 they do not change the published build revision. SQLite 3.42.0 was not rerun.
 
+## Zenodo archive and citation
+
+The published [rc4 software record](https://doi.org/10.5281/zenodo.24454789)
+archives `casf-0.1.0rc4.tar.gz` from exact build
+`ce6cd67c01df2af283b2e07fc1b832e79bb14821`. Its title and version identify
+0.1.0rc4, its author is Hamdam Aynazarov, its license is Apache-2.0, and its
+related GitHub release is `v0.1.0rc4`.
+
+Independent unauthenticated downloads from Zenodo and GitHub were verified at
+`2026-11-23T05:21:11Z`: both contain 149,681 bytes and are byte-identical, with
+SHA-256 `07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3`,
+matching the approved checksum record above. Zenodo records a publication date
+of 23 November 2026; the validated GitHub release date and citation
+`date-released` remain 22 November 2026 in America/Chicago.
+
+The [rc3 software record](https://doi.org/10.5281/zenodo.24321232) remains a
+separate earlier version. The [all-versions DOI](https://doi.org/10.5281/zenodo.24321231)
+is unchanged. These software DOIs do not identify the separate research manuscript.
+
+This later archival check supplements the original GitHub publication and
+installation evidence. The JSON retains the earlier Zenodo observation under
+`zenodo.at_github_publication`; its then-pending status is historical. No release
+artifact was rebuilt, replaced or retagged by this citation update.
+
 ## Dependency review and remaining work
 
 The [candidate dependency review](dependency-review-0.1.0rc4-ce6cd67.md) was
@@ -65,8 +89,6 @@ host-patch assessment.
 
 No PyPI upload occurred. Separate security-advisory publication is **Pending**;
 no advisory publication or new independent researcher signoff is claimed.
-The rc4 Zenodo archive and DOI are **Pending**. The historical
-[rc3 software DOI](https://doi.org/10.5281/zenodo.24321232) identifies rc3 only.
 
 P03 whole-machine power-loss testing and P04 independent security review
 remain open. P05 production provisioning and P06 real-use acceptance remain

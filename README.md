@@ -3,7 +3,7 @@
 **Cryptographic Audit and Signing Framework**
 
 [![CI](https://github.com/hamdamme/casf/actions/workflows/ci.yml/badge.svg)](https://github.com/hamdamme/casf/actions/workflows/ci.yml)
-rc3 archive: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24321232.svg)](https://doi.org/10.5281/zenodo.24321232)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24454789.svg)](https://doi.org/10.5281/zenodo.24454789)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 CASF is an experimental Python framework for creating cryptographically verifiable audit records. It combines Ed25519 signatures, SHA-256 hash chaining, canonical JSON based on RFC 8785, and an independent witness that retains authenticated checkpoints. The goal is to help applications produce evidence of record integrity and detect certain changes or rollbacks when a verifier has independently retained witness state.
@@ -121,10 +121,11 @@ license decision pending; no manuscript deposit or DOI is claimed.
 If you use CASF in research, cite the software version you used:
 
 > Aynazarov, H. (2026). CASF: Cryptographic Audit and Signing Framework (0.1.0rc4)
-> (Version 0.1.0rc4) [Computer software]. GitHub.
-> [Published release](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
+> (Version 0.1.0rc4) [Computer software]. Zenodo.
+> [https://doi.org/10.5281/zenodo.24454789](https://doi.org/10.5281/zenodo.24454789).
 
 Machine-readable citation metadata is available in [CITATION.cff](CITATION.cff).
-The rc4 Zenodo archive and DOI are **Pending**. The historical
-[rc3 software DOI](https://doi.org/10.5281/zenodo.24321232) identifies rc3 only,
-not rc4, the separate research manuscript or later changes on `main`.
+The rc4 DOI identifies the published software source archive, not the separate
+research manuscript or later changes on `main`. The historical
+[rc3 software DOI](https://doi.org/10.5281/zenodo.24321232) identifies rc3 only;
+the [all-versions DOI](https://doi.org/10.5281/zenodo.24321231) links the software versions.

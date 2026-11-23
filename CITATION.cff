@@ -9,6 +9,7 @@ authors:
     orcid: "https://orcid.org/0009-0009-0905-2628"
 version: 0.1.0rc4
 date-released: 2026-11-22
-url: "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4"
+doi: 10.5281/zenodo.24454789
+url: "https://doi.org/10.5281/zenodo.24454789"
 repository-code: "https://github.com/hamdamme/casf"
 license: Apache-2.0
