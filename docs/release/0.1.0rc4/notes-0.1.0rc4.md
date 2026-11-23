@@ -98,17 +98,20 @@ bundles that previously passed are rejected. See the
 
 Published rc2 and rc3 remain affected and unchanged; upgrade to rc4 after
 reviewing these compatibility requirements. No PyPI upload or production
-deployment was performed. The rc4 Zenodo DOI is Pending; the existing rc3 DOI
-identifies only the rc3 software archive.
+deployment was performed. The [rc4 Zenodo software archive](https://doi.org/10.5281/zenodo.24454789),
+published 23 November 2026, contains `casf-0.1.0rc4.tar.gz` (149,681 bytes).
+Downloads from Zenodo and GitHub were byte-identical at `2026-11-23T05:21:11Z`,
+with SHA-256 `07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3`.
+The existing rc3 DOI identifies only the rc3 software archive; the concept DOI
+[10.5281/zenodo.24321231](https://doi.org/10.5281/zenodo.24321231) is unchanged.
 
 ## Release boundary
 
-Record the final follow-up review disposition and resolve any reproducible release
-blockers, then approve the exact revision, files and checksums. If packaged inputs change,
-rebuild and validate the replacement candidate before approval. After approved
-GitHub publication, verify public downloads and installation, then create a new
-version of the existing Zenodo software record and verify its file and citation.
-Do not replace rc2/rc3 assets or the existing Zenodo archive.
+The approved GitHub publication, public-download installation checks and Zenodo
+file/citation verification are complete. Security-advisory publication remains
+Pending separate approval. If packaged inputs change, rebuild and validate the
+replacement candidate before approval. Do not replace rc2/rc3 assets or their
+Zenodo archives.
 
 This closes the experimental release work, not production acceptance. P03
 whole-machine power-loss testing is pending future validation; P04 independent

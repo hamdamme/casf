@@ -86,12 +86,18 @@ six fresh installations: 76 commands and four 21-check workflows passed.
 The final dependency refresh again passed all 58 queries and 442 digest checks;
 the four minimum-only build-tool advisories remain unchanged.
 
-GitHub publication and public-file verification are complete. Security-advisory
-publication and the rc4 Zenodo version/DOI remain Pending; no PyPI upload was
-performed. This publication-record PR needs its own review and CI. Estimated
-remaining archival/documentation effort is one development session after the
-remaining publication scope is approved; independent review timing is unknown.
-No independent signoff or production-readiness claim is made.
+PR 89 accepted the publication record at `d8fdf56`; CI 251 passed all ten jobs
+for that PR. The [rc4 Zenodo software archive](https://doi.org/10.5281/zenodo.24454789)
+was published on 23 November 2026. Downloads from Zenodo and GitHub verified at
+`2026-11-23T05:21:11Z` contain the same 149,681-byte `casf-0.1.0rc4.tar.gz`
+from exact build `ce6cd67`; the [publication record](0.1.0rc4/publication-0.1.0rc4.md)
+retains the matching SHA-256. The rc3 archive remains a separate version.
+
+GitHub publication, public-file verification and Zenodo archival are complete.
+Security-advisory publication remains Pending separate approval; no PyPI upload
+was performed. This DOI documentation PR needs its own review and CI.
+Independent review timing is unknown. No independent signoff or
+production-readiness claim is made.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.

@@ -48,7 +48,8 @@ historical artifacts and installation evidence but omits the key-passphrase and
 package updates above. The [accepted candidate from `ce6cd67`](docs/release/0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
 contains those changes. Its exact files were published and passed fresh public
 download and installation checks; earlier artifacts, checksums and evidence
-are unchanged. Separate advisory publication and the rc4 Zenodo DOI are Pending.
+are unchanged. The [rc4 Zenodo archive](https://doi.org/10.5281/zenodo.24454789)
+matches the published source distribution. Separate advisory publication remains Pending.
 
 ## [0.1.0rc3] — 2026-11-17
 

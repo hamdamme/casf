@@ -3,8 +3,9 @@
 CASF 0.1.0rc4 is available as an [experimental GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4).
 Use it for research and evaluation. The [publication record](../release/0.1.0rc4/publication-0.1.0rc4.md)
 identifies exact build `ce6cd67`, assets, public-installation checks and limitations.
-There is no PyPI release. The rc4 Zenodo DOI and security-advisory publication
-remain Pending.
+The [rc4 Zenodo archive](https://doi.org/10.5281/zenodo.24454789) matches the
+published source distribution. There is no PyPI release; security-advisory
+publication remains Pending.
 
 This release includes the advisory, SQLite, canonical JSONL, Ed25519 and
 retained-checkpoint corrections, plus PR 87's key-passphrase and package updates.

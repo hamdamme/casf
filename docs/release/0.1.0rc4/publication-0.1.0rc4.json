@@ -56,8 +56,8 @@
     }
   },
   "citation": {
-    "doi": "Pending; prior rc3 DOI does not identify rc4",
-    "url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+    "doi": "10.5281/zenodo.24454789",
+    "url": "https://doi.org/10.5281/zenodo.24454789",
     "version": "0.1.0rc4"
   },
   "draft": false,
@@ -895,7 +895,6 @@
     "SQLite 3.42.0 was not rerun for these assets.",
     "Four existing minimum-only build-tool advisories remain documented; minimum compatibility is not security clearance. Native-library and host-patch assessment remains separate.",
     "Old releases were compared using retained metadata and asset IDs/digests; their bytes were not downloaded again.",
-    "Zenodo latest public version is still rc3; no new deposit or DOI was created. Private drafts or delayed background processing are not assessed.",
     "No independent audit, physical power-loss validation, production readiness or research-result change is claimed."
   ],
   "maintainer_publication_approval": "Explicit approval after PR 88 merge",
@@ -3406,13 +3405,146 @@
   "tag": "v0.1.0rc4",
   "version": "0.1.0rc4",
   "zenodo": {
-    "checked_url": "https://zenodo.org/api/records/24321232/versions/latest",
-    "latest_doi": "10.5281/zenodo.24321232",
-    "latest_record_id": 24321232,
-    "latest_record_url": "https://zenodo.org/records/24321232",
-    "latest_version": "0.1.0rc3",
-    "mutations_performed": false,
-    "rc4_doi": "Pending",
-    "rc4_status": "Pending"
+    "archive_verification": {
+      "build_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+      "byte_identical": true,
+      "checked_at_utc": "2026-11-23T05:21:11.768555+00:00",
+      "concept_doi": "10.5281/zenodo.24321231",
+      "doi": "10.5281/zenodo.24454789",
+      "downloads": [
+        {
+          "file_name": "casf-0.1.0rc4.tar.gz",
+          "http_status": 200,
+          "md5": "ff5851c3e3b493a68dcd47bf0865f36e",
+          "sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+          "size_bytes": 149681,
+          "source": "zenodo",
+          "url": "https://zenodo.org/api/records/24454789/files/casf-0.1.0rc4.tar.gz/content"
+        },
+        {
+          "file_name": "casf-0.1.0rc4.tar.gz",
+          "http_status": 200,
+          "md5": "ff5851c3e3b493a68dcd47bf0865f36e",
+          "sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+          "size_bytes": 149681,
+          "source": "github",
+          "url": "https://github.com/hamdamme/casf/releases/download/v0.1.0rc4/casf-0.1.0rc4.tar.gz"
+        }
+      ],
+      "metadata_verified": [
+        "title",
+        "version",
+        "software_resource_type",
+        "creator",
+        "license",
+        "build_commit_in_description",
+        "github_release_link",
+        "published_state",
+        "latest_version",
+        "previous_rc3_version_preserved"
+      ],
+      "record_id": 24454789,
+      "result": "PASS",
+      "version": "0.1.0rc4",
+      "zenodo_publication_date": "2026-11-23"
+    },
+    "at_github_publication": {
+      "citation": {
+        "doi": "Pending; prior rc3 DOI does not identify rc4",
+        "url": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+        "version": "0.1.0rc4"
+      },
+      "limitation": "Zenodo latest public version is still rc3; no new deposit or DOI was created. Private drafts or delayed background processing are not assessed.",
+      "zenodo": {
+        "checked_url": "https://zenodo.org/api/records/24321232/versions/latest",
+        "latest_doi": "10.5281/zenodo.24321232",
+        "latest_record_id": 24321232,
+        "latest_record_url": "https://zenodo.org/records/24321232",
+        "latest_version": "0.1.0rc3",
+        "mutations_performed": false,
+        "rc4_doi": "Pending",
+        "rc4_status": "Pending"
+      }
+    },
+    "concept_doi": "10.5281/zenodo.24321231",
+    "concept_doi_unchanged": true,
+    "doi": "10.5281/zenodo.24454789",
+    "doi_resolution": {
+      "asset": "casf-0.1.0rc4.tar.gz",
+      "checked_at_utc": "2026-11-23T05:22:38.042955+00:00",
+      "checksum_manifest": "docs/release/0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt",
+      "checksum_match": true,
+      "download_sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+      "manifest_sha256": "07d6d65660c515570205efabe0b3bde158d8e978042b654db5f5d1cd204cdac3",
+      "resolutions": [
+        {
+          "content_type": "text/html; charset=utf-8",
+          "final_url": "https://zenodo.org/records/24454789",
+          "http_status": 200,
+          "url": "https://doi.org/10.5281/zenodo.24454789"
+        },
+        {
+          "content_type": "text/html; charset=utf-8",
+          "final_url": "https://zenodo.org/records/24454789",
+          "http_status": 200,
+          "url": "https://doi.org/10.5281/zenodo.24321231"
+        }
+      ],
+      "result": "PASS"
+    },
+    "doi_url": "https://doi.org/10.5281/zenodo.24454789",
+    "metadata": {
+      "creators": [
+        {
+          "affiliation": "Independent researcher",
+          "name": "Aynazarov, Hamdam",
+          "orcid": "0009-0009-0905-2628"
+        }
+      ],
+      "license": {
+        "id": "apache2.0"
+      },
+      "related_identifiers": [
+        {
+          "identifier": "https://github.com/hamdamme/casf/releases/tag/v0.1.0rc4",
+          "relation": "isIdenticalTo",
+          "resource_type": "software",
+          "scheme": "url"
+        }
+      ],
+      "resource_type": {
+        "title": "Software",
+        "type": "software"
+      },
+      "title": "CASF: Cryptographic Audit and Signing Framework (0.1.0rc4)",
+      "version": "0.1.0rc4"
+    },
+    "metadata_checked_at_utc": "2026-11-23T05:20:36.637107+00:00",
+    "metadata_source": "https://zenodo.org/api/records/24454789",
+    "previous_rc3_version": {
+      "doi": "10.5281/zenodo.24321232",
+      "index": 0,
+      "record_id": 24321232,
+      "record_url": "https://zenodo.org/records/24321232",
+      "state": "done",
+      "version": "0.1.0rc3"
+    },
+    "publication_date": "2026-11-23",
+    "record_id": 24454789,
+    "record_url": "https://zenodo.org/records/24454789",
+    "scope": "Later archival verification; original GitHub build, download and installation evidence is unchanged. No release artifact, tag or security advisory was modified.",
+    "status": "published software record; public archive verified",
+    "versions": {
+      "data": {
+        "ids": [
+          24454789,
+          24321232
+        ],
+        "total": 2
+      },
+      "final_url": "https://zenodo.org/api/records/24321232/versions",
+      "http_status": 200,
+      "url": "https://zenodo.org/api/records/24321232/versions"
+    }
   }
 }
