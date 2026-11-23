@@ -1,0 +1,90 @@
+# CASF 0.1.0rc1 release candidate notes
+
+Historical notes for the exact candidate approved on 28 October 2026. Later
+source changes are not included in those artifacts. See the
+[current checklist](../checklist-v0.1.md) and [later source notes](notes-review-candidate-2026-10-31.md).
+
+CASF 0.1.0rc1 is the proposed first experimental release candidate. It has
+not been published. Publication needs a separate explicit approval.
+
+CASF creates signed audit records, links them with SHA 256 hashes, and lets a
+separate witness retain signed checkpoints. A verifier can check the record
+chain offline, compare it with a trusted checkpoint, or query a witness for a
+fresh signed view. This release candidate is intended for evaluation and
+research, not as production security infrastructure.
+
+## Repository and distribution contents
+
+The repository contains the test suite, protocol vectors, research methods,
+and historical benchmark data used to develop and evaluate CASF. These
+materials are not included in the installable release artifacts.
+
+The wheel contains the CASF Python package, command line entry point, package
+metadata, and license. The source archive contains the package source and
+build metadata, README, and license. Neither artifact contains the repository
+test suite, protocol vectors, research materials, benchmark scripts or results,
+or release documentation.
+
+## Release capabilities
+
+- Python package and command line interface for writing, exporting, and
+  verifying audit evidence.
+- SQLite writer with transactional appends, retry handling, sealing, and key
+  rotation support.
+- HTTP witness service that validates extensions and retains signed receipts.
+- Streaming command line verification with configured input and protocol
+  limits.
+- Integrity, anchored, and online verification modes with retained verifier
+  state.
+
+## Security and behavior notes
+
+Every command line verification requires `--state PATH`. On the first
+observation only, add `--initialize-state`. Later checks must use the same
+state file and omit that option. Protect and back up verifier state separately
+from the bundle and witness. See the [installation and usage guide](../../guide/installation.md)
+and [verification guide](../../guide/verification.md).
+
+Recent fixes prevent unsigned online errors from appearing as proof of
+rollback, retain accepted history between command line runs, reject unsafe
+HTTPS transport behavior, and reject a provisioned witness identity that does
+not match the signed manifest. The witness identity regression test merged in
+PR 20. The [Phase 3 closeout record](phase3-closeout-2026-10-28.md) lists the
+findings, tests, and dispositions.
+
+CASF does not prove that every event was recorded or that signed event claims
+are true. Loss of an unwitnessed tail, a false suffix signed with a stolen
+writer key, and some witness rollback cases remain outside its guarantees.
+CASF has not received a formal security audit or proof. External feedback was
+limited; the areas not examined are listed in the closeout record.
+
+## Validation and research scope
+
+The candidate install and command line rehearsal used temporary synthetic
+evidence. That rehearsal verifies software behavior; it is not a research
+result and is independent from the separate real file demonstration.
+
+The recorded benchmark results belong to their original code versions,
+machines, workloads, and network path. The maintainer accepts them as
+historical research evidence only. They are not performance measurements of
+0.1.0rc1 and do not establish general deployment throughput.
+
+The recorded checks cover manual local validation on macOS arm64 with CPython
+3.12 through 3.14, and GitHub hosted Ubuntu x86_64 CI runners with the same
+Python versions. The workflow uses `ubuntu-latest`, so it does not pin an
+Ubuntu point release. macOS is not covered by GitHub Actions. Other systems
+and processor types have not been validated for this candidate.
+
+## Install
+
+This candidate is not available from a package index. Do not use
+`pip install casf` yet. If approved, the release notice will provide the exact
+artifacts and their SHA 256 values. See the [candidate install guide](../../guide/installation.md).
+
+## Approval status
+
+The historical benchmark scope and limited external review are accepted for
+the first experimental release, with their limitations recorded. The exact
+candidate artifact hashes and these notes were approved by the maintainer on
+2026-10-28 after the actual wheel and source archive hashes matched the
+recorded values. Publication is not authorized by this document.

@@ -42,7 +42,7 @@ forged authority signatures, replaced or unprovisioned manifests and wrong
 witness identities. Compatibility calls without pins still perform local-only
 validation. Those original assertions alone do not establish writer status checking or
 fresh witness reconciliation. Later startup and reconciliation tests are linked
-in the same map; see [writer recovery](../writer-recovery.md).
+in the same map; see [writer recovery](../operations/writer-recovery.md).
 
 ## Streaming and trust boundaries
 
@@ -50,22 +50,22 @@ The CLI uses `open_bundle` and checks the unread tail before accepting a
 result or saving state. The verifier retains only checkpoint boundary digests
 and bounded protocol evidence. Writer export now streams a snapshot;
 `read_bundle` and restore remain eager. The [API decision](../adr/ADR-006-streaming-verification.md) and
-[streaming measurements](streaming-validation.md) identify this scope.
+[streaming measurements](reviews/streaming-validation.md) identify this scope.
 
 Missing authority status reports INCONCLUSIVE with UNKNOWN trust. A signed active status
 can pass with `STATUS_CURRENTNESS_UNCONFIRMED`; there is no invented expiry
 rule or proof of globally current revocation knowledge. See
-[verification](../verification.md).
+[verification](../guide/verification.md).
 
-The [implementation reference](../current-reference.md#operational-limits-and-specification-differences)
+The [implementation reference](../reference/current-reference.md#operational-limits-and-specification-differences)
 records differences from the proposed specification, including full startup
 verification and restore reconciliation. The [coverage summary](test-coverage-status.md)
 records the scope of generated properties, bounded parser mutation campaigns
-and the [process crash matrix](../process-crash-testing.md). The latter covers
+and the [process crash matrix](../testing/process-crash-testing.md). The latter covers
 witness fork competition, exact receipt replay, final seals, atomic retained
 state and verified recovery after interrupted HTTP submissions. It does not
 establish power-loss durability or exhaustive crash scheduling. See also the
-[generated-input guide](../adversarial-testing.md).
+[generated-input guide](../testing/adversarial-testing.md).
 An empty remaining review field in the map is not a proof that these broader
 requirements have been satisfied.
 
@@ -84,24 +84,24 @@ open startup, trust, restore, scheduling, storage and public API work. This
 review does not claim exhaustive specification conformance: deployment trust
 provisioning, unavailable newer authority status, witness disaster recovery,
 storage hardware and approval of any later release remain explicit boundaries.
-The published rc2 approval is recorded in the [publication evidence](publication-0.1.0rc2.md).
+The published rc2 approval is recorded in the [publication evidence](0.1.0rc2/publication-0.1.0rc2.md).
 
 ## Evidence and historical record
 
 The [current checklist](checklist-v0.1.md) identifies hosted validation and
 candidate boundaries. Maintainer acceptance of historical benchmark scope and
-limited external review is recorded in [Phase 3 closeout](phase3-closeout-2026-10-28.md).
+limited external review is recorded in [Phase 3 closeout](reviews/phase3-closeout-2026-10-28.md).
 It is no longer an unresolved research scope decision. Later artifacts need
 their own checks; historical measurements are not current candidate results.
 
 The [previous review page](https://github.com/hamdamme/casf/blob/93ba4325675c948b108a0281c2b0d97c713decdc/docs/release/requirement-evidence.md),
-[Session 3 record](session3-validation.md), and
-[streaming validation](streaming-validation.md) preserve the initial scopes,
+[Session 3 record](reviews/session3-validation.md), and
+[streaming validation](reviews/streaming-validation.md) preserve the initial scopes,
 corrections and dated validation. No original experimental output was changed.
 
 ## Team A remediation
 
-The [remediation record](team-a-remediation.md) links CASF-01/02 and H01/H02/H03
+The [remediation record](reviews/team-a-remediation.md) links CASF-01/02 and H01/H02/H03
 to wrong-type, status/receipt, retry-identity, redaction and no-connection
 assertions. T16/T17/T18 mappings identify the new tests. Broader
 [production gates](production-readiness-gates.md) remain separate.
@@ -191,6 +191,6 @@ tests/unit/test_incremental_verification.py tests/unit/test_verify_bundle.py -q`
 and valid-mode failure precedence are unchanged. Full platform validation runs
 in the existing CI matrix; prior fixes reuse their existing regression tests.
 
-The [C01–C06 remediation review](advisory-remediation-2026-11-17.md) records
+The [C01–C06 remediation review](reviews/advisory-remediation-2026-11-17.md) records
 additional trust-input, timestamp, HTTP-category and finite-storage regressions.
 These are unreleased source corrections; published rc3 bytes are unchanged.

@@ -9,25 +9,24 @@ must remain synthetic until deployment acceptance is approved.
 ## Exact review subject
 
 Repository: [hamdamme/casf](https://github.com/hamdamme/casf).
-Pinned baseline: `c263d6e0ca8ec29e2edd6cbc6c593ae087fe9021` (PR 61 merge).
-Runtime `src/` bytes are unchanged from the PR 58 merge
-`cb3febff53a7cf8274a4b871f5be1382ebaedd33`; later commits added validation and
-documentation. The current package metadata still says `0.1.0rc2`, but published
-rc2 assets were built from `e92194fe0fa6eb37c2ff9016c381b8e734008880` and omit
-later fixes. Review the pinned source, not an unqualified package version.
+Pinned baseline: `492f330c0be93a1b722314bbdc2f91ab0cb37e11` (PR 84 merge),
+the current rc4 build revision. The current version is `0.1.0rc4`, an unpublished
+candidate. Published rc2 and rc3 omit later corrections, including small-order
+Ed25519 public-key rejection. Review the pinned source, not an unqualified
+package version.
 
 Create a separate checkout, preserving full history for historical-data tests:
 
 ```sh
 git clone https://github.com/hamdamme/casf.git casf-independent-review
 cd casf-independent-review
-git checkout --detach c263d6e0ca8ec29e2edd6cbc6c593ae087fe9021
+git checkout --detach 492f330c0be93a1b722314bbdc2f91ab0cb37e11
 git rev-parse HEAD
 git status --porcelain
 ```
 
 Record both outputs before installing dependencies. Use the pinned lock/tooling
-instructions in [dependencies](../dependencies.md) and the
+instructions in [dependencies](../reference/dependencies.md) and the
 [validation matrix](validation-matrix.md). Record actual import locations and
 runtime versions. If reviewing another revision, identify its hash and examine
 the intervening diff; do not silently carry findings across revisions.
@@ -36,19 +35,31 @@ the intervening diff; do not silently carry findings across revisions.
 
 Read [DEVELOPMENT.md](../../DEVELOPMENT.md), the
 [specification](../specification/CASF_SPEC_001.md),
-[ADRs](../adr/), and [current reference](../current-reference.md).
+[ADRs](../adr/), and [current reference](../reference/current-reference.md).
+Include [ADR-018: Ed25519 verification profile](../adr/ADR-018-ed25519-verification-profile.md),
+the [Ed25519 edge-case vectors](../../vectors/v1/ed25519_edge_cases.json),
+the [492f330 candidate record](0.1.0rc4/candidate-0.1.0rc4-492f330.md), and
+the [rc4 release notes](0.1.0rc4/notes-0.1.0rc4.md).
 The [requirement map](requirement-evidence.md) identifies assertions, not a claim
 that every behavior was reviewed. Preserve the
-[Team A remediation](team-a-remediation.md),
-[line-review corrections](line-review-2026-11-11.md),
-[cross-host record](two-host-rehearsal.md), and
-[guided campaign](guided-fuzz-2026-11-12.json) as prior evidence.
+[Team A remediation](reviews/team-a-remediation.md),
+[line-review corrections](reviews/line-review-2026-11-11.md),
+[cross-host record](reviews/two-host-rehearsal.md), and
+[guided campaign](reviews/guided-fuzz-2026-11-12.json) as historical prior evidence for
+their own revisions.
 
-PR 60's generated recovery sequences passed the
+For `492f330`, [CI 242](https://github.com/hamdamme/casf/actions/runs/45085913856)
+passed all ten required configurations. Each macOS configuration passed 1,903
+tests; each Ubuntu configuration passed 1,883 tests with 20 native Darwin ACL
+skips. Parser campaigns passed 72,900 cases. The candidate record retains
+the exact environments, source hashes, artifact identity and validation limits.
+
+Historical PR 60 generated recovery sequences passed the
 [12-job matrix](https://github.com/hamdamme/casf/actions/runs/43151328225).
 PR 61's guided parser work passed the
 [12-job matrix](https://github.com/hamdamme/casf/actions/runs/43343122455),
-1,421 local tests, and a 20,025-input local campaign. These are maintainer
+1,421 local tests, and a 20,025-input local campaign. These older results apply
+only to their own revisions, not to `492f330`. These are maintainer
 validation results; independently reproduce relevant claims. Download CI
 artifacts before their 14-day retention expires if they are needed for review.
 
@@ -56,7 +67,7 @@ artifacts before their 14-day retention expires if they are needed for review.
 
 | Area | Entry points | Required negative evidence |
 | --- | --- | --- |
-| Canonical bytes and domains | `src/casf/canonical/`, `src/casf/crypto/`, conformance vectors | Ambiguous encodings, wrong domains, altered signed fields and boundary inputs cannot authenticate. |
+| Canonical bytes and domains | `src/casf/canonical/`, `src/casf/crypto/`, conformance vectors; Ed25519 verification semantics (cofactorless equation, `S < L`, small-order and noncanonical key rejection) | Ambiguous encodings, wrong domains, altered signed fields and boundary inputs cannot authenticate. |
 | Key lifecycle and filesystem | `src/casf/keys.py`, `src/casf/filesystem.py`, lifecycle and administration | Wrong keys, symlinks, permissions, interrupted publication and missing credentials fail safely without disclosure. |
 | Trust and revocation | `src/casf/trust/`, writer startup, verifier | Evidence cannot supply its own authority; stale status and rollback cannot clear independently retained revocation/high-water state. |
 | Epoch and witness binding | `src/casf/witness/`, lifecycle, verifier anchor | Authenticated predecessor required; cross-log receipts, conflicting checkpoints and duplicate retries preserve binding and durable state. |
@@ -87,9 +98,9 @@ identity, engagement scope, timing and report location remain **unassigned**. A 
 
 ## Deployment questions that remain open
 
-Normal reboot [passed on the rehearsal revision](reboot-2026-11-16.md) and was
+Normal reboot [passed on the rehearsal revision](reviews/reboot-2026-11-16.md) and was
 accepted in PR 69. Whole-machine power-loss testing is pending future validation
-and remains incomplete (P03); the [USB-only result](usb-interruption-2026-11-16.md) does not close it. The two-host rehearsal
+and remains incomplete (P03); the [USB-only result](reviews/usb-interruption-2026-11-16.md) does not close it. The two-host rehearsal
 used one administrator; it does not establish administrative independence.
 The [operating worksheet](internal-operations-worksheet.md) still needs real
 owners and acceptance evidence. Canonical H1 retains its unmet primary result:

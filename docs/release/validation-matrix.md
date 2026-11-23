@@ -13,7 +13,7 @@ catalog for the latest available interpreter within the selected Python minor
 (`check-latest: true`); runtime inventories record the result. Catalog versions
 vary by platform and can lag upstream security releases. Passing compatibility
 tests does not establish that Python or every native library is patched. See
-the [current advisory scope](dependency-review-0.1.0rc3.md).
+the [current advisory scope](0.1.0rc3/dependency-review-0.1.0rc3.md).
 
 | Runner | Python | Locked dependencies | Minimum direct dependencies |
 | --- | --- | --- | --- |
@@ -33,8 +33,8 @@ OpenSSL, installed package versions and runner image identifiers when available.
 Windows, other architectures and other Python versions are outside this matrix.
 
 Every full suite includes frozen conformance vectors, deterministic regressions,
-the [12 generated properties](../adversarial-testing.md), the parser corpus,
-the [27 process-crash cases](../process-crash-testing.md), and traceability checks.
+the [12 generated properties](../testing/adversarial-testing.md), the parser corpus,
+the [27 process-crash cases](../testing/process-crash-testing.md), and traceability checks.
 Each job also runs three seeded parser campaigns of 2000 mutations plus 25
 corpus replays each. Generated examples and fuzz mutations are separate from
 pytest totals. Locked jobs additionally run a bounded Python-line-edge-guided
@@ -49,7 +49,7 @@ with the [package inspector](../../tests/package_artifacts.py), then runs the
 21-check synthetic workflow with isolated installed-package imports. Retained
 validation output includes `package-artifacts.json` and public-only
 `installed-demo` evidence. These CI packages are distinct from the exact local
-review files in the [candidate record](candidate-0.1.0rc3.md).
+review files in the [candidate record](0.1.0rc3/candidate-0.1.0rc3.md).
 
 ## Import and source evidence
 
@@ -95,7 +95,7 @@ the source hashes and run/job links in a dated review record before artifacts
 expire. CI logs remain additional evidence; a workflow badge alone is insufficient.
 
 Local macOS checks supplement this matrix and must name their actual interpreter
-and import mode. The [dependency guide](../dependencies.md) describes setup.
+and import mode. The [dependency guide](../reference/dependencies.md) describes setup.
 Historical manual macOS records remain historical; hosted macOS coverage begins
 with this workflow change.
 

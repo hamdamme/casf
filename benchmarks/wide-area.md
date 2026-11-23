@@ -28,7 +28,7 @@ required HTTPS transport or specify a protected tunnel and explicitly measure
 and report the resulting network path. This transport work is still pending.
 
 The current reference witness service also needs a configured HTTPS reverse
-proxy for wider deployment; see [server operation](../docs/witness-server.md).
+proxy for wider deployment; see [server operation](../docs/operations/witness-server.md).
 Its resource limits and the benchmark server's purpose must not be confused.
 
 ## Plan before provisioning

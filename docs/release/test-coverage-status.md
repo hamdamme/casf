@@ -17,41 +17,41 @@ its checks.
   and the public CLI workflow. Explicit local-only mode remains available.
 - Rollback H1 and outage H3 have separate experiment harnesses and recorded
   outputs; those records are not an exhaustive test suite.
-- [Recovery drills](../recovery-drills.md) cover SQLite exhaustion, backup
+- [Recovery drills](../operations/recovery-drills.md) cover SQLite exhaustion, backup
   publication failures, corrupt backups, lost signing keys, writer/witness
   rollback and pending receipt recovery after an outage. Selected process
   exits and injected filesystem errors do not establish physical disk or
   power-loss durability.
-- [Checkpoint worker](../checkpoint-worker.md) tests cover the record/time
+- [Checkpoint worker](../reference/checkpoint-worker.md) tests cover the record/time
   triggers, bounded batch draining, durable backoff, interrupted attempts,
   restarts, lost replies, final seals, concurrent workers and safe reports.
-- [Storage migration](../storage-migrations.md) tests use frozen unversioned
+- [Storage migration](../reference/storage-migrations.md) tests use frozen unversioned
   writer and witness fixtures. They check exact row/BLOB preservation, schema
   identity and constraints, WAL snapshots, final receipt replay, interrupted
   copies, publication failures and refusal of unknown or modified schemas.
-- [Export and report](../export-and-reports.md) regressions cover prefix and
+- [Export and report](../reference/export-and-reports.md) regressions cover prefix and
   journal boundaries, exact envelope bytes, bounded Python allocations,
   destination races, filesystem failures, process exits and full CLI reports
   on successful, failed and inconclusive verification. Linux/macOS native
   exclusive-rename behavior is exercised on the corresponding test host.
-- [Typed append](../append-api.md) tests cover nested input mutation, detached
+- [Typed append](../reference/append-api.md) tests cover nested input mutation, detached
   results, pending/accepted coverage, same-event retries, failed commits,
   uncertain responses, concurrent processes, body limits and verified
   retained-state authorization. Existing dictionary callers remain covered.
-- [Verification report](../verification.md) regressions cover canonical enums,
+- [Verification report](../guide/verification.md) regressions cover canonical enums,
   missing-evidence verdicts, version and schema failures, unchecked dimensions,
   strict status/pin validation, CLI exit categories and checkpoint non-advancement.
-- [Typed log operations](../log-api.md) cover immutable protocol values,
+- [Typed log operations](../reference/log-api.md) cover immutable protocol values,
   manifest/receipt mutation after validation, strict checkpoint flags, failed
   commits, exact retry bytes, export snapshot metadata and authorization checks.
-- [Incremental and bundle verification](../verifier-api.md) tests cover anchor
+- [Incremental and bundle verification](../reference/verifier-api.md) tests cover anchor
   ownership/authentication, absolute suffix ranges, retained-state conflicts,
   status/revocation, online freshness outcomes, extension budgets, receipt
   binding, final checkpoints and sequence boundaries. Bundle tests cover EOF
   failures after early verdicts, descriptor closure, complete-input budgets,
   skipped-prefix disclosure and conflicting anchor evidence. Installed-wheel
   checks exercise both APIs without loading writer or storage modules.
-- [Generated inputs and parser fuzzing](../adversarial-testing.md) add 12
+- [Generated inputs and parser fuzzing](../testing/adversarial-testing.md) add 12
   Hypothesis properties, a 25-case parser corpus and three bounded mutation
   campaigns per CI job. Generated scenarios cover serialization, record edits,
   truncation, trusted suffixes and work budgets. Unexpected parser failures
@@ -60,7 +60,7 @@ its checks.
   lost replies, forged receipts, restarts and backup operations. PR 61 added
   bounded Python-line-edge-guided JSON parser campaigns; the six locked-dependency
   CI jobs each run 2,000 guided mutations plus 25 seed cases.
-- [Process crash tests](../process-crash-testing.md) add 27 parameterized
+- [Process crash tests](../testing/process-crash-testing.md) add 27 parameterized
   cases with parent-controlled SIGKILL at append, checkpoint, witness and
   state-file boundaries. They cover competing processes, exact HTTP receipt
   replay, final seals and verified restart when retained state leads the
@@ -98,7 +98,7 @@ fuzz targets and the bounded process crash matrix remains explicit.
 
 ## Audit branch review
 
-The [Team A remediation](team-a-remediation.md) adds strict direct-API policy,
+The [Team A remediation](reviews/team-a-remediation.md) adds strict direct-API policy,
 HTTP status/receipt category, preserved pending-byte, no-connection configuration,
 and peer-diagnostic redaction assertions. Coverage inspection selected receipt
 manifest/witness/count/head/index/previous-receipt checks and latest-response

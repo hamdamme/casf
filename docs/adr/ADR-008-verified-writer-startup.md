@@ -1,7 +1,7 @@
 # Verified writer startup and retained status
 
 This decision records its implementation-time context. Statements about separate
-work refer to that stage; use the [current reference](../current-reference.md)
+work refer to that stage; use the [current reference](../reference/current-reference.md)
 and [completion tracker](../release/completion-tracker.md) for present behavior
 and acceptance status.
 

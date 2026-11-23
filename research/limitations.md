@@ -41,7 +41,7 @@ correctly remain undetectable offline:
 - Maintainer development and test review create assessment bias. Limited
   external review examined witness and online behavior and part of the
   verifier; it did not cover the entire implementation or benchmark methods.
-  The [scope record](../docs/release/phase3-closeout-2026-10-28.md#review-coverage)
+  The [scope record](../docs/release/reviews/phase3-closeout-2026-10-28.md#review-coverage)
   lists unexamined areas. No independent security audit is claimed.
 - SQLite append only triggers guard honest writers; an attacker
   holding the database file can drop them, which is why integrity

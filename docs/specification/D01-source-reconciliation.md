@@ -45,12 +45,12 @@ The following rows complete that disposition without expanding the release scope
 | --- | --- | --- |
 | PostgreSQL storage backend | Deferred; SQLite is the supported adapter | SPEC §§2 and 17; no PostgreSQL adapter is advertised. |
 | External anchoring | Replaced by one stateful witness and independently retained verifier state | SPEC §§13–15; no transparency log or object-lock integration is claimed. |
-| Encrypted private keys | Implemented with encrypted PKCS8 files | [Key administration](../administration.md); native HSM/KMS integration remains excluded. |
+| Encrypted private keys | Implemented with encrypted PKCS8 files | [Key administration](../operations/administration.md); native HSM/KMS integration remains excluded. |
 | REST verification API using FastAPI | Excluded from the current release | Library/CLI verification and witness HTTP endpoints have distinct purposes; no general verification REST service is advertised. |
-| Hypothesis property tests | Implemented with bounded scope | [Generated-input guide](../adversarial-testing.md); not an exhaustive state-machine proof. |
+| Hypothesis property tests | Implemented with bounded scope | [Generated-input guide](../testing/adversarial-testing.md); not an exhaustive state-machine proof. |
 | Replaceable RSA/ECDSA and SHA-3 algorithms | Excluded from casf-v1 | SPEC §2 excludes arbitrary algorithm negotiation; fixed Ed25519/SHA-256 bytes remain authoritative. |
 | Python 3.10 minimum | Replaced by Python 3.12–3.14 validation | Package metadata and [validation matrix](../release/validation-matrix.md). |
-| CLI exit codes 0/1/2 | Replaced by codes 0–5 | SPEC §19 and [verification guide](../verification.md); operational errors are distinguished. |
+| CLI exit codes 0/1/2 | Replaced by codes 0–5 | SPEC §19 and [verification guide](../guide/verification.md); operational errors are distinguished. |
 
 HMAC and payload AES-GCM are explicit scope decisions, not unimplemented current
 requirements. The original document is preserved unchanged in the

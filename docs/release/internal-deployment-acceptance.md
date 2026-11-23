@@ -9,13 +9,13 @@ No release or production rollout is authorized by this plan.
 | Session | Task | Acceptance | Status |
 | --- | --- | --- | --- |
 | 16 | P01 | Cross-host TLS, recovery, authentication, limits and supervised process restart | 22 checks passed; accepted in PR 59 |
-| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reboot-2026-11-16.md) |
-| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Pending future validation; incomplete. [USB interruption accepted in PR 70](usb-interruption-2026-11-16.md) does not close whole-machine testing |
+| 16 | P02 | Services start after machine reboot without interactive login; preserved history verifies | Accepted in PR 69; [reboot evidence](reviews/reboot-2026-11-16.md) |
+| 17 | P03 | Physical power-loss and filesystem recovery on identified disposable hardware | Pending future validation; incomplete. [USB interruption accepted in PR 70](reviews/usb-interruption-2026-11-16.md) does not close whole-machine testing |
 | 18 | P04 | Independent security assessment with source hashes and resolved findings | Pending independent evaluation; incomplete |
-| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](backup-custody-2026-11-16.md) accepted in PR 71; operational provisioning incomplete |
+| 19 | P05 | Administrative separation, retained-state distribution and restore drills | Single-administrator model selected; [permissions/restore evidence](reviews/backup-custody-2026-11-16.md) accepted in PR 71; operational provisioning incomplete |
 | 19 | P06 | Internal access, provenance, backup, retention, capacity and incident acceptance | Research-demo rules adopted; PR 72 demo and CI accepted; production acceptance incomplete |
 | 20 | P07 | Expanded generated state-machine and coverage-guided fuzz campaigns | Accepted in PR 61; generated sequences and guided campaigns validated |
-| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Complete; [approved rc3 publication and public-download validation](publication-0.1.0rc3.md) |
+| 21 | P08 | Fresh version and artifact provenance, advisories and approved publication | Complete; [approved rc3 publication and public-download validation](0.1.0rc3/publication-0.1.0rc3.md) |
 
 These eight tasks extend the accepted 33-task experimental plan. A passing
 rehearsal does not close the independent assessment or hardware gates. Canonical
@@ -31,7 +31,7 @@ and artifact validation are still required.
 ## Reboot acceptance
 
 Resumed with operator approval on 16 November 2026. The normal reboot checks
-passed on the existing rehearsal revision; [evidence](reboot-2026-11-16.md) is
+passed on the existing rehearsal revision; [evidence](reviews/reboot-2026-11-16.md) is
 accepted in PR 69. The procedure below remains available for future rehearsals.
 
 The test account's user services currently run under systemd. Enable lingering
@@ -49,7 +49,7 @@ reboot is not a physical power-loss test.
 P03 remains pending future validation. The procedure is a reference, not
 authorization to interrupt hardware. Confirm the test equipment and procedure
 before execution. The
-[USB-only test](usb-interruption-2026-11-16.md) does not establish this broader gate.
+[USB-only test](reviews/usb-interruption-2026-11-16.md) does not establish this broader gate.
 
 Observed hardware: Dell XPS 15 9520 with BAT0; Linux root uses ext4 on NVMe.
 Disconnecting its charger leaves battery power and is not this test. Do not open
@@ -160,7 +160,7 @@ Python line-to-line execution edges in CASF modules. Newly reached edges retain
 inputs for future mutation. Native code, other threads, and stateful protocol
 operations are not instrumented; this complements the generated recovery model.
 
-The [recorded synthetic campaign](guided-fuzz-2026-11-12.json) on macOS arm64/Python 3.12.14 completed 20,025 inputs
+The [recorded synthetic campaign](reviews/guided-fuzz-2026-11-12.json) on macOS arm64/Python 3.12.14 completed 20,025 inputs
 (seed 20261112): 25 corpus cases and 20,000 mutations, 175 observed Python edges,
 11 novel-path mutations and 36 retained inputs. No unexpected exception or
 round-trip failure was found. Edge counts describe this run, not a coverage
@@ -191,10 +191,10 @@ They do not assign an external reviewer or claim an operational deployment.
 
 ## Research-demo closeout
 
-The [operating decisions and accepted evidence](research-demo-closeout.md) close
+The [operating decisions and accepted evidence](reviews/research-demo-closeout.md) close
 the agreed synthetic demonstration scope. They do not close P05/P06 production
-gates. P08 is closed by the [publication evidence](publication-0.1.0rc3.md). No additional application or deployment is required here.
+gates. P08 is closed by the [publication evidence](0.1.0rc3/publication-0.1.0rc3.md). No additional application or deployment is required here.
 
-The [published rc3 build](candidate-0.1.0rc3-c38bf82.md) contains the merged fixes
+The [published rc3 build](0.1.0rc3/candidate-0.1.0rc3-c38bf82.md) contains the merged fixes
 and example with identified artifact hashes. Its approved publication and public
 installation checks close P08, not P05/P06 real-use acceptance.

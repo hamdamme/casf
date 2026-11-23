@@ -1,7 +1,7 @@
 # Streaming verification API decision
 
 This decision records its implementation-time context. Statements about separate
-work refer to that stage; use the [current reference](../current-reference.md)
+work refer to that stage; use the [current reference](../reference/current-reference.md)
 and [completion tracker](../release/completion-tracker.md) for present behavior
 and acceptance status.
 
@@ -29,7 +29,7 @@ only after a successful report and validated EOF. Malformed input returns exit 2
 local read errors return exit 5. Neither path prints PASS or advances the accepted
 checkpoint. Independently authenticated authority status observations, including
 terminal revocation, are retained when reported by the verifier even if later
-record or EOF checks fail. See [retained state](../verification.md).
+record or EOF checks fail. See [retained state](../guide/verification.md).
 
 `verify` still accepts any record iterable and returns the same report type.
 It consumes records once and retains only the current chain head, count,
@@ -67,6 +67,6 @@ redirecting an ongoing read, but do not provide a filesystem snapshot.
 
 ## Evidence
 
-See the [streaming validation record](../release/streaming-validation.md) for
+See the [streaming validation record](../release/reviews/streaming-validation.md) for
 measurements and checks. Historical experiments and authenticated fixtures
 remain unchanged. This decision does not close unrelated release gates.
