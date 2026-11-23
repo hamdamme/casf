@@ -8,6 +8,14 @@ stabilization (SPEC §26).
 
 ## [0.1.0rc4] — candidate, unpublished
 
+- Require at least 16 passphrase bytes when generating encrypted PKCS8 keys;
+  retain loading compatibility for existing keys with shorter passphrases.
+  Document measured encryption parameters and offline-guessing limits.
+- Raise the supported cryptography minimum to 50.0.0 while retaining the locked
+  50.0.2 version; protocol bytes and signature verification semantics are unchanged.
+- Add author, keywords, development/audience/Python/cryptography/typing classifiers,
+  and Changelog and Security URLs to package metadata.
+
 - Reject small-order Ed25519 public keys and noncanonical public-key y encodings
   at every shared key-loading boundary, preventing identity-key signature bypasses.
   Published rc2 and rc3 are affected; normal generated keys remain compatible.
@@ -31,9 +39,11 @@ The [3333d00 candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-3333d00.md) is 
 and historical: it omits the Ed25519 correction and must not be published.
 The [earlier candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-d4721c4.md) also omits
 the SQLite and canonical JSONL corrections. The
-[replacement candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) records new
-artifacts from `492f330` and their installation checks. Exact-file review and
-separate publication approval remain pending.
+[492f330 candidate](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md) preserves
+historical artifacts and installation evidence. It omits the key-passphrase and
+package updates above. Once this implementation is accepted, build and validate
+a new candidate from the final accepted revision before separate publication
+approval. Earlier files, checksums and evidence remain unchanged.
 
 ## [0.1.0rc3] — 2026-11-17
 

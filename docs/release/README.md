@@ -2,13 +2,14 @@
 
 ## Current
 
-rc4 is unpublished. Replacement artifacts from `492f330` passed installation
-checks; exact-file review and separate publication approval remain pending.
+rc4 is unpublished. The key-passphrase and package updates require a new candidate
+after implementation acceptance. The `492f330` artifacts and validation are
+historical evidence for their own revision; preserve their files and hashes.
 
 - [Release checklist](checklist-v0.1.md)
-- [492f330 candidate](0.1.0rc4/candidate-0.1.0rc4-492f330.md)
+- [492f330 candidate — historical](0.1.0rc4/candidate-0.1.0rc4-492f330.md)
 - [rc4 release notes and upgrade guidance](0.1.0rc4/notes-0.1.0rc4.md)
-- [492f330 checksums](0.1.0rc4/SHA256SUMS-0.1.0rc4-492f330.txt)
+- [492f330 checksums — historical](0.1.0rc4/SHA256SUMS-0.1.0rc4-492f330.txt)
 - [Production readiness gates](production-readiness-gates.md)
 - [Completion tracker](completion-tracker.md)
 - [Independent review brief](independent-review-brief.md)
@@ -19,7 +20,7 @@ checks; exact-file review and separate publication approval remain pending.
 - [v0.1.0rc3 GitHub prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3)
 
 Earlier rc4 candidate artifacts are historical and must not be published.
-This includes `candidate-0.1.0rc4-3333d00.*`,
+This includes `candidate-0.1.0rc4-492f330.*`, `candidate-0.1.0rc4-3333d00.*`,
 `candidate-0.1.0rc4-d4721c4.*` and rc4 candidate/artifact evidence without a
 revision suffix. Current release notes, this index and the checklist describe
 ongoing work; they do not approve old artifact bytes.
@@ -60,9 +61,10 @@ The next candidate is **0.1.0rc4, unpublished**. It includes the corrections fro
 [PR 82](https://github.com/hamdamme/casf/pull/82), plus rejection of small-order
 Ed25519 keys that permit signature bypasses. Published rc2/rc3 are affected.
 The [replacement artifacts from `492f330`](0.1.0rc4/candidate-0.1.0rc4-492f330.md)
-include PR 84 and passed fresh installation checks. The `3333d00` artifacts remain
-superseded and must not be published. Exact-file review and separate publication
-approval are pending. See the [rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
+include PR 84 and passed fresh installation checks for that revision. They omit
+the key-passphrase and package updates and remain historical. A new candidate
+must follow acceptance of this implementation. All earlier rc4 artifacts remain
+superseded for that release; exact-file review and publication approval are pending. See the [rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
 
 ## Moved paths
 

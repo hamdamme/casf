@@ -18,6 +18,14 @@ they are not a copy-and-run deployment configuration.
 
 ## Create keys and public key files
 
+New keys require a passphrase of at least **16 bytes**. The CLI encodes the
+entered text as UTF-8; byte length is not character count or an entropy measure.
+The minimum is not a guarantee of cryptographic strength. Use a long, randomly
+generated passphrase from a password manager. A copied encrypted key file remains
+vulnerable to offline guessing of a weak passphrase, without CASF rate limiting.
+Existing encrypted files with shorter passphrases remain readable; loading does
+not rewrite them or strengthen their passphrases.
+
 ```bash
 mkdir -m 700 casf-admin
 cd casf-admin
@@ -36,6 +44,16 @@ private directory and set their permissions to `600` before loading them.
 Key creation publishes a completely written, flushed file without overwriting
 an existing destination. A reported storage failure requires inspecting the
 destination before retrying; it may have occurred after publication.
+
+The existing encrypted PKCS8 PEM format uses cryptography's
+[`BestAvailableEncryption`](https://cryptography.io/en/50.0.2/hazmat/primitives/asymmetric/serialization/#cryptography.hazmat.primitives.serialization.BestAvailableEncryption).
+Generated files inspected with cryptography 50.0.0 (OpenSSL 4.0.1) and 50.0.2
+(OpenSSL 4.0.3) both used PBES2, PBKDF2-HMAC-SHA-256 with **2,048 iterations**
+and a 16-byte salt, and AES-256-CBC with a 16-byte IV. These are measured
+implementation parameters, not fixed CASF protocol constants; the library's
+encryption choice can change. Compatibility checks must inspect generated files
+when dependency versions change. The passphrase policy does not introduce a new
+key-file format or change record signatures.
 
 Export only the public keys for provisioning. This small script decrypts the
 key locally and writes public PEM files; it does not print key material:

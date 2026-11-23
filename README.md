@@ -13,7 +13,7 @@ CASF is an experimental Python framework for creating cryptographically verifiab
 ## Project status
 
 - **Latest published release:** [0.1.0rc3 experimental prerelease](https://github.com/hamdamme/casf/releases/tag/v0.1.0rc3).
-- **Next candidate:** [0.1.0rc4, unpublished](docs/release/0.1.0rc4/candidate-0.1.0rc4-492f330.md).
+- **Next candidate:** [0.1.0rc4, unpublished; new build required](docs/release/0.1.0rc4/notes-0.1.0rc4.md).
 - **Maturity:** Experimental; not independently audited or production ready. [Detailed status](docs/release/README.md#project-status-and-release-history).
 
 ## Where to go next

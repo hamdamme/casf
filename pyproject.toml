@@ -10,14 +10,30 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
+authors = [{name = "Hamdam Aynazarov"}]
+keywords = ["audit log", "tamper evidence", "ed25519", "transparency", "witness", "rollback detection"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Security :: Cryptography",
+    "Typing :: Typed",
+]
 dependencies = [
-    "cryptography>=41.0",
+    "cryptography>=50.0.0",
 ]
 
 [project.urls]
 Repository = "https://github.com/hamdamme/casf"
 Documentation = "https://github.com/hamdamme/casf/blob/main/docs/README.md"
 Issues = "https://github.com/hamdamme/casf/issues"
+Changelog = "https://github.com/hamdamme/casf/blob/main/CHANGELOG.md"
+Security = "https://github.com/hamdamme/casf/security/policy"
 
 [project.optional-dependencies]
 witness = ["uvicorn==0.54.0", "h11>=0.16.0"]

@@ -36,7 +36,7 @@ from tests.unit.test_writer import (
     _writer,
 )
 
-PASS = b"test-passphrase"  # test only, never a real secret
+PASS = b"synthetic-test-passphrase"  # test only, never a real secret
 
 
 def _seeded(role):

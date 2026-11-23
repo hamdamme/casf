@@ -18,8 +18,9 @@ The [3333d00 rc4 candidate](../release/0.1.0rc4/candidate-0.1.0rc4-3333d00.md) i
 and historical. Its CI and installation results apply to those bytes, which
 omit the small-order Ed25519 correction. The
 [replacement candidate from `492f330`](../release/0.1.0rc4/candidate-0.1.0rc4-492f330.md)
-passed exact-file installation checks; artifact review and separate publication
-approval remain pending. See the [release records index](../release/README.md).
+passed exact-file installation checks for that revision. Its files are historical
+for the key-passphrase and package follow-up; a new build and validation are
+required after implementation acceptance, before separate publication approval. See the [release records index](../release/README.md).
 The current DOI identifies rc3.
 
 ## Which document to use

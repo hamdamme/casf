@@ -52,8 +52,8 @@ def generate_key(role: str, path: str | Path, *,
     """Create one encrypted key file; refuses to overwrite (§16)."""
     if role not in ("authority", "log", "witness"):
         raise CasfError("role must be authority, log or witness")
-    if not passphrase:
-        raise CasfError("a passphrase is required")
+    if len(passphrase) < 16:
+        raise CasfError("passphrase must be at least 16 bytes")
     target = Path(path)
     key = Ed25519PrivateKey.generate()
     blob = key.private_bytes(
