@@ -9,7 +9,7 @@ must remain synthetic until deployment acceptance is approved.
 ## Exact review subject
 
 Repository: [hamdamme/casf](https://github.com/hamdamme/casf).
-Pinned baseline: `492f330c0be93a1b722314bbdc2f91ab0cb37e11` (PR 84 merge),
+Pinned baseline: `ce6cd67c01df2af283b2e07fc1b832e79bb14821` (PR 87 merge),
 the current rc4 build revision. The current version is `0.1.0rc4`, an unpublished
 candidate. Published rc2 and rc3 omit later corrections, including small-order
 Ed25519 public-key rejection. Review the pinned source, not an unqualified
@@ -20,7 +20,7 @@ Create a separate checkout, preserving full history for historical-data tests:
 ```sh
 git clone https://github.com/hamdamme/casf.git casf-independent-review
 cd casf-independent-review
-git checkout --detach 492f330c0be93a1b722314bbdc2f91ab0cb37e11
+git checkout --detach ce6cd67c01df2af283b2e07fc1b832e79bb14821
 git rev-parse HEAD
 git status --porcelain
 ```
@@ -38,7 +38,7 @@ Read [DEVELOPMENT.md](../../DEVELOPMENT.md), the
 [ADRs](../adr/), and [current reference](../reference/current-reference.md).
 Include [ADR-018: Ed25519 verification profile](../adr/ADR-018-ed25519-verification-profile.md),
 the [Ed25519 edge-case vectors](../../vectors/v1/ed25519_edge_cases.json),
-the [492f330 candidate record](0.1.0rc4/candidate-0.1.0rc4-492f330.md), and
+the [ce6cd67 candidate record](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md), and
 the [rc4 release notes](0.1.0rc4/notes-0.1.0rc4.md).
 The [requirement map](requirement-evidence.md) identifies assertions, not a claim
 that every behavior was reviewed. Preserve the
@@ -48,9 +48,9 @@ that every behavior was reviewed. Preserve the
 [guided campaign](reviews/guided-fuzz-2026-11-12.json) as historical prior evidence for
 their own revisions.
 
-For `492f330`, [CI 242](https://github.com/hamdamme/casf/actions/runs/45085913856)
-passed all ten required configurations. Each macOS configuration passed 1,903
-tests; each Ubuntu configuration passed 1,883 tests with 20 native Darwin ACL
+For `ce6cd67`, [CI 248](https://github.com/hamdamme/casf/actions/runs/45107762353)
+passed all ten required configurations. Each macOS configuration passed 1,914
+tests; each Ubuntu configuration passed 1,894 tests with 20 native Darwin ACL
 skips. Parser campaigns passed 72,900 cases. The candidate record retains
 the exact environments, source hashes, artifact identity and validation limits.
 
@@ -59,7 +59,7 @@ Historical PR 60 generated recovery sequences passed the
 PR 61's guided parser work passed the
 [12-job matrix](https://github.com/hamdamme/casf/actions/runs/43343122455),
 1,421 local tests, and a 20,025-input local campaign. These older results apply
-only to their own revisions, not to `492f330`. These are maintainer
+only to their own revisions, not to `ce6cd67`. These are maintainer
 validation results; independently reproduce relevant claims. Download CI
 artifacts before their 14-day retention expires if they are needed for review.
 

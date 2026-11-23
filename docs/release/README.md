@@ -2,14 +2,15 @@
 
 ## Current
 
-rc4 is unpublished. The key-passphrase and package updates require a new candidate
-after implementation acceptance. The `492f330` artifacts and validation are
-historical evidence for their own revision; preserve their files and hashes.
+rc4 is unpublished. Replacement artifacts from PR 87's merge `ce6cd67` passed
+fresh installation checks. Exact-file review and separate publication approval
+remain pending; earlier candidate artifacts and evidence remain historical.
 
 - [Release checklist](checklist-v0.1.md)
-- [492f330 candidate — historical](0.1.0rc4/candidate-0.1.0rc4-492f330.md)
+- [ce6cd67 candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
 - [rc4 release notes and upgrade guidance](0.1.0rc4/notes-0.1.0rc4.md)
-- [492f330 checksums — historical](0.1.0rc4/SHA256SUMS-0.1.0rc4-492f330.txt)
+- [ce6cd67 checksums](0.1.0rc4/SHA256SUMS-0.1.0rc4-ce6cd67.txt)
+- [Fresh dependency review](0.1.0rc4/dependency-review-0.1.0rc4-ce6cd67.md)
 - [Production readiness gates](production-readiness-gates.md)
 - [Completion tracker](completion-tracker.md)
 - [Independent review brief](independent-review-brief.md)
@@ -60,11 +61,12 @@ The next candidate is **0.1.0rc4, unpublished**. It includes the corrections fro
 [PR 78](https://github.com/hamdamme/casf/pull/78) and
 [PR 82](https://github.com/hamdamme/casf/pull/82), plus rejection of small-order
 Ed25519 keys that permit signature bypasses. Published rc2/rc3 are affected.
-The [replacement artifacts from `492f330`](0.1.0rc4/candidate-0.1.0rc4-492f330.md)
-include PR 84 and passed fresh installation checks for that revision. They omit
-the key-passphrase and package updates and remain historical. A new candidate
-must follow acceptance of this implementation. All earlier rc4 artifacts remain
-superseded for that release; exact-file review and publication approval are pending. See the [rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
+The [492f330 artifacts](0.1.0rc4/candidate-0.1.0rc4-492f330.md) include PR 84 and
+passed installation checks for that revision, but omit PR 87's key-passphrase and
+package updates. They remain historical. The [ce6cd67 candidate](0.1.0rc4/candidate-0.1.0rc4-ce6cd67.md)
+includes PR 87 and passed new installation checks; CI 248 passed all ten jobs on
+that source. Exact-file review and publication approval remain pending. See the
+[rc4 notes](0.1.0rc4/notes-0.1.0rc4.md).
 
 ## Moved paths
 

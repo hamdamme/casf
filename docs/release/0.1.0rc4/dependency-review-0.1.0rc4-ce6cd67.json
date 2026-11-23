@@ -1,0 +1,2317 @@
+{
+  "schema_version": 1,
+  "queried_at_utc": "2026-11-23T04:05:21.736002+00:00",
+  "completed_at_utc": "2026-11-23T04:05:23.188697+00:00",
+  "source_commit": "ce6cd67c01df2af283b2e07fc1b832e79bb14821",
+  "lock_sha256": "9928329bc20ceb95f52dadaaed4022ba322a0bacdbd3a3617c0f1451e4777669",
+  "pyproject_sha256": "e578ddede31e90034bbe50fa1396e5e5bebc80e48dee2d74dbc9b77c8f4dd018",
+  "scope": "24 exact locked external packages, required uv tooling, and additional version pairs from the observed minimum compatibility environment. Package-only queries; native libraries, host patches, all allowed version ranges and development-tool minimums are not cleared.",
+  "minimum_scope_provenance": {
+    "source_commit": "c21cb2173d2ff7a06866afb5cc879c38114145b8",
+    "source_tree": "fff20d4681d7b17530f44241e0c28af9437a7ac1",
+    "inventory_sha256": "dab4f1b2abbf4d50ac4e1e92814d564643cc59c101bd5d195784a46af8eeb3c3",
+    "note": "Prior minimum validation inventory used only to select exact version pairs; not claimed to be candidate installation evidence."
+  },
+  "method_documentation": [
+    "https://google.github.io/osv.dev/post-v1-query/",
+    "https://docs.pypi.org/api/json/"
+  ],
+  "license_scope": "PyPI declarations recorded; no new legal compliance assessment or binary bundled-license inspection.",
+  "packages": [
+    {
+      "name": "ast-serialize",
+      "version": "0.13.1",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/ast-serialize/0.13.1/json",
+        "queried_at_utc": "2026-11-23T04:05:21.737836+00:00",
+        "request_payload": null,
+        "saved_request": "ast-serialize-0.13.1-pypi-request.json",
+        "request_sha256": "243f9bd050b664b66e7a6585005797241039e3fd40a66a50c70e1d7f85a8d577",
+        "status": 200,
+        "response_sha256": "9b0729d3fb981e4e2b4bb8c95faddafb64aac14fa31568f1b7c373c9a681cc34",
+        "saved_response": "ast-serialize-0.13.1-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"UxdPQCETgG7FfVCeQfkzHw\"",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 57,
+        "locked_distribution_hashes_checked": 57,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "ast-serialize-0.13.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "c799f2a16600aa929def4a46d5d22dc7348ca9f6ba1079c71a39372e4647f50f"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.737985+00:00",
+        "request_payload": {
+          "package": {
+            "name": "ast-serialize",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.13.1"
+        },
+        "saved_request": "ast-serialize-0.13.1-osv-request.json",
+        "request_sha256": "9a1690713d2fdd15f68e55f02478569abc8af2ab73c326c62f5d37d1f26e3727",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "ast-serialize-0.13.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "build",
+      "version": "1.6.1",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/build/1.6.1/json",
+        "queried_at_utc": "2026-11-23T04:05:21.738123+00:00",
+        "request_payload": null,
+        "saved_request": "build-1.6.1-pypi-request.json",
+        "request_sha256": "e0bcc47483d8dd8e5c17c6a86a6c681718bc4eac3da515954deba83459c368f4",
+        "status": 200,
+        "response_sha256": "064e9dcb80e948b5de7a841c3fd9b5644a980eb27bb644fb7f562b7d773b157b",
+        "saved_response": "build-1.6.1-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"ORGo8qCWjFdEFs443gekDQ\"",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "build-1.6.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "d287bdbbff6e11e04c50e62827cb6223365505c78bdd410263845942d164d144"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.738276+00:00",
+        "request_payload": {
+          "package": {
+            "name": "build",
+            "ecosystem": "PyPI"
+          },
+          "version": "1.6.1"
+        },
+        "saved_request": "build-1.6.1-osv-request.json",
+        "request_sha256": "99b6e5a30b574e8865d69da9ebeebbf26b0e5fb2752375a3e9750b2a4ff9d217",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "build-1.6.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/cffi/2.1.1/json",
+        "queried_at_utc": "2026-11-23T04:05:21.738852+00:00",
+        "request_payload": null,
+        "saved_request": "cffi-2.1.1-pypi-request.json",
+        "request_sha256": "00c937a1c648989a68932879cc6bb360a7e0bc03ab8a4fabd3796df520354de4",
+        "status": 200,
+        "response_sha256": "2255e530e3f80593a354e3d84a29966924d0e10309d1e3a6d50f845ab7d8df66",
+        "saved_response": "cffi-2.1.1-pypi.json",
+        "response_headers": {
+          "etag": "\"OAysEPf1d/baFIiFc2G/Xw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT-0",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 100,
+        "locked_distribution_hashes_checked": 75,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "cffi-2.1.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "7c281f32916454daa59892068428dc109fbc88dd48de12525fa77206804c8566"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.738993+00:00",
+        "request_payload": {
+          "package": {
+            "name": "cffi",
+            "ecosystem": "PyPI"
+          },
+          "version": "2.1.1"
+        },
+        "saved_request": "cffi-2.1.1-osv-request.json",
+        "request_sha256": "0a7bac2e79f075ea12a457bef8945abb67f4fa925e5483f260c85c42facc7053",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "cffi-2.1.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "click",
+      "version": "8.5.0",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/click/8.5.0/json",
+        "queried_at_utc": "2026-11-23T04:05:21.793281+00:00",
+        "request_payload": null,
+        "saved_request": "click-8.5.0-pypi-request.json",
+        "request_sha256": "02ca3ffb2a3849c81ca6c4bf878b568303832cd36e9bfbc800d834819aa65745",
+        "status": 200,
+        "response_sha256": "6fc33d0e534d89a788a0965bb5071ca0726a483747589201789b60babd602686",
+        "saved_response": "click-8.5.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"0ZOvRDJF7MKp3s07etAWuw\"",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "click-8.5.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "65c2c53b5055dc1042b6d9fcb7791bc79cef4e4f5cffd500958af48eaf918141"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.803522+00:00",
+        "request_payload": {
+          "package": {
+            "name": "click",
+            "ecosystem": "PyPI"
+          },
+          "version": "8.5.0"
+        },
+        "saved_request": "click-8.5.0-osv-request.json",
+        "request_sha256": "95b30071e11b704617be3f7b8f982aaeb55697b0498adc5cf05f4b6ccf826ff8",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "click-8.5.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "click",
+      "version": "8.5.1",
+      "scopes": [
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/click/8.5.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.788947+00:00",
+        "request_payload": null,
+        "saved_request": "click-8.5.1-pypi-request.json",
+        "request_sha256": "729ae5df66d821c3ed2a677e67facc5e48596caf6383244d4d9b6673524df35d",
+        "status": 200,
+        "response_sha256": "d6ec5ff9b41fc09d046eb431973dae2eec594dba3a853d03f369c4e3b2fde9b6",
+        "saved_response": "click-8.5.1-pypi.json",
+        "response_headers": {
+          "etag": "\"qrGwLXNyX6eWKjhVj3xaiw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 0,
+        "locked_distribution_problems": []
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.819865+00:00",
+        "request_payload": {
+          "package": {
+            "name": "click",
+            "ecosystem": "PyPI"
+          },
+          "version": "8.5.1"
+        },
+        "saved_request": "click-8.5.1-osv-request.json",
+        "request_sha256": "61439b5ae9e5dd0049f0f68cae90be67ed48d3ba2a3f155e8e49bac841d7b74c",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "click-8.5.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/colorama/0.4.6/json",
+        "queried_at_utc": "2026-11-23T04:05:21.828852+00:00",
+        "request_payload": null,
+        "saved_request": "colorama-0.4.6-pypi-request.json",
+        "request_sha256": "5d62f806634aa2e7b62c560d9b97f714dc275b1f8243885065c416735233cc5d",
+        "status": 200,
+        "response_sha256": "43fb351344384a44c2b7d7fff1c63496b89ac830aea714301525c1f3718addd1",
+        "saved_response": "colorama-0.4.6-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"Q/TQItdXUcxruL+ZDArsaw\"",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": "",
+        "license_classifiers": [
+          "License :: OSI Approved :: BSD License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "colorama-0.4.6-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "5bf0f1717da6a1236315f3e8660087b69a394596df3e2ecc9ca755ccad35a912"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.861377+00:00",
+        "request_payload": {
+          "package": {
+            "name": "colorama",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.4.6"
+        },
+        "saved_request": "colorama-0.4.6-osv-request.json",
+        "request_sha256": "3c5cb8a4772b639022adea55ddee076615a886d0e8c617240263caa33ff9e8fe",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "colorama-0.4.6-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.0",
+      "scopes": [
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/cryptography/50.0.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.841571+00:00",
+        "request_payload": null,
+        "saved_request": "cryptography-50.0.0-pypi-request.json",
+        "request_sha256": "54cd4467e2e0d8f18771a75a973405cb1d868bb6aa40095bb17558692bc6822c",
+        "status": 200,
+        "response_sha256": "4cb03a11a6a704310e9aab006acf6d4946c1543f0f8410d7188b90ec1e17f03d",
+        "saved_response": "cryptography-50.0.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"4lx5HjQLk9bmO0OQXT3uGA\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "Apache-2.0 OR BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 46,
+        "locked_distribution_hashes_checked": 0,
+        "locked_distribution_problems": []
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.862771+00:00",
+        "request_payload": {
+          "package": {
+            "name": "cryptography",
+            "ecosystem": "PyPI"
+          },
+          "version": "50.0.0"
+        },
+        "saved_request": "cryptography-50.0.0-osv-request.json",
+        "request_sha256": "86a533bcaa0ca12d457a7a65144d679b7dd24980d5d696eaf6af6742bcd42d5f",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "cryptography-50.0.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/cryptography/50.0.2/json",
+        "queried_at_utc": "2026-11-23T04:05:21.912538+00:00",
+        "request_payload": null,
+        "saved_request": "cryptography-50.0.2-pypi-request.json",
+        "request_sha256": "ab36ff1a48e19553005c62a6966483782674973d808a1253b1e7cf55ed23ca5c",
+        "status": 200,
+        "response_sha256": "7423990cc0948676ef47a71ea62a476ece4c76245e6bebd1c3a71f03c4ffc0f4",
+        "saved_response": "cryptography-50.0.2-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"KMeZB6rX8RKAOYtgYLmSbQ\"",
+          "Date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "Apache-2.0 OR BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 59,
+        "locked_distribution_hashes_checked": 53,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "cryptography-50.0.2-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "d449bb86b94511d8f3a1009788d6de8589299040302a68030f6d6c674ea6204a"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:21.954663+00:00",
+        "request_payload": {
+          "package": {
+            "name": "cryptography",
+            "ecosystem": "PyPI"
+          },
+          "version": "50.0.2"
+        },
+        "saved_request": "cryptography-50.0.2-osv-request.json",
+        "request_sha256": "274b26ce29bec6ed5a817f9dc99d5354435412dd1511637543cf61d684c93f4a",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "cryptography-50.0.2-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/h11/0.16.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.041436+00:00",
+        "request_payload": null,
+        "saved_request": "h11-0.16.0-pypi-request.json",
+        "request_sha256": "86c20a9a9b3d5a953b8b0fae5b7b8090722d42d6ff60d42353216d181d3bacdd",
+        "status": 200,
+        "response_sha256": "97f4efb9cc00826f0408076983adc1a1e48e8f2cabf403aaf250f724e081440d",
+        "saved_response": "h11-0.16.0-pypi.json",
+        "response_headers": {
+          "etag": "\"sxf6OblifYWD3AVMv2KEmw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": "MIT",
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "h11-0.16.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "0304cf6d12ec52294017ed5863fc103bfb4e10882d05b3ec8263fb20ac0e15d3"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.045887+00:00",
+        "request_payload": {
+          "package": {
+            "name": "h11",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.16.0"
+        },
+        "saved_request": "h11-0.16.0-osv-request.json",
+        "request_sha256": "228ab665edbbe109ef22e5f16c2bbca0051465f671b923d5ae4d0feebd328e52",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "h11-0.16.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "hypothesis",
+      "version": "6.170.9",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/hypothesis/6.170.9/json",
+        "queried_at_utc": "2026-11-23T04:05:22.055314+00:00",
+        "request_payload": null,
+        "saved_request": "hypothesis-6.170.9-pypi-request.json",
+        "request_sha256": "379d531327d61cb8c4e9f4a6a3806c0ffcf5bbb1e1c1a0e55c0924f5f4fb7e5a",
+        "status": 200,
+        "response_sha256": "2054670d7c9c818367c885030217eea1c50b43bb25110e84fefcaea6c4a5f979",
+        "saved_response": "hypothesis-6.170.9-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"2lw4SxZPmLOcZVQDJZOLQg\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MPL-2.0",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 83,
+        "locked_distribution_hashes_checked": 71,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "hypothesis-6.170.9-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "9580a5013deb29a25a341d4d99f4dda87166e65fa6fd8cdf598b15d04edd1700"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.072167+00:00",
+        "request_payload": {
+          "package": {
+            "name": "hypothesis",
+            "ecosystem": "PyPI"
+          },
+          "version": "6.170.9"
+        },
+        "saved_request": "hypothesis-6.170.9-osv-request.json",
+        "request_sha256": "daac27a0b13bf6ca64b972634565420fc59a54f3536319a9cbb5f01d461ef526",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "hypothesis-6.170.9-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/iniconfig/2.3.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.073314+00:00",
+        "request_payload": null,
+        "saved_request": "iniconfig-2.3.1-pypi-request.json",
+        "request_sha256": "f215a158e2ca4d6e739a5f80c349ccfa6312b8b44e8dae1a3b20c5bd3efd9c04",
+        "status": 200,
+        "response_sha256": "ab4d5df71d2a4f01a0eb418d7809bb22dca3293991a369309f068c07c1471557",
+        "saved_response": "iniconfig-2.3.1-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"R4GZVv+pWpS+BqTW2etswg\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "iniconfig-2.3.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "d853768ed7ef7cbd40a8c1a22c0ae3de91a088c7db64820fbd89dd3b8df248ce"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.078517+00:00",
+        "request_payload": {
+          "package": {
+            "name": "iniconfig",
+            "ecosystem": "PyPI"
+          },
+          "version": "2.3.1"
+        },
+        "saved_request": "iniconfig-2.3.1-osv-request.json",
+        "request_sha256": "08d1a949e12e174eece55a94533bf24ec419933d3d26ea776af2603280806f4e",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "iniconfig-2.3.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:21 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "librt",
+      "version": "0.16.0",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/librt/0.16.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.106274+00:00",
+        "request_payload": null,
+        "saved_request": "librt-0.16.0-pypi-request.json",
+        "request_sha256": "aeaea7243c4e471eb05b196004f49faf10cc418fee6d792db5b23906dd56b67b",
+        "status": 200,
+        "response_sha256": "60f1bc7d6cd095ee016d4a4789909fed2a9c6a4a088470596d9f2f62621dabb2",
+        "saved_response": "librt-0.16.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"30CmHSFD1lx6IVTLZIhxDQ\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 137,
+        "locked_distribution_hashes_checked": 94,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "librt-0.16.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "fe035e0abf310cc82c9e62870266044344918829dea2a2b45465e1ff59b60b04"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.125571+00:00",
+        "request_payload": {
+          "package": {
+            "name": "librt",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.16.0"
+        },
+        "saved_request": "librt-0.16.0-osv-request.json",
+        "request_sha256": "4bcd37fadcb9f29ae962d1faf24be8085ce28e134e4f9e268451d63a7bfc6a9f",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "librt-0.16.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "mypy",
+      "version": "2.4.0",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/mypy/2.4.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.144860+00:00",
+        "request_payload": null,
+        "saved_request": "mypy-2.4.0-pypi-request.json",
+        "request_sha256": "639246275592ea3ab383d3749d43c0a9ebf71bd082a1eed73f1cf11f282d12a2",
+        "status": 200,
+        "response_sha256": "5246f3191f076effff6bd25f9cd4369816a9f9a2a3c9b1f0610705a651fc4f5b",
+        "saved_response": "mypy-2.4.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"Eoa+EIv2/b5oJ9Y0+uks9w\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 52,
+        "locked_distribution_hashes_checked": 40,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "mypy-2.4.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "a413f83a29df0f7b65fca1b0ad6c56c3149a0d06e0785e54beb3e0bc915c568d"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.155242+00:00",
+        "request_payload": {
+          "package": {
+            "name": "mypy",
+            "ecosystem": "PyPI"
+          },
+          "version": "2.4.0"
+        },
+        "saved_request": "mypy-2.4.0-osv-request.json",
+        "request_sha256": "bd795dec25ca7843db396bc35fbacddc1327b09daf10a7d15fbbd576fd284dff",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "mypy-2.4.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "mypy-extensions",
+      "version": "1.1.0",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/mypy-extensions/1.1.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.210520+00:00",
+        "request_payload": null,
+        "saved_request": "mypy-extensions-1.1.0-pypi-request.json",
+        "request_sha256": "701a0d550a799d82b73d46e02bdb7ff25dba218590b46855d546a33a608d9f5e",
+        "status": 200,
+        "response_sha256": "e9715bb5583e110c5bb663b8d2ee88ae736e8c37928218e1923714559c972fb1",
+        "saved_response": "mypy-extensions-1.1.0-pypi.json",
+        "response_headers": {
+          "etag": "\"/fYv8gfrIk0hjCoADUy7Gw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "mypy-extensions-1.1.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "76fa70504031ec6305815f8a5edaf94b9c2984c2b5df31f55a4d11646043a9d8"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.242048+00:00",
+        "request_payload": {
+          "package": {
+            "name": "mypy-extensions",
+            "ecosystem": "PyPI"
+          },
+          "version": "1.1.0"
+        },
+        "saved_request": "mypy-extensions-1.1.0-osv-request.json",
+        "request_sha256": "cdb6ff93519995dd3149c027f7abe5eaa9d24f5fc4efdf55dd654d8070ff3dc4",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "mypy-extensions-1.1.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/packaging/26.3/json",
+        "queried_at_utc": "2026-11-23T04:05:22.265310+00:00",
+        "request_payload": null,
+        "saved_request": "packaging-26.3-pypi-request.json",
+        "request_sha256": "4e5795bec0524524e4f975310d49f94d0a1b6e4d10efa7177aaa64c285808a5c",
+        "status": 200,
+        "response_sha256": "4f190d2f0b312b3086058cee64ab4333bf3ce67fb78b4c2bdb43899049b29f4d",
+        "saved_response": "packaging-26.3-pypi.json",
+        "response_headers": {
+          "etag": "\"2sOe3KZ6LJeIJMEvAtnyMA\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "Apache-2.0 OR BSD-2-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "packaging-26.3-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "5b4d1a37293b4a0e2304853cdcbaf85f91c34ab7851008ec9795aef269e0f737"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.267979+00:00",
+        "request_payload": {
+          "package": {
+            "name": "packaging",
+            "ecosystem": "PyPI"
+          },
+          "version": "26.3"
+        },
+        "saved_request": "packaging-26.3-osv-request.json",
+        "request_sha256": "751eb2c4f2a99f6e542171e25470a74ad26a9db35267bdff2100a44a3865ebab",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "packaging-26.3-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pathspec/1.1.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.295022+00:00",
+        "request_payload": null,
+        "saved_request": "pathspec-1.1.1-pypi-request.json",
+        "request_sha256": "0c56b7095e9a5d994b7d7fd2eb83db2dce6917f9117895c8b2566f8b8d21d21f",
+        "status": 200,
+        "response_sha256": "24f66829a7f40485bdccfcf32294218b0f4260b289ee4806ab644feb6c194766",
+        "saved_response": "pathspec-1.1.1-pypi.json",
+        "response_headers": {
+          "etag": "\"J+dylBEnDvliDG2EDCeomg\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pathspec-1.1.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "ea25455f53109f29b0e9167111ed678936ee9f31914b7ec127824034124d4845"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.315790+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pathspec",
+            "ecosystem": "PyPI"
+          },
+          "version": "1.1.1"
+        },
+        "saved_request": "pathspec-1.1.1-osv-request.json",
+        "request_sha256": "1b39ae921f55b4bb025af96aec319140786d9331c51a66bc0f0f5df97043b311",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pathspec-1.1.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pluggy/1.7.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.315867+00:00",
+        "request_payload": null,
+        "saved_request": "pluggy-1.7.0-pypi-request.json",
+        "request_sha256": "ec741cfd60863c3327a908941279e947938947a10a90ca6b429b311c1a72b6db",
+        "status": 200,
+        "response_sha256": "9e8f441bba8382eabf6febf386a5b9610cfe0c16b60b96e7b4b1831bd6d96361",
+        "saved_response": "pluggy-1.7.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"u42wiSDraZw0v4utPb5ogQ\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": "MIT",
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pluggy-1.7.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "93441b1312504de2eed9b1113b60db1f32bcaf50524c2741514707a9158eeaea"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.326030+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pluggy",
+            "ecosystem": "PyPI"
+          },
+          "version": "1.7.0"
+        },
+        "saved_request": "pluggy-1.7.0-osv-request.json",
+        "request_sha256": "40f4f76e04878a7ba8738677fd0c9d8dce63748451799d8c73d1477a0cdcf35c",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pluggy-1.7.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pycparser",
+      "version": "3.12",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pycparser/3.12/json",
+        "queried_at_utc": "2026-11-23T04:05:22.349091+00:00",
+        "request_payload": null,
+        "saved_request": "pycparser-3.12-pypi-request.json",
+        "request_sha256": "064da6eaf018d21bc5fb5d841c83f95100fb758eb3fbb577f683edf4a618ba01",
+        "status": 200,
+        "response_sha256": "e919b291615d54a2328a0da6128cd9d95601ad04d27cec48eeb75e0d57c3b6ad",
+        "saved_response": "pycparser-3.12-pypi.json",
+        "response_headers": {
+          "etag": "\"b6ENcFZnUhfPSeKwVafHKw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pycparser-3.12-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "e09a63d4b0bad72f8c14cf4c6a50c39cd4b87f49fe423d7daff22d27fa854d81"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.381266+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pycparser",
+            "ecosystem": "PyPI"
+          },
+          "version": "3.12"
+        },
+        "saved_request": "pycparser-3.12-osv-request.json",
+        "request_sha256": "aa42615f5a4f8c8bb5e8a75312fee3d355c5d1753efedec631932792cbece3a5",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pycparser-3.12-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pygments",
+      "version": "2.21.0",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pygments/2.21.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.397364+00:00",
+        "request_payload": null,
+        "saved_request": "pygments-2.21.0-pypi-request.json",
+        "request_sha256": "2f219268d7e0f223c2121e75a4b19df63dce1f7b4e67f6a86102b9efc3dd2bf2",
+        "status": 200,
+        "response_sha256": "330104a10adc8a587e3f98f4e207557125ca0c1d489e129334da5acb2b813a03",
+        "saved_response": "pygments-2.21.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"s4Z5fDwWZUSiO6/39E7Nzg\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "BSD-2-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pygments-2.21.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "0a3dba996d40f624264ae764deacbb23c9620823fbb2dfb949c5c82425cdde29"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.429915+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pygments",
+            "ecosystem": "PyPI"
+          },
+          "version": "2.21.0"
+        },
+        "saved_request": "pygments-2.21.0-osv-request.json",
+        "request_sha256": "76a6af606e90c854fbec064ab3632042359115bff05d6f4daf7c5174c533af6c",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pygments-2.21.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pyproject-hooks",
+      "version": "1.3.3",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pyproject-hooks/1.3.3/json",
+        "queried_at_utc": "2026-11-23T04:05:22.440368+00:00",
+        "request_payload": null,
+        "saved_request": "pyproject-hooks-1.3.3-pypi-request.json",
+        "request_sha256": "5c64f3f122cdd6a715ae2ed9a9a94896d83eb9f770480327554c8ebd3e7e3c56",
+        "status": 200,
+        "response_sha256": "ef47170935f8a098c070a3cd65d637d5bbf646158d9559eebac9c465b83d0401",
+        "saved_response": "pyproject-hooks-1.3.3-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"Q+st3ZJC4YadwljWkbIU7g\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pyproject-hooks-1.3.3-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "0149c75125d273483b4061dd84def7a4d385514eb605d5aa3c8346c353cec38d"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.475114+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pyproject-hooks",
+            "ecosystem": "PyPI"
+          },
+          "version": "1.3.3"
+        },
+        "saved_request": "pyproject-hooks-1.3.3-osv-request.json",
+        "request_sha256": "431f1b5d2df2395795c0a1d458858643244a6a3e084a4aa4b274574011ca1bf6",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pyproject-hooks-1.3.3-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/pytest/9.1.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.494852+00:00",
+        "request_payload": null,
+        "saved_request": "pytest-9.1.1-pypi-request.json",
+        "request_sha256": "1d14484db23a8cbe4f1140f9d3174071552f6ba870fd706ead11deaa87578057",
+        "status": 200,
+        "response_sha256": "707efea7c8046e3aaaaac619aac85bc1e73c310a9fbff8028c53ac229ca02f2c",
+        "saved_response": "pytest-9.1.1-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"/pBlinePoVXZZTvtLVDI5g\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "pytest-9.1.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "0cd26ddb29ff1e895d4b2a2a38e06fd773f27912058c1daa347c99cd1d47ce5e"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.528397+00:00",
+        "request_payload": {
+          "package": {
+            "name": "pytest",
+            "ecosystem": "PyPI"
+          },
+          "version": "9.1.1"
+        },
+        "saved_request": "pytest-9.1.1-osv-request.json",
+        "request_sha256": "c5b6f41bc905d0afd8c8bde2955f216a483a7c1114b8d3bc15b9027186053a84",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "pytest-9.1.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "ruff",
+      "version": "0.17.2",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/ruff/0.17.2/json",
+        "queried_at_utc": "2026-11-23T04:05:22.541937+00:00",
+        "request_payload": null,
+        "saved_request": "ruff-0.17.2-pypi-request.json",
+        "request_sha256": "c8c3df13845ef7fab9820c5c3550955863df35fc167c9b5c0aa3722b0bedce45",
+        "status": 200,
+        "response_sha256": "44ab7ce0865508341ac76a96c72c70dabe2eb4faafbdbc0c2c89eed28fed7078",
+        "saved_response": "ruff-0.17.2-pypi.json",
+        "response_headers": {
+          "etag": "\"5qLI1OIgjjearLVee6ql3Q\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 18,
+        "locked_distribution_hashes_checked": 18,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "ruff-0.17.2-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "802ea842b41d5387f90b0d02f59d59e989a3ea6fd322be8f6b0f0639a03d7479"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.551988+00:00",
+        "request_payload": {
+          "package": {
+            "name": "ruff",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.17.2"
+        },
+        "saved_request": "ruff-0.17.2-osv-request.json",
+        "request_sha256": "a36604353c59048ef52afb7871b618aea03584ef71c966019924d7b4b0a3e173",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "ruff-0.17.2-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "setuptools",
+      "version": "77.0.3",
+      "scopes": [
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/setuptools/77.0.3/json",
+        "queried_at_utc": "2026-11-23T04:05:22.880862+00:00",
+        "request_payload": null,
+        "saved_request": "setuptools-77.0.3-pypi-request.json",
+        "request_sha256": "b864de720c7bffa0790134010904920ef4e5bd9553d791ee624e05609ebaa4b3",
+        "status": 200,
+        "response_sha256": "e895889244a737c379e7a698b6d3e039c27ac518acc3f20451e5b84a9a05c57d",
+        "saved_response": "setuptools-77.0.3-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"o6YHgkJgHZaGZyxUWZSgyA\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [
+          {
+            "id": "GHSA-5rjg-fvgr-3xxf",
+            "aliases": [
+              "BIT-setuptools-2025-47273",
+              "CVE-2025-47273",
+              "PYSEC-2025-49"
+            ],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "78.1.1"
+            ],
+            "link": "https://osv.dev/vulnerability/GHSA-5rjg-fvgr-3xxf",
+            "source": "osv"
+          },
+          {
+            "id": "PYSEC-2025-49",
+            "aliases": [
+              "CVE-2025-47273",
+              "GHSA-5rjg-fvgr-3xxf"
+            ],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "78.1.1"
+            ],
+            "link": "https://osv.dev/vulnerability/PYSEC-2025-49",
+            "source": "osv"
+          },
+          {
+            "id": "PYSEC-2026-3447",
+            "aliases": [
+              "CVE-2026-59890",
+              "GHSA-h35f-9h28-mq5c"
+            ],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "83.0.0"
+            ],
+            "link": "https://osv.dev/vulnerability/PYSEC-2026-3447",
+            "source": "osv"
+          },
+          {
+            "id": "GHSA-h35f-9h28-mq5c",
+            "aliases": [
+              "BIT-setuptools-2026-59890",
+              "CVE-2026-59890",
+              "PYSEC-2026-3447"
+            ],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "83.0.0"
+            ],
+            "link": "https://osv.dev/vulnerability/GHSA-h35f-9h28-mq5c",
+            "source": "osv"
+          },
+          {
+            "id": "GHSA-xmj3-9gf7-h52w",
+            "aliases": [],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "84.1.0"
+            ],
+            "link": "https://osv.dev/vulnerability/GHSA-xmj3-9gf7-h52w",
+            "source": "osv"
+          }
+        ],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 0,
+        "locked_distribution_problems": []
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.914252+00:00",
+        "request_payload": {
+          "package": {
+            "name": "setuptools",
+            "ecosystem": "PyPI"
+          },
+          "version": "77.0.3"
+        },
+        "saved_request": "setuptools-77.0.3-osv-request.json",
+        "request_sha256": "2bdc645b5a73031b71c79d03de8be7dd97600c27ed5a214cc13e7622ce668137",
+        "status": 200,
+        "response_sha256": "57ec04df05ca20a196cba1f2b060c25e07a83a95d567c64459a3187451bdfa9b",
+        "saved_response": "setuptools-77.0.3-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [
+          {
+            "id": "GHSA-5rjg-fvgr-3xxf",
+            "aliases": [
+              "BIT-setuptools-2025-47273",
+              "CVE-2025-47273",
+              "PYSEC-2025-49"
+            ],
+            "summary": "setuptools has a path traversal vulnerability in PackageIndex.download that leads to Arbitrary File Write",
+            "modified": "2026-09-10T03:50:24.253527717Z",
+            "published": "2025-05-19T16:52:43Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "setuptools",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/setuptools"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0"
+                      },
+                      {
+                        "fixed": "78.1.1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-5rjg-fvgr-3xxf"
+              },
+              {
+                "type": "ADVISORY",
+                "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-47273"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/issues/4946"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/commit/250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/advisory-database/tree/main/vulns/setuptools/PYSEC-2025-49.yaml"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://github.com/pypa/setuptools"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/blob/6ead555c5fb29bc57fe6105b1bffc163f56fd558/setuptools/package_index.py#L810C1-L825C88"
+              },
+              {
+                "type": "WEB",
+                "url": "https://lists.debian.org/debian-lts-announce/2025/05/msg00035.html"
+              }
+            ]
+          },
+          {
+            "id": "GHSA-h35f-9h28-mq5c",
+            "aliases": [
+              "BIT-setuptools-2026-59890",
+              "CVE-2026-59890",
+              "PYSEC-2026-3447"
+            ],
+            "summary": "setuptools: MANIFEST.in exclusion bypass in sdist via Unicode normalization collision (NFC/NFD) on macOS APFS/HFS+",
+            "modified": "2026-09-10T03:50:52.323347787Z",
+            "published": "2026-07-21T19:09:21Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "setuptools",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/setuptools"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0"
+                      },
+                      {
+                        "fixed": "83.0.0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-h35f-9h28-mq5c"
+              },
+              {
+                "type": "ADVISORY",
+                "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-59890"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/commit/dd9f436a36486b4cb8a4c70a2321548b0be09b8f"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/advisory-database/tree/main/vulns/setuptools/PYSEC-2026-3447.yaml"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://github.com/pypa/setuptools"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/releases/tag/v83.0.0"
+              }
+            ]
+          },
+          {
+            "id": "GHSA-xmj3-9gf7-h52w",
+            "summary": "setuptools: Windows path escape via namespace_packages.txt during legacy wheel installation  Description",
+            "modified": "2026-10-23T22:00:03.739009766Z",
+            "published": "2026-10-23T21:44:11Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "setuptools",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/setuptools"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "38.2.2"
+                      },
+                      {
+                        "fixed": "84.1.0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/pull/5329"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/commit/6d07b8d17890dda58d944ac51e58f54af92d52af"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://github.com/pypa/setuptools"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/releases/tag/v84.1.0"
+              }
+            ]
+          },
+          {
+            "id": "PYSEC-2025-49",
+            "aliases": [
+              "BIT-setuptools-2025-47273",
+              "CVE-2025-47273",
+              "GHSA-5rjg-fvgr-3xxf"
+            ],
+            "modified": "2026-05-11T00:26:34.671259971Z",
+            "published": "2025-05-17T16:15:19Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "setuptools",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/setuptools"
+                },
+                "ranges": [
+                  {
+                    "type": "GIT",
+                    "repo": "https://github.com/pypa/setuptools",
+                    "events": [
+                      {
+                        "introduced": "0"
+                      },
+                      {
+                        "fixed": "250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0"
+                      },
+                      {
+                        "fixed": "78.1.1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "EVIDENCE",
+                "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-5rjg-fvgr-3xxf"
+              },
+              {
+                "type": "ARTICLE",
+                "url": "https://lists.debian.org/debian-lts-announce/2025/05/msg00035.html"
+              },
+              {
+                "type": "REPORT",
+                "url": "https://github.com/pypa/setuptools/issues/4946"
+              },
+              {
+                "type": "FIX",
+                "url": "https://github.com/pypa/setuptools/commit/250a6d17978f9f6ac3ac887091f2d32886fbbb0b"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/setuptools/blob/6ead555c5fb29bc57fe6105b1bffc163f56fd558/setuptools/package_index.py#L810C1-L825C88"
+              }
+            ]
+          },
+          {
+            "id": "PYSEC-2026-3447",
+            "aliases": [
+              "BIT-setuptools-2026-59890",
+              "CVE-2026-59890",
+              "GHSA-h35f-9h28-mq5c"
+            ],
+            "modified": "2026-07-14T10:56:37.948360943Z",
+            "published": "2026-07-08T17:17:27.020Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "setuptools",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/setuptools"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0"
+                      },
+                      {
+                        "fixed": "83.0.0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "ADVISORY",
+                "url": "https://github.com/pypa/setuptools/releases/tag/v83.0.0"
+              },
+              {
+                "type": "FIX",
+                "url": "https://github.com/pypa/setuptools/commit/dd9f436a36486b4cb8a4c70a2321548b0be09b8f"
+              },
+              {
+                "type": "EVIDENCE",
+                "url": "https://github.com/pypa/setuptools/security/advisories/GHSA-h35f-9h28-mq5c"
+              }
+            ]
+          }
+        ],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "setuptools",
+      "version": "84.2.1",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/setuptools/84.2.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.581197+00:00",
+        "request_payload": null,
+        "saved_request": "setuptools-84.2.1-pypi-request.json",
+        "request_sha256": "c2a751dc25a7b812e07b66d1d1bdb84b8a92ebb98601eb04db4175a7cb3be10b",
+        "status": 200,
+        "response_sha256": "d75de8ba0d3304a3d74484fb9f340edb87ef02712da4fa02a2ed92e71b0572dd",
+        "saved_response": "setuptools-84.2.1-pypi.json",
+        "response_headers": {
+          "etag": "\"55uJHk8bRHokagvCy18CkA\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "setuptools-84.2.1-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "3756debb5984322d323d3d3d7797e264258f5a4749daca351e0eecd41342c752"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.611981+00:00",
+        "request_payload": {
+          "package": {
+            "name": "setuptools",
+            "ecosystem": "PyPI"
+          },
+          "version": "84.2.1"
+        },
+        "saved_request": "setuptools-84.2.1-osv-request.json",
+        "request_sha256": "f0f19b8fa36800f6ffdebcf253b107ff3cceaf51838b49b95904c1b1a47de8bf",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "setuptools-84.2.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "sortedcontainers",
+      "version": "2.4.0",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/sortedcontainers/2.4.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.618263+00:00",
+        "request_payload": null,
+        "saved_request": "sortedcontainers-2.4.0-pypi-request.json",
+        "request_sha256": "83c38bf301ae6c3e38270ba3c366e077297233928431c3c5db68cc9be92836d0",
+        "status": 200,
+        "response_sha256": "4e0cd7bf62c28a94d9236338cdd4d918aef53a344c6765756ebfe054de14930b",
+        "saved_response": "sortedcontainers-2.4.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"y3C/puysLwHYXGXqc1zRtg\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": "Apache 2.0",
+        "license_classifiers": [
+          "License :: OSI Approved :: Apache Software License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "sortedcontainers-2.4.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "ee8418271e40b3319747815ef6cdbe08b24710de3a61cb6f05202c40b5e68a01"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.625005+00:00",
+        "request_payload": {
+          "package": {
+            "name": "sortedcontainers",
+            "ecosystem": "PyPI"
+          },
+          "version": "2.4.0"
+        },
+        "saved_request": "sortedcontainers-2.4.0-osv-request.json",
+        "request_sha256": "260b3d6e8a26fd978365362f8f2832b0096765b019348caa042c2e23a5719a79",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "sortedcontainers-2.4.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "scopes": [
+        "locked"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/typing-extensions/4.16.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.650482+00:00",
+        "request_payload": null,
+        "saved_request": "typing-extensions-4.16.0-pypi-request.json",
+        "request_sha256": "676d8c680da6f2b4a37ff22daa35113931c508822eb3f9d8638a86a1e6c01a43",
+        "status": 200,
+        "response_sha256": "2140da00d62dde967f52d0be0ae28444f1d6a3fe603f52c83c23988c32122d5a",
+        "saved_response": "typing-extensions-4.16.0-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"1+LJRQCylO/9iWatnmVMBw\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "PSF-2.0",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "typing-extensions-4.16.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "0fe48a2ed34426b4885e4d39e75145bf5bfa6fda220ad00f0a12eaab2998cd03"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.687981+00:00",
+        "request_payload": {
+          "package": {
+            "name": "typing-extensions",
+            "ecosystem": "PyPI"
+          },
+          "version": "4.16.0"
+        },
+        "saved_request": "typing-extensions-4.16.0-osv-request.json",
+        "request_sha256": "f9ea412f0c80e2d8a2725e49b76fb4f62370904d5fe8119cc7a6f2667729b611",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "typing-extensions-4.16.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "uv",
+      "version": "0.13.5",
+      "scopes": [
+        "tooling"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/uv/0.13.5/json",
+        "queried_at_utc": "2026-11-23T04:05:22.758208+00:00",
+        "request_payload": null,
+        "saved_request": "uv-0.13.5-pypi-request.json",
+        "request_sha256": "9487cb2af9809a5424e9e0f99309374144631ef814fc03d53be52a519ce03452",
+        "status": 200,
+        "response_sha256": "0cafe4929e7832becb8d58b2dae629a6d7b892af0dee0e8b8869f781f7c3f362",
+        "saved_response": "uv-0.13.5-pypi.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "etag": "\"SxBjtsHl/BnG7ZqN4Y/fzQ\"",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "MIT OR Apache-2.0",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 19,
+        "locked_distribution_hashes_checked": 0,
+        "locked_distribution_problems": []
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.762086+00:00",
+        "request_payload": {
+          "package": {
+            "name": "uv",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.13.5"
+        },
+        "saved_request": "uv-0.13.5-osv-request.json",
+        "request_sha256": "c150744908248c2bafa05dd5765d30ea7f01d79934813d82e2a492baefebb24a",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "uv-0.13.5-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "scopes": [
+        "locked",
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/uvicorn/0.54.0/json",
+        "queried_at_utc": "2026-11-23T04:05:22.731328+00:00",
+        "request_payload": null,
+        "saved_request": "uvicorn-0.54.0-pypi-request.json",
+        "request_sha256": "8871831da115576fb848e5a8a7fede9b1fc47708941f3fa3dd4a36c918e54f80",
+        "status": 200,
+        "response_sha256": "a308e83961793f6114221aefe9e046ef587da0fc986c4dc50ace1ee43fbe9bcb",
+        "saved_response": "uvicorn-0.54.0-pypi.json",
+        "response_headers": {
+          "etag": "\"82gPZCfuXvQKgaCunLOAlA\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "yanked_files": [],
+        "license_expression": "BSD-3-Clause",
+        "legacy_license": null,
+        "license_classifiers": [],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 2,
+        "locked_distribution_problems": [],
+        "locked_distribution_evidence": "uvicorn-0.54.0-locked-distributions.json",
+        "locked_distribution_evidence_sha256": "e3a173661668545a39c545cc2230303357452d22c13204a5aa831da5ed48cdba"
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.751526+00:00",
+        "request_payload": {
+          "package": {
+            "name": "uvicorn",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.54.0"
+        },
+        "saved_request": "uvicorn-0.54.0-osv-request.json",
+        "request_sha256": "328d14445dfb40b0cff940769bac5965aa86b44042a04cdb225ca0eeb9519abb",
+        "status": 200,
+        "response_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "saved_response": "uvicorn-0.54.0-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    },
+    {
+      "name": "wheel",
+      "version": "0.45.1",
+      "scopes": [
+        "observed_minimum_environment"
+      ],
+      "pypi": {
+        "url": "https://pypi.org/pypi/wheel/0.45.1/json",
+        "queried_at_utc": "2026-11-23T04:05:22.929370+00:00",
+        "request_payload": null,
+        "saved_request": "wheel-0.45.1-pypi-request.json",
+        "request_sha256": "33c69b1ad0990898d84191a67b7a532f1faefaba0eb3ed4b82098fc815a2277c",
+        "status": 200,
+        "response_sha256": "617c2b62cc17caeef3fc1e10144bd3d5b8dc2fb93bb67a87f2802c2d0a856c32",
+        "saved_response": "wheel-0.45.1-pypi.json",
+        "response_headers": {
+          "etag": "\"j52EGoto45nirMGQGTBHDw\"",
+          "content-type": "application/json",
+          "Date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [
+          {
+            "id": "GHSA-8rrh-rw8j-w5fx",
+            "aliases": [
+              "CVE-2026-24049"
+            ],
+            "summary": null,
+            "withdrawn": null,
+            "fixed_in": [
+              "0.46.2"
+            ],
+            "link": "https://osv.dev/vulnerability/GHSA-8rrh-rw8j-w5fx",
+            "source": "osv"
+          }
+        ],
+        "yanked_files": [],
+        "license_expression": null,
+        "legacy_license": null,
+        "license_classifiers": [
+          "License :: OSI Approved :: MIT License"
+        ],
+        "distribution_count": 2,
+        "locked_distribution_hashes_checked": 0,
+        "locked_distribution_problems": []
+      },
+      "osv": {
+        "url": "https://api.osv.dev/v1/query",
+        "queried_at_utc": "2026-11-23T04:05:22.949635+00:00",
+        "request_payload": {
+          "package": {
+            "name": "wheel",
+            "ecosystem": "PyPI"
+          },
+          "version": "0.45.1"
+        },
+        "saved_request": "wheel-0.45.1-osv-request.json",
+        "request_sha256": "4e9914ed3463df9274be342f4aeedee0b0f4f2711430e35ec3fd019b0eacdf19",
+        "status": 200,
+        "response_sha256": "8d9a1f3e27546aa7c613f79df2d117c6c5fa6d74871d099720ec5c920172d586",
+        "saved_response": "wheel-0.45.1-osv.json",
+        "response_headers": {
+          "content-type": "application/json",
+          "date": "Mon, 23 Nov 2026 04:05:22 GMT"
+        },
+        "vulnerabilities": [
+          {
+            "id": "GHSA-8rrh-rw8j-w5fx",
+            "aliases": [
+              "CVE-2026-24049",
+              "PYSEC-2026-2047"
+            ],
+            "summary": "Wheel Affected by Arbitrary File Permission Modification via Path Traversal in wheel unpack",
+            "modified": "2026-09-10T03:50:32.887502862Z",
+            "published": "2026-01-22T18:02:56Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "wheel",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/wheel"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0.40.0"
+                      },
+                      {
+                        "fixed": "0.46.2"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx"
+              },
+              {
+                "type": "ADVISORY",
+                "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24049"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://github.com/pypa/wheel"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/releases/tag/0.46.2"
+              }
+            ]
+          },
+          {
+            "id": "PYSEC-2026-2047",
+            "aliases": [
+              "CVE-2026-24049",
+              "GHSA-8rrh-rw8j-w5fx"
+            ],
+            "summary": "Wheel Affected by Arbitrary File Permission Modification via Path Traversal in wheel unpack",
+            "modified": "2026-07-07T17:47:43.451695844Z",
+            "published": "2026-07-07T16:03:19.867108Z",
+            "affected": [
+              {
+                "package": {
+                  "name": "wheel",
+                  "ecosystem": "PyPI",
+                  "purl": "pkg:pypi/wheel"
+                },
+                "ranges": [
+                  {
+                    "type": "ECOSYSTEM",
+                    "events": [
+                      {
+                        "introduced": "0.40.0"
+                      },
+                      {
+                        "fixed": "0.46.2"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "references": [
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/security/advisories/GHSA-8rrh-rw8j-w5fx"
+              },
+              {
+                "type": "ADVISORY",
+                "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-24049"
+              },
+              {
+                "type": "FIX",
+                "url": "https://github.com/pypa/wheel/commit/7a7d2de96b22a9adf9208afcc9547e1001569fef"
+              },
+              {
+                "type": "INTRODUCED",
+                "url": "https://github.com/pypa/wheel/commit/934fe177ff912c8e03d5ae951d3805e1fd90ba5e"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://github.com/pypa/wheel"
+              },
+              {
+                "type": "WEB",
+                "url": "https://github.com/pypa/wheel/releases/tag/0.46.2"
+              },
+              {
+                "type": "PACKAGE",
+                "url": "https://pypi.org/project/wheel"
+              },
+              {
+                "type": "ADVISORY",
+                "url": "https://github.com/advisories/GHSA-8rrh-rw8j-w5fx"
+              }
+            ]
+          }
+        ],
+        "next_page_token": null,
+        "pages": 1,
+        "additional_responses": []
+      }
+    }
+  ],
+  "summary": {
+    "packages": 29,
+    "locked_packages": 24,
+    "tooling_packages": 1,
+    "additional_minimum_version_pairs": 4,
+    "requests": 58,
+    "successful_initial_requests": 58,
+    "locked_distribution_hashes_checked": 442,
+    "issues": [
+      {
+        "package": "setuptools",
+        "version": "77.0.3",
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "service": "pypi",
+        "kind": "vulnerabilities",
+        "details": [
+          "GHSA-5rjg-fvgr-3xxf",
+          "PYSEC-2025-49",
+          "PYSEC-2026-3447",
+          "GHSA-h35f-9h28-mq5c",
+          "GHSA-xmj3-9gf7-h52w"
+        ]
+      },
+      {
+        "package": "setuptools",
+        "version": "77.0.3",
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "service": "osv",
+        "kind": "vulnerabilities",
+        "details": [
+          "GHSA-5rjg-fvgr-3xxf",
+          "GHSA-h35f-9h28-mq5c",
+          "GHSA-xmj3-9gf7-h52w",
+          "PYSEC-2025-49",
+          "PYSEC-2026-3447"
+        ]
+      },
+      {
+        "package": "wheel",
+        "version": "0.45.1",
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "service": "pypi",
+        "kind": "vulnerabilities",
+        "details": [
+          "GHSA-8rrh-rw8j-w5fx"
+        ]
+      },
+      {
+        "package": "wheel",
+        "version": "0.45.1",
+        "scopes": [
+          "observed_minimum_environment"
+        ],
+        "service": "osv",
+        "kind": "vulnerabilities",
+        "details": [
+          "GHSA-8rrh-rw8j-w5fx",
+          "PYSEC-2026-2047"
+        ]
+      }
+    ]
+  },
+  "assessment": {
+    "locked_and_tooling": {
+      "exact_version_pairs": 25,
+      "listed_advisories": 0,
+      "yanked_files": 0,
+      "query_errors": 0,
+      "hash_mismatches": 0
+    },
+    "additional_minimum": {
+      "exact_version_pairs": 4,
+      "no_listed_advisories": [
+        "cryptography==50.0.0",
+        "click==8.5.1"
+      ],
+      "advisory_listed": [
+        {
+          "name": "setuptools",
+          "version": "77.0.3",
+          "osv_ids_unchanged": true,
+          "osv_record_count": 5,
+          "upstream_advisory_ids": [
+            "GHSA-5rjg-fvgr-3xxf",
+            "GHSA-h35f-9h28-mq5c",
+            "GHSA-xmj3-9gf7-h52w"
+          ]
+        },
+        {
+          "name": "wheel",
+          "version": "0.45.1",
+          "osv_ids_unchanged": true,
+          "osv_record_count": 2,
+          "upstream_advisory_ids": [
+            "GHSA-8rrh-rw8j-w5fx"
+          ]
+        }
+      ],
+      "aliases_are_not_distinct_vulnerabilities": true
+    },
+    "comparison": {
+      "prior_source_commit": "492f330c0be93a1b722314bbdc2f91ab0cb37e11",
+      "prior_queried_at_utc": "2026-11-23T02:29:24.262597+00:00",
+      "new_upstream_advisory_ids_for_same_minimum_packages": [],
+      "cryptography_change": "The former 41.0.0 compatibility minimum is outside the supported range at this commit; 50.0.0 has no listed advisories in these queries."
+    },
+    "minimum_advisory_conditions": [
+      {
+        "id": "GHSA-5rjg-fvgr-3xxf",
+        "package": "setuptools==77.0.3",
+        "condition": "Attacker-controlled URL processed by legacy PackageIndex.download can cause arbitrary file writes.",
+        "fixed_in": "78.1.1",
+        "applicability": "Not called by CASF runtime or the locked candidate build/install procedure."
+      },
+      {
+        "id": "GHSA-h35f-9h28-mq5c",
+        "package": "setuptools==77.0.3",
+        "condition": "Non-ASCII MANIFEST.in exclusions may fail across NFC/NFD path normalization when creating an sdist on macOS filesystems.",
+        "fixed_in": "83.0.0",
+        "applicability": "CASF manifest patterns at this commit are ASCII; locked build backend 84.2.1 is newer than the fix. Artifact member inspection remains separate evidence."
+      },
+      {
+        "id": "GHSA-xmj3-9gf7-h52w",
+        "package": "setuptools==77.0.3",
+        "condition": "On Windows, a crafted namespace_packages.txt passed to legacy Wheel.install_as_egg can create a fixed-content file outside the destination.",
+        "fixed_in": "84.1.0",
+        "applicability": "Not used by CASF runtime or the Ubuntu/macOS locked installation procedure."
+      },
+      {
+        "id": "GHSA-8rrh-rw8j-w5fx",
+        "package": "wheel==0.45.1",
+        "condition": "Unpacking a crafted wheel through wheel.cli.unpack can change permissions outside the destination through archive path traversal.",
+        "fixed_in": "0.46.2",
+        "applicability": "Minimum compatibility tooling only; not part of CASF runtime or the locked candidate dependency set. The vulnerable unpack API is not used by the checked CASF source/CI workflow."
+      }
+    ],
+    "disposition": "No newly identified runtime or locked release-tool package finding, and no new dependency-query reason to replace the intended locked candidate artifacts. Existing minimum-only build-tool advisories remain documented limitations; minimum compatibility success is not security clearance or a recommendation to use those old tools. This scoped review does not itself approve publication.",
+    "license_declarations": "PyPI license fields/classifiers retained. mypy-extensions 1.1.0 still lacks those JSON fields; its retained MIT license-file evidence is documented in docs/release/reviews/dependency-review.md. That prior evidence was not independently refreshed here. No new legal or bundled-native license clearance is claimed.",
+    "limits": [
+      "Package queries are dated snapshots, not absence-of-vulnerability proofs.",
+      "Native OpenSSL, Python TLS, SQLite, operating-system patches and all allowed dependency versions are outside this query scope.",
+      "Minimum extra versions came from the prior actual validation inventory; these queries do not independently establish which dependencies a future installation will select.",
+      "Existing installations can retain older satisfying build tools; prefer the reviewed locked environment."
+    ],
+    "raw_evidence_verification": {
+      "saved_request_response_and_distribution_files_verified": 140,
+      "sha256_matches": true,
+      "initial_sandbox_dns_failure_preserved_separately": true
+    }
+  }
+}
