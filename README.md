@@ -42,9 +42,10 @@ The next candidate is **0.1.0rc4, unpublished**. It includes the corrections fro
 [PR 78](https://github.com/hamdamme/casf/pull/78) and
 [PR 82](https://github.com/hamdamme/casf/pull/82), plus rejection of small-order
 Ed25519 keys that permit signature bypasses. Published rc2/rc3 are affected.
-The `3333d00` artifacts are superseded and must not be published. A new build,
-validation, review and separate publication approval are required. See the
-[rc4 notes](docs/release/notes-0.1.0rc4.md).
+The [replacement artifacts from `492f330`](docs/release/candidate-0.1.0rc4-492f330.md)
+include PR 84 and passed fresh installation checks. The `3333d00` artifacts remain
+superseded and must not be published. Exact-file review and separate publication
+approval are pending. See the [rc4 notes](docs/release/notes-0.1.0rc4.md).
 
 ## Capabilities
 

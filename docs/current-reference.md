@@ -16,9 +16,11 @@ PR 71/72 evidence and adopted synthetic-only operating rules.
 
 The [3333d00 rc4 candidate](release/candidate-0.1.0rc4-3333d00.md) is superseded
 and historical. Its CI and installation results apply to those bytes, which
-omit the small-order Ed25519 correction. A new candidate build, validation and
-approval are required; no old rc4 artifact may be substituted. See the
-[release records index](release/README.md). The current DOI identifies rc3.
+omit the small-order Ed25519 correction. The
+[replacement candidate from `492f330`](release/candidate-0.1.0rc4-492f330.md)
+passed exact-file installation checks; artifact review and separate publication
+approval remain pending. See the [release records index](release/README.md).
+The current DOI identifies rc3.
 
 ## Which document to use
 

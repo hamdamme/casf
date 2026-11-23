@@ -30,8 +30,10 @@ stabilization (SPEC §26).
 The [3333d00 candidate](docs/release/candidate-0.1.0rc4-3333d00.md) is superseded
 and historical: it omits the Ed25519 correction and must not be published.
 The [earlier candidate](docs/release/candidate-0.1.0rc4-d4721c4.md) also omits
-the SQLite and canonical JSONL corrections. New artifacts, validation, exact-file
-review and separate publication approval are required.
+the SQLite and canonical JSONL corrections. The
+[replacement candidate](docs/release/candidate-0.1.0rc4-492f330.md) records new
+artifacts from `492f330` and their installation checks. Exact-file review and
+separate publication approval remain pending.
 
 ## [0.1.0rc3] — 2026-11-17
 

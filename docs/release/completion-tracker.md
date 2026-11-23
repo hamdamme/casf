@@ -50,24 +50,24 @@ rc4 artifacts are now superseded and historical. Their installation and CI
 results remain credited to their named revisions. They omit the small-order
 Ed25519 correction and must not be published.
 
-The new follow-up rejects unsafe Ed25519 public keys at the shared loader,
-records the verification profile and edge vectors, and rejects unused retained
-checkpoints in unanchored integrity calls. Implementation and regression review
-are pending acceptance. The next steps are this revision's CI and review, then
-a new candidate build and exact-file installation validation. CI 238 is not
-attributed to this follow-up.
+PR 84 merged at `492f330c0be93a1b722314bbdc2f91ab0cb37e11`, accepting the
+Ed25519 key-validation and retained-checkpoint corrections. Post-merge CI 242
+passed all ten configurations: 1,903 tests on macOS; 1,883 passed and 20 native
+Darwin ACL skips on Ubuntu. All 20 evidence archive digests and runtime hashes
+were verified, and 72,900 parser cases passed.
 
-Local source validation on macOS arm64 passed **1,903 tests, zero failures and
-zero skips** with Python 3.12.14, SQLite 3.53.1 and cryptography 50.0.2. Tracked
-code lint, source typing and repository consistency checks passed. These results
-cover this correction's source, not replacement release artifacts or the hosted
-acceptance matrix, which require separate evidence.
+The [replacement rc4 candidate](candidate-0.1.0rc4-492f330.md) is built from
+that exact merge. Six fresh installations passed 76 commands across native
+macOS and emulated Ubuntu, including four 21-check workflows and the installed
+security regressions. Ubuntu emulation and host-shared filesystem limitations
+remain explicit in the candidate record. Later documentation is not a build input.
 
-After that validation: refresh dependency queries, review and approve the exact
-files, obtain separate GitHub publication approval, verify public downloads,
-then create and verify a new Zenodo version. Estimated remaining release effort
-is 2–3 development sessions after correction review; external review timing is
-unknown. No new independent researcher signoff or publication is claimed.
+Preparation is complete; exact-file review, the documentation PR's own CI, final
+advisory disposition and separate publication approval remain pending. Remaining
+release work is a fresh dependency query, approved publication and public-download
+checks, then a new Zenodo version and citation verification. Estimated remaining
+release effort is 1–2 development sessions after review; external review timing
+is unknown. No new independent researcher signoff or publication is claimed.
 
 These are maintenance steps after the accepted rc3 closeout, not changes to the
 37/41 historical plan count. Production tasks remain incomplete as stated above.
